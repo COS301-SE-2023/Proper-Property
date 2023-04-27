@@ -34,6 +34,7 @@ Strongly typed languages such as C++, Java. To a lesser extent, but still profic
 ## Socials
 
 </details>
+
 ## Keabetswe Madumo
 ![IMG20230202183059](https://user-images.githubusercontent.com/98401898/234879758-90c49326-61d4-46c2-b136-3067afbebdfb.jpg)
 <details>
@@ -51,8 +52,6 @@ My expertise is in implementing algorithms, working with formulas, manipulating 
 I am known for working intensely on projects, often sacrificing sleep to complete tasks quickly and review them with a fresh perspective before the deadline.
 
 In summary, my strengths include rapid learning, efficient work, and timely delivery of high-quality results. I actively seek new challenges to expand my skills and contribute effectively to any project or team I am part of.
-
-
 
 ## Tools
 
