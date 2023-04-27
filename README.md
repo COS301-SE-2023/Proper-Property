@@ -5,7 +5,7 @@
 ---
 # Team Members
 ## Murray Gibbon
-![Murray](https://user-images.githubusercontent.com/98401898/234876251-42648468-b537-49f1-88f6-46714eb95223.jpg)
+![Murray](https://user-images.githubusercontent.com/98401898/234876251-42648468-b537-49f1-88f6-46714eb95223.jpg = 250x250)
 <details>
 <summary>Personal Information</summary>
 <br>
@@ -20,7 +20,7 @@ My current skills include proficient knowledge of C++ and Java having spent the 
 </details>
 
 ## Wian Koekemoer
-![Wian](https://user-images.githubusercontent.com/98401898/234878943-4d38d358-e3d6-46c7-bac4-30e33d1e53f7.jpg)
+![Wian](https://user-images.githubusercontent.com/98401898/234878943-4d38d358-e3d6-46c7-bac4-30e33d1e53f7.jpg = 250x250)
 <details>
 <summary>Personal Information</summary>
 <br>
@@ -36,7 +36,7 @@ Strongly typed languages such as C++, Java. To a lesser extent, but still profic
 </details>
 
 ## Keabetswe Madumo
-![IMG20230202183059](https://user-images.githubusercontent.com/98401898/234879758-90c49326-61d4-46c2-b136-3067afbebdfb.jpg)
+![IMG20230202183059](https://user-images.githubusercontent.com/98401898/234879758-90c49326-61d4-46c2-b136-3067afbebdfb.jpg = 250x250)
 <details>
 <summary>Personal Information</summary>
 <br>
@@ -60,7 +60,7 @@ In summary, my strengths include rapid learning, efficient work, and timely deli
 </details>
 
 ## Robert Officer- Leader
-![Rob](https://user-images.githubusercontent.com/98401898/234882294-e8d868ee-d9fa-4e9a-a78e-3c10e94c05ec.png)
+![Rob](https://user-images.githubusercontent.com/98401898/234882294-e8d868ee-d9fa-4e9a-a78e-3c10e94c05ec.png = 250x250)
 
 <summary>Personal Information</summary>
 <br>
@@ -73,7 +73,7 @@ I am a passionate 3rd year BSc Computer Science student currently studying at th
 </details>
 
 ## Thapelo Thoka
-![Thapelo](https://user-images.githubusercontent.com/98401898/234882981-8ba00dc3-a1c9-405e-8632-d45fa3254c07.png)
+![Thapelo](https://user-images.githubusercontent.com/98401898/234882981-8ba00dc3-a1c9-405e-8632-d45fa3254c07.png = 250x250)
 <summary>Personal Information</summary>
 <br>
 ## About Me
