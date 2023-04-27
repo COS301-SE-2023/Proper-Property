@@ -1,7 +1,11 @@
-# Code Of Duty-Proper Property
-![coollogo_com-5898152](https://user-images.githubusercontent.com/98401898/234871025-85165ef2-303b-48b1-8df1-e5afd9520a3b.png)
+<p align = "center">
+ <img src="https://user-images.githubusercontent.com/98401898/234871025-85165ef2-303b-48b1-8df1-e5afd9520a3b.png">
+</p>
+<h1 align="center">Proper Property</h1>
+<h3 align = "center">A real estate listing platform that aims to differentiate itself from existing platforms!!</h3>
 
-## A real estate listing platform that aims to differentiate itself from existing platforms!!
+---
+
 # Team Members
 ## Murray Gibbon
  <img src="https://user-images.githubusercontent.com/98401898/234876251-42648468-b537-49f1-88f6-46714eb95223.jpg" width="200" height="200">
@@ -88,5 +92,9 @@ Over the past three years, I have honed my skills in a variety of object-oriente
 ## Socials
 
 </details>
+
+# Client
+<img src="https://user-images.githubusercontent.com/98401898/234887679-d43db121-debf-46a8-aeb8-5b0778ba8556.jpg" width="200" height= "200">
+
 
 
