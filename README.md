@@ -12,7 +12,9 @@
 <details>
 <summary>Personal Information</summary>
 <br>
+
 ## About Me
+
 University of Pretoria student currently studying my 3rd year in BSC Computer Science. I have been improving my coding ability over the years through the introduction of multiple different languages and projects, including the development and use of front-end, back-end, databases, C++, Java, and a few others.
 My current skills include proficient knowledge of C++ and Java having spent the last 3 years working with them to develop a wide range of different projects. I have also developed knowledge in front-end and back-end website development working with HTML, CSS, JavaScript, and Php. I am currently gaining familiarity with Ionic and Angular coding improving my skills the more I develop.
 
@@ -27,7 +29,9 @@ My current skills include proficient knowledge of C++ and Java having spent the 
 <details>
 <summary>Personal Information</summary>
 <br>
+
 ## About Me
+
 Third year BSc Computer Science student. I enjoy programming because it’s just one giant puzzle. I primarily do back-end because I can’t find any documentation on how to be creative.
 Skills:
 Strongly typed languages such as C++, Java. To a lesser extent, but still proficient: Javascript (Node.js), TypeScript (NestJS). The reason I prefer strongly typed languages is because the error messages they trigger in my IDE are nice and colourful, unlike the monochromatic error messages in my Node console.
@@ -43,7 +47,9 @@ Strongly typed languages such as C++, Java. To a lesser extent, but still profic
 <details>
 <summary>Personal Information</summary>
 <br>
+
 ## About Me
+
 “Jack of all traits and-unfortunately- master of none.” YET, as I am still a hardworking student at the university of Pretoria and in my final year of BSc Computer Science….hopefully.
 My goal in this degree was not to become a genius in a single field but to expose myself to plenty until I find that true soulmate to master. Just won a mild hacking competition. Next on the list is AI. As if I had a choice.
 
@@ -67,7 +73,9 @@ In summary, my strengths include rapid learning, efficient work, and timely deli
 <details>
 <summary>Personal Information</summary>
 <br>
+
 ## About Me
+
 I am a passionate 3rd year BSc Computer Science student currently studying at the University of Pretoria. I am a highly resourceful person who does not quit when problems occur. Instead I research the problem and try to understand how and why problems occur instead of just trying to solve them. My passions lie in back-end development, databases their management as well as project management. I have many years of programming experience from both University projects as well as personal projects that include back-end and database experience. Project management is a passion of mine as I enjoy seeing the product being created excel to its fullest extent. I believe that by having a leader who can push the team to their full potential and one that supports them in their roles and responsibilities a team can complete their tasks at an increased rate
 ## Tools
 
@@ -80,6 +88,7 @@ I am a passionate 3rd year BSc Computer Science student currently studying at th
 <details>
 <summary>Personal Information</summary>
 <br>
+
 ## About Me
 
 I am a third year BSc Computer Science Student who is passionate about Cybersecurity. I embrace emerging technologies with open arms and am always eager to take on complex tasks. I approach each project with enthusiasm and dedication.
