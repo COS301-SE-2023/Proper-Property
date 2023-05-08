@@ -1,0 +1,7 @@
+{
+  "name": "ProperProperty",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
