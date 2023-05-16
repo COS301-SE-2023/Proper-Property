@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor() {}
 }
