@@ -2,6 +2,8 @@
 ion-card-header img {
     width: 200px;
     height: 130px;
+    //rounded edges
+    border-radius: 10px;
   }
   
   //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
@@ -24,4 +26,33 @@ ion-card-header img {
         width: 50%;
         margin-left: 2%;
         margin-top: 10px;
+        border-radius: 10px;
     }
+
+    //styling for div with id="house_details"
+    #house_details img {
+      //set image size
+      width: 15px;
+      height: 15px;
+    }
+
+    .heart-button {
+      background-color: transparent;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      //move it to right hand corner
+      margin-left: 90%;
+      margin-top: -30px;
+    }
+    
+    .heart-icon {
+      color: red;
+      font-size: 24px;
+    }
+    
