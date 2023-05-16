@@ -1,0 +1,27 @@
+//make the img in ion-card-header smaller
+ion-card-header img {
+    width: 200px;
+    height: 130px;
+  }
+  
+  //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
+  ion-card-header ion-card-title {
+    margin-left: 220px;
+    //move ths up
+      margin-top: -130px;
+  }
+  
+  ion-card-header ion-card-subtitle {
+      margin-left: 220px;
+    }
+  
+  ion-card ion-card-content {
+      margin-left: 220px;
+    }
+  
+  //make the ion-card take only half of the page
+    ion-card {
+        width: 50%;
+        margin-left: 2%;
+        margin-top: 10px;
+    }
