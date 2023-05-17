@@ -66,3 +66,12 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Keys
+.keys/*.json
+
+# Env
+.env
+.env.prod
+.vscode/*
+
