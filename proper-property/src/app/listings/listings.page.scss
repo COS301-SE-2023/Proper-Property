@@ -57,12 +57,25 @@ ion-card-header img {
     }
     
     .map {
-      width: 100%;
-      height: 300px;
+      // margin-left: 50%;
+      width: 40%;
+      margin-left: 55%;
+      margin-top:  -750px;
+  
+      height: 600px;
+      border-radius: 10px;
       background-color: transparent;
       opacity: 0;
       transition: opacity 150ms ease-in;
     }
+
     .map.visible {
       opacity: 1;
+    }
+
+    #map {
+      width: 50%;
+      margin-left: 2%;
+      margin-top: 10px;
+      border-radius: 10px;
     }

@@ -15,7 +15,7 @@ export class ListingsPage  implements OnInit, OnDestroy  {
   @ViewChild('map', { static: true })
   mapElementRef!: ElementRef;
   googleMaps: any;
-  center = { lat: 28.649944693035188, lng: 77.23961776224988 };
+  center = { lat: -25.7477, lng: 28.2433 };
   map: any;
   mapClickListener: any;
   markerClickListener: any;
