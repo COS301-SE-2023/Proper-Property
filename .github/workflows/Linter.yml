@@ -14,4 +14,4 @@ jobs:
       - run: npm install --legacy-peer-deps
       - run: npm install -g @ionic/cli
       - name: Build App
-        run: ionic build --verbose
+        run: ionic build
