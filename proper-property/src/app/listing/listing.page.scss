@@ -1,0 +1,11 @@
+.swiper-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Adjust this value if needed */
+  }
+  
+  .swiper-slide img {
+    width: 100%;
+    height: auto;
+  }

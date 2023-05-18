@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ListingPageRoutingModule } from './listing-routing.module';
 
 import { ListingPage } from './listing.page';
-
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +15,7 @@ import { ListingPage } from './listing.page';
     IonicModule,
     ListingPageRoutingModule
   ],
-  declarations: [ListingPage]
+  declarations: [ListingPage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ListingPageModule {}
