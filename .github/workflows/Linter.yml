@@ -12,5 +12,6 @@ jobs:
         with:
           node-version: "18"
       - run: npm install --legacy-peer-deps
+      - run: npm install -g @ionic/cli
       - name: Build App
         run: ionic serve
