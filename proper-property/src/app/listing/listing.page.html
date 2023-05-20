@@ -5,29 +5,32 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
-  <swiper-container     #swiper
-  (afterinit) = "swiperReady()"
-  (slidechange)="swiperSlideChanged($event)"
-  [loop]="true"
-  [pagination] = "true">
-
-    <swiper-slide>
-      <img src="assets/slides/slide1.png">
-    </swiper-slide>
-    <swiper-slide>
-      <img src="assets/slides/slide2.png">
-    </swiper-slide>
-    <swiper-slide>
-      <img src="assets/slides/slide3.png">
-    </swiper-slide>
-  </swiper-container>
+  <div class="swiper-container-wrapper">
+    <ion-buttons slot="start" class="swiper-button1" #one>
+      <ion-button (click)="goPrev()" #one>
+        <img src="assets/icon/arrow-back.png" #back>
+      </ion-button>
+    </ion-buttons>
+    <swiper-container #swiper
+      (afterinit)="swiperReady()"
+      (slidechange)="swiperSlideChanged($event)"
+      [loop]="true"
+      [pagination]="true">
+      <!-- Slides content goes here -->
+      <swiper-slide>
+        <img src="assets/slides/slide1.png">
+      </swiper-slide>
+      <swiper-slide>
+        <img src="assets/slides/slide2.png">
+      </swiper-slide>
+      <swiper-slide>
+        <img src="assets/slides/slide3.png">
+      </swiper-slide>
+    </swiper-container>
+    <ion-buttons slot="end" class="swiper-button2" #two>
+      <ion-button (click)="goNext()" #two>
+        <img src="assets/icon/arrow-forward.png" #forward>
+      </ion-button>
+    </ion-buttons>
+  </div>
 </ion-content>
-<ion-buttons slot="end">
-  <ion-button (click)="goPrev()">
-    <ion-icon slot="ïcon-only" name="arrow-back"></ion-icon>
-  </ion-button>
-  <ion-button (click)="goNext()">
-    <ion-icon slot="ïcon-only" name="arrow-forward"></ion-icon>
-  </ion-button>
-</ion-buttons>
