@@ -54,7 +54,11 @@ const routes: Routes = [
   {
     path: 'listing',
     loadChildren: () => import('./listing/listing.module').then( m => m.ListingPageModule)
+  },  {
+    path: 'modal',
+    loadChildren: () => import('./modal/modal.module').then( m => m.ModalPageModule)
   }
+
 ];
 
 @NgModule({
