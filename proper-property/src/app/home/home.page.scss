@@ -23,6 +23,23 @@ ion-menu-button {
   margin: 0;
 }
 
+
+
 #container a {
   text-decoration: none;
+}
+.swiper-container-wrapper {
+  position: relative;
+
+  .swiper-button1 {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .swiper-button2 {
+    position: absolute;
+    top: 50%;
+    left:90%;
+    transform: translateY(-50%);
+  }
 }

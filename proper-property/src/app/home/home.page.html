@@ -5,8 +5,57 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">home</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+
+  <div class="swiper-container-wrapper">
+    <ion-buttons slot="start" class="swiper-button1" #one>
+      <ion-button (click)="goPrev()" #one>
+        <img src="assets/icon/arrow-back.png" #back>
+      </ion-button>
+    </ion-buttons>
+    <swiper-container #swiper
+      (afterinit)="swiperReady()"
+      (slidechange)="swiperSlideChanged($event)"
+      [loop]="true"
+      [pagination]="true">
+      <!-- Slides content goes here -->
+      <swiper-slide>
+        <ion-card>
+          <ion-card-header>
+            <img src="assets/house3.jpg" alt="house1">
+            <ion-card-title>Nestled Nook</ion-card-title>
+            <ion-card-subtitle>R 7 450 000</ion-card-subtitle>
+          </ion-card-header>
+          </ion-card>
+      </swiper-slide>
+
+      <swiper-slide>
+        <ion-card>
+          <ion-card-header>
+            <img src="assets/house2.jpg" alt="house1">
+            <ion-card-title>Minimalistic Mansion</ion-card-title>
+            <ion-card-subtitle>R 8 500 000</ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+        
+      </swiper-slide>
+      
+      <swiper-slide>
+        <ion-card>
+          <ion-card-header>
+            <img src="assets/house3.jpg" alt="house1">
+            <ion-card-title>Nestled Nook</ion-card-title>
+            <ion-card-subtitle>R 7 450 000</ion-card-subtitle>
+          </ion-card-header>
+        
+        </ion-card>
+      </swiper-slide>
+    </swiper-container>
+    <ion-buttons slot="end" class="swiper-button2" #two>
+      <ion-button (click)="goNext()" #two>
+        <img src="assets/icon/arrow-forward.png" #forward>
+      </ion-button>
+    </ion-buttons>
+  </div>
+
+  </ion-content>
