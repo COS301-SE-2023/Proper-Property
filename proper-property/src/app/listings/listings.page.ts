@@ -5,6 +5,9 @@ import { GmapsService } from '../services/gmaps.service';
 import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 
+import { Router } from '@angular/router';
+
+
 @Component({
   selector: 'app-listings',
   templateUrl: './listings.page.html',
@@ -24,8 +27,9 @@ export class ListingsPage  implements OnInit, OnDestroy  {
   constructor(
     private gmaps: GmapsService,
     private renderer: Renderer2,
-    private actionSheetCtrl: ActionSheetController
-  ) {}
+    private actionSheetCtrl: ActionSheetController,
+    private router: Router
+    ) {}
 
   ngOnInit(): void {
   }
@@ -120,6 +124,10 @@ export class ListingsPage  implements OnInit, OnDestroy  {
     });
 
     await actionSheet.present();
+  }
+
+  redirectToPage() {
+    this.router.navigateByUrl('/listing');
   }
 
   ngOnDestroy() {
