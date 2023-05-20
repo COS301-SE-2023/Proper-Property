@@ -1,11 +1,38 @@
 .swiper-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Adjust this value if needed */
+  position: relative;
+  width: 100%;
+  margin-left: 2%;
+  margin-top: 10px;
+  border-radius: 10px;
   }
   
   .swiper-slide img {
     width: 100%;
     height: auto;
   }
+  .swiper-container-wrapper {
+    position: relative;
+  
+    .swiper-button1 {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .swiper-button2 {
+      position: absolute;
+      top: 50%;
+      left:90%;
+      transform: translateY(-50%);
+    }
+  }
+// #back {
+//   position: absolute;
+//   top: 0;
+//   left : 0;
+//   width: 100%;
+//   height:100%;
+//   background-color: #f1f1f1;
+//   opacity: 0;
+//   pointer-events: none;
+//   z-index: 1;
+// }
