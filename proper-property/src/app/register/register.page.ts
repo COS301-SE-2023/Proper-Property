@@ -7,13 +7,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterPage implements OnInit {
   name:string;
-  Surname:string;
+  surname:string;
   password:string;
   email:string;
+  confirm_password:string;
+  passwordMatch:boolean = true;
 
-  register() {}
+  register() {
+    if (this.password !== this.confirm_password) {
+      this.passwordMatch = false;
+      return; // Prevent further execution
+    }
+  }
   constructor() { 
-    this.name = this.Surname = this.password = this.email = "";
+    this.name = this.surname = this.password = this.email = this.confirm_password = "";
   }
 
   checkPassword() {
