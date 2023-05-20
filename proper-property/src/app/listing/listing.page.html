@@ -59,4 +59,107 @@
       </div>
     </ion-card-content>
   </ion-card>
-</ion-content>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Unlock the Potential of this Large Family Property - Ideal for Investment, Subdivision!
+      </ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <p>
+        This large property is a real diamond in the rough! It has two separate entrances, making it the perfect place for both a family reunion and a wild party with 5 Bed and 4 Bathrooms.
+      </p>
+      <p>
+        The inside is a little bit like a maze, with long hallways and secret passages. The outside is full of character, with a garden in the front with a TREE HOUSE and a large courtyard in the back with an amazing Swimming Pool with a Pool house with 1Bed, Kitchen. And if you're looking for a quiet spot to relax, there's a Lapa Thatched Braai and Entertainment room that overlooks the huge garden. It's the perfect mix of old-world charm and modern amenities, making it the perfect place to get lost in a good time!
+      </p>
+  
+      <ion-list>
+
+        <ion-item>
+          <ion-label>5 Bedrooms (including the Pool House 1 bed)</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Main Bedroom with Kitchenette (plumbing for a Basin and Stove Future), en-suite bath, Lounge/TV area separate from other rooms.</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Large Family Kitchen with Laundry room/Scullery</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>6 Garages (2 rollup, 2 manual, and 2 Electrical)</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Fireplace</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Outside Rooms on property for storage</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Electrical Geyser and Gas Geyser as Backup (2 Geysers)</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Braai Lapa Area Thatched</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Tree House</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Pool House with Kitchen, Gas Stove, Underbar Fridges, 1 Bedroom, Dining & Lounge area / Space for Pool table</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Huge Pool</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Pool House outside Toilet and Shower.</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>2 Carports</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Separate Entrances from Wouter Malan Street and Joseph Bosman</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>SOLAR / OFF the GRID (not included, bought separately)</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  
+
+  <ion-card class="ion-padding">
+      <ion-item>
+        <ion-label position="floating">Loan Amount (R)</ion-label>
+        <ion-input type="number" [(ngModel)]="loanAmount"></ion-input>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label position="floating">Interest Rate (%)</ion-label>
+        <ion-input type="number" [(ngModel)]="interestRate"></ion-input>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label position="floating">Loan Term (Years)</ion-label>
+        <ion-input type="number" [(ngModel)]="loanTerm"></ion-input>
+      </ion-item>
+    
+      <ion-button expand="full" (click)="calculateMortgage()">Calculate</ion-button>
+    
+      <ion-item>
+        <ion-label>Monthly Payment:</ion-label>
+        <ion-text>{{ monthlyPayment | currency: 'R' }}</ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Total Once-off Costs:</ion-label>
+        <ion-text>{{ totalOnceOffCosts | currency: 'R' }}</ion-text>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label>Min Gross Monthly Income:</ion-label>
+        <ion-text>{{ minGrossMonthlyIncome | currency: 'R' }}</ion-text>
+      </ion-item>
+
+  </ion-card>
+ </ion-content>
+
