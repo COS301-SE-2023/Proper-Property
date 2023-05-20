@@ -9,6 +9,7 @@
   .swiper-slide img {
     width: 100%;
     height: auto;
+    border-radius: 10px;
   }
   .swiper-container-wrapper {
     position: relative;
@@ -24,6 +25,13 @@
       left:90%;
       transform: translateY(-50%);
     }
+  }
+
+  #house_details img {
+    //set image size
+    width: 15px;
+    height: 15px;
+    border-radius: 10px;
   }
 // #back {
 //   position: absolute;
