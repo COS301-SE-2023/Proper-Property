@@ -26,3 +26,44 @@ ion-menu-button {
 #container a {
   text-decoration: none;
 }
+
+.swiper-container-wrapper {
+  background-color: transparent;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 500px; /* Adjust the height as desired */
+
+  .swiper-button1 {
+    position: absolute;
+    top: 50%;
+    left: 2%;
+    transform: translateY(-50%);
+  }
+
+  .swiper-button2 {
+    position: absolute;
+    top: 50%;
+    left: 90%;
+    transform: translateY(-50%);
+  }
+}
+
+#house_details img {
+  width: 15px; /* Adjust the size as desired */
+  height: 15px; /* Adjust the size as desired */
+  border-radius: 10px;
+}
+
+#recommended {
+  top: -100px;
+  max-width: 400px; /* Adjust the width as desired */
+  max-height: 600px;
+  margin: 0 auto; /* Center the card horizontally */
+  margin-top: 50px;
+}
+
+#container a {
+  text-decoration: none;
+}
