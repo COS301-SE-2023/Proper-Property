@@ -42,7 +42,7 @@ import {
   getFirestore,
   Firestore,
 } from '@angular/fire/firestore';
-import { provideStorage, getStorage } from '@angular/fire/storage';
+import { provideStorage, getStorage, connectStorageEmulator } from '@angular/fire/storage';
 
 
 @NgModule({
@@ -73,6 +73,13 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
         });
       }
       return auth;
+    }),
+    provideStorage(() => {
+      const storage = getStorage();
+      if (environment.useEmulators) {
+        connectStorageEmulator(storage, 'http://localhost', 9199);
+      }
+      return storage;
     })
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
