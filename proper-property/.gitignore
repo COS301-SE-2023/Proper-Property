@@ -75,6 +75,5 @@ Thumbs.db
 .env.prod
 .vscode/*
 
-
-proper-property/src/environments/environment.prod.ts
-proper-property/src/environments/environment.ts
+src/environments/environment.prod.ts
+src/environments/environment.ts
