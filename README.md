@@ -39,7 +39,7 @@ My current skills include proficient knowledge of C++ and Java having spent the 
 </details>
 
 ## Wian Koekemoer
-<img src="https://user-images.githubusercontent.com/98401898/234878943-4d38d358-e3d6-46c7-bac4-30e33d1e53f7.jpg" width="200" height="200"> [![Wian's GitHub stats](https://github-readme-stats.vercel.app/api?username=slaaiblaar)]
+<img src="https://user-images.githubusercontent.com/98401898/234878943-4d38d358-e3d6-46c7-bac4-30e33d1e53f7.jpg" width="200" height="200"> [![Wian's GitHub stats](https://github-readme-stats.vercel.app/api?username=slaaiblaar)](https://github.com/anuraghazra/github-readme-stats)
 <details>
 <summary>Personal Information</summary>
 <br>
@@ -68,7 +68,7 @@ Strongly typed languages such as C++, Java. To a lesser extent, but still profic
 </details>
 
 ## Keabetswe Madumo
-<img src="https://user-images.githubusercontent.com/98401898/234879758-90c49326-61d4-46c2-b136-3067afbebdfb.jpg" width="200" height="200"> [![Kea's GitHub stats](https://github-readme-stats.vercel.app/api?username=MadKea)]
+<img src="https://user-images.githubusercontent.com/98401898/234879758-90c49326-61d4-46c2-b136-3067afbebdfb.jpg" width="200" height="200"> [![Kea's GitHub stats](https://github-readme-stats.vercel.app/api?username=MadKea)](https://github.com/anuraghazra/github-readme-stats)
 <details>
 <summary>Personal Information</summary>
 <br>
@@ -104,7 +104,7 @@ In summary, my strengths include rapid learning, efficient work, and timely deli
 </details>
 
 ## Robert Officer- Leader
-<img src="https://user-images.githubusercontent.com/98401898/234882294-e8d868ee-d9fa-4e9a-a78e-3c10e94c05ec.png" width="200" height="200"> [![Rob's GitHub stats](https://github-readme-stats.vercel.app/api?username=Rob-0ff)]
+<img src="https://user-images.githubusercontent.com/98401898/234882294-e8d868ee-d9fa-4e9a-a78e-3c10e94c05ec.png" width="200" height="200"> [![Rob's GitHub stats](https://github-readme-stats.vercel.app/api?username=Rob-0ff)](https://github.com/anuraghazra/github-readme-stats)
 <details>
 <summary>Personal Information</summary>
 <br>
@@ -130,7 +130,7 @@ I am a passionate 3rd year BSc Computer Science student currently studying at th
 </details>
 
 ## Thapelo Thoka
-<img src="https://user-images.githubusercontent.com/98401898/234882981-8ba00dc3-a1c9-405e-8632-d45fa3254c07.png" width="200" height="200"> [![Thapelo's GitHub stats](https://github-readme-stats.vercel.app/api?username=Thapelo64)]
+<img src="https://user-images.githubusercontent.com/98401898/234882981-8ba00dc3-a1c9-405e-8632-d45fa3254c07.png" width="200" height="200"> [![Thapelo's GitHub stats](https://github-readme-stats.vercel.app/api?username=Thapelo64)](https://github.com/anuraghazra/github-readme-stats)
 <details>
 <summary>Personal Information</summary>
 <br>
