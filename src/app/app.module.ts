@@ -42,6 +42,8 @@ import {
   getFirestore,
   Firestore,
 } from '@angular/fire/firestore';
+
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { provideStorage, getStorage, connectStorageEmulator } from '@angular/fire/storage';
 
 
@@ -84,5 +86,6 @@ import { provideStorage, getStorage, connectStorageEmulator } from '@angular/fir
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}
