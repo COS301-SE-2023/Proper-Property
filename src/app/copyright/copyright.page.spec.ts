@@ -11,7 +11,7 @@ describe('CopyrightPage', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  it('should create copyrightpage', () => {
     expect(component).toBeTruthy();
   });
 });
