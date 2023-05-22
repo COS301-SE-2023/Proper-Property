@@ -135,5 +135,6 @@ export class ListingsPage  implements OnInit, OnDestroy  {
     if(this.mapClickListener) this.googleMaps.event.removeListener(this.mapClickListener);
     if(this.markerClickListener) this.googleMaps.event.removeListener(this.markerClickListener);
   }
+  
 
 }
