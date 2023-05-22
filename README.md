@@ -4,7 +4,7 @@
 <h1 align="center">Proper Property</h1>
 <h3 align = "center">A real estate listing platform that aims to differentiate itself from existing platforms!!</h3>
 
-![Github issues](https://img.shields.io/github/issues/{COS301-SE-2023}/{Proper-Property}.svg)
+![Github issues](https://img.shields.io/github/issues/COS301-SE-2023/Proper-Property.svg)
 
 ---
 
