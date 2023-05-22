@@ -1,29 +1,3 @@
-// import { NgModule } from '@angular/core';
-// import { BrowserModule } from '@angular/platform-browser';
-// import { RouteReuseStrategy } from '@angular/router';
-
-// import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-
-// import { AppComponent } from './app.component';
-// import { AppRoutingModule } from './app-routing.module';
-// import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-// import { environment } from '../environments/environment';
-// import { provideAuth, getAuth } from '@angular/fire/auth';
-// import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-// import { provideStorage, getStorage } from '@angular/fire/storage';
-
-// @NgModule({
-//   declarations: [AppComponent],
-//   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
-// 		provideFirebaseApp(() => initializeApp(environment.firebase)),
-// 		provideAuth(() => getAuth()),
-// 		provideFirestore(() => getFirestore()),
-// 		provideStorage(() => getStorage())
-//   ],
-//   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy},],
-//   bootstrap: [AppComponent],
-// })
-// export class AppModule {}
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -39,8 +13,6 @@ import { initializeFirestore, provideFirestore, connectFirestoreEmulator, getFir
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { provideStorage, getStorage, connectStorageEmulator } from '@angular/fire/storage';
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AuthService } from './services/auth/auth.service';
 
 
@@ -51,8 +23,16 @@ import { AuthService } from './services/auth/auth.service';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    AngularFireAuthModule,
-    AngularFireModule.initializeApp(environment.firebase),
+    provideAuth(() => {
+      const auth = getAuth();
+      if (environment.useEmulators) {
+        connectAuthEmulator(auth, 'http://localhost:9099', {
+          disableWarnings: true,
+        });
+      }
+      return auth;
+    }),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => {
       let firestore: Firestore;
       if (environment.useEmulators) {
@@ -65,15 +45,6 @@ import { AuthService } from './services/auth/auth.service';
         firestore = getFirestore();
       }
       return firestore;
-    }),
-    provideAuth(() => {
-      const auth = getAuth();
-      if (environment.useEmulators) {
-        connectAuthEmulator(auth, 'http://localhost:9099', {
-          disableWarnings: true,
-        });
-      }
-      return auth;
     }),
     provideStorage(() => {
       const storage = getStorage();
