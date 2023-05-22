@@ -24,6 +24,7 @@ export class RegisterPage implements OnInit {
       this.passwordMatch = false;
       return; // Prevent further execution
     }
+    this.authService.register(this.email, this.password);
   }
 
   checkPassword() {

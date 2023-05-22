@@ -1,12 +1,26 @@
 .invalid ion-input {
-    border-color: red;
-  }
-  
-  .invalid-feedback {
-    color: red;
-  }
+  border-color: red;
+}
 
-  .additional-options{
-    margin: 0 auto;
-  }
-  
+.invalid-feedback {
+  color: red;
+}
+
+.button-centerer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-centerer2 {
+  margin-bottom: 10px;
+}
+
+.text-centrer-inator {
+  text-align: center;
+}
+
+.buttons{
+  float: center;
+}

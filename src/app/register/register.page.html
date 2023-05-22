@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content style="position: relative;">
   <ion-list>
     <ion-item>
       <ion-label position="floating">Name</ion-label>
@@ -34,20 +34,15 @@
   <div *ngIf="!passwordMatch" class="invalid-feedback">
     Passwords do not match!.
   </div>
-  <div class="ion-padding">
-    <ion-button expand="full" (click)="register()">Sign Up</ion-button>
-  </div>
 
-  <div id="additional-options">
-    <div>
-      <ion-button type="button" (click)="authService.GoogleAuth()">
-        Log in with Google
+  <div class="button-centerer">
+    <div class="button-centerer2">
+      <ion-button class="buttons" size="default" (click)="register()">
+        Sign Up
       </ion-button>
     </div>
     <div class="ion-padding">
-      <p>Already have an account? <a routerLink="/login">Login</a></p>
+      <p class="text-centrer-inator">Already have an account? <a routerLink="/login">Login</a></p>
     </div>
   </div>
-
-
 </ion-content>
