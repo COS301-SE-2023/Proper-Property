@@ -57,7 +57,7 @@ ion-menu-button {
 }
 
 ion-card {
-  background-color: invis;
+  // background-color: #0DAE4F;
 }
 
 #recommended {
@@ -78,3 +78,16 @@ ion-card {
   background-color: #0DAE4F;
   color: white;
 }
+
+.custom-searchbar {
+  background-color: black;
+  width: 80%; /* Adjust the width as needed */
+  margin: 0 auto; /* Centers the search bar horizontally */
+}
+
+.custom-searchbar .searchbar-input {
+  background-color: black; /* Sets the background color to green */
+  text-align: center; /* Centers the text within the search bar */
+  color: white; /* Sets the text color to white */
+}
+ 
