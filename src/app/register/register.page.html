@@ -38,8 +38,15 @@
     <ion-button expand="full" (click)="register()">Sign Up</ion-button>
   </div>
 
-  <div class="ion-padding">
-    <p>Already have an account? <a routerLink="/login">Login</a></p>
+  <div id="additional-options">
+    <div>
+      <ion-button type="button" (click)="authService.GoogleAuth()">
+        Log in with Google
+      </ion-button>
+    </div>
+    <div class="ion-padding">
+      <p>Already have an account? <a routerLink="/login">Login</a></p>
+    </div>
   </div>
 
 

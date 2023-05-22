@@ -35,16 +35,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { initializeApp, provideFirebaseApp, getApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth, getAuth, connectAuthEmulator } from '@angular/fire/auth';
-import {
-  initializeFirestore,
-  provideFirestore,
-  connectFirestoreEmulator,
-  getFirestore,
-  Firestore,
-} from '@angular/fire/firestore';
+import { initializeFirestore, provideFirestore, connectFirestoreEmulator, getFirestore, Firestore } from '@angular/fire/firestore';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { provideStorage, getStorage, connectStorageEmulator } from '@angular/fire/storage';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AuthService } from './services/auth/auth.service';
+
 
 
 @NgModule({
@@ -53,7 +51,8 @@ import { provideStorage, getStorage, connectStorageEmulator } from '@angular/fir
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    AngularFireAuthModule,
+    AngularFireModule.initializeApp(environment.firebase),
     provideFirestore(() => {
       let firestore: Firestore;
       if (environment.useEmulators) {
@@ -84,7 +83,7 @@ import { provideStorage, getStorage, connectStorageEmulator } from '@angular/fir
       return storage;
     })
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [AuthService, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
