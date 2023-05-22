@@ -66,8 +66,8 @@ export class ListingsPage  implements OnInit, OnDestroy  {
   addMarker(location: any) {
     let googleMaps: any = this.googleMaps;
     const icon = {
-      url: 'assets/icon/location-pin.png',
-      scaledSize: new googleMaps.Size(50, 50), 
+      url: 'assets/icon/map_card.png',
+      scaledSize: new googleMaps.Size(100, 50), 
     };
     const marker = new googleMaps.Marker({
       position: location,

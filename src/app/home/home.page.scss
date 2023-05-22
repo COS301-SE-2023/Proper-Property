@@ -56,13 +56,19 @@ ion-menu-button {
   border-radius: 10px;
 }
 
+ion-card {
+  background-color: invis;
+}
+
 #recommended {
   top: -100px;
-  max-width: 400px; /* Adjust the width as desired */
-  max-height: 600px;
+  max-width: 600px; /* Adjust the width as desired */
+  max-height: 650px;
   margin: 0 auto; /* Center the card horizontally */
   margin-top: 50px;
 }
+
+
 
 #container a {
   text-decoration: none;
