@@ -1,29 +1,18 @@
-name: 🐳 NRWL NX
-on: push
-
+name: Testing...
+on:
+  push:
 jobs:
-  nrwl_test:
-    name: "🐳 NRWL NX Text"
-    environment: development
+  linting:
+    name: Run Lint check
     runs-on: ubuntu-latest
     steps:
-      - name: 🛏️ Checkout repository
-        uses: actions/checkout@v3
-    
-      - uses: mskelton/setup-yarn@v1
-      
-      - name: 🐋 NX Build
-        uses: mansagroup/nrwl-nx-action@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          targets: build
-          all: true
-          parallel: 5
-          args: --skip-nx-cache --configuration=ci
-          
-      - name: 🐋 NX Test
-        uses: mansagroup/nrwl-nx-action@v3
-        with:
-          targets: test
-          all: true
-          parallel: 5
-          args: --skip-nx-cache --configuration=ci
+          node-version: "18"
+      - run: npm install
+      - run: npm install -g @ionic/cli
+      - name: Run unit-tests
+        run: ng test
+      - name: Build App
+        run: ionic build
