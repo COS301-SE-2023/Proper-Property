@@ -75,7 +75,6 @@ Thumbs.db
 .env.prod
 .vscode/*
 libs/app/core/feature/src/core.routing.ts
-*.ts
 
 src/environments/environment.prod.ts
 src/environments/environment.ts
