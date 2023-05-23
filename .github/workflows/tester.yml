@@ -3,6 +3,7 @@ on:
   push:
 jobs:
   ng_test:
+    timeout-minutes: 2
     name: Run unit test
     runs-on: ubuntu-latest
     steps:
@@ -16,4 +17,3 @@ jobs:
         run: npm run test
       - name: Build App
         run: ionic build
-      - timeout: 5
