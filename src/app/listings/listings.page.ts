@@ -24,6 +24,7 @@ export class ListingsPage  implements OnInit, OnDestroy  {
   markerClickListener: any;
   markers: any[] = [];
 
+
   constructor(
     private gmaps: GmapsService,
     private renderer: Renderer2,
@@ -134,6 +135,13 @@ export class ListingsPage  implements OnInit, OnDestroy  {
     // this.googleMaps.event.removeAllListeners();
     if(this.mapClickListener) this.googleMaps.event.removeListener(this.mapClickListener);
     if(this.markerClickListener) this.googleMaps.event.removeListener(this.markerClickListener);
+  }
+
+  //likes:
+  isRed: boolean = false;
+
+  toggleColor() {
+    this.isRed = !this.isRed;
   }
   
 
