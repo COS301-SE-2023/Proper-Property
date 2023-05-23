@@ -13,6 +13,6 @@ jobs:
       - run: npm install --force
       - run: npm install -g @ionic/cli
       - name: Run unit-tests
-        run: ng test
+        run: npm run test
       - name: Build App
         run: ionic build
