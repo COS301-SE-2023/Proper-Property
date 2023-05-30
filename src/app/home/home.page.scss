@@ -49,7 +49,15 @@ ion-toolbar{
 
 }
 
-img {
+.deco1{
+  position:absolute;
+  width: 100px;
+  height: 100px;
+  top:400px;
+  right: 30%;
+  background: rgda(255,255,255,0);
+}
+.slideimg {
   width: 2000px; /* Adjust the size as desired */
   height:1000px; /* Adjust the size as desired */
 
@@ -116,5 +124,9 @@ h2{
   //background-color: black; /* Sets the background color to green */
   text-align: center; /* Centers the text within the search bar */
  
+}
+
+.pics{
+  --background: red;
 }
  
