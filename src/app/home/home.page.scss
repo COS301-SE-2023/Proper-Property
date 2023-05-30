@@ -1,5 +1,14 @@
-ion-menu-button {
-  color: var(--ion-color-primary);
+.link{
+  --color: var( --ion-color-primary-contrast);
+}
+
+.active
+{
+  --color: var( --ion-color-primary);
+}
+
+ion-toolbar{
+  --background: rgba(0,0,0,0);
 }
 
 #container {
@@ -7,7 +16,7 @@ ion-menu-button {
   position: absolute;
   left: 0;
   right: 0;
-  top: 50%;
+  top: 0%;
   transform: translateY(-50%);
 }
 
@@ -19,8 +28,13 @@ ion-menu-button {
 #container p {
   font-size: 16px;
   line-height: 22px;
-  color: #8c8c8c;
+  --color: #b015be;
   margin: 0;
+}
+
+.bb{
+  top: 0;
+  margin-top: 0;
 }
 
 #container a {
