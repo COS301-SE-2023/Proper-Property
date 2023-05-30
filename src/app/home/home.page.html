@@ -1,13 +1,13 @@
-<ion-header [translucent]="true">
+<!-- <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>home</ion-title>
+    <ion-title>Proper Property</ion-title>
   
-    <ion-buttons slot="end">
+    <ion-buttons>
       <ion-button routerLink="/home" routerDirection="root">
-        <ion-icon slot="icon-only" name="home"></ion-icon>
+        <ion-title>home</ion-title>
       </ion-button>
     </ion-buttons>
-    <ion-buttons slot="end">
+    <ion-buttons>
       <ion-button routerLink="/listings" routerDirection="root">
         <ion-icon slot="icon-only" name="list"></ion-icon>
       </ion-button>
@@ -30,6 +30,39 @@
     </ion-buttons>
     
   </ion-toolbar>
+</ion-header> -->
+<ion-header >
+  <ion-toolbar>
+    <ion-row class="ion-align-items-center">
+      <ion-col size="1">
+        Proper Property
+      </ion-col>
+      <ion-col size="10">
+        <div class="navbar" class="ion-text-end">
+          <ion-button fill="clear"  routerLink="/home" routerDirection="root" routerLinkActive="active"
+            class="link">
+            Home
+          </ion-button>
+          <ion-button fill="clear"  routerLink="/create-listing" routerDirection="root" routerLinkActive="active"
+            class="link">
+            Add Listing
+          </ion-button>
+          <ion-button fill="clear" routerLink="/listings" routerDirection="root" routerLinkActive="active"
+            class="link">
+            View Listing
+          </ion-button>
+          <ion-button fill="clear"  routerLink="/login" routerDirection="root" routerLinkActive="active"
+          class="link">
+          Log In
+        </ion-button>
+        <ion-button fill="clear"  routerLink="/login" routerDirection="root" routerLinkActive="active"
+          class="link">
+          Sign Up
+        </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
@@ -49,89 +82,22 @@
       [pagination]="true">
       <!-- Slides content goes here -->
       <swiper-slide>
-          <ion-card-header>
-            <img src="assets/house3.jpg" alt="house1">
-            <ion-card-title  >Nestled Nook</ion-card-title>
-            <ion-card-subtitle style="color: #0DAE4F;">R 7 450 000</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            A wholesome family home.
-            <br>
-            <br>
-            <div id="house_details">
-              <img src="assets/icon/bedrooms.png">
-              7
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/bathrooms.png">
-              6
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/floorplan.png">
-               800 m<sup>2</sup> 
-               &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/erf.png">
-              1600 m<sup>2</sup>
-            </div>
-          </ion-card-content>
-          
+            <img src="assets/Fancy House.jpg" alt="house1">
       </swiper-slide>
 
-      <swiper-slide>
-        
+      <swiper-slide> 
           <ion-card-header>
             <img src="assets/house2.jpg" alt="house1">
-            <ion-card-title>Minimalistic Mansion</ion-card-title>
-            <ion-card-subtitle style="color: #0DAE4F;">R 8 500 000</ion-card-subtitle>
           </ion-card-header>
-          <ion-card-content>
-            A minimalistic architectural masterpiece
-            <br>
-            <br>
-            <div id="house_details">
-              <img src="assets/icon/bedrooms.png">
-              5
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/bathrooms.png">
-              6
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/floorplan.png">
-               690 m<sup>2</sup> 
-               &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/erf.png">
-              1400 m<sup>2</sup>
-            </div>
-          </ion-card-content>
-        
-        
       </swiper-slide>
       
       <swiper-slide>
           <ion-card-header>
             <img src="assets/house1.png" alt="house1">
-            <ion-card-title >Nestled Nook</ion-card-title>
-            <ion-card-subtitle  style="color: #0DAE4F;">R 7 450 000</ion-card-subtitle>
           </ion-card-header>
-        
-          <ion-card-content>
-            A spacious and luxurious residence designed to accommodate large families with ample living space and luxurious amenities.
-            <br>
-            <br>
-            <div id="house_details">
-              <img src="assets/icon/bedrooms.png">
-              6 
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/bathrooms.png">
-              4 
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/floorplan.png">
-               780 m<sup>2</sup> 
-               &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/erf.png">
-              2000 m<sup>2</sup>
-            </div>
-          </ion-card-content>
-
       </swiper-slide>
     </swiper-container>
+
     <ion-buttons slot="end" class="swiper-button2" #two>
       <ion-button (click)="goNext()" #two>
         <img src="assets/icon/arrow-forward.png" #forward>
