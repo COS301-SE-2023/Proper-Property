@@ -138,21 +138,36 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
+
+  <!-- <ion-card class="ion-padding">
+    
+    <ion-list *ngIf="pointsOfInterest.length > 0">
+      <ion-list-header>
+        <ion-label>
+          Points of Interest:
+        </ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let poi of pointsOfInterest">
+        <ion-label>{{ poi.name }}</ion-label>
+        <ion-label>{{ poi.address }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card> -->
   
 
   <ion-card class="ion-padding">
       <ion-item>
-        <ion-label position="floating" style="color: #0DAE4F;">Loan Amount (R)</ion-label>
+        <ion-label position="floating">Loan Amount (R)</ion-label>
         <ion-input type="number" [(ngModel)]="loanAmount"></ion-input>
       </ion-item>
     
       <ion-item>
-        <ion-label position="floating" style="color: #0DAE4F;">Interest Rate (%)</ion-label>
+        <ion-label position="floating">Interest Rate (%)</ion-label>
         <ion-input type="number" [(ngModel)]="interestRate"></ion-input>
       </ion-item>
     
       <ion-item>
-        <ion-label position="floating" style="color: #0DAE4F;">Loan Term (Years)</ion-label>
+        <ion-label position="floating">Loan Term (Years)</ion-label>
         <ion-input type="number" [(ngModel)]="loanTerm"></ion-input>
       </ion-item>
     

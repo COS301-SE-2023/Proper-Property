@@ -39,6 +39,8 @@ export class ListingsPage  implements OnInit, OnDestroy  {
     this.loadMap();
   }
 
+
+
   async loadMap() {
     try {
       let googleMaps: any = await this.gmaps.loadGoogleMaps();

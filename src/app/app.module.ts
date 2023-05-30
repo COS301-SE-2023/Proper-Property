@@ -15,6 +15,10 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { provideStorage, getStorage, connectStorageEmulator } from '@angular/fire/storage';
 import { AuthService } from './services/auth/auth.service';
 
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { GoogleMapsModule } from '@angular/google-maps';
+
+
 
 
 @NgModule({
@@ -54,7 +58,7 @@ import { AuthService } from './services/auth/auth.service';
       return storage;
     })
   ],
-  providers: [AuthService, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [AuthService, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Geolocation], 
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

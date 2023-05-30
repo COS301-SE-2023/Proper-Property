@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild} from '@angular/core';
 import Swiper from 'swiper';
 
+
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.page.html',
