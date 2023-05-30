@@ -11,35 +11,33 @@ ion-toolbar{
   --background: rgba(0,0,0,0);
 }
 
-#container {
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0%;
-  transform: translateY(-50%);
-}
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
+// #container {
+//   text-align: center;
+//   position: absolute;
+//   left: 0;
+//   right: 0;
+//   top: 0%;
+//   transform: translateY(-50%);
+// }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  --color: #b015be;
-  margin: 0;
-}
+// #container strong {
+//   font-size: 20px;
+//   line-height: 26px;
+// }
 
-.bb{
-  top: 0;
-  margin-top: 0;
-}
+// #container p {
+//   font-size: 16px;
+//   line-height: 22px;
+//   --color: #b015be;
+//   margin: 0;
+// }
 
-#container a {
-  text-decoration: none;
-}
+
+// #container a {
+//   text-decoration: none;
+//   height: fit-content;
+// }
 
 .swiper-container-wrapper {
   background-color: transparent;
@@ -47,61 +45,76 @@ ion-toolbar{
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 500px; /* Adjust the height as desired */
+ // height: 100%; /* Adjust the height as desired */
 
-  .swiper-button1 {
-    position: absolute;
-    top: 50%;
-    left: 2%;
-    transform: translateY(-50%);
-  }
-
-  .swiper-button2 {
-    position: absolute;
-    top: 50%;
-    left: 90%;
-    transform: translateY(-50%);
-  }
 }
 
-#house_details img {
-  width: 15px; /* Adjust the size as desired */
-  height: 15px; /* Adjust the size as desired */
-  border-radius: 10px;
+img {
+  width: 2000px; /* Adjust the size as desired */
+  height:1000px; /* Adjust the size as desired */
+
 }
 
-ion-card {
-  // background-color: #0DAE4F;
-}
+// ion-card {
+//   // background-color: #0DAE4F;
+// }
 
 #recommended {
-  top: -100px;
-  max-width: 600px; /* Adjust the width as desired */
-  max-height: 650px;
+  top: -180px;
+  //max-width: 600px; /* Adjust the width as desired */
+  max-height: 1000px;
   margin: 0 auto; /* Center the card horizontally */
-  margin-top: 50px;
+  margin-top: 0 auto;
+  margin-bottom: 0 auto;
+  
 }
 
 
 
-#container a {
-  text-decoration: none;
-}
+// #container a {
+//   text-decoration: none;
+// }
 
-#login-button{
-  background-color: #0DAE4F;
-  color: white;
+// #login-button{
+//   background-color: #0DAE4F;
+//   color: white;
+// }
+
+h1{
+  position:absolute;
+  top: 10%;
+  font-size: 100px;
+  left: 5%;
+}
+h2{
+  position:absolute;
+  top: 20%;
+  font-size: 100px;
+  left: 5%;
 }
 
 .custom-searchbar {
-  background-color: black;
-  width: 80%; /* Adjust the width as needed */
-  margin: 0 auto; /* Centers the search bar horizontally */
+  top: -400px;
+  left:5%;
+  width: 1000px; /* Adjust the width as needed */
+  --border-radius: 25px;
+  --background: rgba(255, 255, 255, 0.7); 
+  --icon-color: var(--ion-color-primary);
+
+
+}
+
+#sbut{ /* is it really needed?*/
+  position: absolute;
+  width: 120px;
+  height: 40px;
+  --border-radius: 25px;
+  --background: green;
 }
 
 .custom-searchbar .searchbar-input {
-  background-color: black; /* Sets the background color to green */
+  //background-color: black; /* Sets the background color to green */
   text-align: center; /* Centers the text within the search bar */
-  color: white; /* Sets the text color to white */
+ 
 }
  

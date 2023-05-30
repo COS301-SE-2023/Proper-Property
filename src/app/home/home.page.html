@@ -70,11 +70,6 @@
 
   <ion-card id="recommended">
   <div class="swiper-container-wrapper">
-    <ion-buttons slot="start" class="swiper-button1" #one>
-      <ion-button (click)="goPrev()" #one>
-        <img src="assets/icon/arrow-back.png" #back>
-      </ion-button>
-    </ion-buttons>
     <swiper-container #swiper
       (afterinit)="swiperReady()"
       (slidechange)="swiperSlideChanged($event)"
@@ -86,27 +81,26 @@
       </swiper-slide>
 
       <swiper-slide> 
-          <ion-card-header>
-            <img src="assets/house2.jpg" alt="house1">
-          </ion-card-header>
+            <img src="assets/Cottage.jpg" alt="house1">
       </swiper-slide>
       
       <swiper-slide>
-          <ion-card-header>
             <img src="assets/house1.png" alt="house1">
-          </ion-card-header>
       </swiper-slide>
     </swiper-container>
-
-    <ion-buttons slot="end" class="swiper-button2" #two>
-      <ion-button (click)="goNext()" #two>
-        <img src="assets/icon/arrow-forward.png" #forward>
-      </ion-button>
-    </ion-buttons>
   </div>
   </ion-card>
 
-  <ion-searchbar class="custom-searchbar"></ion-searchbar>
+  <ion-text class="title-P" >
+    <h1 >Proper Properties</h1>
+    <h2 >for you</h2>
+  </ion-text>
+
+  <ion-searchbar class="custom-searchbar" >
+    <ion-button id="sbut"></ion-button>
+  </ion-searchbar>
+
+  
 
   <!-- <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="searchItems()" class="custom-searchbar"></ion-searchbar> -->
 
