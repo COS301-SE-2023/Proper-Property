@@ -5,9 +5,20 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <!-- <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">create-listing</ion-title>
     </ion-toolbar>
-  </ion-header>
+  </ion-header> -->
+
+  <ion-grid [fixed]="true">
+    <ion-row id="add-photos">
+      <ion-col size="auto" id="choose-input" class="ion-text-center ion-justify-content-center">
+        <input type="file" accept="image/*" (change)="handleFileInput($event)" hidden #fileInput>
+        <ion-button expand="full" (click)="fileInput.click()">Add Photos</ion-button>
+      </ion-col>
+      <ion-col id="current-images">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
