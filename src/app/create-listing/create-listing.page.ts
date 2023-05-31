@@ -25,7 +25,9 @@ export class CreateListingPage implements OnInit {
         this.count++;
 
         if (currentImages){
-          currentImages.innerHTML += "<div style='width: 10%; height: 100%;'><img class='single-image' src='" + this.photos[this.photos.length - 1] + "'></img><ion-icon name='close-circle' (click)='removeImage(" + this.count + ")'</ion-icon></div>&nbsp;";
+          currentImages.innerHTML += "<div style='width: 10%; height: 100%; border: solid 1px black;'><img class='single-image' src='" 
+            + this.photos[this.photos.length - 1] + "'></img><ion-icon name='close-circle' (click)='removeImage(" 
+            + this.count + ")'</ion-icon></div>&nbsp;";
           console.log(this.photos[this.photos.length - 1]);
           console.log(currentImages.innerHTML);
         }

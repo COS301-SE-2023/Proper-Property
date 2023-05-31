@@ -27,6 +27,16 @@
     border: solid 1px black;
 }
 
+.location-col{
+  display: flex;
+  align-items: center;
+}
+
+.r-s{
+  display: flex;
+  align-items: center;
+}
+
 ion-grid{
     border: solid 1px black;
     width: 100%;
