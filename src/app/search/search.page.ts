@@ -21,6 +21,22 @@ export class SearchPage {
   selectedMinPrice: number = 0;
   selectedMaxPrice: number = 0;
   selectedBedrooms: number = 0;
+  showAdditionalFilters: boolean = false;
+  selectedBathrooms: number = 0;
+  selectedParking: string = 'none';
+  selectedFloorSize: number = 0;
+  selectedErfSize: number = 0;
+  petFriendly: boolean = false;
+  garden: boolean = false;
+  pool: boolean = false;
+  flatlet: boolean = false;
+  other: boolean = false;
+  retirement: boolean = false;
+  repossession: boolean = false;
+  onShow: boolean = false;
+  securityEstate: boolean = false;
+  auction: boolean = false;
+
   properties: Property[] = [
     { title: 'House 1', type: 'house', price: 100000, bedrooms: 3 },
     { title: 'Apartment 1', type: 'apartment', price: 1500, bedrooms: 2 },
@@ -60,6 +76,12 @@ export class SearchPage {
     this.selectedMaxPrice = 0;
     this.selectedBedrooms = 0;
     this.searchQuery = '';
+    this.filterProperties();
+  }
+
+  
+  toggleAdditionalFilters(): void {
+    this.showAdditionalFilters = !this.showAdditionalFilters;
     this.filterProperties();
   }
 
