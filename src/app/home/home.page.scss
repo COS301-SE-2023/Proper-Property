@@ -51,11 +51,18 @@ ion-toolbar{
 
 .deco1{
   position:absolute;
-  width: 100px;
+  width: 200px;
   height: 100px;
   top:400px;
-  right: 30%;
-  background: rgda(255,255,255,0);
+  right: 25%;
+}
+
+.deco2{
+  position:absolute;
+  width: 200px;
+  height: 100px;
+  top:700px;
+  right: 5%;
 }
 .slideimg {
   width: 2000px; /* Adjust the size as desired */
@@ -102,7 +109,7 @@ h2{
 }
 
 .custom-searchbar {
-  top: -400px;
+  top: -550px;
   left:5%;
   width: 1000px; /* Adjust the width as needed */
   --border-radius: 25px;
@@ -125,8 +132,3 @@ h2{
   text-align: center; /* Centers the text within the search bar */
  
 }
-
-.pics{
-  --background: red;
-}
- 
