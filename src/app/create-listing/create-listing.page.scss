@@ -1,0 +1,34 @@
+#add-photos {
+    background-color: #135d54;
+    border: solid 1px #fff;
+    color: #fff;
+    text-align: center;
+    align-content: center;
+    width: 100%;
+    height: 25%;
+  }
+
+#choose-input{
+    border: solid 1px #fff;
+}
+
+#current-images{
+    background-color: #135d54;
+    border: solid 1px #fff;
+    color: #fff;
+    text-align: center;
+    width: 85%;
+    height: 90%;
+  }
+
+.single-image{
+    width: 10%;
+    height: 10%;
+    border: solid 1px black;
+}
+
+ion-grid{
+    border: solid 1px black;
+    width: 100%;
+    height: 100%;
+}
