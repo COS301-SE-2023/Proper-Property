@@ -132,3 +132,28 @@ h2{
   text-align: center; /* Centers the text within the search bar */
  
 }
+
+ion-grid{
+  position: absolute;
+  top: 900px;
+  //height: 700px;
+
+}
+
+#msg{
+  background: black;//var(--ion-color-primary);
+  border-radius: 25px;
+  color: black; //white;
+}
+
+#colImg
+{
+  height: 300px;
+  width: 400px;
+}
+
+#rowImg
+{
+  width: 1600px;
+  height: 300px;
+}
