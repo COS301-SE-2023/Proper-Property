@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Points of Interest</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-segment [(ngModel)]="selectedCategory">
+    <ion-segment-button *ngFor="let category of categories" (click)="loadPointsOfInterest(category)">
+      <ion-label>{{ category }}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-list>
+    <ion-item *ngFor="let poi of pois">
+      <ion-label>{{ poi.name }}</ion-label>
+      <ion-buttons slot="end">
+        <ion-button (click)="saveFavoritePlace(poi)">
+          <ion-icon name="heart"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+</ion-content>

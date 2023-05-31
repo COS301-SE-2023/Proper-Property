@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { PoiListComponent } from './poi-list/poi-list.component';
 
 const routes: Routes = [
   {
@@ -43,6 +44,7 @@ const routes: Routes = [
     path: 'version',
     loadChildren: () => import('./version/version.module').then( m => m.VersionPageModule)
   },
+  { path: 'poi-list', component: PoiListComponent },
   {
     path: 'create-listing',
     loadChildren: () => import('./create-listing/create-listing.module').then( m => m.CreateListingPageModule)

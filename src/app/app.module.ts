@@ -16,15 +16,18 @@ import { provideStorage, getStorage, connectStorageEmulator } from '@angular/fir
 import { AuthService } from './services/auth/auth.service';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { GoogleMapsModule } from '@angular/google-maps';
+import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
+import { IonicStorageModule } from '@ionic/storage-angular';
+import { FormsModule } from '@angular/forms';
 
-
-
+import { PoiListComponent } from './poi-list/poi-list.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, PoiListComponent],
   imports: [
     BrowserModule,
+    FormsModule,
+    IonicStorageModule.forRoot(),
     IonicModule.forRoot(),
     AppRoutingModule,
     provideAuth(() => {
@@ -58,7 +61,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
       return storage;
     })
   ],
-  providers: [AuthService, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Geolocation], 
+  providers: [AuthService, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Geolocation,NativeGeocoder], 
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
