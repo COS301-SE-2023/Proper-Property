@@ -23,7 +23,7 @@ export class SearchPage {
   selectedBedrooms: number = 0;
   showAdditionalFilters: boolean = false;
   selectedBathrooms: number = 0;
-  selectedParking: string = 'none';
+  selectedParking: number = 0;
   selectedFloorSize: number = 0;
   selectedErfSize: number = 0;
   petFriendly: boolean = false;

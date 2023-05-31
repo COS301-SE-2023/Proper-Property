@@ -75,16 +75,18 @@
           <ion-select-option value="2">2 Bathrooms</ion-select-option>
           <ion-select-option value="3">3 Bathrooms</ion-select-option>
           <ion-select-option value="4">4 Bathrooms</ion-select-option>
+          <ion-select-option value="5">5+ Bathrooms</ion-select-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
         <ion-label>Parking / Garage</ion-label>
         <ion-select [(ngModel)]="selectedParking" (ionChange)="filterProperties()">
-          <ion-select-option value="none">None</ion-select-option>
-          <ion-select-option value="garage">Garage</ion-select-option>
-          <ion-select-option value="parking">Parking</ion-select-option>
-          <ion-select-option value="both">Both</ion-select-option>
+          <ion-select-option value="1">1 Bathroom</ion-select-option>
+          <ion-select-option value="2">2 Bathrooms</ion-select-option>
+          <ion-select-option value="3">3 Bathrooms</ion-select-option>
+          <ion-select-option value="4">4 Bathrooms</ion-select-option>
+          <ion-select-option value="5">5+ Bathrooms</ion-select-option>
         </ion-select>
       </ion-item>
 
@@ -113,7 +115,7 @@
       </ion-item>
     </div>
 
-    
+
 
     <!-- Property listings here -->
     <ion-list *ngSwitchCase="'buy'">
