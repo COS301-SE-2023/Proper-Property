@@ -20,5 +20,23 @@
       <ion-col id="current-images">
       </ion-col>
     </ion-row>
+    <ion-row>
+      <ion-col><h2>Location</h2></ion-col>
+      <ion-col class="location-col"><input id="city" type="text" placeholder="City"></ion-col>
+      <ion-col class="location-col"><input id="suburb" type="text" placeholder="Suburb"></ion-col>
+      <ion-col class="location-col"><input id="street-address" type="text" placeholder="Street Address"></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <h2>Price</h2>
+      </ion-col>
+      <ion-col><input id="price" type="text" placeholder="R0.00"></ion-col>
+      <ion-col class="r-s">
+        <ion-radio-group>
+          <ion-radio value="sell">Sell</ion-radio>&nbsp;&nbsp;
+          <ion-radio value="rent">Rent</ion-radio>
+        </ion-radio-group>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>
