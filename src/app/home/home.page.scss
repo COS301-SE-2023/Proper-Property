@@ -135,7 +135,7 @@ h2{
 
 ion-grid{
   position: absolute;
-  top: 900px;
+  top: 1000px;
   //height: 700px;
 
 }
@@ -144,6 +144,10 @@ ion-grid{
   background: black;//var(--ion-color-primary);
   border-radius: 25px;
   color: black; //white;
+}
+
+#msg2{
+  font-size: xx-large;
 }
 
 #colImg
