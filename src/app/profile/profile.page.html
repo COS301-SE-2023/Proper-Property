@@ -1,13 +1,47 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>profile</ion-title>
+    <ion-title>Profile</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="4">
+        <ion-card>
+          <img src="assets/profile-image-placeholder.png" alt="Profile image" />
+          <ion-card-content>
+            <ion-card-title>User Name</ion-card-title>
+            <ion-text>Member since: 2021</ion-text>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col size="8">
+        <ion-list>
+          <ion-item>
+            <ion-label>Email</ion-label>
+            <ion-text>user@example.com</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label>Phone</ion-label>
+            <ion-text>+1 (123) 456-7890</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label>Address</ion-label>
+            <ion-text>123 Main Street, City, Country</ion-text>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>My Properties</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <!-- Replace this with a list of properties belonging to the user -->
+      <p>List of properties here...</p>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
