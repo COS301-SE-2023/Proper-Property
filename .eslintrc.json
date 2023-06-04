@@ -35,7 +35,8 @@
             "style": "camelCase"
           }
         ],
-        "no-unused-vars": "error"
+//        "no-unused-vars": "error"
+        "@typescript-eslint/no-empty-function": "error"
       }
     },
     {
