@@ -35,8 +35,8 @@
             "style": "camelCase"
           }
         ],
-//        "no-unused-vars": "error"
-        "@typescript-eslint/no-empty-function": "error"
+        "no-unused-vars": "warn"
+//         "@typescript-eslint/no-empty-function": "error"
       }
     },
     {
