@@ -19,6 +19,13 @@ export class ProfilePage implements OnInit {
   user = {
     name: 'John',
     surname: 'Doe',
+    interests: {
+      garden: 50,
+      mansion: 75,
+      accessible: 25,
+      openConcept: 90,
+      ecoWarrior: 60,
+    },
   };
 
   constructor() { }
