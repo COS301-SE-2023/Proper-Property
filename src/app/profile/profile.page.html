@@ -11,23 +11,23 @@
       <h1>{{ user.name }} {{ user.surname }}</h1>
       <ion-item>
         <ion-label position="stacked">Garden Lover</ion-label>
-        <ion-range [(ngModel)]="user.interests.garden" disabled="true"></ion-range>
+        <ion-range [(ngModel)]="user.interests.garden" ></ion-range>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Mansion Passion</ion-label>
-        <ion-range [(ngModel)]="user.interests.mansion" disabled="true"></ion-range>
+        <ion-range [(ngModel)]="user.interests.mansion" ></ion-range>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Make it Accessible</ion-label>
-        <ion-range [(ngModel)]="user.interests.accessible" disabled="true"></ion-range>
+        <ion-range [(ngModel)]="user.interests.accessible" ></ion-range>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Open Concept Trend</ion-label>
-        <ion-range [(ngModel)]="user.interests.openConcept" disabled="true"></ion-range>
+        <ion-range [(ngModel)]="user.interests.openConcept"></ion-range>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Eco-Warrior</ion-label>
-        <ion-range [(ngModel)]="user.interests.ecoWarrior" disabled="true"></ion-range>
+        <ion-range [(ngModel)]="user.interests.ecoWarrior"></ion-range>
       </ion-item>
     </div>
   </div>
@@ -37,6 +37,8 @@
     </ion-toolbar>
   </ion-header>
 </ion-content>
+
+
 
 <ion-app>
   <ion-split-pane contentId="main-content">

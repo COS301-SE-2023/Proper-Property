@@ -18,8 +18,17 @@
         --bar-background: #d6d6d6;
         --bar-height: 8px;
         --bar-border-radius: 4px;
-        --bar-background-active: #00ff00;
-        --bar-background: #ffffffff;
+        --knob-size: 0;
+        --range-background: #00ff00;
+        --range-background-active: #00ff00;
+        --range-background-inactive: #d6d6d6;
+        --range-knob-background: transparent;
+        --range-knob-border-radius: 0;
+        --range-knob-box-shadow: none;
+        --range-knob-border: none;
+        --range-knob-handle-box-shadow: none;
+        pointer-events: none;
+
     }
   }
 
