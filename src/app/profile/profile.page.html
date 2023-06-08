@@ -12,6 +12,30 @@
   </ion-header>
 </ion-content>
 <ion-app>
+  <div class="profile-details">
+    <h1>{{ user.name }} {{ user.surname }}</h1>
+    <ion-item>
+      <ion-label>Garden Lover</ion-label>
+      <ion-range [(ngModel)]="user.interests.garden"></ion-range>
+    </ion-item>
+    <ion-item>
+      <ion-label>Mansion Passion</ion-label>
+      <ion-range [(ngModel)]="user.interests.mansion"></ion-range>
+    </ion-item>
+    <ion-item>
+      <ion-label>Make it Accessible</ion-label>
+      <ion-range [(ngModel)]="user.interests.accessible"></ion-range>
+    </ion-item>
+    <ion-item>
+      <ion-label>Open Concept Trend</ion-label>
+      <ion-range [(ngModel)]="user.interests.openConcept"></ion-range>
+    </ion-item>
+    <ion-item>
+      <ion-label>Eco-Warrior</ion-label>
+      <ion-range [(ngModel)]="user.interests.ecoWarrior"></ion-range>
+    </ion-item>
+  </div>
+  
   <ion-split-pane contentId="main-content">
     <ion-menu contentId="main-content">
       <ion-header>
@@ -21,6 +45,7 @@
       </ion-header>
 
       <ion-content>
+
         <ion-list>
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
             <ion-item [routerLink]="[p.url]" routerDirection="root" lines="none">

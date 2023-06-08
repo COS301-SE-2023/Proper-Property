@@ -57,6 +57,14 @@ const routes: Routes = [
   },  {
     path: 'profile',
     loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+  },
+  {
+    path: 'saved-listings',
+    loadChildren: () => import('./saved-listings/saved-listings.module').then( m => m.SavedListingsPageModule)
+  },
+  {
+    path: 'my-listings',
+    loadChildren: () => import('./my-listings/my-listings.module').then( m => m.MyListingsPageModule)
   }
 
 
