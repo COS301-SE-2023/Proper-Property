@@ -7,6 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfilePage implements OnInit {
 
+  appPages = [
+    { title: 'Home', url: '/home', icon: 'home' },
+    { title: 'About', url: '/about', icon: 'information-circle' },
+    { title: 'Settings', url: '/settings', icon: 'settings' },
+    // Add more pages as needed
+  ];
+  
   constructor() { }
 
   ngOnInit() {
