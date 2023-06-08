@@ -1,5 +1,6 @@
 import { Component, inject, OnInit,ViewChild,ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { UserService } from '../services/user/user.service';
 
 import Swiper from 'swiper';
 
@@ -20,10 +21,22 @@ export class HomePage implements OnInit {
   
   public home!: string;
   private activatedRoute = inject(ActivatedRoute);
-  constructor() {}
+  constructor(public userService : UserService) {}
 
   ngOnInit() {
     this.home = this.activatedRoute.snapshot.paramMap.get('id') as string;
+    let loginBut = document.getElementById('login-button');
+
+    if(loginBut){
+      if(this.userService.getCurrentUser() === null){
+        console.log(this.userService.getCurrentUser());
+        loginBut.style.visibility = 'visible';
+      }
+      else{
+        console.log(this.userService.getCurrentUser());
+        loginBut.style.visibility = 'hidden';
+      }
+    }
   }
   swiperReady() {
     this.swiper = this.swiperRef?.nativeElement.swiper;
