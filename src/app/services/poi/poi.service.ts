@@ -55,7 +55,7 @@ export class PoiService {
             .then(() => {
               resolve(undefined);
             })
-            .catch((error) => {
+            .catch((error: any) => {
               reject(error);
             });
         }

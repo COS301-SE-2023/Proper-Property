@@ -8,11 +8,13 @@ import { ListingPageRoutingModule } from './listing-routing.module';
 
 import { ListingPage } from './listing.page';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    IonicModule.forRoot(),
     ListingPageRoutingModule
   ],
   declarations: [ListingPage],

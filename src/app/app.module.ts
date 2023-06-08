@@ -63,6 +63,6 @@ import { PoiListComponent } from './poi-list/poi-list.component';
   ],
   providers: [AuthService, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Geolocation,NativeGeocoder], 
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}
