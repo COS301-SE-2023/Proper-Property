@@ -8,12 +8,19 @@ import { Component, OnInit } from '@angular/core';
 export class ProfilePage implements OnInit {
 
   appPages = [
-    { title: 'Home', url: '/home', icon: 'home' },
-    { title: 'About', url: '/about', icon: 'information-circle' },
+    { title: 'Saved Listings', url: '/saved-listings', icon: 'bookmark' },
+    { title: 'My Listings', url: '/my-listings', icon: 'list' },
+    { title: 'Create Listing', url: '/create-listing', icon: 'add' },
     { title: 'Settings', url: '/settings', icon: 'settings' },
+
     // Add more pages as needed
   ];
-  
+
+  user = {
+    name: 'John',
+    surname: 'Doe',
+  };
+
   constructor() { }
 
   ngOnInit() {
