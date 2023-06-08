@@ -33,4 +33,10 @@
     font-size: 16px;
     grid-column: 1 / span 2;
   }
+
+  //set <ion-item> background not to show
+    ion-item {
+        --background: transparent;
+    }
 }
+
