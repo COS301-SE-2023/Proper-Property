@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Firestore, collection, collectionData, doc, docData, addDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
-export interface Note {
+export interface  Note {
   id?: string;
   title: string;
   text: string;
