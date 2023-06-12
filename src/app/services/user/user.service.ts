@@ -7,9 +7,9 @@ import { Firestore, collection, collectionData, doc, docData, addDoc, deleteDoc,
   providedIn: 'root'
 })
 export class UserService {
-  constructor(private firestore: Firestore) { }
-
   currentUser: profile | null = null;
+
+  constructor(private firestore: Firestore) {}
 
   setCurrentUser(user: profile): void {
     this.currentUser = user;
@@ -17,6 +17,10 @@ export class UserService {
 
   getCurrentUser() {
     return this.currentUser;
+  }
+
+  printCurrentUser() {
+    return [this.currentUser?.email, this.currentUser?.first_name, this.currentUser?.last_name, this.currentUser?.user_id]
   }
 
   async registerNewUser(user_profile: profile) {

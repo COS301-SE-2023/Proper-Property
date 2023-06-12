@@ -21,18 +21,19 @@ export class RegisterPage implements OnInit {
   confirm_password:string;
   passwordMatch:boolean = true;
 
-  register() {
+  async register() {
     if (this.password !== this.confirm_password) {
       this.passwordMatch = false;
       return; // Prevent further execution
     }
-    this.authService.register(this.email, this.password).then((res) => {
+    this.authService.register(this.email, this.password).then(async (res) => {
       let user : profile = {
         email: this.email,
         first_name: this.name,
         last_name: this.surname,
       }
-      this.userService.registerNewUser(user);
+      await this.userService.registerNewUser(user);
+      console.log("Register page: " + this.userService.printCurrentUser());
       if(res !== null){
         this.router.navigate(['/home']);
       }

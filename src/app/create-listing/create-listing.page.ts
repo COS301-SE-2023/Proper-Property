@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { signOut } from 'firebase/auth';
 import { UserService } from '../services/user/user.service';
+import { listing } from '../listing/interfaces/listing.interface';
+import { profile } from '../profile/interfaces/profile.interface';
+import { user } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-create-listing',
@@ -8,8 +11,15 @@ import { UserService } from '../services/user/user.service';
   styleUrls: ['./create-listing.page.scss'],
 })
 export class CreateListingPage implements OnInit {
-  constructor() {
-
+  currentUser: profile | null = null;
+  constructor(public userService: UserService) {
+    if(userService.getCurrentUser()){
+      this.currentUser = userService.getCurrentUser();
+      console.log("Create listing page: " + this.currentUser?.email + " " + this.currentUser?.first_name + " " + this.currentUser?.last_name + " " + this.currentUser?.user_id);
+    }
+    else{
+      console.log("Create listing page: User is null");
+    }
   }
 
   features: string[] = [];
@@ -93,38 +103,30 @@ export class CreateListingPage implements OnInit {
     let parking_in = document.getElementById('parking') as HTMLInputElement;
     let desc_in = document.getElementById('desc') as HTMLInputElement;
 
-    if(add_in && price_in && pos_type_in && env_type_in && prop_type_in && furnish_type_in && orientation_in && floor_size_in && property_size_in && bath_in && bed_in && parking_in && desc_in){
-      let address = add_in.value;
-      let price = price_in.value;
-      let pos_type = pos_type_in.value;
-      let env_type = env_type_in.value;
-      let prop_type = prop_type_in.value;
-      let furnish_type = furnish_type_in.value;
-      let orientation = orientation_in.value;
-      let floor_size = floor_size_in.value;
-      let property_size = property_size_in.value;
-      let bath = bath_in.value;
-      let bed = bed_in.value;
-      let parking = parking_in.value;
-      let desc = desc_in.value;
-
-      if(address != "" && price != "" && pos_type != "" && env_type != "" && prop_type != "" && furnish_type != "" && orientation != "" && floor_size != "" && property_size != "" && bath != "" && bed != "" && parking != "" && desc != ""){
-        console.log("Address: " + address);
-        console.log("Price: " + price);
-        console.log("Position Type: " + pos_type);
-        console.log("Environment Type: " + env_type);
-        console.log("Property Type: " + prop_type);
-        console.log("Furnish Type: " + furnish_type);
-        console.log("Orientation: " + orientation);
-        console.log("Floor Size: " + floor_size);
-        console.log("Property Size: " + property_size);
-        console.log("Bathrooms: " + bath);
-        console.log("Bedrooms: " + bed);
-        console.log("Parking: " + parking);
-        console.log("Description: " + desc);
-        console.log("Features: " + this.features);
-        console.log("Photos: " + this.photos);
+    if(this.currentUser && add_in && price_in && pos_type_in && env_type_in && prop_type_in && furnish_type_in && orientation_in && floor_size_in && property_size_in && bath_in && bed_in && parking_in && desc_in){
+      let list : listing = {
+        user_id: this.currentUser.user_id,
+        address: add_in.value,
+        price: price_in.value,
+        pos_type: pos_type_in.value,
+        env_type: env_type_in.value,
+        prop_type: prop_type_in.value,
+        furnish_type: furnish_type_in.value,
+        orientation: orientation_in.value,
+        floor_size: floor_size_in.value,
+        property_size: property_size_in.value,
+        bath: bath_in.value,
+        bed: bed_in.value,
+        parking: parking_in.value,
+        features: this.features,
+        photos: this.photos,
+        desc: desc_in.value
       }
+
+      console.log(list);
+    }
+    else{
+      console.log("Error");
     }
   }
 }

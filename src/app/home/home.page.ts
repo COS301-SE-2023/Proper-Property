@@ -21,7 +21,9 @@ export class HomePage implements OnInit {
   
   public home!: string;
   private activatedRoute = inject(ActivatedRoute);
-  constructor(public userService : UserService) {}
+  constructor(public userService : UserService) {
+    console.log("Home page: " + userService.getCurrentUser());
+  }
 
   ngOnInit() {
     this.home = this.activatedRoute.snapshot.paramMap.get('id') as string;
@@ -29,11 +31,11 @@ export class HomePage implements OnInit {
 
     if(loginBut){
       if(this.userService.getCurrentUser() === null){
-        console.log(this.userService.getCurrentUser());
+        console.log("Home page - onInit: " + this.userService.printCurrentUser());
         loginBut.style.visibility = 'visible';
       }
       else{
-        console.log(this.userService.getCurrentUser());
+        console.log("Home page - onInit: " + this.userService.printCurrentUser());
         loginBut.style.visibility = 'hidden';
       }
     }
