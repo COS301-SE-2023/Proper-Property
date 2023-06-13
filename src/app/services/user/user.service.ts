@@ -38,13 +38,14 @@ export class UserService {
     user$.subscribe({
       next: (user: profile) => {
         user.user_id = uid;
-        this.setCurrentUser(user);
+        this.setCurrentUser(user);   
       },
       error: (error) => {
         console.error('Error retrieving user data:', error);
       }
     });
 
+    await updateDoc(userRef, {});
     return;
   }
 }
