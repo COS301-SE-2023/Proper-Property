@@ -5,6 +5,7 @@ import { listing } from '../listing/interfaces/listing.interface';
 import { profile } from '../profile/interfaces/profile.interface';
 import { ListingsService } from '../services/listings/listings.service';
 import { user } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-listing',
@@ -13,7 +14,7 @@ import { user } from '@angular/fire/auth';
 })
 export class CreateListingPage implements OnInit {
   currentUser: profile | null = null;
-  constructor(public userService: UserService, public listingService: ListingsService) {
+  constructor(public router: Router, public userService: UserService, public listingService: ListingsService) {
     if(userService.getCurrentUser()){
       this.currentUser = userService.getCurrentUser();
       console.log("Create listing page: " + this.currentUser?.email + " " + this.currentUser?.first_name + " " + this.currentUser?.last_name + " " + this.currentUser?.user_id);
@@ -89,7 +90,7 @@ export class CreateListingPage implements OnInit {
     }
   }
 
-  addListing(){
+  async addListing(){
     let add_in = document.getElementById('address') as HTMLInputElement;
     let price_in = document.getElementById('price') as HTMLInputElement;
     let pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
@@ -125,10 +126,11 @@ export class CreateListingPage implements OnInit {
       }
 
       console.log(list);
-      this.listingService.createListing(list);
+      await this.listingService.createListing(list);
+      this.router.navigate(['/home']);
     }
     else{
-      console.log("Error");
+      console.log("Error in create-lisitng.page.ts");
     }
   }
 }
