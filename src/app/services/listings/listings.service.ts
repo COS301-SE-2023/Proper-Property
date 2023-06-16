@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { listing } from 'src/app/listing/interfaces/listing.interface';
-import { Firestore, collection, collectionData, doc, docData, addDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, docData, addDoc, deleteDoc, updateDoc, getDocs, getDoc, } from '@angular/fire/firestore';
 import { UserService } from '../user/user.service';
 import { profile } from 'src/app/profile/interfaces/profile.interface';
 import { Observable } from 'rxjs';
@@ -24,12 +24,10 @@ export class ListingsService {
 
   async updateUserLisitings(listing_id : string) {
     if(this.currentUser){
-      const userRef = doc(this.firestore, `users/${this.currentUser.user_id}`);
-      let user$ = docData(userRef) as Observable<profile>;
       let oldListings : string[] = [];
-
-      user$.subscribe((user: profile) => {
-          oldListings = user.listings;
+      const userRef = doc(this.firestore, `users/${this.currentUser.user_id}`);
+      (docData(userRef) as Observable<profile>).subscribe((user: profile) => {
+        oldListings = user.listings;
         }
       );
 
@@ -43,5 +41,11 @@ export class ListingsService {
       console.log("Error in listing services: currentUser is null")
       return;
     }
+  }
+
+  async getListings(){
+    const listingsRef = collection(this.firestore, 'listings');
+    let listings$ = (await getDocs(listingsRef)).docs.map(doc => doc.data()) as listing[];
+    return listings$;
   }
 }
