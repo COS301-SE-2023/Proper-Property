@@ -1,69 +1,62 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Profile</ion-title>
-  </ion-toolbar>
+
+
+    <div class="profile-header">
+      <ion-icon slot="icon-only" name="person"></ion-icon>
+      <div class="profile-details">
+        <h1>{{ user.name }} {{ user.surname }}</h1>
+        <ion-item>
+          <ion-label position="stacked">Garden Lover</ion-label>
+          <ion-range [(ngModel)]="user.interests.garden" ></ion-range>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Mansion Passion</ion-label>
+          <ion-range [(ngModel)]="user.interests.mansion" ></ion-range>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Make it Accessible</ion-label>
+          <ion-range [(ngModel)]="user.interests.accessible" ></ion-range>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Open Concept Trend</ion-label>
+          <ion-range [(ngModel)]="user.interests.openConcept"></ion-range>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Eco-Warrior</ion-label>
+          <ion-range [(ngModel)]="user.interests.ecoWarrior"></ion-range>
+        </ion-item>
+      </div>
+    </div>
+
+
 </ion-header>
 
-<ion-content [fullscreen]="true">
-
-  <div class="profile-header">
-    <ion-icon slot="icon-only" name="person"></ion-icon>
-    <div class="profile-details">
-      <h1>{{ user.name }} {{ user.surname }}</h1>
-      <ion-item>
-        <ion-label position="stacked">Garden Lover</ion-label>
-        <ion-range [(ngModel)]="user.interests.garden" ></ion-range>
-      </ion-item>
-      <ion-item>
-        <ion-label position="stacked">Mansion Passion</ion-label>
-        <ion-range [(ngModel)]="user.interests.mansion" ></ion-range>
-      </ion-item>
-      <ion-item>
-        <ion-label position="stacked">Make it Accessible</ion-label>
-        <ion-range [(ngModel)]="user.interests.accessible" ></ion-range>
-      </ion-item>
-      <ion-item>
-        <ion-label position="stacked">Open Concept Trend</ion-label>
-        <ion-range [(ngModel)]="user.interests.openConcept"></ion-range>
-      </ion-item>
-      <ion-item>
-        <ion-label position="stacked">Eco-Warrior</ion-label>
-        <ion-range [(ngModel)]="user.interests.ecoWarrior"></ion-range>
-      </ion-item>
-    </div>
-  </div>
-
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class = "move-down">
+    <ion-split-pane contentId="main-content">
+      <ion-menu contentId="main-content">
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Menu</ion-title>
+          </ion-toolbar>
+        </ion-header>
+  
+        <ion-content>
+          
+          <ion-list>
+            <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
+              <ion-item [routerLink]="[p.url]" routerDirection="root" lines="none">
+                <ion-icon [name]="p.icon" slot="start"></ion-icon>
+                <ion-label>{{ p.title }}</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-list>
+        </ion-content>
+      </ion-menu>
+  
+      <ion-router-outlet id="main-content"></ion-router-outlet>
+    </ion-split-pane>
 </ion-content>
 
 
 
-<ion-app>
-  <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content">
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>Menu</ion-title>
-        </ion-toolbar>
-      </ion-header>
 
-      <ion-content>
-        
-        <ion-list>
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-            <ion-item [routerLink]="[p.url]" routerDirection="root" lines="none">
-              <ion-icon [name]="p.icon" slot="start"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-        </ion-list>
-      </ion-content>
-    </ion-menu>
-
-    <ion-router-outlet id="main-content"></ion-router-outlet>
-  </ion-split-pane>
-</ion-app>
