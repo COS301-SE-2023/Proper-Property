@@ -30,7 +30,21 @@
 
 .move-down {
   transform: translateY(450px); /* Adjust the value to your desired distance */
+  height: 100%;
+  overflow-y: auto;
+
 }
+.first-toolbar {
+  position: relative; /* or absolute, depending on your layout */
+  z-index: 1; /* Increase the z-index value if needed */
+}
+
+.second-toolbar {
+  position: relative; /* or absolute, depending on your layout */
+  z-index: 2; /* Increase the z-index value if needed */
+  background-color: white;
+}
+
 .profile-details {
   display: grid;
   grid-template-columns: 1fr 1fr;
