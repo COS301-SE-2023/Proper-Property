@@ -1,4 +1,39 @@
 <ion-header [translucent]="true">
+  <ion-toolbar class="first-toolbar">
+
+  
+    <ion-buttons slot="end">
+      <ion-button routerLink="/home" routerDirection="root">
+        <ion-icon slot="icon-only" name="home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/listings" routerDirection="root">
+        <ion-icon slot="icon-only" name="list"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/search" routerDirection="root">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/profile" routerDirection="root">
+        <ion-icon slot="icon-only" name="person"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons id="login-button" slot="end">
+      <ion-button routerLink="/login" routerDirection="root">
+       Login
+      </ion-button>
+
+    </ion-buttons>
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-header [translucent]="true">
 
 
     <div class="profile-header">
@@ -31,11 +66,11 @@
 
 </ion-header>
 
-<ion-content [fullscreen]="true" class = "move-down">
+<ion-content [fullscreen]="true" class ="move-down">
     <ion-split-pane contentId="main-content">
       <ion-menu contentId="main-content">
         <ion-header>
-          <ion-toolbar>
+          <ion-toolbar  class="second-toolbar">
             <ion-title>Menu</ion-title>
           </ion-toolbar>
         </ion-header>
@@ -55,6 +90,7 @@
   
       <ion-router-outlet id="main-content"></ion-router-outlet>
     </ion-split-pane>
+
 </ion-content>
 
 
