@@ -21,6 +21,16 @@
 
 }
 
+// ion-toolbar {
+//   margin-bottom: 200px;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: flex-end;
+// }
+
+.move-down {
+  transform: translateY(450px); /* Adjust the value to your desired distance */
+}
 .profile-details {
   display: grid;
   grid-template-columns: 1fr 1fr;
