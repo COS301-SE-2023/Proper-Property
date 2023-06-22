@@ -1,7 +1,7 @@
-.swiper-container {
+#swiper-container {
   position: relative;
-  width: 100%;
-  margin-left: 2%;
+  width: 65%;
+  margin: 0 auto;
   margin-top: 10px;
   border-radius: 10px;
   }
@@ -17,12 +17,13 @@
     .swiper-button1 {
       position: absolute;
       top: 50%;
+      right: 90%;
       transform: translateY(-50%);
     }
     .swiper-button2 {
       position: absolute;
       top: 50%;
-      left:90%;
+      left: 90%;
       transform: translateY(-50%);
     }
   }
