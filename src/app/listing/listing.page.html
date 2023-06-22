@@ -18,7 +18,7 @@
         <img src="assets/icon/arrow-back.png" #back>
       </ion-button>
     </ion-buttons>
-    <swiper-container #swiper
+    <swiper-container id="swiper-container" #swiper
       (afterinit)="swiperReady()"
       (slidechange)="swiperSlideChanged($event)"
       [loop]="true"
