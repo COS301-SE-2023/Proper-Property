@@ -17,6 +17,7 @@ export class ProfilePage implements OnInit {
   ];
 
   user = {
+    email:"john@example.com",
     name: 'John',
     surname: 'Doe',
     interests: {
