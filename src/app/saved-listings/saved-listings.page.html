@@ -64,6 +64,9 @@
 
 
 <ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-sm="6" size-md="4">
 <ion-card>
   <ion-card-header>
     <img src="assets/house3.jpg" alt="house1">
@@ -87,12 +90,19 @@
       <img src="assets/icon/erf.png">
       1600 m<sup>2</sup>
     </div>
-  </ion-card-content>
-</ion-card>
 
+    <ion-button fill="clear" (click)="unlikeCard($event)" class="like-button" [ngClass]="{'red': isRed}" (click)="toggleColor()">
+      <ion-icon name="heart" [ngClass]="{ 'liked': isLiked }"></ion-icon>
+    </ion-button>
+
+  </ion-card-content>
+</ion-card>
+</ion-col>
+<ion-col size="12" size-sm="6" size-md="4">
+  
 <ion-card>
   <ion-card-header>
-    <img src="assets/house3.jpg" alt="house1">
+    <img src="assets/house2.jpg" alt="house1">
     <ion-card-title  >Nestled Nook</ion-card-title>
     <ion-card-subtitle style="color: #0DAE4F;">R 7 450 000</ion-card-subtitle>
   </ion-card-header>
@@ -113,7 +123,47 @@
       <img src="assets/icon/erf.png">
       1600 m<sup>2</sup>
     </div>
+
+    <ion-button fill="clear" (click)="unlikeCard($event)" class="like-button" [ngClass]="{'red': isRed}" (click)="toggleColor()">
+      <ion-icon name="heart" [ngClass]="{ 'liked': isLiked }"></ion-icon>
+    </ion-button>
   </ion-card-content>
 </ion-card>
+</ion-col>
+<ion-col size="12" size-sm="6" size-md="4">
+  <ion-card>
+    <ion-card-header>
+      <img src="assets/house1.png" alt="house1">
+      <ion-card-title  >Nestled Nook</ion-card-title>
+      <ion-card-subtitle style="color: #0DAE4F;">R 7 450 000</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      A wholesome family home.
+      <br>
+      <br>
+      <div id="house_details">
+        <img src="assets/icon/bedrooms.png">
+        7
+        &nbsp; &nbsp;&nbsp;
+        <img src="assets/icon/bathrooms.png">
+        6
+        &nbsp; &nbsp;&nbsp;
+        <img src="assets/icon/floorplan.png">
+         800 m<sup>2</sup> 
+         &nbsp; &nbsp;&nbsp;
+        <img src="assets/icon/erf.png">
+        1600 m<sup>2</sup>
+      </div>
+
+      <ion-button fill="clear" (click)="unlikeCard($event)" class="like-button" [ngClass]="{'red': isRed}" (click)="toggleColor()">
+        <ion-icon name="heart" [ngClass]="{ 'liked': isLiked }"></ion-icon>
+      </ion-button>
+
+    </ion-card-content>
+  </ion-card>
+  </ion-col>
+<!-- Add more ion-cols for additional cards -->
+</ion-row>
+</ion-grid>
 
 </ion-content>
