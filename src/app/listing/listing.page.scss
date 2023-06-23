@@ -28,21 +28,33 @@
     }
   }
 
-  #house_details img {
-    //set image size
-    width: 15px;
-    height: 15px;
+  .full-container{
     border-radius: 10px;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 10px;
   }
 
-// #back {
-//   position: absolute;
-//   top: 0;
-//   left : 0;
-//   width: 100%;
-//   height:100%;
-//   background-color: #f1f1f1;
-//   opacity: 0;
-//   pointer-events: none;
-//   z-index: 1;
-// }
+  .half-container{
+    border-radius: 10px;
+    width: 100%;
+    margin: 0 auto;
+    height: 100%;
+    margin-top: 10px;
+  }
+
+  .quarter-container{
+    border-radius: 10px;
+    width: 100%;
+    margin: 0 auto;
+    height: 180px;
+    margin-top: 10px;
+  }
+
+  ion-grid{
+    width: 80%;
+  }
+  ion-row{
+    
+    width: 100%;
+  }
