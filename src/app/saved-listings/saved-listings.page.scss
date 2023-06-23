@@ -1,17 +1,17 @@
   .green-tab {
     --color: green;
   }#house_details img {
-    width: 15px; /* Adjust the size as desired */
-    height: 15px; /* Adjust the size as desired */
+    width: 10px; /* Adjust the size as desired */
+    height: 10px; /* Adjust the size as desired */
     border-radius: 10px;
   }
   
   
   ion-card {
     top: -50px;
-    max-width: 600px; /* Adjust the width as desired */
-    max-height: 650px;
+    max-width: 400px; /* Adjust the width as desired */
+    max-height: 450px;
     margin: 0 auto; /* Center the card horizontally */
     margin-top: 50px;
-    
+    border-radius: 20px;
   }
