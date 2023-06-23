@@ -45,9 +45,19 @@
   background-color: white;
 }
 
+
+
 ion-tab-button {
   --color: black;
   --color-selected: green;
+
+
+}
+#btnProfile {
+  --color: green;
+}
+.green-tab {
+  --color: green;
 }
 
 ion-icon {
