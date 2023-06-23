@@ -45,6 +45,23 @@
   background-color: white;
 }
 
+ion-tab-button {
+  --color: black;
+  --color-selected: green;
+}
+
+ion-icon {
+  font-size: 24px;
+}
+
+ion-label {
+  font-size: 12px;
+}
+
+.profile-nav {
+  margin-bottom: 100px;
+}
+
 .profile-details {
   display: grid;
   grid-template-columns: 1fr 1fr;
