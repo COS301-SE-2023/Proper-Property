@@ -9,9 +9,35 @@
   
   ion-card {
     top: -50px;
-    max-width: 400px; /* Adjust the width as desired */
-    max-height: 450px;
+    width: 400px; /* Adjust the width as desired */
+    height: 450px;
     margin: 0 auto; /* Center the card horizontally */
     margin-top: 50px;
+  
     border-radius: 20px;
+  }
+
+  .like-button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    //move it to right hand corner
+    margin-left: 90%;
+
+    margin-top: -30px;
+  }
+  
+  // .heart-icon {
+  //   color: red;
+  //   font-size: 24px;
+  // }
+
+  .red {
+    color: red;
   }
