@@ -72,6 +72,7 @@
       <ion-icon slot="icon-only" name="person"></ion-icon>
       <div class="profile-details">
         <h1>{{ user.name }} {{ user.surname }}</h1>
+        <h2>{{ user.email }}</h2>
         <ion-item>
           <ion-label position="stacked">Garden Lover</ion-label>
           <ion-range [(ngModel)]="user.interests.garden" ></ion-range>
@@ -99,7 +100,8 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class ="move-down">
-    <ion-split-pane contentId="main-content">
+  
+    <!-- <ion-split-pane contentId="main-content">
       <ion-menu contentId="main-content">
         <ion-header>
           <ion-toolbar  class="second-toolbar">
@@ -121,8 +123,7 @@
       </ion-menu>
   
       <ion-router-outlet id="main-content"></ion-router-outlet>
-    </ion-split-pane>
-
+    </ion-split-pane> -->
 </ion-content>
 
 
