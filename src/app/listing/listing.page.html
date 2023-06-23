@@ -41,7 +41,10 @@
     </ion-buttons>
   </div>
 
-  <ion-card>
+  <ion-grid>
+    <ion-row style="height:400px">
+      <ion-col>
+  <ion-card class="half-container">
     <ion-card-header>
       <ion-card-title >Grand Family House</ion-card-title>
       <ion-card-subtitle>R 6 500 000</ion-card-subtitle>
@@ -51,7 +54,7 @@
     <ion-card-content>
       <br>
       <!-- <br> -->
-      <div id="house_details">
+      <div id="house_details" style="bottom: 3px">
         <img src="assets/icon/bedrooms.png">
         7
         &nbsp; &nbsp;&nbsp;
@@ -66,8 +69,36 @@
       </div>
     </ion-card-content>
   </ion-card>
-
-  <ion-card>
+</ion-col>
+<ion-col>
+  <ion-row>
+  <ion-card class="quarter-container">
+    <ion-card-header>
+      <ion-card-title >Grand Family House</ion-card-title>
+      <ion-card-subtitle>R 6 500 000</ion-card-subtitle>
+      <ion-card-subtitle>Silverton, Pretoria</ion-card-subtitle>
+      <ion-card-content>
+        Hello
+      </ion-card-content>
+    </ion-card-header>
+  </ion-card>
+</ion-row>
+<ion-row>
+  <ion-card class="quarter-container" style="bottom: 0;">
+    <ion-card-header>
+      <ion-card-title >Grand Family House</ion-card-title>
+      <ion-card-subtitle>R 6 500 000</ion-card-subtitle>
+      <ion-card-subtitle>Silverton, Pretoria</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      Hello
+    </ion-card-content>
+  </ion-card>
+</ion-row>
+</ion-col>
+  </ion-row>
+  <ion-row style="margin-top: 1%">
+  <ion-card class="full-container">
     <ion-card-header>
       <ion-card-title>
         Unlock the Potential of this Large Family Property - Ideal for Investment, Subdivision!
@@ -138,9 +169,9 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
-  
-
-  <ion-card class="ion-padding">
+</ion-row>
+<ion-row style="margin-top: 1%">
+  <ion-card class="full-container">
       <ion-item>
         <ion-label position="floating" style="color: #0DAE4F;">Loan Amount (R)</ion-label>
         <ion-input type="number" [(ngModel)]="loanAmount"></ion-input>
@@ -174,5 +205,7 @@
       </ion-item>
 
   </ion-card>
+  </ion-row>
+</ion-grid>
  </ion-content>
 
