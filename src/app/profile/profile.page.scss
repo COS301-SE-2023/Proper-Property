@@ -59,7 +59,9 @@ ion-label {
 }
 
 .profile-nav {
-  margin-bottom: 100px;
+  position: relative; /* or absolute, depending on your layout */
+  z-index: 2; /* Increase the z-index value if needed */
+  background-color: white;
 }
 
 .profile-details {
