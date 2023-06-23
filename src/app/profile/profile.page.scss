@@ -120,3 +120,14 @@ ion-label {
     }
 }
 
+.delete-account-container {
+  transform: translateY(240px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.delete-account-button {
+  max-width: 200px;
+}
