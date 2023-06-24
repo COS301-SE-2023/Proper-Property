@@ -1,47 +1,48 @@
-<ion-header [translucent]="true">
+<ion-header >
   <ion-toolbar>
-    <ion-title>home</ion-title>
-  
-    <ion-buttons slot="end">
-      <ion-button routerLink="/home" routerDirection="root">
-        <ion-icon slot="icon-only" name="home"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/listings" routerDirection="root">
-        <ion-icon slot="icon-only" name="list"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/search" routerDirection="root">
-        <ion-icon slot="icon-only" name="search"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/profile" routerDirection="root">
-        <ion-icon slot="icon-only" name="person"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+    <ion-row class="ion-align-items-center">
+      <ion-col size="1"><img class="logo" src="assets/Logo_v1.png"></ion-col>
+      <ion-col size="2">
+        Proper Property
+      </ion-col>
+      <ion-col size="9">
+        <div class="navbar" class="ion-text-end">
+          <ion-button fill="clear"  routerLink="/home" routerDirection="root" routerLinkActive="active"
+            class="link">
+            Home
+          </ion-button>
+          <ion-button fill="clear"  routerLink="/create-listing" routerDirection="root" routerLinkActive="active"
+            class="link">
+            Add Listing
+          </ion-button>
+          <ion-button fill="clear" routerLink="/listings" routerDirection="root" routerLinkActive="active"
+            class="link">
+            View Listing
+          </ion-button>
+          <ion-button fill="clear"  routerLink="/login" routerDirection="root" routerLinkActive="active"
+          class="link">
+          Log In
+        </ion-button>
 
-    <ion-buttons id="login-button" slot="end">
-      <ion-button routerLink="/login" routerDirection="root">
-       Login
+        <ion-button fill="clear" routerLink="/profile" routerDirection="root" routerLinkActive="active"
+        class="link">
+        Profile
       </ion-button>
-    </ion-buttons>
-    
+
+        <ion-button fill="clear"  routerLink="/register" routerDirection="root" routerLinkActive="active"
+          class="link">
+          Sign Up
+        </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content [fullscreen]="true">
-
-
   <ion-card id="recommended">
   <div class="swiper-container-wrapper">
-    <ion-buttons slot="start" class="swiper-button1" #one>
-      <ion-button (click)="goPrev()" #one>
-        <img src="assets/icon/arrow-back.png" #back>
-      </ion-button>
-    </ion-buttons>
     <swiper-container #swiper
       (afterinit)="swiperReady()"
       (slidechange)="swiperSlideChanged($event)"
@@ -49,99 +50,44 @@
       [pagination]="true">
       <!-- Slides content goes here -->
       <swiper-slide>
-          <ion-card-header>
-            <img src="assets/house3.jpg" alt="house1">
-            <ion-card-title  >Nestled Nook</ion-card-title>
-            <ion-card-subtitle style="color: #0DAE4F;">R 7 450 000</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            A wholesome family home.
-            <br>
-            <br>
-            <div id="house_details">
-              <img src="assets/icon/bedrooms.png">
-              7
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/bathrooms.png">
-              6
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/floorplan.png">
-               800 m<sup>2</sup> 
-               &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/erf.png">
-              1600 m<sup>2</sup>
-            </div>
-          </ion-card-content>
-          
+            <img class="slideimg"  src="assets/Fancy House.jpg" alt="house1">
       </swiper-slide>
 
-      <swiper-slide>
-        
-          <ion-card-header>
-            <img src="assets/house2.jpg" alt="house1">
-            <ion-card-title>Minimalistic Mansion</ion-card-title>
-            <ion-card-subtitle style="color: #0DAE4F;">R 8 500 000</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            A minimalistic architectural masterpiece
-            <br>
-            <br>
-            <div id="house_details">
-              <img src="assets/icon/bedrooms.png">
-              5
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/bathrooms.png">
-              6
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/floorplan.png">
-               690 m<sup>2</sup> 
-               &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/erf.png">
-              1400 m<sup>2</sup>
-            </div>
-          </ion-card-content>
-        
-        
+      <swiper-slide> 
+            <img class="slideimg"  src="assets/Cottage.jpg" alt="house1">
       </swiper-slide>
       
       <swiper-slide>
-          <ion-card-header>
-            <img src="assets/house1.png" alt="house1">
-            <ion-card-title >Nestled Nook</ion-card-title>
-            <ion-card-subtitle  style="color: #0DAE4F;">R 7 450 000</ion-card-subtitle>
-          </ion-card-header>
-        
-          <ion-card-content>
-            A spacious and luxurious residence designed to accommodate large families with ample living space and luxurious amenities.
-            <br>
-            <br>
-            <div id="house_details">
-              <img src="assets/icon/bedrooms.png">
-              6 
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/bathrooms.png">
-              4 
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/floorplan.png">
-               780 m<sup>2</sup> 
-               &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/erf.png">
-              2000 m<sup>2</sup>
-            </div>
-          </ion-card-content>
-
+            <img class="slideimg" src="assets/house1.png" alt="house1">
       </swiper-slide>
     </swiper-container>
-    <ion-buttons slot="end" class="swiper-button2" #two>
-      <ion-button (click)="goNext()" #two>
-        <img src="assets/icon/arrow-forward.png" #forward>
-      </ion-button>
-    </ion-buttons>
   </div>
   </ion-card>
 
-  <ion-searchbar class="custom-searchbar"></ion-searchbar>
+  <ion-text class="title-P" >
+    <h1 >Proper Properties</h1>
+    <h2 >for you</h2>
+  </ion-text>
 
-  <!-- <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="searchItems()" class="custom-searchbar"></ion-searchbar> -->
+  <ion-searchbar class="custom-searchbar" >
+    <ion-button id="sbut"></ion-button>
+  </ion-searchbar>
+
+  <img class="deco1" src="assets/GreenDots.png">
+  <img class="deco2" src="assets/BlackDots.png">
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="2"><img id="colImg" src="assets/mapImg.webp"></ion-col>
+        <ion-col size="2"><img id="colImg" src="assets/fakeNN.avif"></ion-col>
+        <ion-col size="8"><ion-text id="msg2">Duis quis odio tortor. Sed ac volutpat sapien. Morbi a mi in purus gravida congue scelerisque non justo. Sed sapien sapien, gravida sed dictum pretium, egestas a est. Nulla varius justo sed libero laoreet volutpat. Phasellus gravida, neque sit amet pharetra molestie, velit neque cursus arcu, et semper metus nunc sed diam. Proin a euismod orci. Duis scelerisque, tortor nec auctor lacinia, dui erat rhoncus nisi, et fermentum orci massa vitae purus. Fusce vel scelerisque quam. Maecenas efficitur nec ex in condimentum. Vivamus interdum aliquam nibh. Duis congue eleifend porttitor. Integer vitae dictum justo.</ion-text></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="4"><ion-text id="msg">Vivamus interdum aliquam nibh. Duis congue eleifend porttitor. Integer vi dictum justo</ion-text></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="4"><img id="rowImg"  src="assets/house5.jpg"></ion-col>
+      </ion-row>
+    </ion-grid>
 
   </ion-content>
