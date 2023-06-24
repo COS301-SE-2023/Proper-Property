@@ -17,14 +17,15 @@
     .swiper-button1 {
       position: absolute;
       top: 50%;
-      right: 90%;
+      right: 85%;
       transform: translateY(-50%);
     }
     .swiper-button2 {
       position: absolute;
       top: 50%;
-      left: 90%;
+      left: 85%;
       transform: translateY(-50%);
+      height: 100px;
     }
   }
 
@@ -47,7 +48,7 @@
     border-radius: 10px;
     width: 100%;
     margin: 0 auto;
-    height: 180px;
+    height: 185px;
     margin-top: 10px;
   }
 
