@@ -14,8 +14,8 @@
 <ion-content [fullscreen]="true">
   <div class="swiper-container-wrapper">
     <ion-buttons slot="start" class="swiper-button1" #one>
-      <ion-button (click)="goPrev()" #one>
-        <img src="assets/icon/arrow-back.png" #back>
+      <ion-button style="height:100px;" (click)="goPrev()" #one>
+        <img src="assets/icon/arrow1.svg" #back>
       </ion-button>
     </ion-buttons>
     <swiper-container id="swiper-container" #swiper
@@ -35,8 +35,8 @@
       </swiper-slide>
     </swiper-container>
     <ion-buttons slot="end" class="swiper-button2" #two>
-      <ion-button (click)="goNext()" #two>
-        <img src="assets/icon/arrow-forward.png" #forward>
+      <ion-button style="height:100px;" (click)="goNext()" #two>
+        <img src="assets/icon/arrow.svg" #forward>
       </ion-button>
     </ion-buttons>
   </div>
@@ -74,9 +74,7 @@
   <ion-row>
   <ion-card class="quarter-container">
     <ion-card-header>
-      <ion-card-title >Grand Family House</ion-card-title>
-      <ion-card-subtitle>R 6 500 000</ion-card-subtitle>
-      <ion-card-subtitle>Silverton, Pretoria</ion-card-subtitle>
+      <ion-card-title >Points of Interest</ion-card-title>
       <ion-card-content>
         Hello
       </ion-card-content>
@@ -86,9 +84,7 @@
 <ion-row>
   <ion-card class="quarter-container" style="bottom: 0;">
     <ion-card-header>
-      <ion-card-title >Grand Family House</ion-card-title>
-      <ion-card-subtitle>R 6 500 000</ion-card-subtitle>
-      <ion-card-subtitle>Silverton, Pretoria</ion-card-subtitle>
+      <ion-card-title >Quality Score: 4.3</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       Hello
@@ -187,7 +183,7 @@
         <ion-input type="number" [(ngModel)]="loanTerm"></ion-input>
       </ion-item>
     
-      <ion-button expand="full" (click)="calculateMortgage()">Calculate</ion-button>
+      <ion-button style="border-radius: 30px; width: 100%; margin: 0 auto;" (click)="calculateMortgage()">Calculate</ion-button>
     
       <ion-item>
         <ion-label>Monthly Payment:</ion-label>
