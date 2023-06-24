@@ -1,13 +1,184 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>create-listing</ion-title>
+  
+  <ion-toolbar class="first-toolbar">
+
+  
+    <ion-buttons slot="end">
+      <ion-button routerLink="/home" routerDirection="root">
+        <ion-icon slot="icon-only" name="home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/listings" routerDirection="root">
+        <ion-icon slot="icon-only" name="list"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/search" routerDirection="root">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/profile" routerDirection="root">
+        <ion-icon slot="icon-only" name="person"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons id="login-button" slot="end">
+      <ion-button routerLink="/login" routerDirection="root">
+       Login
+      </ion-button>
+
+    </ion-buttons>
+    
+  </ion-toolbar>
+
+  <ion-toolbar class = "profile-nav" >
+
+      <ion-tabs>
+        <ion-tab-bar slot="end">
+          <ion-tab-button tab="profile" routerLink="/profile" routerDirection="root">
+            <ion-icon name="person-circle-outline"></ion-icon>
+            <ion-label>Profile</ion-label>
+          </ion-tab-button>
+    
+          <ion-tab-button tab="create-listing" routerLink="/create-listing" routerDirection="root" class="green-tab">
+            <ion-icon name="add-circle-outline"></ion-icon>
+            <ion-label>Create Listing</ion-label>
+          </ion-tab-button>
+    
+          <ion-tab-button tab="saved-listings" routerLink="/saved-listings" routerDirection="root" >
+            <ion-icon name="heart-outline"></ion-icon>
+            <ion-label>Saved Listings</ion-label>
+          </ion-tab-button>
+    
+          <ion-tab-button tab="my-listings" routerLink="/my-listings" routerDirection="root" >
+            <ion-icon name="list-outline"></ion-icon>
+            <ion-label>My Listings</ion-label>
+          </ion-tab-button>
+        </ion-tab-bar>
+      </ion-tabs>
+
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <!-- <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">create-listing</ion-title>
     </ion-toolbar>
-  </ion-header>
+  </ion-header> -->
+
+  <ion-grid [fixed]="true">
+    <ion-row id="add-photos">
+      <ion-col size="auto" id="choose-input" class="ion-text-center ion-justify-content-center">
+        <input type="file" accept="image/*" (change)="handleFileInput($event)" hidden #fileInput>
+        <ion-button expand="full" (click)="fileInput.click()">Add Photos</ion-button>
+      </ion-col>
+      <ion-col id="current-images">
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <input id="address" placeholder="Address" type="text" style="width: 30%">
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <input id="price" placeholder="Price" type="text" style="width: 30%">
+      </ion-col>
+      <ion-col>
+        <ion-select id="pos-type" aria-label="pos-type" placeholder="Possession Type">
+          <ion-select-option value="t1">T1</ion-select-option>
+          <ion-select-option value="t2">T2</ion-select-option>
+          <ion-select-option value="t3">T3</ion-select-option>
+        </ion-select>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-select id="env-type" aria-label="env-type" placeholder="Environment Type">
+          <ion-select-option value="e1">E1</ion-select-option>
+          <ion-select-option value="e2">E2</ion-select-option>
+          <ion-select-option value="e3">E3</ion-select-option>
+        </ion-select>
+      </ion-col>
+      <ion-col>
+        <ion-select id="prop-type" aria-label="prop-type" placeholder="Property Type">
+          <ion-select-option value="p1">P1</ion-select-option>
+          <ion-select-option value="p2">P2</ion-select-option>
+          <ion-select-option value="p3">P3</ion-select-option>
+        </ion-select>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-select id="furnish-type" aria-label="furnishing" placeholder="Furnishing">
+          <ion-select-option value="f">Furnished</ion-select-option>
+          <ion-select-option value="p">Partly Furnished</ion-select-option>
+          <ion-select-option value="n">Not Furnished</ion-select-option>
+        </ion-select>
+      </ion-col>
+      <ion-col>
+        <ion-select id="orientation" aria-label="orientation" placeholder="Orientation">
+          <ion-select-option value="N">North</ion-select-option>
+          <ion-select-option value="E">East</ion-select-option>
+          <ion-select-option value="S">South</ion-select-option>
+          <ion-select-option value="W">South</ion-select-option>
+        </ion-select>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <input id="floor-size" placeholder="Floor Size" type="text" style="width: 30%">
+      </ion-col>
+      <ion-col>
+        <input id="property-size" placeholder="Property Size" type="text" style="width: 30%">
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <p>Bathrooms</p>
+        <input id="bath" placeholder="Property Size" type="text" style="width: 20%">
+      </ion-col>
+      <ion-col>
+        <p>Parking</p>
+        <input id="parking" placeholder="Property Size" type="text" style="width: 20%">
+      </ion-col>
+      <ion-col>
+        <p>Bedrooms</p>
+        <input id="bed" placeholder="Property Size" type="text" style="width: 20%">
+      </ion-col>
+      <ion-col>
+        <ion-list>
+          <ion-item>
+            <ion-label>Rent</ion-label>
+            <ion-toggle [checked]="false" (click)="changeListingType()" [(ngModel)]="selectedValue"></ion-toggle>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <ion-label>Sell</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <input id="feat-in" type="text" placeholder="Feature">&nbsp;<ion-button (click)="addFeature()">Add Feature</ion-button><br>
+          <ion-item *ngFor="let feat of features">
+            <ion-label>
+              <ion-chip>
+                {{feat}}
+                <ion-icon name="close" slot="end"></ion-icon>
+              </ion-chip>
+            </ion-label>
+          </ion-item>
+      </ion-col>
+      <ion-col>
+        <h2>Property Description</h2>
+        <textarea id="desc" rows="10" cols="50"></textarea><br>
+        <ion-button>AI Generated Description</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-button (click)="addListing()">ADD LISTING</ion-button>
+    </ion-row>
+  </ion-grid>
 </ion-content>

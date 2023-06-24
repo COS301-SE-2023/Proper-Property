@@ -1,0 +1,52 @@
+#add-photos {
+    // background-color: #135d54;
+    background-color: #00000000;
+    border: solid 1px #fff;
+    color: #fff;
+    text-align: center;
+    align-content: center;
+    width: 100%;
+    height: 25%;
+  }
+
+#choose-input{
+    border: solid 1px #fff;
+}
+
+#current-images{
+    // background-color: #135d54;
+    background-color: #00000000;
+    border: solid 1px #fff;
+    color: #fff;
+    text-align: center;
+    width: 85%;
+    height: 90%;
+  }
+
+.single-image{
+    width: 10%;
+    height: 10%;
+    border: solid 1px black;
+}
+
+.location-col{
+  display: flex;
+  align-items: center;
+}
+
+.r-s{
+  display: flex;
+  align-items: center;
+}
+
+ion-grid{
+    width: 100%;
+    height: 100%;
+}
+
+.green-tab {
+    --color: green;
+  }
+
+
+
