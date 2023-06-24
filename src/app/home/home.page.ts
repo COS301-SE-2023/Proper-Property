@@ -3,6 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../services/user/user.service';
 import { profile } from '../profile/interfaces/profile.interface';
 import Swiper from 'swiper';
+import { Storage, ref } from '@angular/fire/storage';
+import { uploadBytes } from 'firebase/storage';
+
 
 @Component({
   selector: 'app-home',
@@ -22,7 +25,7 @@ export class HomePage implements OnInit {
   public home!: string;
   private activatedRoute = inject(ActivatedRoute);
   currentUser: profile | null;
-  constructor(public userService : UserService) {
+  constructor(private storage : Storage, public userService : UserService) {
     if(this.userService.getCurrentUser()){
       this.currentUser = this.userService.getCurrentUser();
       console.log("Home page - constructor: " + this.userService.printCurrentUser());
@@ -33,7 +36,7 @@ export class HomePage implements OnInit {
     }
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.currentUser = this.userService.getCurrentUser();
     this.home = this.activatedRoute.snapshot.paramMap.get('id') as string;
     let loginBut = document.getElementById('login-button');

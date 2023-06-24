@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { listing } from 'src/app/listing/interfaces/listing.interface';
-import { Firestore, collection, collectionData, doc, docData, addDoc, deleteDoc, updateDoc, getDocs, getDoc, } from '@angular/fire/firestore';
-import { Storage, ref, uploadBytesResumable } from "@angular/fire/storage";
+import { Firestore, collection, doc, docData, addDoc, updateDoc, getDocs } from '@angular/fire/firestore';
+import { Storage, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
 import { UserService } from '../user/user.service';
 import { profile } from 'src/app/profile/interfaces/profile.interface';
 import { Observable } from 'rxjs';
@@ -19,13 +19,28 @@ export class ListingsService {
   async createListing(list : listing){
     const listingsRef = collection(this.firestore, 'listings');
     let listingRef = addDoc(listingsRef, list);
+    await this.uploadImages((await listingRef).id, list.photos);
     console.log("Added to listings collection")
     await this.updateUserLisitings((await listingRef).id);
   }
 
-  async uploadFile(input: any) {
-    const storageRef = ref(this.storage, input.name);
-    await uploadBytesResumable(storageRef, input);
+  async uploadImages(listingID : string, input: any) {
+    const photoURLs : string[] = [];
+    for(var i = 0; i < input.length; i++){
+      const storageRef = ref(this.storage, "gs://proper-property-51963.appspot.com/" + listingID + "/image" + i);
+      await fetch("" + input[i]).then(res => res.blob())
+      .then((blob : Blob) => {
+        uploadBytes(storageRef, blob);
+      })
+    }
+
+    for(var i = 0; i < input.length; i++){
+      const storageRef = ref(this.storage, "gs://proper-property-51963.appspot.com/" + listingID + "/image" + i);
+      photoURLs.push(await getDownloadURL(storageRef));
+    }
+
+    const listingRef = doc(this.firestore, `listings/${listingID}`);
+    await updateDoc(listingRef, {photos: photoURLs});
   }
 
   async updateUserLisitings(listing_id : string) {

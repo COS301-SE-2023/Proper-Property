@@ -49,7 +49,7 @@ import { AuthService } from './services/auth/auth.service';
     provideStorage(() => {
       const storage = getStorage();
       if (environment.useEmulators) {
-        connectStorageEmulator(storage, 'http://localhost', 9199);
+        connectStorageEmulator(storage, 'localhost', 9199);
       }
       return storage;
     })
