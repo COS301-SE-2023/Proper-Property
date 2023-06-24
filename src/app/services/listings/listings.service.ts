@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { listing } from 'src/app/listing/interfaces/listing.interface';
 import { Firestore, collection, collectionData, doc, docData, addDoc, deleteDoc, updateDoc, getDocs, getDoc, } from '@angular/fire/firestore';
+import { Storage, ref, uploadBytesResumable } from "@angular/fire/storage";
 import { UserService } from '../user/user.service';
 import { profile } from 'src/app/profile/interfaces/profile.interface';
 import { Observable } from 'rxjs';
@@ -11,7 +12,7 @@ import { Observable } from 'rxjs';
 export class ListingsService {
   currentUser: profile | null = null;
 
-  constructor(private firestore: Firestore, public userServices: UserService) {
+  constructor(private firestore: Firestore, public userServices: UserService, private storage : Storage) {
     this.currentUser = userServices.getCurrentUser();
   }
 
@@ -20,6 +21,11 @@ export class ListingsService {
     let listingRef = addDoc(listingsRef, list);
     console.log("Added to listings collection")
     await this.updateUserLisitings((await listingRef).id);
+  }
+
+  async uploadFile(input: any) {
+    const storageRef = ref(this.storage, input.name);
+    await uploadBytesResumable(storageRef, input);
   }
 
   async updateUserLisitings(listing_id : string) {
