@@ -27,11 +27,6 @@ export class ListingPage{
     this.monthlyPayment = 0;
     this.totalOnceOffCosts = 0;
     this.minGrossMonthlyIncome = 0;
-
-    //Getting the selected listing
-    // this.listingServices.getListing(this.route.snapshot.data['list']).then((list) => {
-    //   this.list = list;
-    // });
    }
 
   async ngOnInit() {
@@ -50,13 +45,32 @@ export class ListingPage{
   }
   
   swiperReady() {
+    console.log("swiper being set")
     this.swiper = this.swiperRef?.nativeElement.swiper;
+    if(this.swiper){
+      console.log("swiper set")
+    }
+    else{
+      console.log("swiper not set")
+    }
   }
 
   goNext() {
+    if(this.swiper){
+      console.log("yup")
+    }
+    else{
+      console.log("nope")
+    }
     this.swiper?.slideNext();
   }
   goPrev() {
+    if(this.swiper){
+      console.log("yup")
+    }
+    else{
+      console.log("nope")
+    }
     this.swiper?.slidePrev();
   }
 

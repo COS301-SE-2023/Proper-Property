@@ -22,7 +22,6 @@
       (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true">
       <!-- Slides content goes here -->
       <swiper-slide *ngFor="let picture of list.photos">
-        <script>console.log(picture)</script>
         <img src="{{picture}}">
       </swiper-slide>
     </swiper-container>
