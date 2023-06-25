@@ -82,7 +82,7 @@
       </ion-col>
       <ion-col size="auto" id="choose-input" class="ion-text-center ion-justify-content-center">
         <input type="file" accept="image/*" (change)="handleFileInput($event)" hidden #fileInput>
-        <ion-button expand="full" (click)="fileInput.click()">Add Photos</ion-button>
+        <ion-button expand="full" (click)="fileInput.click()"> <ion-icon name="add-circle-outline"></ion-icon> <br>Add Photos</ion-button>
       </ion-col>
     </ion-row>
     
@@ -150,11 +150,11 @@
       </ion-col>
       <ion-col>
         <p>Parking</p>
-        <input id="parking" placeholder="Property Size" type="text" style="width: 20%">
+        <input id="parking" placeholder="Property Size" type="text" style="width: 40%">
       </ion-col>
       <ion-col>
         <p>Bedrooms</p>
-        <input id="bed" placeholder="Property Size" type="text" style="width: 20%">
+        <input id="bed" placeholder="Property Size" type="text" style="width: 40%">
       </ion-col>
       <ion-col>
         <ion-list>
