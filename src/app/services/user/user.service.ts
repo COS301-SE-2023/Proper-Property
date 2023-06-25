@@ -39,5 +39,14 @@ export class UserService {
       this.setCurrentUser(user);
     });
   }
+
+  async getUser(uid: string) : Promise<profile>{
+    return new Promise<profile>(async (resolve) => {
+      const userRef = doc(this.firestore, `users/${uid}`);
+      await getDoc(userRef).then((doc) => {
+        resolve(doc.data() as profile);
+      });
+    });
+  }
 }
 
