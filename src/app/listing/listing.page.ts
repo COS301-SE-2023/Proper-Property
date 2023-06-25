@@ -1,5 +1,9 @@
-import { Component, ElementRef, ViewChild} from '@angular/core';
+import { Component, ElementRef, Input, ViewChild} from '@angular/core';
+import { listing } from '../listing/interfaces/listing.interface';
 import Swiper from 'swiper';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ListingsService } from '../services/listings/listings.service';
+
 
 @Component({
   selector: 'app-listing',
@@ -10,15 +14,30 @@ export class ListingPage{
   @ViewChild('swiper')
   swiperRef: ElementRef | undefined;
   swiper?: Swiper;
+  list : listing | null = null;
 
-  constructor() {
+  constructor(private router: Router, private route: ActivatedRoute, private listingServices : ListingsService) {
     this.loanAmount = 0;
     this.interestRate = 0;
     this.loanTerm = 0;
     this.monthlyPayment = 0;
     this.totalOnceOffCosts = 0;
     this.minGrossMonthlyIncome = 0;
+
+    //Getting the selected listing
+    // this.listingServices.getListing(this.route.snapshot.data['list']).then((list) => {
+    //   this.list = list;
+    // });
    }
+
+  async ngOnInit() {
+    let list_id : string = "";
+    this.route.params.subscribe((params) => list_id = params['list']);
+    await this.listingServices.getListing(list_id).then((list) => {
+      this.list = list;
+    });
+    console.log(this.list);
+  }
   
   swiperReady() {
     this.swiper = this.swiperRef?.nativeElement.swiper;

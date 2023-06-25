@@ -30,137 +30,48 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  
-  <ion-card (click)="redirectToPage()">
-    <ion-card-header>
-      <img src="assets/house1.png" alt="house1">
-      <ion-card-title>Grand Family House</ion-card-title>
-      <ion-card-subtitle style="color: #0DAE4F;">R 6 500 000</ion-card-subtitle>
-    </ion-card-header>
-  
-    <ion-card-content>
-      A spacious and luxurious residence designed to accommodate large families with ample living space and luxurious amenities.
-      <br>
-      <br>
-      <div id="house_details">
-        <img src="assets/icon/bedrooms.png">
-        6 
-        &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/bathrooms.png">
-        4 
-        &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/floorplan.png">
-         780 m<sup>2</sup> 
-         &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/erf.png">
-        2000 m<sup>2</sup>
-      </div>
 
-      <button class="heart-button" [ngClass]="{'red': isRed}" (click)="toggleColor()">
-        <ion-icon name="heart" class="heart-icon"></ion-icon>
-      </button>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item *ngFor="let listing of listings">
+          <ion-card (click)="redirectToPage(listing)">
+            <ion-card-header>
+              <img src="{{listing.photos[0]}}" alt="house1">
+              <ion-card-title>House</ion-card-title>
+              <ion-card-subtitle style="color: #0DAE4F;">{{listing.price}}</ion-card-subtitle>
+            </ion-card-header>
+          
+            <ion-card-content>
+              {{listing.desc}}
+              <br>
+              <br>
+              <div id="house_details">
+                <img src="assets/icon/bedrooms.png">
+                {{listing.bed}}
+                &nbsp; &nbsp;&nbsp;
+                <img src="assets/icon/bathrooms.png">
+                {{listing.bath}}
+                &nbsp; &nbsp;&nbsp;
+                <img src="assets/icon/floorplan.png">
+                 {{listing.floor_size}} m<sup>2</sup> 
+                 &nbsp; &nbsp;&nbsp;
+                <img src="assets/icon/erf.png">
+                {{listing.property_size}} m<sup>2</sup>
+              </div>
+        
+              <button class="heart-button" [ngClass]="{'red': isRed}" (click)="toggleColor()">
+                <ion-icon name="heart" class="heart-icon"></ion-icon>
+              </button>
       
-      
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card (click)="redirectToPage()">
-    <ion-card-header>
-      <img src="assets/house2.jpg" alt="house1">
-      <ion-card-title>Minimalistic Mansion</ion-card-title>
-      <ion-card-subtitle style="color: #0DAE4F;">R 8 500 000</ion-card-subtitle>
-    </ion-card-header>
-  
-    <ion-card-content>
-      A minimalistic architectural masterpiece
-      <br>
-      <br>
-      <div id="house_details">
-        <img src="assets/icon/bedrooms.png">
-        5
-        &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/bathrooms.png">
-        6
-        &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/floorplan.png">
-         690 m<sup>2</sup> 
-         &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/erf.png">
-        1400 m<sup>2</sup>
-      </div>
-
-      <button class="heart-button">
-        <ion-icon name="heart" class="heart-icon"></ion-icon>
-      </button>
-      
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card (click)="redirectToPage()">
-    <ion-card-header>
-      <img src="assets/house3.jpg" alt="house1">
-      <ion-card-title>Nestled Nook</ion-card-title>
-      <ion-card-subtitle style="color: #0DAE4F;">R 7 450 000</ion-card-subtitle>
-    </ion-card-header>
-  
-    <ion-card-content>
-      A wholesome family home.
-      <br>
-      <br>
-      <div id="house_details">
-        <img src="assets/icon/bedrooms.png">
-        7
-        &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/bathrooms.png">
-        6
-        &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/floorplan.png">
-         800 m<sup>2</sup> 
-         &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/erf.png">
-        1600 m<sup>2</sup>
-      </div>
-
-      <button class="heart-button">
-        <ion-icon name="heart" class="heart-icon"></ion-icon>
-      </button>
-      
-    </ion-card-content>
-
-  </ion-card>
-
-  <ion-card (click)="redirectToPage()">
-    <ion-card-header>
-      <img src="assets/house4.jpg" alt="house1">
-      <ion-card-title>Dreamy Dwelling</ion-card-title>
-      <ion-card-subtitle style="color: #0DAE4F;">R 10 050 000</ion-card-subtitle>
-    </ion-card-header>
-  
-    <ion-card-content>
-      A contemporary masterpiece: Immerse yourself in architectural brilliance and unmatched comfort.
-      <br>
-      <br>
-      <div id="house_details">
-        <img src="assets/icon/bedrooms.png">
-        7
-        &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/bathrooms.png">
-        6
-        &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/floorplan.png">
-         800 m<sup>2</sup> 
-         &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/erf.png">
-        1600 m<sup>2</sup>
-      </div>
-
-      <button class="heart-button">
-        <ion-icon name="heart" class="heart-icon"></ion-icon>
-      </button>
-      
-    </ion-card-content>
-
-  </ion-card>
+            </ion-card-content>
+          </ion-card>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <div class="map"  #map></div>
   
