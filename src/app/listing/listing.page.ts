@@ -13,8 +13,7 @@ import { profile } from '../profile/interfaces/profile.interface';
   styleUrls: ['./listing.page.scss'],
 })
 export class ListingPage{
-  @ViewChild('swiper')
-  swiperRef: ElementRef | undefined;
+  @ViewChild('swiper') swiperRef?: ElementRef;
   swiper?: Swiper;
   list : listing | null = null;
   price_per_sm : number = 0;
@@ -45,32 +44,14 @@ export class ListingPage{
   }
   
   swiperReady() {
-    console.log("swiper being set")
+    console.log(this.swiperRef?.nativeElement.swiper);
     this.swiper = this.swiperRef?.nativeElement.swiper;
-    if(this.swiper){
-      console.log("swiper set")
-    }
-    else{
-      console.log("swiper not set")
-    }
   }
 
   goNext() {
-    if(this.swiper){
-      console.log("yup")
-    }
-    else{
-      console.log("nope")
-    }
     this.swiper?.slideNext();
   }
   goPrev() {
-    if(this.swiper){
-      console.log("yup")
-    }
-    else{
-      console.log("nope")
-    }
     this.swiper?.slidePrev();
   }
 

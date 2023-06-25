@@ -21,8 +21,14 @@
     <swiper-container id="swiper-container" #swiper (afterinit)="swiperReady()"
       (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true">
       <!-- Slides content goes here -->
-      <swiper-slide *ngFor="let picture of list.photos">
+      <!-- <swiper-slide *ngFor="let picture of list.photos">
         <img src="{{picture}}">
+      </swiper-slide> -->
+      <swiper-slide>
+        <img src="{{list.photos[0]}}">
+      </swiper-slide>
+      <swiper-slide>
+        <img src="{{list.photos[1]}}">
       </swiper-slide>
     </swiper-container>
     <ion-buttons slot="end" class="swiper-button2" #two>
