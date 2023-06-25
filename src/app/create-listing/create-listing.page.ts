@@ -40,14 +40,6 @@ export class CreateListingPage implements OnInit {
     if (files && files.length) {
       for (const file of files) {
         this.photos.push(URL.createObjectURL(file));
-        // const currentImages = document.getElementById('current-images');
-        // this.count++;
-
-        // if (currentImages){
-        //   currentImages.innerHTML += "<div style='width: 200px; height: 200px;display:inline-block;'><img style='width: 100%; height: 100%'src='" + this.photos[this.photos.length - 1] + "'></img></div>&nbsp;";
-        //   console.log(this.photos[this.photos.length - 1]);
-        //   console.log(currentImages.innerHTML);
-        // }
       }
     }
   }
