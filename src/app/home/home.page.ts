@@ -4,6 +4,7 @@ import { UserService } from '../services/user/user.service';
 import { profile } from '../profile/interfaces/profile.interface';
 import Swiper from 'swiper';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',

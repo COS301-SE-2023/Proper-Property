@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
+
 const routes: Routes = [
   {
     path: '',
@@ -54,7 +55,8 @@ const routes: Routes = [
   {
     path: 'listing',
     loadChildren: () => import('./listing/listing.module').then( m => m.ListingPageModule)
-  },  {
+  },
+  {
     path: 'profile',
     loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
   },
@@ -65,7 +67,7 @@ const routes: Routes = [
   {
     path: 'my-listings',
     loadChildren: () => import('./my-listings/my-listings.module').then( m => m.MyListingsPageModule)
-  }
+  },
 
 
 ];
