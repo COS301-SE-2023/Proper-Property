@@ -46,20 +46,23 @@
 
   .quarter-container{
     border-radius: 20px;
-    width: 100%;
+    width: 99%;
     margin: 0 auto;
-    height: 180px;
+    height: 250px;
     margin-top: 10px;
+    left:1%;
   }
 
   .half-green-container{
     position: relative;
     border-radius: 20px;
-    width: 100%;
+    width: 99%;
+    right:1%;
     margin: 0 auto;
     height: 100%;
     margin-top: 10px;
     overflow:visible;
+    z-index:1;
   }
 
   .half-green-container::after{
@@ -72,11 +75,39 @@
     background-color: #0DAE4F;
     border-radius: 20px;
     opacity: 70%;
+    z-index: 0;
   }
 
-  ion-grid{
-    width: 80%;
-  }
   ion-row{
     width: 100%;
+  }
+
+  ion-col{
+    z-index:1;
+  }
+
+  #greenbox-title{
+    color: #4f4f4f;
+    font-size: 30px;
+    font-weight: 500;
+    padding-left: 10px;
+    margin-top: 17%;
+    z-index:1;
+  }
+
+  .grey-text{
+    color: #4f4f4f;
+    font-size: 17px;
+    font-weight: 500;
+    // padding: 5px;
+    z-index:2;
+  }
+  
+  .black-text{
+    color: black;
+    font-size: 19px;
+    font-weight: 500;
+    // padding: 5px;
+    margin-top: 5px;
+    z-index:2;
   }
