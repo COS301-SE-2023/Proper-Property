@@ -49,7 +49,6 @@
     width: 99%;
     margin: 0 auto;
     height: 250px;
-    margin-top: 10px;
     left:1%;
   }
 
@@ -60,9 +59,8 @@
     right:1%;
     margin: 0 auto;
     height: 100%;
-    margin-top: 10px;
-    overflow:visible;
     z-index:1;
+    overflow:hidden;
   }
 
   .half-green-container::after{
@@ -78,6 +76,11 @@
     z-index: 0;
   }
 
+  .half-green-container:hover::after{
+    opacity: 100%;
+    z-index: 0;
+  }
+
   ion-row{
     width: 100%;
   }
@@ -87,11 +90,11 @@
   }
 
   #greenbox-title{
-    color: #4f4f4f;
+    color: black;
     font-size: 30px;
-    font-weight: 500;
+    font-weight: 600;
     padding-left: 10px;
-    margin-top: 17%;
+    margin-top: 1%;
     z-index:1;
   }
 
@@ -120,12 +123,21 @@
     margin-bottom: 4px;
     z-index:2;
   }
+  
+  .white-text-large{
+    color: white;
+    font-size: 36px;
+    font-weight: 500;
+    // padding: 5px;
+    margin-bottom: 4px;
+    z-index:2;
+  }
 
   .slider {
     position: relative;
     width: 100%;
-    height: 10px;
-    background-color: lightgray;
+    height: 13px;
+    background-color: rgb(150, 150, 150);
     border-radius: 5px;
     margin-bottom: 7px;
   }
@@ -138,4 +150,31 @@
     background-color: green;
     border-radius: 5px;
     transition: width 0.3s ease-in-out;
+  }
+
+  .house-titles{
+    font-size: 30px;
+    font-weight: 400;
+    margin-bottom: 5px;
+    z-index:2;
+  }
+  
+  .house-subtitles{
+    color: grey;
+    font-size: 15px;
+    font-weight: 400;
+    margin-bottom: 5px;
+    z-index:2;
+  }
+
+  #calculate-hyperlink{
+    color:#0DAE4F;
+    background-color: transparent;
+  }
+
+  #heart-button{
+    color: #969696;
+    border-radius: 10px;
+    width: 20%;
+    margin-top: 10px;
   }
