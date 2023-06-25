@@ -14,15 +14,12 @@
 <ion-content [fullscreen]="true">
   <div class="swiper-container-wrapper">
     <ion-buttons slot="start" class="swiper-button1" #one>
-      <ion-button (click)="goPrev()" #one>
-        <img src="assets/icon/arrow-back.png" #back>
+      <ion-button style="height:100px;" (click)="goPrev()" #one>
+        <img src="assets/icon/arrow1.svg" #back>
       </ion-button>
     </ion-buttons>
-    <swiper-container #swiper
-      (afterinit)="swiperReady()"
-      (slidechange)="swiperSlideChanged($event)"
-      [loop]="true"
-      [pagination]="true">
+    <swiper-container id="swiper-container" #swiper (afterinit)="swiperReady()"
+      (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true">
       <!-- Slides content goes here -->
       <swiper-slide>
         <img src="assets/slides/slide1.png">
@@ -35,144 +32,269 @@
       </swiper-slide>
     </swiper-container>
     <ion-buttons slot="end" class="swiper-button2" #two>
-      <ion-button (click)="goNext()" #two>
-        <img src="assets/icon/arrow-forward.png" #forward>
+      <ion-button style="height:100px;" (click)="goNext()" #two>
+        <img src="assets/icon/arrow.svg" #forward>
       </ion-button>
     </ion-buttons>
   </div>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title >Grand Family House</ion-card-title>
-      <ion-card-subtitle>R 6 500 000</ion-card-subtitle>
-      <ion-card-subtitle>Silverton, Pretoria</ion-card-subtitle>
-    </ion-card-header>
-  
-    <ion-card-content>
-      <br>
-      <!-- <br> -->
-      <div id="house_details">
-        <img src="assets/icon/bedrooms.png">
-        7
-        &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/bathrooms.png">
-        6
-        &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/floorplan.png">
-         800 m<sup>2</sup> 
-         &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/erf.png">
-        1600 m<sup>2</sup>
-      </div>
-    </ion-card-content>
-  </ion-card>
+  <ion-grid style="width:80%;">
+    <ion-row style="height:550px">
+      <ion-col>
+        <ion-card class="half-green-container">
+          <ion-grid style="padding-top: 20px; padding-left:20px;">
+            <ion-row>
+              <ion-card-title class="house-titles">127 Mapel Crest</ion-card-title>
+            </ion-row>
+            <ion-row>
+              <ion-card-subtitle class="house-subtitles">by Diana Hall</ion-card-subtitle>
+            </ion-row>
+            <ion-row>
+              <ion-card-title class="house-titles" style="margin-top:8px; font-size: 25px;">7 Bedroom House</ion-card-title>
+            </ion-row>
+            <ion-row>
+              <ion-card-subtitle class="house-subtitles">Brooklyn, Pretoria, South Africa</ion-card-subtitle>
+            </ion-row>
+            <ion-row>
+              <ion-card-title class="house-titles" style="margin-top:8px;">R 4 800 300</ion-card-title>
+              <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R
+                23000/sq.m</ion-card-subtitle>
+            </ion-row>
+            <ion-row style="margin-top: 10px;">
+              <ion-col size="7">
+                <ion-card-subtitle style="margin-top:15px;"><button id="calculate-hyperlink">Calculate</button> your monthly payments below!</ion-card-subtitle>
+              </ion-col>
+              <ion-col size="5">
+                <ion-button style="color-scheme:#0DAE4F;">Contact</ion-button>
+                <!-- <ion-button style="color: #969696" id="heart-button"><img style="height:40px; width:40px;" src="assets/icon/heart.svg"></ion-button> -->
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <ion-card-title id="greenbox-title">Developement Highlights</ion-card-title>
+          <ion-card-content style="padding:0;">
+            <ion-grid style="z-index:1;">
+              <ion-row>
+                <ion-col>
+                  <div class="black-text">North Facing</div>
+                  <div class="grey-text">House Orientation</div>
+                </ion-col>
+                <ion-col>
+                  <div class="black-text">Residential Complex</div>
+                  <div class="grey-text">Community Environment</div>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <div class="black-text">Semi Furnished</div>
+                  <div class="grey-text">Furnishing</div>
+                </ion-col>
+                <ion-col>
+                  <div class="black-text">126 sq.m</div>
+                  <div class="grey-text">Floor Size</div>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <div class="black-text">Ready To Move</div>
+                  <div class="grey-text">Possession Status</div>
+                </ion-col>
+                <ion-col>
+                  <div class="black-text">552 sq.m</div>
+                  <div class="grey-text">Property Size</div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col>
+        <ion-row>
+          <ion-card class="quarter-container">
+            <ion-card-header>
+              <ion-card-title>Points of Interest</ion-card-title>
+              <ion-card-content>
+                <ion-grid style="z-index:1;">
+                  <ion-row>
+                    <ion-col>
+                      <div class="text-large">1</div>
+                    </ion-col>
+                    <ion-col>
+                      <div class="text-large">2</div>
+                    </ion-col>
+                    <ion-col>
+                      <div class="text-large">3</div>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <div class="text-large">4</div>
+                    </ion-col>
+                    <ion-col>
+                      <div class="text-large">5</div>
+                    </ion-col>
+                    <ion-col>
+                      <div class="text-large">6</div>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-content>
+            </ion-card-header>
+          </ion-card>
+        </ion-row>
+        <ion-row>
+          <ion-card class="quarter-container" style="margin-top:20px">
+            <ion-card-header style="padding-bottom: 1px">
+              <ion-card-title class="house-titles" style="font-size: 25px;">Area Score: 4.3</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-grid style="z-index:1;">
+                <ion-row>
+                  <div class="white-text">Water</div>
+                  <div class="slider">
+                    <div class="progress" style="width: 80%"></div>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="white-text">Power</div>
+                  <div class="slider">
+                    <div class="progress" style="width: 30%"></div>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="white-text">Crime</div>
+                  <div class="slider">
+                    <div class="progress" style="width: 60%"></div>
+                  </div>
+                </ion-row>
+                <ion-row>
+                  <div class="white-text">Pollution</div>
+                  <div class="slider">
+                    <div class="progress" style="width: 50%"></div>
+                  </div>
+                </ion-row>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>
-        Unlock the Potential of this Large Family Property - Ideal for Investment, Subdivision!
-      </ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content>
-      <p>
-        This large property is a real diamond in the rough! It has two separate entrances, making it the perfect place for both a family reunion and a wild party with 5 Bed and 4 Bathrooms.
-      </p>
-      <p>
-        The inside is a little bit like a maze, with long hallways and secret passages. The outside is full of character, with a garden in the front with a TREE HOUSE and a large courtyard in the back with an amazing Swimming Pool with a Pool house with 1Bed, Kitchen. And if you're looking for a quiet spot to relax, there's a Lapa Thatched Braai and Entertainment room that overlooks the huge garden. It's the perfect mix of old-world charm and modern amenities, making it the perfect place to get lost in a good time!
-      </p>
-  
-      <ion-list>
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-top: 1%">
+      <ion-card class="full-container">
+        <ion-card-header>
+          <ion-card-title>
+            Unlock the Potential of this Large Family Property - Ideal for Investment, Subdivision!
+          </ion-card-title>
+        </ion-card-header>
 
-        <ion-list-header>
-          <ion-label>
-            Amenities:
-          </ion-label>
-        </ion-list-header>
+        <ion-card-content>
+          <p>
+            This large property is a real diamond in the rough! It has two separate entrances, making it the perfect
+            place for both a family reunion and a wild party with 5 Bed and 4 Bathrooms.
+          </p>
+          <p>
+            The inside is a little bit like a maze, with long hallways and secret passages. The outside is full of
+            character, with a garden in the front with a TREE HOUSE and a large courtyard in the back with an amazing
+            Swimming Pool with a Pool house with 1Bed, Kitchen. And if you're looking for a quiet spot to relax, there's
+            a Lapa Thatched Braai and Entertainment room that overlooks the huge garden. It's the perfect mix of
+            old-world charm and modern amenities, making it the perfect place to get lost in a good time!
+          </p>
+
+          <ion-list>
+
+            <ion-list-header>
+              <ion-label>
+                Amenities:
+              </ion-label>
+            </ion-list-header>
+
+            <ion-item>
+              <ion-label>5 Bedrooms (including the Pool House 1 bed)</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Main Bedroom with Kitchenette (plumbing for a Basin and Stove Future), en-suite bath, Lounge/TV
+                area separate from other rooms.</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Large Family Kitchen with Laundry room/Scullery</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>6 Garages (2 rollup, 2 manual, and 2 Electrical)</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Fireplace</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Outside Rooms on property for storage</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Electrical Geyser and Gas Geyser as Backup (2 Geysers)</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Braai Lapa Area Thatched</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Tree House</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Pool House with Kitchen, Gas Stove, Underbar Fridges, 1 Bedroom, Dining & Lounge area / Space
+                for Pool table</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Huge Pool</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Pool House outside Toilet and Shower.</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>2 Carports</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Separate Entrances from Wouter Malan Street and Joseph Bosman</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>SOLAR / OFF the GRID (not included, bought separately)</ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </ion-row>
+    <ion-row style="margin-top: 1%">
+      <ion-card class="full-container">
+        <ion-item>
+          <ion-label position="floating" style="color: #0DAE4F;">Loan Amount (R)</ion-label>
+          <ion-input type="number" [(ngModel)]="loanAmount"></ion-input>
+        </ion-item>
 
         <ion-item>
-          <ion-label>5 Bedrooms (including the Pool House 1 bed)</ion-label>
+          <ion-label position="floating" style="color: #0DAE4F;">Interest Rate (%)</ion-label>
+          <ion-input type="number" [(ngModel)]="interestRate"></ion-input>
         </ion-item>
-        <ion-item>
-          <ion-label>Main Bedroom with Kitchenette (plumbing for a Basin and Stove Future), en-suite bath, Lounge/TV area separate from other rooms.</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>Large Family Kitchen with Laundry room/Scullery</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>6 Garages (2 rollup, 2 manual, and 2 Electrical)</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>Fireplace</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>Outside Rooms on property for storage</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>Electrical Geyser and Gas Geyser as Backup (2 Geysers)</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>Braai Lapa Area Thatched</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>Tree House</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>Pool House with Kitchen, Gas Stove, Underbar Fridges, 1 Bedroom, Dining & Lounge area / Space for Pool table</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>Huge Pool</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>Pool House outside Toilet and Shower.</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>2 Carports</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>Separate Entrances from Wouter Malan Street and Joseph Bosman</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>SOLAR / OFF the GRID (not included, bought separately)</ion-label>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-  
 
-  <ion-card class="ion-padding">
-      <ion-item>
-        <ion-label position="floating" style="color: #0DAE4F;">Loan Amount (R)</ion-label>
-        <ion-input type="number" [(ngModel)]="loanAmount"></ion-input>
-      </ion-item>
-    
-      <ion-item>
-        <ion-label position="floating" style="color: #0DAE4F;">Interest Rate (%)</ion-label>
-        <ion-input type="number" [(ngModel)]="interestRate"></ion-input>
-      </ion-item>
-    
-      <ion-item>
-        <ion-label position="floating" style="color: #0DAE4F;">Loan Term (Years)</ion-label>
-        <ion-input type="number" [(ngModel)]="loanTerm"></ion-input>
-      </ion-item>
-    
-      <ion-button expand="full" (click)="calculateMortgage()">Calculate</ion-button>
-    
-      <ion-item>
-        <ion-label>Monthly Payment:</ion-label>
-        <ion-text>{{ monthlyPayment | currency: 'R' }}</ion-text>
-      </ion-item>
+        <ion-item>
+          <ion-label position="floating" style="color: #0DAE4F;">Loan Term (Years)</ion-label>
+          <ion-input type="number" [(ngModel)]="loanTerm"></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label>Total Once-off Costs:</ion-label>
-        <ion-text>{{ totalOnceOffCosts | currency: 'R' }}</ion-text>
-      </ion-item>
-    
-      <ion-item>
-        <ion-label>Min Gross Monthly Income:</ion-label>
-        <ion-text>{{ minGrossMonthlyIncome | currency: 'R' }}</ion-text>
-      </ion-item>
+        <ion-button style="border-radius: 30px; width: 100%; margin: 0 auto;"
+          (click)="calculateMortgage()">Calculate</ion-button>
 
-  </ion-card>
- </ion-content>
+        <ion-item>
+          <ion-label>Monthly Payment:</ion-label>
+          <ion-text>{{ monthlyPayment | currency: 'R' }}</ion-text>
+        </ion-item>
 
+        <ion-item>
+          <ion-label>Total Once-off Costs:</ion-label>
+          <ion-text>{{ totalOnceOffCosts | currency: 'R' }}</ion-text>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Min Gross Monthly Income:</ion-label>
+          <ion-text>{{ minGrossMonthlyIncome | currency: 'R' }}</ion-text>
+        </ion-item>
+
+      </ion-card>
+    </ion-row>
+  </ion-grid>
+</ion-content>
