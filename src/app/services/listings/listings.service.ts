@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { listing } from 'src/app/listing/interfaces/listing.interface';
-import { Firestore, collection, doc, docData, addDoc, updateDoc, getDocs } from '@angular/fire/firestore';
+import { Firestore, collection, doc, docData, addDoc, updateDoc, getDocs, getDoc } from '@angular/fire/firestore';
 import { Storage, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
 import { UserService } from '../user/user.service';
 import { profile } from 'src/app/profile/interfaces/profile.interface';
@@ -61,7 +61,25 @@ export class ListingsService {
 
   async getListings(){
     const listingsRef = collection(this.firestore, 'listings');
-    let listings$ = (await getDocs(listingsRef)).docs.map(doc => doc.data()) as listing[];
-    return listings$;
+    let listings$ = ((await getDocs(listingsRef)).docs.map(doc => doc.data()) as listing[]);
+    let listings : listing[] = [];
+
+    for(let i = 0; i < listings$.length; i++){
+      var temp : listing = listings$[i];
+      temp.listing_id = ((await getDocs(listingsRef)).docs[i].id);
+      console.log(temp.listing_id);
+      listings.push(temp);
+    }
+    return listings;
+  }
+
+  async getListing(listing_id : string){
+    var listing : listing | null = null;
+    const listingRef = doc(this.firestore, 'listings/' + listing_id);
+    await getDoc(listingRef).then((doc) => {
+      listing = doc.data() as listing;
+    });
+
+    return listing;
   }
 }
