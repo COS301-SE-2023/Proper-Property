@@ -72,14 +72,21 @@
   </ion-header> -->
 
   <ion-grid [fixed]="true">
-    <ion-row id="add-photos">
+    <ion-row id="add-photos" [ngClass]="{'expanded': photos.length > 4}">
+      <ion-col id="current-images">
+        <!-- Display uploaded images here -->
+        <div *ngFor="let photo of photos; let i = index" class="uploaded-image">
+          <img [src]="photo" alt="Uploaded Image" />
+          <ion-icon name="close-circle" (click)="removeImage(i)"></ion-icon>
+        </div>
+      </ion-col>
       <ion-col size="auto" id="choose-input" class="ion-text-center ion-justify-content-center">
         <input type="file" accept="image/*" (change)="handleFileInput($event)" hidden #fileInput>
         <ion-button expand="full" (click)="fileInput.click()">Add Photos</ion-button>
       </ion-col>
-      <ion-col id="current-images">
-      </ion-col>
     </ion-row>
+    
+    
     <ion-row>
       <input id="address" placeholder="Address" type="text" style="width: 30%">
     </ion-row>
