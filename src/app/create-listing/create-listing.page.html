@@ -64,12 +64,6 @@
 
 
 <ion-content [fullscreen]="true">
-  <!-- <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">create-listing</ion-title>
-    </ion-toolbar>
-  </ion-header> -->
-
   <ion-grid [fixed]="true">
     <ion-row id="add-photos">
       <ion-col size="auto" id="choose-input" class="ion-text-center ion-justify-content-center">
@@ -88,42 +82,42 @@
       </ion-col>
       <ion-col>
         <ion-select id="pos-type" aria-label="pos-type" placeholder="Possession Type">
-          <ion-select-option value="t1">T1</ion-select-option>
-          <ion-select-option value="t2">T2</ion-select-option>
-          <ion-select-option value="t3">T3</ion-select-option>
+          <ion-select-option value="leasehold">LeaseHold</ion-select-option>
+          <ion-select-option value="freehold">Freehold</ion-select-option>
+          <ion-select-option value="condominium">Condominium</ion-select-option>
         </ion-select>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-select id="env-type" aria-label="env-type" placeholder="Environment Type">
-          <ion-select-option value="e1">E1</ion-select-option>
-          <ion-select-option value="e2">E2</ion-select-option>
-          <ion-select-option value="e3">E3</ion-select-option>
+          <ion-select-option value="urban">Urban</ion-select-option>
+          <ion-select-option value="rural">Rural</ion-select-option>
+          <ion-select-option value="coastal">Coastal</ion-select-option>
         </ion-select>
       </ion-col>
       <ion-col>
         <ion-select id="prop-type" aria-label="prop-type" placeholder="Property Type">
-          <ion-select-option value="p1">P1</ion-select-option>
-          <ion-select-option value="p2">P2</ion-select-option>
-          <ion-select-option value="p3">P3</ion-select-option>
+          <ion-select-option value="apartment">Apartment</ion-select-option>
+          <ion-select-option value="House">House</ion-select-option>
+          <ion-select-option value="farm house">Farm House</ion-select-option>
         </ion-select>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-select id="furnish-type" aria-label="furnishing" placeholder="Furnishing">
-          <ion-select-option value="f">Furnished</ion-select-option>
-          <ion-select-option value="p">Partly Furnished</ion-select-option>
-          <ion-select-option value="n">Not Furnished</ion-select-option>
+          <ion-select-option value="furnished">Furnished</ion-select-option>
+          <ion-select-option value="partly furnished">Partly Furnished</ion-select-option>
+          <ion-select-option value="not furnished">Not Furnished</ion-select-option>
         </ion-select>
       </ion-col>
       <ion-col>
         <ion-select id="orientation" aria-label="orientation" placeholder="Orientation">
-          <ion-select-option value="N">North</ion-select-option>
-          <ion-select-option value="E">East</ion-select-option>
-          <ion-select-option value="S">South</ion-select-option>
-          <ion-select-option value="W">South</ion-select-option>
+          <ion-select-option value="North">North</ion-select-option>
+          <ion-select-option value="East">East</ion-select-option>
+          <ion-select-option value="South">South</ion-select-option>
+          <ion-select-option value="West">West</ion-select-option>
         </ion-select>
       </ion-col>
     </ion-row>
@@ -173,8 +167,8 @@
       </ion-col>
       <ion-col>
         <h2>Property Description</h2>
-        <textarea id="desc" rows="10" cols="50"></textarea><br>
-        <ion-button>AI Generated Description</ion-button>
+        <textarea id="desc" rows="10" cols="50">{{description}}</textarea><br>
+        <ion-button (click)="generateDesc()">AI Generated Description</ion-button>
       </ion-col>
     </ion-row>
     <ion-row>
