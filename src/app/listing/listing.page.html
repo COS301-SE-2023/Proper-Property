@@ -21,15 +21,15 @@
     <swiper-container id="swiper-container" #swiper (afterinit)="swiperReady()"
       (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true">
       <!-- Slides content goes here -->
-      <!-- <swiper-slide *ngFor="let picture of list.photos">
+      <swiper-slide *ngFor="let picture of list.photos">
         <img src="{{picture}}">
-      </swiper-slide> -->
-      <swiper-slide>
+      </swiper-slide>
+      <!-- <swiper-slide>
         <img src="{{list.photos[0]}}">
       </swiper-slide>
       <swiper-slide>
         <img src="{{list.photos[1]}}">
-      </swiper-slide>
+      </swiper-slide> -->
     </swiper-container>
     <ion-buttons slot="end" class="swiper-button2" #two>
       <ion-button style="height:100px;" (click)="goNext()" #two>
@@ -55,10 +55,18 @@
             <ion-row>
               <ion-card-subtitle class="house-subtitles">Brooklyn, Pretoria, South Africa</ion-card-subtitle>
             </ion-row>
-            <ion-row>
-              <ion-card-title class="house-titles" style="margin-top:8px;">R {{list.price}}</ion-card-title>
-              <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/sq.m</ion-card-subtitle>
-            </ion-row>
+            <ng-template [ngIf]="list.let_sell === 'Sell'">
+              <ion-row >
+                <ion-card-title class="house-titles" style="margin-top:8px;">R {{list.price}}</ion-card-title>
+                <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/sq.m</ion-card-subtitle>
+              </ion-row>
+            </ng-template>
+            <ng-template [ngIf]="list.let_sell === 'Rent'">
+              <ion-row>
+                <ion-card-title class="house-titles" style="margin-top:8px;">R {{list.price}}/pm</ion-card-title>
+                <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/sq.m</ion-card-subtitle>
+              </ion-row>
+            </ng-template>
             <ion-row style="margin-top: 10px;">
               <ion-col size="7">
                 <ion-card-subtitle style="margin-top:15px;"><button id="calculate-hyperlink">Calculate</button> your monthly payments below!</ion-card-subtitle>
