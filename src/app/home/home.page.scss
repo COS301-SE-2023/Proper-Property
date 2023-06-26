@@ -1,3 +1,7 @@
+ion-content
+{
+  --background: rgb(240, 239, 239);
+}
 .link{
   --color: var( --ion-color-primary-contrast);
 }
@@ -11,34 +15,6 @@ ion-toolbar{
   --background: rgb(255, 255, 255);
 }
 
-
-
-// #container {
-//   text-align: center;
-//   position: absolute;
-//   left: 0;
-//   right: 0;
-//   top: 0%;
-//   transform: translateY(-50%);
-// }
-
-// #container strong {
-//   font-size: 20px;
-//   line-height: 26px;
-// }
-
-// #container p {
-//   font-size: 16px;
-//   line-height: 22px;
-//   --color: #b015be;
-//   margin: 0;
-// }
-
-
-// #container a {
-//   text-decoration: none;
-//   height: fit-content;
-// }
 
 .swiper-container-wrapper {
   background-color: transparent;
@@ -71,9 +47,6 @@ ion-toolbar{
 
 }
 
-// ion-card {
-//   // background-color: #0DAE4F;
-// }
 
 #recommended {
   top: -180px;
@@ -85,16 +58,6 @@ ion-toolbar{
   
 }
 
-
-
-// #container a {
-//   text-decoration: none;
-// }
-
-// #login-button{
-//   background-color: #0DAE4F;
-//   color: white;
-// }
 
 h1{
   position:absolute;
@@ -161,4 +124,51 @@ ion-grid{
 {
   width: 1600px;
   height: 300px;
+}
+
+.serv{
+  position: absolute;
+  background-color: rgb(240, 236, 236);
+  margin-top: 0;
+  top: 100%;
+}
+.heading
+{
+  text-align: center;
+  font-size: 4.5rem;
+  position: relative;
+}
+
+.serv h2{
+  margin-bottom: 5rem;
+}
+
+.serv-container
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.serv-container .serv-box
+{
+  flex: 1 1 30rem;
+  background: white;
+  padding: 3rem 2rem 4rem;
+  border-radius: 2rem;
+  text-align: center;
+  border: .2rem solid white;
+
+}
+
+.serv-box img{
+  width: 300px;
+  height: 300px;
+}
+
+.serv-box h3
+{
+  color: var(--ion-color-primary);
 }
