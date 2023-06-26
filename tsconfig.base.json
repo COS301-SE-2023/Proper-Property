@@ -1,0 +1,42 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@properproperty/app/auth/data-access": [
+        "libs/app/auth/data-access/src/index.ts"
+      ],
+      "@properproperty/app/copyright/feature": [
+        "libs/app/copyright/feature/src/index.ts"
+      ],
+      "@properproperty/app/core/feature": [
+        "libs/app/core/feature/src/index.ts"
+      ],
+      "@properproperty/app/home/feature": [
+        "libs/app/home/feature/src/index.ts"
+      ],
+      "@properproperty/app/login/feature": [
+        "libs/app/login/feature/src/index.ts"
+      ],
+      "@properproperty/app/profile/util": [
+        "libs/app/profile/util/src/index.ts"
+      ],
+      "@properproperty/app/user/data-access": [
+        "libs/app/user/data-access/src/index.ts"
+      ]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}
