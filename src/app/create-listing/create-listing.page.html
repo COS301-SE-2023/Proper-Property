@@ -72,7 +72,7 @@
   </ion-header> -->
 
   <ion-grid [fixed]="true">
-    <ion-label class="imageText">Add Photos of your property</ion-label>
+    <ion-label class="imageText" >Add Photos of your property</ion-label>
     <span class="required-indicator" *ngIf="!photos.length">*</span>
     
     <ion-row id="add-photos">
@@ -123,7 +123,7 @@
       </ion-col>
 
       <ion-col>
-        <ion-select id="pos-type" aria-label="pos-type" placeholder="Possession Type">
+        <ion-select id="pos-type" aria-label="pos-type" placeholder="Possession Type" class="dropdown-content">
           <ion-select-option value="t1">T1</ion-select-option>
           <ion-select-option value="t2">T2</ion-select-option>
           <ion-select-option value="t3">T3</ion-select-option>
@@ -132,10 +132,10 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-select id="env-type" aria-label="env-type" placeholder="Environment Type">
-          <ion-select-option value="e1">E1</ion-select-option>
-          <ion-select-option value="e2">E2</ion-select-option>
-          <ion-select-option value="e3">E3</ion-select-option>
+        <ion-select id="env-type" aria-label="env-type" placeholder="Distinct">
+          <ion-select-option value="e1">Rural</ion-select-option>
+          <ion-select-option value="e2">Semi-Rural</ion-select-option>
+          <ion-select-option value="e3">Urban</ion-select-option>
         </ion-select>
       </ion-col>
       <ion-col>
@@ -158,36 +158,67 @@
         <ion-select id="orientation" aria-label="orientation" placeholder="Orientation">
           <ion-select-option value="N">North</ion-select-option>
           <ion-select-option value="E">East</ion-select-option>
-          <ion-select-option value="S">South</ion-select-option>
+          <ion-select-option value="S">West</ion-select-option>
           <ion-select-option value="W">South</ion-select-option>
         </ion-select>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col>
-        <input id="floor-size" placeholder="Floor Size" type="text" style="width: 30%">
+      <ion-col size="3" class="ion-text-center">
+        <ion-item>
+          <ion-label position="floating">Bedroom count<span class="required-indicator" *ngIf="!bedrooms">*</span></ion-label>
+          
+          <ion-input type="number" id="bed" [(ngModel)]="bedrooms" required></ion-input>
+          
+        </ion-item>
       </ion-col>
-      <ion-col>
-        <input id="property-size" placeholder="Property Size" type="text" style="width: 30%">
+
+      <ion-col size="3" class="ion-text-center">
+        <ion-item>
+          <ion-label position="floating">Bathroom count<span class="required-indicator" *ngIf="!bedrooms">*</span></ion-label>
+          
+          <ion-input type="number" id="bath" [(ngModel)]="bedrooms" required></ion-input>
+          
+        </ion-item>
+      </ion-col>
+
+
+    </ion-row>
+    <ion-row>
+
+      <ion-col size="3" class="ion-text-center">
+        <ion-item>
+          <ion-label position="floating">Floor Size &#40; m<sup>2</sup>&#41;<span class="required-indicator" *ngIf="!floor_size">*</span></ion-label>
+          
+          <ion-input type="number" id="floor-size" [(ngModel)]="floor_size" required></ion-input>
+          
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="3" class="ion-text-center">
+        <ion-item>
+          <ion-label position="floating">Erf size &#40; m<sup>2</sup>&#41;<span class="required-indicator" *ngIf="!floor_size">*</span></ion-label>
+          
+          <ion-input type="number" id="property-size" [(ngModel)]="floor_size" required></ion-input>
+          
+        </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col>
-        <p>Bathrooms</p>
-        <input id="bath" placeholder="Property Size" type="text" style="width: 20%">
+
+      <ion-col size="3" class="ion-text-center">
+        <ion-item>
+          <ion-label position="floating">Parking<span class="required-indicator" *ngIf="!parking">*</span></ion-label>
+          
+          <ion-input type="number" id="parking" [(ngModel)]="parking" required></ion-input>
+          
+        </ion-item>
       </ion-col>
-      <ion-col>
-        <p>Parking</p>
-        <input id="parking" placeholder="Property Size" type="text" style="width: 40%">
-      </ion-col>
-      <ion-col>
-        <p>Bedrooms</p>
-        <input id="bed" placeholder="Property Size" type="text" style="width: 40%">
-      </ion-col>
-      <ion-col>
+
+      <ion-col size="3" class="ion-text-center">
         <ion-list>
           <ion-item>
-            <ion-label>Rent</ion-label>
+            <ion-label>Let</ion-label>
             <ion-toggle [checked]="false" (click)="changeListingType()" [(ngModel)]="selectedValue"></ion-toggle>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <ion-label>Sell</ion-label>
@@ -196,12 +227,23 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col>
+      <ion-col size="6" class="ion-text-center">
+        <ion-label>
+          <strong>Add your property's additional features</strong>
+        </ion-label>
+      </ion-col>
+    </ion-row>
+    
+    <ion-row>
+      
+      <ion-col size ="6" class="ion-text-center">
         <input id="feat-in" type="text" placeholder="Feature">&nbsp;<ion-button (click)="addFeature()">Add Feature</ion-button><br>
-          <ion-item *ngFor="let feat of features">
+          <ion-item *ngFor="let feat of features,; let i = index">
             <ion-label>
               <ion-chip>
                 {{feat}}
+                &nbsp;
+                <ion-icon name="close-circle" (click)="removeFeature(i)"></ion-icon>
                 <ion-icon name="close" slot="end"></ion-icon>
               </ion-chip>
             </ion-label>
