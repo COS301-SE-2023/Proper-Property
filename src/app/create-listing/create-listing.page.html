@@ -112,7 +112,7 @@
 
       <ion-col size="6" class="ion-text-center">
         <ion-item>
-          <ion-label position="floating">listing price<span class="required-indicator" *ngIf="!price">*</span></ion-label>
+          <ion-label position="floating">Listing Price<span class="required-indicator" *ngIf="!price">*</span></ion-label>
           
           <ion-input type="text" id="price" [(ngModel)]="price" (input)="formatPrice()"  required></ion-input>
           <ion-note slot="end">ZAR</ion-note>
@@ -120,7 +120,6 @@
       </ion-col>
     </ion-row>
 
-    
     <ion-row>
       <ion-col>
         <ion-select id="pos-type" aria-label="pos-type" placeholder="Possession Type" class="dropdown-content">
@@ -133,7 +132,7 @@
     <ion-row>
       <ion-col size="3" class="ion-text-center">
         <ion-item>
-          <ion-label position="floating">Bedroom count<span class="required-indicator" *ngIf="!bedrooms">*</span></ion-label>
+          <ion-label position="floating">Bedroom Count<span class="required-indicator" *ngIf="!bedrooms">*</span></ion-label>
           
           <ion-input type="number" id="bed" [(ngModel)]="bedrooms" required></ion-input>
           
@@ -142,7 +141,7 @@
 
       <ion-col size="3" class="ion-text-center">
         <ion-item>
-          <ion-label position="floating">Bathroom count<span class="required-indicator" *ngIf="!bathrooms">*</span></ion-label>
+          <ion-label position="floating">Bathroom Count<span class="required-indicator" *ngIf="!bathrooms">*</span></ion-label>
           
           <ion-input type="number" id="bath" [(ngModel)]="bathrooms" required></ion-input>
           
@@ -151,9 +150,9 @@
 
       <ion-col>
         <ion-select id="prop-type" aria-label="prop-type" placeholder="Property Type">
-          <ion-select-option value="p1">House</ion-select-option>
-          <ion-select-option value="p2">Apartment</ion-select-option>
-          <ion-select-option value="p3">Commercial Property</ion-select-option>
+          <ion-select-option value="House">House</ion-select-option>
+          <ion-select-option value="Apartment">Apartment</ion-select-option>
+          <ion-select-option value="Commercial">Commercial Property</ion-select-option>
         </ion-select>
       </ion-col>
 
@@ -179,10 +178,10 @@
       </ion-col>
       <ion-col>
         <ion-select id="orientation" aria-label="orientation" placeholder="Orientation">
-          <ion-select-option value="N">North</ion-select-option>
-          <ion-select-option value="E">East</ion-select-option>
-          <ion-select-option value="S">West</ion-select-option>
-          <ion-select-option value="W">South</ion-select-option>
+          <ion-select-option value="North">North</ion-select-option>
+          <ion-select-option value="East">East</ion-select-option>
+          <ion-select-option value="West">West</ion-select-option>
+          <ion-select-option value="South">South</ion-select-option>
         </ion-select>
       </ion-col>
     </ion-row>
@@ -210,9 +209,9 @@
 
       <ion-col>
         <ion-select id="env-type" aria-label="env-type" placeholder="Distinct">
-          <ion-select-option value="e1">Rural</ion-select-option>
-          <ion-select-option value="e2">Semi-Rural</ion-select-option>
-          <ion-select-option value="e3">Urban</ion-select-option>
+          <ion-select-option value="Rural">Rural</ion-select-option>
+          <ion-select-option value="Semi-Rural">Semi-Rural</ion-select-option>
+          <ion-select-option value="Urban">Urban</ion-select-option>
         </ion-select>
       </ion-col>
 
