@@ -66,13 +66,24 @@
 
 
 <ion-header [translucent]="true">
+  <div class="profile-header">
+    <ion-icon slot="icon-only" name="person"></ion-icon>
+    <div class="profile-details">
+ 
+      <div class="edit-icons">
+        <h2>
+          <span class="email-text">{{ user.email }}</span>
+          <ion-icon name="create-outline" class="edit-icon" (click)="editEmail()"></ion-icon>
+        </h2>
+        <div class="email-input-container" *ngIf="isEditingEmail">
+          <ion-input type="text" [(ngModel)]="newEmail" placeholder="Enter a new email" clearInput></ion-input>
+          <ion-button expand="full" color="primary" (click)="saveEmail()">Save</ion-button>
+        </div>
+      </div>
 
 
-    <div class="profile-header">
-      <ion-icon slot="icon-only" name="person"></ion-icon>
-      <div class="profile-details">
-        <h1>{{ user.name }} {{ user.surname }}</h1>
-        <h2>{{ user.email }}</h2>
+
+      <br>
         <ion-item>
           <ion-label position="stacked">Garden Lover</ion-label>
           <ion-range [(ngModel)]="user.interests.garden" ></ion-range>
