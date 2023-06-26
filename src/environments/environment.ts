@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  googleMapsApiKey: '',
+  googleMapsApiKey: '***REMOVED***',
   useEmulators: true,
   firebase: {
     apiKey: "AIzaSyA5H6U5v6N7KPsQxGIpZw6rijDXc7tboIs",
