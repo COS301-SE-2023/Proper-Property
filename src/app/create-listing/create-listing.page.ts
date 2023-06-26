@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 export class CreateListingPage implements OnInit {
   currentUser: profile | null = null;
   constructor(public router: Router, public userService: UserService, public listingService: ListingsService) {
-    this.address=this.price=this.floor_size=this.bathrooms=this.bedrooms=this.parking="";
+    this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
     if(userService.getCurrentUser()){
       this.currentUser = userService.getCurrentUser();
       console.log("Create listing page: " + this.currentUser?.email + " " + this.currentUser?.first_name + " " + this.currentUser?.last_name + " " + this.currentUser?.user_id);
@@ -40,6 +40,7 @@ export class CreateListingPage implements OnInit {
   bedrooms:string;
   parking:string;
   floor_size: string;
+  erf_size : string;
 
   count = 0;
 
