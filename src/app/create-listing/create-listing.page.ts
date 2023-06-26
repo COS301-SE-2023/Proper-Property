@@ -79,6 +79,14 @@ export class CreateListingPage implements OnInit {
     }
   }
 
+  formatPrice() {
+    // Remove existing commas from the price
+    this.price = this.price.replace(/,/g, '');
+  
+    // Format the price with commas
+    this.price = this.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+  
   addFeature() {
     let feat_in = document.getElementById('feat-in') as HTMLInputElement;
 
