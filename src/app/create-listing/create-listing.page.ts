@@ -44,6 +44,21 @@ export class CreateListingPage implements OnInit {
     }
   }
 
+  
+  onDragOver(event: any) {
+    event.preventDefault();
+  }
+
+  onDrop(event: any) {
+    event.preventDefault();
+    const files = event.target.files;
+
+    for (const file of files) {
+      this.photos.push(URL.createObjectURL(file));
+    }
+
+  }
+  
   removeImage(index: number) {
     this.photos.splice(index, 1);
     console.log(this.photos);
@@ -125,4 +140,7 @@ export class CreateListingPage implements OnInit {
       console.log("Error in create-lisitng.page.ts");
     }
   }
+
+
 }
+
