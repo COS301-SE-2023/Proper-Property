@@ -130,6 +130,8 @@ ion-grid{
   position: absolute;
   background-color: rgb(240, 236, 236);
   margin-top: 0;
+  margin-left: 1%;
+  margin-right: 1%;
   top: 100%;
 }
 .heading
@@ -160,7 +162,14 @@ ion-grid{
   border-radius: 2rem;
   text-align: center;
   border: .2rem solid white;
+  transition: .5s ease;
 
+}
+
+.serv-container .serv-box:hover
+{
+  border-color: var(--ion-color-primary);
+  transform: scale(1.02);
 }
 
 .serv-box img{
