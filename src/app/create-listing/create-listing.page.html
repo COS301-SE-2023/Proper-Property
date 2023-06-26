@@ -102,13 +102,21 @@
     
 
     <ion-row>
-      <input id="address" placeholder="address" type="text" style="width: 30%">
+      <ion-col size="6" class="ion-text-center">
+        <ion-item>
+          <ion-label position="floating">Property Residential Address<span class="required-indicator" *ngIf="!address">*</span></ion-label>
+          
+          <ion-input type="text" id="address" [(ngModel)]="address" required></ion-input>
+        </ion-item>
+      </ion-col>
     </ion-row>
+
+    
     <ion-row>
       <ion-col>
-        
         <input id="price" placeholder="Price" type="text" style="width: 30%">
       </ion-col>
+
       <ion-col>
         <ion-select id="pos-type" aria-label="pos-type" placeholder="Possession Type">
           <ion-select-option value="t1">T1</ion-select-option>
@@ -201,7 +209,7 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-button (click)="addListing()" [disabled]="photos.length === 0">ADD LISTING</ion-button>
+      <ion-button (click)="addListing()" [disabled]="photos.length === 0 ||!address">ADD LISTING</ion-button>
     </ion-row>
   </ion-grid>
 </ion-content>
