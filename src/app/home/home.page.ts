@@ -24,7 +24,9 @@ export class HomePage implements OnInit {
   public home!: string;
   private activatedRoute = inject(ActivatedRoute);
   currentUser: profile | null = null;
-  constructor(public userService : UserService) {}
+  constructor(public userService : UserService) {
+    this.currentUser = this.userService.getCurrentUser();
+  }
 
    ngOnInit() {
     this.currentUser = this.userService.getCurrentUser();

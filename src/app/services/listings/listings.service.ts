@@ -12,7 +12,9 @@ import { Observable } from 'rxjs';
 export class ListingsService {
   currentUser: profile | null = null;
 
-  constructor(private firestore: Firestore, public userServices: UserService, private storage : Storage) {}
+  constructor(private firestore: Firestore, public userServices: UserService, private storage : Storage) {
+    this.currentUser = this.userServices.getCurrentUser();
+  }
 
   onInit(){
     this.currentUser = this.userServices.getCurrentUser();
