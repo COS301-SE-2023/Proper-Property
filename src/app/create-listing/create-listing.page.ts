@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 export class CreateListingPage implements OnInit {
   currentUser: profile | null = null;
   constructor(public router: Router, public userService: UserService, public listingService: ListingsService) {
-    this.address=this.price="";
+    this.address=this.price=this.floor_size=this.bathrooms=this.bedrooms=this.parking="";
     if(userService.getCurrentUser()){
       this.currentUser = userService.getCurrentUser();
       console.log("Create listing page: " + this.currentUser?.email + " " + this.currentUser?.first_name + " " + this.currentUser?.last_name + " " + this.currentUser?.user_id);
@@ -36,6 +36,11 @@ export class CreateListingPage implements OnInit {
   photos: string[] = [];
   address: string;
   price: string;
+  bathrooms:string;
+  bedrooms:string;
+  parking:string;
+  floor_size: string;
+
   count = 0;
 
   handleFileInput(event: any) {
@@ -86,7 +91,7 @@ export class CreateListingPage implements OnInit {
     // Format the price with commas
     this.price = this.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
-  
+
   addFeature() {
     let feat_in = document.getElementById('feat-in') as HTMLInputElement;
 
@@ -97,6 +102,10 @@ export class CreateListingPage implements OnInit {
         feat_in.value = "";
       }
     }
+  }
+  //removeFeature
+  removeFeature(index: number) {
+    this.features.splice(index, 1);
   }
 
   changeListingType(){
