@@ -110,38 +110,40 @@ export class CreateListingPage implements OnInit {
   }
 
   async addListing(){
-    let add_in = document.getElementById('address') as HTMLInputElement;
-    let price_in = document.getElementById('price') as HTMLInputElement;
-    let pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
+    // let add_in = document.getElementById('address') as HTMLInputElement;
+    // let price_in = document.getElementById('price') as HTMLInputElement;
+    // let pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
     let env_type_in = document.getElementById('env-type') as HTMLInputElement;
-    let prop_type_in = document.getElementById('pos-type') as HTMLInputElement;
-    let furnish_type_in = document.getElementById('furnish-type') as HTMLInputElement;
+    let prop_type_in = document.getElementById('prop-type') as HTMLInputElement;
+    // let furnish_type_in = document.getElementById('furnish-type') as HTMLInputElement;
     let orientation_in = document.getElementById('orientation') as HTMLInputElement;
-    let floor_size_in = document.getElementById('floor-size') as HTMLInputElement;
-    let property_size_in = document.getElementById('property-size') as HTMLInputElement;
-    let bath_in = document.getElementById('bath') as HTMLInputElement;
-    let bed_in = document.getElementById('bed') as HTMLInputElement;
-    let parking_in = document.getElementById('parking') as HTMLInputElement;
+    // let floor_size_in = document.getElementById('floor-size') as HTMLInputElement;
+    // let property_size_in = document.getElementById('property-size') as HTMLInputElement;
+    // let bath_in = document.getElementById('bath') as HTMLInputElement;
+    // let bed_in = document.getElementById('bed') as HTMLInputElement;
+    // let parking_in = document.getElementById('parking') as HTMLInputElement;
     let desc_in = document.getElementById('desc') as HTMLInputElement;
 
-    if(this.currentUser && add_in && price_in && pos_type_in && env_type_in && prop_type_in && furnish_type_in && orientation_in && floor_size_in && property_size_in && bath_in && bed_in && parking_in && desc_in){
+    console.log(prop_type_in.value);
+    if(this.currentUser){
       let list : listing = {
         user_id: this.currentUser.user_id,
-        address: add_in.value,
-        price: price_in.value,
-        pos_type: pos_type_in.value,
+        address: this.address,
+        price: this.price,
+        pos_type: "",
         env_type: env_type_in.value,
         prop_type: prop_type_in.value,
-        furnish_type: furnish_type_in.value,
+        furnish_type: "",
         orientation: orientation_in.value,
-        floor_size: floor_size_in.value,
-        property_size: property_size_in.value,
-        bath: bath_in.value,
-        bed: bed_in.value,
-        parking: parking_in.value,
+        floor_size: this.floor_size,
+        property_size: this.erf_size,
+        bath: this.bathrooms,
+        bed: this.bedrooms,
+        parking: this.parking,
         features: this.features,
         photos: this.photos,
-        desc: desc_in.value
+        desc: desc_in.value,
+        let_sell: this.listingType
       }
 
       console.log(list);
