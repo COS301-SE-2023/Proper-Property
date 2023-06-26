@@ -4,8 +4,40 @@
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content>
-  <ion-list>
+
+  <div class="container">
+    <div class="output">
+      <h2 class="logo">
+        <img src="../../assets/Logo_v1.png" width="7%"> Proper Property
+      </h2>
+      <div class="text-sec">
+        <h2>Welcome!<br><span> to your World.</span></h2>
+        <p>Properties Proper for you</p>
+      </div>
+    </div>
+
+    <div class="input">
+      <div class="form-container login">
+        <form action="#">
+          <h2>Log In</h2>
+
+          <div class = "input-box">
+            <input type="email" required>
+            <label>Email</label>
+          </div>
+          <div class = "input-box">
+            <input type="password" required>
+            <label>Password</label>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+  </div>
+  <!-- <ion-list>
     <ion-item>
       <ion-label position="floating">Email</ion-label>
       <ion-input type="email" [(ngModel)]="email"></ion-input>
@@ -32,5 +64,5 @@
     <div class="ion-padding">
       <p class="text-centrer-inator">Don't have an account? <a routerLink="/register">Sign up</a></p>
     </div>
-  </div>
+  </div> -->
 </ion-content>

@@ -16,3 +16,68 @@
   .buttons{
     float: center;
   }
+
+  
+  ion-content{
+    --background: black;
+  }
+  .container
+  {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75%;
+    height: 550px;
+    background: url(../../assets/house6.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+
+  .container .output
+  {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 58%;
+    background: transparent;
+    padding: 80px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+  }
+
+  .container .input
+  {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: calc(100% - 58%);
+    height: 100%;
+    background: transparent;
+  }
+
+  .output .logo
+  {
+    font-size: 33px;
+  }
+
+  .text-sec h2
+  {
+    font-size: 40px;
+    line-height: 1;
+  }
+
+  .text-sec h2 span
+  {
+    font-size: 25px;
+  }
+
+  .text-sec p
+  {
+    font-size: 16px;
+    margin: 20px 0;
+  }
