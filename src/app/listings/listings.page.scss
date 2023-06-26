@@ -1,3 +1,17 @@
+.link{
+  --color: var( --ion-color-primary-contrast);
+}
+
+.active
+{
+  --color: var( --ion-color-primary);
+}
+
+ion-toolbar{
+  --background: rgb(255, 255, 255);
+}
+
+
 //make the img in ion-card-header smaller
 ion-card-header img {
     width: 200px;
@@ -88,10 +102,10 @@ ion-card-header img {
       border-radius: 10px;
     }
 
-    #login-button{
-      background-color: #0DAE4F;
-      color: white;
-    }
+    // #login-button{
+    //   background-color: #0DAE4F;
+    //   color: white;
+    // }
 
     #back-arrow{
       color: #0DAE4F;
