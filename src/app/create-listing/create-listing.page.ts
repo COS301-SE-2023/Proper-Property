@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { signOut } from 'firebase/auth';
 import { UserService } from '../services/user/user.service';
 import { listing } from '../listing/interfaces/listing.interface';
 import { profile } from '../profile/interfaces/profile.interface';
 import { ListingsService } from '../services/listings/listings.service';
-import { user } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,15 +12,7 @@ import { Router } from '@angular/router';
 })
 export class CreateListingPage implements OnInit {
   currentUser: profile | null = null;
-  constructor(public router: Router, public userService: UserService, public listingService: ListingsService) {
-    if(userService.getCurrentUser()){
-      this.currentUser = userService.getCurrentUser();
-      console.log("Create listing page: " + this.currentUser?.email + " " + this.currentUser?.first_name + " " + this.currentUser?.last_name + " " + this.currentUser?.user_id);
-    }
-    else{
-      console.log("Create listing page: User is null");
-    }
-  }
+  constructor(public router: Router, public userService: UserService, public listingService: ListingsService) {}
 
   features: string[] = [];
   selectedValue: boolean = true;
@@ -30,6 +20,7 @@ export class CreateListingPage implements OnInit {
 
   ngOnInit() {
     this.listingType = "Sell";
+    this.currentUser = this.userService.getCurrentUser();
   }
 
   photos: string[] = [];
