@@ -31,6 +31,67 @@
 
 <ion-content [fullscreen]="true">
 
+  <!-- Template for populating with live data -->
+
+  <!-- <ng-container *ngFor="let item of data">
+    <ion-card (click)="redirectToPage(item.id)">
+      <ion-card-header>
+        <img [src]="item.imageSrc" [alt]="item.title">
+        <ion-card-title>{{ item.title }}</ion-card-title>
+        <ion-card-subtitle style="color: #0DAE4F;">{{ item.price }}</ion-card-subtitle>
+      </ion-card-header>
+  
+      <ion-card-content>
+        {{ item.description }}
+        <br>
+        <br>
+        <div id="house_details">
+          <img src="assets/icon/bedrooms.png">
+          {{ item.bedrooms }}
+          &nbsp; &nbsp;&nbsp;
+          <img src="assets/icon/bathrooms.png">
+          {{ item.bathrooms }}
+          &nbsp; &nbsp;&nbsp;
+          <img src="assets/icon/floorplan.png">
+          {{ item.floorArea }} m<sup>2</sup> 
+          &nbsp; &nbsp;&nbsp;
+          <img src="assets/icon/erf.png">
+          {{ item.erfArea }} m<sup>2</sup>
+        </div>
+  
+        <button class="heart-button">
+          <ion-icon name="heart" class="heart-icon"></ion-icon>
+        </button>
+      </ion-card-content>
+    </ion-card>
+  </ng-container> -->
+  
+  
+  <ion-card (click)="redirectToPage()">
+    <ion-card-header>
+      <img src="assets/house1.png" alt="house1">
+      <ion-card-title>Grand Family House</ion-card-title>
+      <ion-card-subtitle style="color: #0DAE4F;">R 6 500 000</ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content>
+      A spacious and luxurious residence designed to accommodate large families with ample living space and luxurious amenities.
+      <br>
+      <br>
+      <div id="house_details">
+        <img src="assets/icon/bedrooms.png">
+        6 
+        &nbsp; &nbsp;&nbsp;
+        <img src="assets/icon/bathrooms.png">
+        4 
+        &nbsp; &nbsp;&nbsp;
+        <img src="assets/icon/floorplan.png">
+         780 m<sup>2</sup> 
+         &nbsp; &nbsp;&nbsp;
+        <img src="assets/icon/erf.png">
+        2000 m<sup>2</sup>
+      </div>
+
   <ion-grid>
     <ion-row>
       <ion-col>

@@ -63,15 +63,11 @@
     </swiper-container>
   </div>
   </ion-card>
-
-  <ion-text class="title-P" >
-    <h1 >Proper Properties</h1>
-    <h2 >for you</h2>
-  </ion-text>
-
-  <ion-searchbar class="custom-searchbar" >
-    <ion-button id="sbut"></ion-button>
-  </ion-searchbar>
+  
+  <app-search></app-search>
+  <ion-searchbar class="custom-searchbar"></ion-searchbar>
+  
+  <!-- <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="searchItems()" class="custom-searchbar"></ion-searchbar> -->
 
   <img class="deco1" src="assets/GreenDots.png">
   <img class="deco2" src="assets/BlackDots.png">
