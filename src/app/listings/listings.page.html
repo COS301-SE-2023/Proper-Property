@@ -29,7 +29,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content id="all-content" [fullscreen]="true">
+<ion-content [fullscreen]="true">
     <div>
       <ion-card *ngFor="let listing of listings" (click)="redirectToPage(listing)">
         <ion-card-header>
