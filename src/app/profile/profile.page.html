@@ -64,7 +64,7 @@
 
 
 
-
+<ion-content>
 <ion-header [translucent]="true">
 
 
@@ -72,7 +72,17 @@
       <ion-icon slot="icon-only" name="person"></ion-icon>
       <div class="profile-details">
         <h1>{{ user.name }} {{ user.surname }}</h1>
-        <h2>{{ user.email }}</h2>
+        <div class="edit-icons">
+          <h2>
+            <span class="email-text">{{ user.email }}</span>
+            <ion-icon name="create-outline" class="edit-icon" (click)="editEmail()"></ion-icon>
+          </h2>
+          <div class="email-input-container" *ngIf="isEditingEmail">
+            <ion-input type="text" [(ngModel)]="newEmail" placeholder="Enter a new email" clearInput></ion-input>
+            <ion-button expand="full" color="primary" (click)="saveEmail()">Save</ion-button>
+          </div>
+        </div>
+        <br>
         <ion-item>
           <ion-label position="stacked">Garden Lover</ion-label>
           <ion-range [(ngModel)]="user.interests.garden" ></ion-range>
@@ -95,43 +105,15 @@
         </ion-item>
       </div>
     </div>
-
+    <div class="delete-account-container">
+      <ion-button class="delete-account-button" expand="full" color="danger">
+        Delete Account
+      </ion-button>
+    </div>
+    
 
 </ion-header>
-
-<ion-content [fullscreen]="true" class ="move-down">
-
-    <!-- <ion-split-pane contentId="main-content">
-      <ion-menu contentId="main-content">
-        <ion-header>
-          <ion-toolbar  class="second-toolbar">
-            <ion-title>Menu</ion-title>
-          </ion-toolbar>
-        </ion-header>
-  
-        <ion-content>
-          
-          <ion-list>
-            <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-              <ion-item [routerLink]="[p.url]" routerDirection="root" lines="none">
-                <ion-icon [name]="p.icon" slot="start"></ion-icon>
-                <ion-label>{{ p.title }}</ion-label>
-              </ion-item>
-            </ion-menu-toggle>
-          </ion-list>
-        </ion-content>
-      </ion-menu>
-  
-      <ion-router-outlet id="main-content"></ion-router-outlet>
-    </ion-split-pane> -->
-
-    
 </ion-content>
-<div class="delete-account-container">
-  <ion-button class="delete-account-button" expand="full" color="danger">
-    Delete Account
-  </ion-button>
-</div>
 
 
 
