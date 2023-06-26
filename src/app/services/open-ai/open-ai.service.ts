@@ -9,7 +9,7 @@ export class OpenAIService {
   apiUrl = 'https://api.openai.com/v1/completions';
   headers = new HttpHeaders()
     .set('Content-Type', 'application/json')
-    .set('Authorization', `Bearer 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`);
+    .set('Authorization', `Bearer `);
 
   constructor(private http: HttpClient) {}
 
@@ -19,6 +19,26 @@ export class OpenAIService {
         model: "text-davinci-003",
         prompt: prompt,
         max_tokens: 1000,
+        temperature: 0.3
+      }
+
+      let desc = "";
+      this.http.post(this.apiUrl, data, {headers : this.headers}).subscribe((response: any) => {
+        desc = response['choices'][0]['text'];
+        console.log(desc)
+        resolve(desc);
+      }, error => {
+        console.log(error);
+      });
+    })
+  }
+
+  async headingCall(prompt : string) : Promise<string>{
+    return new Promise<string>((resolve) =>{
+      const data = {
+        model: "text-davinci-003",
+        prompt: "Create a short heading for a listing based on this description of the property: " + prompt,
+        max_tokens: 50,
         temperature: 0.3
       }
 

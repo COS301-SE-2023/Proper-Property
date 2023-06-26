@@ -14,6 +14,7 @@ import { OpenAIService } from '../services/open-ai/open-ai.service';
 export class CreateListingPage implements OnInit {
   currentUser: profile | null = null;
   description: string = "";
+  heading : string = "";
   constructor(public router: Router, public userService: UserService, public listingService: ListingsService, private openAIService: OpenAIService) {
     if(userService.getCurrentUser()){
       this.currentUser = userService.getCurrentUser();
@@ -113,6 +114,11 @@ export class CreateListingPage implements OnInit {
           this.description = res;
         }
       });
+
+      this.openAIService.headingCall(this.description).then((res : string) => {
+        console.log(res);
+        this.heading = res;
+      });
     }
   }
 
@@ -169,7 +175,8 @@ export class CreateListingPage implements OnInit {
         parking: parking_in.value,
         features: this.features,
         photos: this.photos,
-        desc: desc_in.value
+        desc: desc_in.value,
+        heading: this.heading
       }
 
       console.log(list);
