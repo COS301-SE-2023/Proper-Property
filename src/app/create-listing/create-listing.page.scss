@@ -38,14 +38,40 @@
 
 #current-images{
     // background-color: #135d54;
-    background-color: blue;
-    border: solid 1px #fff;
+    // background-color: blue;
+    border: solid 1px #000;
     color: #fff;
     text-align: center;
-    width: 85%;
-    height: 90%;
- 
+
+    min-width: 200px;
+    min-height: 200px;
+    
   }
+
+  .drag-drop-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed #ccc;
+    padding: 16px;
+    cursor: pointer;
+  }
+  
+  .drag-drop-area:hover {
+    border-color: #999;
+  }
+  
+  .icon-on-top {
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
+  
+  .imageText {
+    font-size: 14px;
+    color: #000;
+  }
+  
 
 .single-image{
    
@@ -72,5 +98,17 @@ ion-grid{
     --color: green;
   }
 
+  
+.imageText {
+  font-size: 11pt;
+}
 
+.compulsory-label {
+  font-style: italic;
+  color: red;
+}
 
+.required-indicator {
+  color: red;
+  font-style: italic;
+}

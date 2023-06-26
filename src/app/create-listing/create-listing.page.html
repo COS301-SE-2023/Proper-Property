@@ -72,26 +72,41 @@
   </ion-header> -->
 
   <ion-grid [fixed]="true">
-    <ion-row id="add-photos" [ngClass]="{'expanded': photos.length > 4}">
-      <ion-col id="current-images">
+    <ion-label class="imageText">Add Photos of your property</ion-label>
+    <span class="required-indicator" *ngIf="!photos.length">*</span>
+    
+    <ion-row id="add-photos">
+      <ion-col id="current-images" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
         <!-- Display uploaded images here -->
         <div *ngFor="let photo of photos; let i = index" class="uploaded-image">
           <img [src]="photo" alt="Uploaded Image" />
           <ion-icon name="close-circle" (click)="removeImage(i)"></ion-icon>
         </div>
+        <div class="drag-drop-area" (click)="fileInput.click()">
+          <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
+          <ion-label class="imageText">Click here or drag and drop an image</ion-label>
+        </div>
       </ion-col>
+    </ion-row>
+    <ion-row>
       <ion-col size="auto" id="choose-input" class="ion-text-center ion-justify-content-center">
         <input type="file" accept="image/*" (change)="handleFileInput($event)" hidden #fileInput>
-        <ion-button expand="full" (click)="fileInput.click()"> <ion-icon name="add-circle-outline"></ion-icon> <br>Add Photos</ion-button>
+        <!-- <ion-button expand="full" (click)="fileInput.click()" class="btnUpload">
+          <ion-label class="imageText">Add Image</ion-label>
+        </ion-button> -->
       </ion-col>
     </ion-row>
     
     
+    
+    
+
     <ion-row>
-      <input id="address" placeholder="Address" type="text" style="width: 30%">
+      <input id="address" placeholder="address" type="text" style="width: 30%">
     </ion-row>
     <ion-row>
       <ion-col>
+        
         <input id="price" placeholder="Price" type="text" style="width: 30%">
       </ion-col>
       <ion-col>
@@ -186,7 +201,7 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-button (click)="addListing()">ADD LISTING</ion-button>
+      <ion-button (click)="addListing()" [disabled]="photos.length === 0">ADD LISTING</ion-button>
     </ion-row>
   </ion-grid>
 </ion-content>
