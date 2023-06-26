@@ -10,6 +10,7 @@
   text-align: center;
   z-index: 100;
 
+
   ion-icon {
     font-size: 60px;
     border: 2px solid #fff;
@@ -131,3 +132,32 @@ ion-label {
 .delete-account-button {
   max-width: 200px;
 }
+
+.edit-icon {
+  height : 20px;
+}
+
+.email-container {
+  display: flex;
+  align-items: center;
+  height: 24px; /* Adjust the height value as needed */
+}
+
+.email-container h2, .email-container ion-icon {
+  margin-right: 5px; /* Add some spacing between the email and the icon */
+}
+
+.edit-icons{
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+
+}
+.edit-icons-container {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
