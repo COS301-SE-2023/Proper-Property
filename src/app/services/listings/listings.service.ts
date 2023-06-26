@@ -12,8 +12,10 @@ import { Observable } from 'rxjs';
 export class ListingsService {
   currentUser: profile | null = null;
 
-  constructor(private firestore: Firestore, public userServices: UserService, private storage : Storage) {
-    this.currentUser = userServices.getCurrentUser();
+  constructor(private firestore: Firestore, public userServices: UserService, private storage : Storage) {}
+
+  onInit(){
+    this.currentUser = this.userServices.getCurrentUser();
   }
 
   async createListing(list : listing){
