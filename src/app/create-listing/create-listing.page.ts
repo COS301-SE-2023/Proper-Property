@@ -12,7 +12,9 @@ import { Router } from '@angular/router';
 })
 export class CreateListingPage implements OnInit {
   currentUser: profile | null = null;
-  constructor(public router: Router, public userService: UserService, public listingService: ListingsService) {}
+  constructor(public router: Router, public userService: UserService, public listingService: ListingsService) {
+    this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
+  }
 
   features: string[] = [];
   selectedValue: boolean = true;
@@ -24,6 +26,14 @@ export class CreateListingPage implements OnInit {
   }
 
   photos: string[] = [];
+  address: string;
+  price: string;
+  bathrooms:string;
+  bedrooms:string;
+  parking:string;
+  floor_size: string;
+  erf_size : string;
+
   count = 0;
 
   handleFileInput(event: any) {
@@ -31,18 +41,24 @@ export class CreateListingPage implements OnInit {
     if (files && files.length) {
       for (const file of files) {
         this.photos.push(URL.createObjectURL(file));
-        const currentImages = document.getElementById('current-images');
-        this.count++;
-
-        if (currentImages){
-          currentImages.innerHTML += "<div style='width: 200px; height: 200px;display:inline-block;'><img style='width: 100%; height: 100%'src='" + this.photos[this.photos.length - 1] + "'></img></div>&nbsp;";
-          console.log(this.photos[this.photos.length - 1]);
-          console.log(currentImages.innerHTML);
-        }
       }
     }
   }
+  
+  onDragOver(event: any) {
+    event.preventDefault();
+  }
 
+  onDrop(event: any) {
+    event.preventDefault();
+    const files = event.target.files;
+
+    for (const file of files) {
+      this.photos.push(URL.createObjectURL(file));
+    }
+
+  }
+  
   removeImage(index: number) {
     this.photos.splice(index, 1);
     console.log(this.photos);
@@ -60,6 +76,14 @@ export class CreateListingPage implements OnInit {
     }
   }
 
+  formatPrice() {
+    // Remove existing commas from the price
+    this.price = this.price.replace(/,/g, '');
+  
+    // Format the price with commas
+    this.price = this.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
   addFeature() {
     let feat_in = document.getElementById('feat-in') as HTMLInputElement;
 
@@ -70,6 +94,10 @@ export class CreateListingPage implements OnInit {
         feat_in.value = "";
       }
     }
+  }
+  //removeFeature
+  removeFeature(index: number) {
+    this.features.splice(index, 1);
   }
 
   changeListingType(){
@@ -124,4 +152,7 @@ export class CreateListingPage implements OnInit {
       console.log("Error in create-lisitng.page.ts");
     }
   }
+
+
 }
+
