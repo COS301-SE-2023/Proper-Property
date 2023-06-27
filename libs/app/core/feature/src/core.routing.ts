@@ -15,10 +15,10 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import('@properproperty/app/login/feature').then( m => m.LoginPageModule)
   },
-  // {
-  //   path: 'register',
-  //   loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
-  // },
+  {
+    path: 'register',
+    loadChildren: () => import('@properproperty/app/register/feature').then( m => m.RegisterPageModule)
+  },
   // {
   //   path: 'profile',
   //   loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
@@ -35,10 +35,10 @@ const routes: Routes = [
   //   path: 'listings',
   //   loadChildren: () => import('./listings/listings.module').then( m => m.ListingsPageModule)
   // },
-  // {
-  //   path: 'copyright',
-  //   loadChildren: () => import('./copyright/copyright.module').then( m => m.CopyrightPageModule)
-  // },
+  {
+    path: 'copyright',
+    loadChildren: () => import('@properproperty/app/copyright/feature').then( m => m.CopyrightPageModule)
+  },
   // {
   //   path: 'version',
   //   loadChildren: () => import('./version/version.module').then( m => m.VersionPageModule)

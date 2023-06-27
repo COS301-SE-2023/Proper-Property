@@ -33,6 +33,9 @@
       "@properproperty/app/profile/util": [
         "libs/app/profile/util/src/index.ts"
       ],
+      "@properproperty/app/register/feature": [
+        "libs/app/register/feature/src/index.ts"
+      ],
       "@properproperty/app/user/data-access": [
         "libs/app/user/data-access/src/index.ts"
       ]
