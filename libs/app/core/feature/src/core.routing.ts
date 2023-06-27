@@ -51,10 +51,10 @@ const routes: Routes = [
   //   path: 'settings',
   //   loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule)
   // },
-  // {
-  //   path: 'listing',
-  //   loadChildren: () => import('./listing/listing.module').then( m => m.ListingPageModule)
-  // },
+  {
+    path: 'listing',
+    loadChildren: () => import('@properproperty/app/listing/feature').then( m => m.ListingPageModule)
+  },
   // {
   //   path: 'profile',
   //   loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
