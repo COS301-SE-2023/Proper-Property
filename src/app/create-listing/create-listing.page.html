@@ -65,12 +65,6 @@
 
 
 <ion-content [fullscreen]="true">
-  <!-- <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">create-listing</ion-title>
-    </ion-toolbar>
-  </ion-header> -->
-
   <ion-grid [fixed]="true">
     <ion-label class="imageText" >Add Photos of your property</ion-label>
     <span class="required-indicator" *ngIf="!photos.length">*</span>
@@ -260,8 +254,8 @@
     <ion-row>
       <ion-col>
         <h2>Property Description</h2>
-        <textarea id="desc" rows="10" cols="50"></textarea><br>
-        <ion-button>AI Generated Description</ion-button>
+        <textarea id="desc" rows="10" cols="50">{{description}}</textarea><br>
+        <ion-button (click)="generateDesc()">AI Generated Description</ion-button>
       </ion-col>
     </ion-row>
 

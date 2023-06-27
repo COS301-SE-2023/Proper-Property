@@ -17,4 +17,5 @@ export interface listing{
     photos: string[];
     desc: string;
     let_sell: string;
+    heading: string;
 }

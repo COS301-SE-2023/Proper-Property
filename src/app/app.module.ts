@@ -15,6 +15,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { provideStorage, getStorage, connectStorageEmulator } from '@angular/fire/storage';
 import { AuthService } from './services/auth/auth.service';
 
+import {HttpClientModule} from '@angular/common/http';
+
 
 
 @NgModule({
@@ -23,6 +25,7 @@ import { AuthService } from './services/auth/auth.service';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    HttpClientModule,
     provideAuth(() => {
       const auth = getAuth();
       if (environment.useEmulators) {
