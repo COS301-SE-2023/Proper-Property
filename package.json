@@ -7,6 +7,7 @@
     "ng": "ng",
     "start": "ng serve",
     "emulators": "firebase emulators:start --project=demo-project",
+    "emulators_data": "firebase emulators:start --project=demo-project --import=./emulators",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
