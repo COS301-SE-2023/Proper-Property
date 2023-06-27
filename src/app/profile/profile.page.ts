@@ -100,7 +100,7 @@ export class ProfilePage implements OnInit {
     this.userServices.deleteUser(this.userServices.currentUser?.user_id ?? '');
     this.authServices.deleteCurrentUser();
     //redirect to login
-    this.router.navigate(['/login']);
+    this.router.navigate(['/register']);
   }
 
 }
