@@ -29,7 +29,6 @@
     "@capacitor/keyboard": "5.0.2",
     "@capacitor/status-bar": "5.0.2",
     "@ionic/angular": "^7.0.0",
-    "cypress": "^3.4.1",
     "firebase": "^9.22.0",
     "firebaseui": "^6.0.2",
     "firebaseui-angular": "^6.1.3",
