@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user/user.service';
+import { AlertController } from '@ionic/angular';
 
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -35,7 +37,7 @@ export class ProfilePage implements OnInit {
     this.isEditingEmail = false;
   }
 
-  constructor( private userServices: UserService) {
+  constructor( private userServices: UserService, private alertController: AlertController, private router: Router) {
 
     
     this.user = {
@@ -50,7 +52,7 @@ export class ProfilePage implements OnInit {
         ecoWarrior: 60,
       },
     };
-    
+
     this.user.name = this.userServices.currentUser?.first_name ?? '';
     this.user.surname = this.userServices.currentUser?.last_name ?? '';
     this.user.email = this.userServices.currentUser?.email ?? '';
@@ -62,6 +64,38 @@ export class ProfilePage implements OnInit {
    }
 
   ngOnInit() {
+  }
+  async confirmDeleteAccount() {
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      message: 'Are you sure you want to delete your account?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Delete account canceled');
+          }
+        },
+        {
+          text: 'Delete',
+          cssClass: 'danger',
+          handler: () => {
+            this.deleteAccount();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  deleteAccount() {
+    // Perform validation or additional logic here if needed
+    this.userServices.deleteUser(this.userServices.currentUser?.user_id ?? '');
+    //redirect to login
+    this.router.navigate(['/login']);
   }
 
 }
