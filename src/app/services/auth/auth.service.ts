@@ -80,8 +80,8 @@ export class AuthService {
           console.log(error);
         });
     }
+    return Promise.reject('No user is currently authenticated.'); // Return a rejected promise if no user is found
   }
-
   
   editEmail(newEmail: string) {
     const user = this.auth.currentUser;
@@ -94,6 +94,8 @@ export class AuthService {
           console.log(error);
         });
     }
+    return Promise.reject('No user is currently authenticated.'); // Return a rejected promise if no user is found
   }
+  
 
 }
