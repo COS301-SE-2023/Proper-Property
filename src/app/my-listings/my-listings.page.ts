@@ -35,13 +35,55 @@ export class MyListingsPage  implements OnInit, OnDestroy  {
     private router: Router,
     private listingServices : ListingsService,
     private userServices: UserService,
-    ) {}
+    ) {
+
+      //this.userServices.getCurrentUser()?.user_id 
+      let user_listings: listing[] = [];
+
+      //for i = 0; i< listings size i++
+       for (let i = 0; i < this.listings.length; i++) {
+
+        //get the user_id of the listing
+        let user_ID = this.listings[i].user_id;
+
+        //declare a listing[] array
+        
+
+
+        if (userServices.getCurrentUser()?.user_id == user_ID) {
+          user_listings.push(this.listings[i]);
+        }
+        
+       }
+
+       this.listings = user_listings;
+  
+    }
 
   async ngOnInit() {
     await this.listingServices.getListings().then((listings) => {
       this.listings = listings;
     });
 
+    let user_listings: listing[] = [];
+
+    //for i = 0; i< listings size i++
+     for (let i = 0; i < this.listings.length; i++) {
+
+      //get the user_id of the listing
+      let user_ID = this.listings[i].user_id;
+
+      //declare a listing[] array
+      
+
+
+      if (this.userServices.getCurrentUser()?.user_id == user_ID) {
+        user_listings.push(this.listings[i]);
+      }
+      
+     }
+
+     this.listings = user_listings;
   
   }
 
