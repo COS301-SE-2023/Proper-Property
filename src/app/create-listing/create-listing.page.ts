@@ -112,10 +112,10 @@ export class CreateListingPage implements OnInit {
   async addListing(){
     // let add_in = document.getElementById('address') as HTMLInputElement;
     // let price_in = document.getElementById('price') as HTMLInputElement;
-    // let pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
+    let pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
     let env_type_in = document.getElementById('env-type') as HTMLInputElement;
     let prop_type_in = document.getElementById('prop-type') as HTMLInputElement;
-    // let furnish_type_in = document.getElementById('furnish-type') as HTMLInputElement;
+    let furnish_type_in = document.getElementById('furnish-type') as HTMLInputElement;
     let orientation_in = document.getElementById('orientation') as HTMLInputElement;
     // let floor_size_in = document.getElementById('floor-size') as HTMLInputElement;
     // let property_size_in = document.getElementById('property-size') as HTMLInputElement;
@@ -130,10 +130,10 @@ export class CreateListingPage implements OnInit {
         user_id: this.currentUser.user_id,
         address: this.address,
         price: this.price,
-        pos_type: "",
+        pos_type: pos_type_in.value,
         env_type: env_type_in.value,
         prop_type: prop_type_in.value,
-        furnish_type: "",
+        furnish_type: furnish_type_in.value,
         orientation: orientation_in.value,
         floor_size: this.floor_size,
         property_size: this.erf_size,
