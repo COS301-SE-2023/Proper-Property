@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../services/user/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfilePage implements OnInit {
 
+  
   user: { name: string, surname: string, email: string, interests: any };
   isEditingEmail: boolean;
   newEmail: string;
@@ -33,7 +35,9 @@ export class ProfilePage implements OnInit {
     this.isEditingEmail = false;
   }
 
-  constructor() {
+  constructor( private userServices: UserService) {
+
+    
     this.user = {
       email:"john@example.com",
       name: 'John',
@@ -46,8 +50,15 @@ export class ProfilePage implements OnInit {
         ecoWarrior: 60,
       },
     };
+    
+    this.user.name = this.userServices.currentUser?.first_name ?? '';
+    this.user.surname = this.userServices.currentUser?.last_name ?? '';
+    this.user.email = this.userServices.currentUser?.email ?? '';
+    
     this.isEditingEmail = false;
     this.newEmail = '';
+
+  
    }
 
   ngOnInit() {
