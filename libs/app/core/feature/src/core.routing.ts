@@ -31,10 +31,10 @@ const routes: Routes = [
   //   path: 'loading',
   //   loadChildren: () => import('./loading/loading.module').then( m => m.LoadingPageModule)
   // },
-  // {
-  //   path: 'listings',
-  //   loadChildren: () => import('./listings/listings.module').then( m => m.ListingsPageModule)
-  // },
+  {
+    path: 'listings',
+    loadChildren: () => import('@properproperty/app/listings/feature').then( m => m.ListingsPageModule)
+  },
   {
     path: 'copyright',
     loadChildren: () => import('@properproperty/app/copyright/feature').then( m => m.CopyrightPageModule)

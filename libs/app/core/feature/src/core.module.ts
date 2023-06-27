@@ -1,4 +1,4 @@
-import { NgModule, isDevMode } from '@angular/core';
+import { InjectionToken, NgModule, isDevMode } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Http requests in lieu of firebase Cloud Functions
 import { HttpClientModule } from '@angular/common/http';
@@ -59,6 +59,8 @@ import {
   getAnalytics
 } from '@angular/fire/analytics';
 import { get } from 'http';
+// TODO See if better way exists to hide key
+import { API_KEY_TOKEN } from '@properproperty/app/google-maps/util';
 
 const NX_ENVIRONMENT = process.env['NX_ENVIRONMENT'] || 'development';
 const USE_EMULATORS = JSON.parse(process.env['USE_EMULATORS'] || 'true');
@@ -123,7 +125,12 @@ if (NX_ENVIRONMENT === 'development') {
     }),
   ],
   // exports: [CoreShell],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  // 
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    // TODO See if better way exists to hide key
+    { provide: API_KEY_TOKEN, useValue: process.env['NX_GOOGLE_MAPS_KEY'] },
+  ],
   bootstrap: [CoreShell],
 })
 export class CoreModule {}
