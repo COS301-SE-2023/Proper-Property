@@ -114,6 +114,13 @@ if (NX_ENVIRONMENT === 'development') {
       }
       return functions;
     }),
+    provideStorage(() => {
+      const storage = getStorage();
+      if (USE_EMULATORS) {
+        connectStorageEmulator(storage, 'localhost', 9199);
+      }
+      return storage;
+    }),
   ],
   // exports: [CoreShell],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],

@@ -43,10 +43,10 @@ const routes: Routes = [
   //   path: 'version',
   //   loadChildren: () => import('./version/version.module').then( m => m.VersionPageModule)
   // },
-  // {
-  //   path: 'create-listing',
-  //   loadChildren: () => import('./create-listing/create-listing.module').then( m => m.CreateListingPageModule)
-  // },
+  {
+    path: 'create-listing',
+    loadChildren: () => import('@properproperty/app/create-listing/feature').then( m => m.CreateListingPageModule)
+  },
   // {
   //   path: 'settings',
   //   loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule)
