@@ -40,6 +40,11 @@ export class UserService {
     });
   }
 
+  async updateUserEmail(Email:string) {
+    const userRef = doc(this.firestore, `users/${this.currentUser?.user_id}`);
+    await updateDoc(userRef, {email: Email});
+  }
+
   async deleteUser(uid: string) {
     const userRef = doc(this.firestore, `users/${uid}`);
     await deleteDoc(userRef);

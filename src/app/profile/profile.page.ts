@@ -34,6 +34,7 @@ export class ProfilePage implements OnInit {
   saveEmail() {
     // Perform validation or additional logic here if needed
     this.user.email = this.newEmail;
+    this.userServices.updateUserEmail(this.newEmail);
     this.isEditingEmail = false;
   }
 
