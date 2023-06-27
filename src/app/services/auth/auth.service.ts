@@ -24,13 +24,15 @@
 // }
 
 import { Injectable } from '@angular/core';
+import { deleteUser } from "@angular/fire/auth";
 import { GoogleAuthProvider } from 'firebase/auth';
 import { 
   Auth,
   getAuth, 
   signInWithEmailAndPassword, 
   signInWithPopup, 
-  createUserWithEmailAndPassword 
+  createUserWithEmailAndPassword,
+  updateEmail
 } from "@angular/fire/auth";
 
 @Injectable({
@@ -66,4 +68,32 @@ export class AuthService {
   register(email: string, password: string) {
     return createUserWithEmailAndPassword(this.auth, email, password);
   }
+
+  deleteCurrentUser() {
+    const user = this.auth.currentUser;
+    if (user) {
+      return deleteUser(user)
+        .then(() => {
+          console.log('User deleted successfully!');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+
+  
+  editEmail(newEmail: string) {
+    const user = this.auth.currentUser;
+    if (user) {
+      return updateEmail(user, newEmail)
+        .then(() => {
+          console.log('Email updated successfully!');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+
 }

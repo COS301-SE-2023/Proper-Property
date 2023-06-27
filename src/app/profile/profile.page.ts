@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user/user.service';
+import {AuthService} from '../services/auth/auth.service';
 import { AlertController } from '@ionic/angular';
+import {getAuth,updateEmail,deleteUser} from 'firebase/auth'
 
 import { Router } from '@angular/router';
 @Component({
@@ -35,10 +37,11 @@ export class ProfilePage implements OnInit {
     // Perform validation or additional logic here if needed
     this.user.email = this.newEmail;
     this.userServices.updateUserEmail(this.newEmail);
+    this.authServices.editEmail(this.newEmail);
     this.isEditingEmail = false;
   }
 
-  constructor( private userServices: UserService, private alertController: AlertController, private router: Router) {
+  constructor( private userServices: UserService, private authServices:AuthService, private alertController: AlertController, private router: Router) {
 
     
     this.user = {
@@ -95,6 +98,7 @@ export class ProfilePage implements OnInit {
   deleteAccount() {
     // Perform validation or additional logic here if needed
     this.userServices.deleteUser(this.userServices.currentUser?.user_id ?? '');
+    this.authServices.deleteCurrentUser();
     //redirect to login
     this.router.navigate(['/login']);
   }
