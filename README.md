@@ -2,7 +2,21 @@
  <img src="https://user-images.githubusercontent.com/98401898/234871025-85165ef2-303b-48b1-8df1-e5afd9520a3b.png">
 </p>
 <h1 align="center">Proper Property</h1>
-<h3 align = "center">A real estate listing platform that aims to differentiate itself from existing platforms!!</h3>
+<h3 align = "center">Discover Proper Property: Your Ultimate AI-Powered Real Estate Solution!</h3>
+<p>
+Proper Property is an all-in-one property listing application that seamlessly connects buyers, sellers, and renters. With its advanced AI technology, it offers an exceptional user experience while delivering powerful features and invaluable insights.
+
+Sellers and landlords can easily list their properties with detailed information, including captivating images, immersive virtual tours, floor plans, and location descriptions. Unique features are highlighted, providing a comprehensive view of each property.
+
+Searching for listings is effortless with Proper Property as users can explore properties based on location through an interactive map, and powerful filtering options allow for precise results. Users can filter by property type, price range, bedrooms, and even indicate preferences for solar-powered properties or those unaffected by load shedding.
+
+Each listing displays key details such as images, price, virtual tours, floor plans, agent contact information, location, and additional information allowing users to make informed decisions and seamlessly connect with agents or property owners. And to ensure quality control, listings are moderated and approved by an admin user.
+
+For sellers and landlords, Proper Property offers detailed analytics using Google Analytics, providing valuable insights into listing performance and user engagement.
+
+Ensuring transparency, Proper Property collects and analyzes crucial location details, including power outages, water supply, crime rates, school quality, and traffic conditions. This information is presented in a user-friendly format, enabling users to gauge the quality of an area effortlessly. Proper Property automatically calculates points of interest, such as schools and hospitals, and their distances from a given property location, simplifying decision-making for buyers.
+
+Proper Property empowers users with its intuitive interface, AI-driven recommendations, comprehensive information, analytics, and smart features. Experience the future of real estate with Proper Property—your ultimate real estate companion!</p>
 
 ---
 
