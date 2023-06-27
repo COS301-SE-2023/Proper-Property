@@ -68,7 +68,7 @@
     <ion-row>
       <ion-col size="12" size-sm="6" size-md="4">
 
-  <ion-card *ngFor="let listing of mylistings" (click)="redirectToPage(listing)">
+  <ion-card *ngFor="let listing of listings" (click)="redirectToPage(listing)">
   <ion-card-header>
     <img src="{{listing.photos[0]}}" alt="house1">
     <ion-card-title>House</ion-card-title>
