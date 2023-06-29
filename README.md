@@ -18,6 +18,8 @@ Ensuring transparency, Proper Property collects and analyzes crucial location de
 
 Proper Property empowers users with its intuitive interface, AI-driven recommendations, comprehensive information, analytics, and smart features. Experience the future of real estate with Proper Property—your ultimate real estate companion!</p>
 
+<u>Documentation<</u>
+[SRS:](https://drive.google.com/drive/folders/1sYzj48ftlAf5qFeSCs_vx5AC5oOyDngf)
 ---
 
 # Team Members
