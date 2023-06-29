@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { profile } from '@properproperty/app/profile/util';
-import { Firestore, doc, docData, updateDoc, setDoc, FirestoreDataConverter, getDoc } from '@angular/fire/firestore';
+import { Firestore, doc, docData, updateDoc, setDoc, FirestoreDataConverter, getDoc, deleteDoc } from '@angular/fire/firestore';
 import { Observable, tap } from 'rxjs';
 
 
@@ -38,6 +38,16 @@ export class UserService {
       user.user_id = uid;
       this.setCurrentUser(user);
     });
+  }
+
+  async updateUserEmail(Email:string) {
+    const userRef = doc(this.firestore, `users/${this.currentUser?.user_id}`);
+    await updateDoc(userRef, {email: Email});
+  }
+
+  async deleteUser(uid: string) {
+    const userRef = doc(this.firestore, `users/${uid}`);
+    await deleteDoc(userRef);
   }
 
   async getUser(uid: string) : Promise<profile>{
