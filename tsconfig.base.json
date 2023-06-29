@@ -72,6 +72,9 @@
       "@properproperty/app/search/feature": [
         "libs/app/search/feature/src/index.ts"
       ],
+      "@properproperty/app/settings/feature": [
+        "libs/app/settings/feature/src/index.ts"
+      ],
       "@properproperty/app/user/data-access": [
         "libs/app/user/data-access/src/index.ts"
       ]

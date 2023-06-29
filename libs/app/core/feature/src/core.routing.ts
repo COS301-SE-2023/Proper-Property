@@ -47,10 +47,10 @@ const routes: Routes = [
     path: 'create-listing',
     loadChildren: () => import('@properproperty/app/create-listing/feature').then( m => m.CreateListingPageModule)
   },
-  // {
-  //   path: 'settings',
-  //   loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule)
-  // },
+  {
+    path: 'settings',
+    loadChildren: () => import('@properproperty/app/settings/feature').then( m => m.SettingsPageModule)
+  },
   {
     path: 'listing',
     loadChildren: () => import('@properproperty/app/listing/feature').then( m => m.ListingPageModule)
