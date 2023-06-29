@@ -66,6 +66,9 @@
       "@properproperty/app/register/feature": [
         "libs/app/register/feature/src/index.ts"
       ],
+      "@properproperty/app/saved-listings/feature": [
+        "libs/app/saved-listings/feature/src/index.ts"
+      ],
       "@properproperty/app/user/data-access": [
         "libs/app/user/data-access/src/index.ts"
       ]
