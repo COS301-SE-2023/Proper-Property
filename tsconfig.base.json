@@ -51,6 +51,9 @@
       "@properproperty/app/login/feature": [
         "libs/app/login/feature/src/index.ts"
       ],
+      "@properproperty/app/my-listings/feature": [
+        "libs/app/my-listings/feature/src/index.ts"
+      ],
       "@properproperty/app/open-ai/data-access": [
         "libs/app/open-ai/data-access/src/index.ts"
       ],

@@ -63,10 +63,10 @@ const routes: Routes = [
   //   path: 'saved-listings',
   //   loadChildren: () => import('./saved-listings/saved-listings.module').then( m => m.SavedListingsPageModule)
   // },
-  // {
-  //   path: 'my-listings',
-  //   loadChildren: () => import('./my-listings/my-listings.module').then( m => m.MyListingsPageModule)
-  // }
+  {
+    path: 'my-listings',
+    loadChildren: () => import('@properproperty/app/my-listings/feature').then( m => m.MyListingsPageModule)
+  }
 
 
 ];
