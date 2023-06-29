@@ -27,10 +27,10 @@ const routes: Routes = [
     path: 'search',
     loadChildren: () => import('@properproperty/app/search/feature').then( m => m.SearchPageModule)
   },
-  // {
-  //   path: 'loading',
-  //   loadChildren: () => import('./loading/loading.module').then( m => m.LoadingPageModule)
-  // },
+  {
+    path: 'loading',
+    loadChildren: () => import('@properproperty/app/loading/feature').then( m => m.LoadingPageModule)
+  },
   {
     path: 'listings',
     loadChildren: () => import('@properproperty/app/listings/feature').then( m => m.ListingsPageModule)

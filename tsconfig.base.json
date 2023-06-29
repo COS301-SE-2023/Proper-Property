@@ -48,6 +48,9 @@
       "@properproperty/app/listings/feature": [
         "libs/app/listings/feature/src/index.ts"
       ],
+      "@properproperty/app/loading/feature": [
+        "libs/app/loading/feature/src/index.ts"
+      ],
       "@properproperty/app/login/feature": [
         "libs/app/login/feature/src/index.ts"
       ],
