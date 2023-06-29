@@ -39,10 +39,10 @@ const routes: Routes = [
     path: 'copyright',
     loadChildren: () => import('@properproperty/app/copyright/feature').then( m => m.CopyrightPageModule)
   },
-  // {
-  //   path: 'version',
-  //   loadChildren: () => import('./version/version.module').then( m => m.VersionPageModule)
-  // },
+  {
+    path: 'version',
+    loadChildren: () => import('@properproperty/app/version/feature').then( m => m.VersionPageModule)
+  },
   {
     path: 'create-listing',
     loadChildren: () => import('@properproperty/app/create-listing/feature').then( m => m.CreateListingPageModule)
@@ -55,10 +55,6 @@ const routes: Routes = [
     path: 'listing',
     loadChildren: () => import('@properproperty/app/listing/feature').then( m => m.ListingPageModule)
   },
-  // {
-  //   path: 'profile',
-  //   loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
-  // },
   {
     path: 'saved-listings',
     loadChildren: () => import('@properproperty/app/saved-listings/feature').then( m => m.SavedListingsPageModule)
