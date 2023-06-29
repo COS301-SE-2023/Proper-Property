@@ -23,10 +23,10 @@ const routes: Routes = [
     path: 'profile',
     loadChildren: () => import('@properproperty/app/profile/feature').then( m => m.ProfilePageModule)
   },
-  // {
-  //   path: 'search',
-  //   loadChildren: () => import('./search/search.module').then( m => m.SearchPageModule)
-  // },
+  {
+    path: 'search',
+    loadChildren: () => import('@properproperty/app/search/feature').then( m => m.SearchPageModule)
+  },
   // {
   //   path: 'loading',
   //   loadChildren: () => import('./loading/loading.module').then( m => m.LoadingPageModule)
