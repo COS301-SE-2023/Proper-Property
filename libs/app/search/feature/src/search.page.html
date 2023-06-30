@@ -17,7 +17,14 @@
   </ion-segment>
 
   <div [ngSwitch]="activeTab">
+
+    <div class="search-container">
     <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterProperties()"></ion-searchbar>
+    <ion-button class="search-button" (click)="searchProperties()">
+      <ion-icon name="search"> search</ion-icon>
+    </ion-button>
+    </div>
+
 
     <ion-item class="filter">
       <ion-label>Property Type</ion-label>
@@ -65,6 +72,7 @@
         {{ showAdditionalFilters ? 'Less Filters' : 'More Filters' }}
       </ion-button>
     </ion-item>
+    
 
     <!-- Additional Filters -->
     <div *ngIf="showAdditionalFilters">
@@ -125,9 +133,49 @@
     </ion-list>
 
     <ion-list *ngSwitchCase="'Rent'">
-      <ion-item *ngFor="let property of filteredListingProperties">
+      <ion-item *ngFor="let property of filteredRentingProperties">
         {{ property.title }}
       </ion-item>
     </ion-list>
   </div>
+
+
+  <div id="listings-and-map">
+
+    <div>
+      <ion-card *ngFor="let listing of listings" (click)="redirectToPage(listing)">
+        <ion-card-header>
+          <img src="{{listing.photos[0]}}" alt="house1">
+          <ion-card-title>House</ion-card-title>
+          <ion-card-subtitle style="color: #0DAE4F;">R {{listing.price}}</ion-card-subtitle>
+        </ion-card-header>
+      
+        <ion-card-content>
+          <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+          {{listing.desc}}
+          </p>
+          <br>
+          <br>
+          <div id="house_details">
+            <img src="assets/icon/bedrooms.png">
+            {{listing.bed}}
+            &nbsp; &nbsp;&nbsp;
+            <img src="assets/icon/bathrooms.png">
+            {{listing.bath}}
+            &nbsp; &nbsp;&nbsp;
+            <img src="assets/icon/floorplan.png">
+              {{listing.floor_size}} m<sup>2</sup> 
+              &nbsp; &nbsp;&nbsp;
+            <img src="assets/icon/erf.png">
+            {{listing.property_size}} m<sup>2</sup>
+          </div>
+          <button class="heart-button" [ngClass]="{'red': isRed}" (click)="toggleColor()">
+            <ion-icon name="heart" class="heart-icon"></ion-icon>
+          </button>
+        </ion-card-content>
+      </ion-card>
+    </div>
+    <div slot="fixed" class="map"  #map></div>
+  </div>
+
 </ion-content>

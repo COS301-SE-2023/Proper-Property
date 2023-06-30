@@ -1,14 +1,152 @@
 .filter {
-  border-radius: 10px;
-  //make it smaller so that 4 can fit in 1 line
-  width: 20%;
-  margin: 0 5px;
-  //make all of them fit in 1 line
-  display: inline-block;
+    border-radius: 10px;
+    //make it smaller so that 4 can fit in 1 line
+    width: 20%;
+    margin: 0 5px;
+    //make all of them fit in 1 line
+    display: inline-block;
 
 }
 
 .btnFilters {
-  width: 15%;
- 
+    width: 15%;
+   
 }
+
+.link{
+    --color: var( --ion-color-primary-contrast);
+  }
+  
+  .active
+  {
+    --color: var( --ion-color-primary);
+  }
+  
+  ion-toolbar{
+    --background: rgb(255, 255, 255);
+  }
+  
+  
+  //make the img in ion-card-header smaller
+  ion-card-header img {
+      width: 200px;
+      height: 130px;
+      //rounded edges
+      border-radius: 10px;
+    }
+    
+    //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
+    ion-card-header ion-card-title {
+      margin-left: 220px;
+      //move ths up
+        margin-top: -130px;
+    }
+    
+    ion-card-header ion-card-subtitle {
+        margin-left: 220px;
+      }
+    
+    ion-card ion-card-content {
+        margin-left: 220px;
+      }
+    
+    //make the ion-card take only half of the page
+      ion-card {
+          width: 50%;
+          margin-left: 2%;
+          margin-top: 10px;
+          border-radius: 10px;
+      }
+  
+      //styling for div with id="house_details"
+      #house_details img {
+        //set image size
+        width: 15px;
+        height: 15px;
+      }
+  
+      .heart-button {
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        //move it to right hand corner
+        margin-left: 90%;
+        margin-top: -30px;
+      }
+      
+      // .heart-icon {
+      //   color: red;
+      //   font-size: 24px;
+      // }
+  
+      .red {
+        color: red;
+      }
+      
+      .grey {
+        color: grey;
+      }
+      
+      .map {
+        // margin-left: 50%;
+        width: 40%;
+        margin-left: 55%;
+        margin-top: -13%;
+    
+        height: 600px;
+        border-radius: 10px;
+        background-color: transparent;
+        opacity: 0;
+        transition: opacity 150ms ease-in;
+      }
+  
+      .map.visible {
+        opacity: 1;
+      }
+  
+      #map {
+        width: 50%;
+        margin-left: 2%;
+        margin-top: 10px;
+        border-radius: 10px;
+      }
+  
+      // #login-button{
+      //   background-color: #0DAE4F;
+      //   color: white;
+      // }
+  
+      #back-arrow{
+        color: #0DAE4F;
+      }
+
+      #listings-and-map {
+        transition: transform 0.3s ease-in-out;
+      }
+      
+      .more-filters-visible #listings-and-map {
+        transform: translateY(100px);
+      }
+      
+      .search-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px;
+      }
+      
+      .search-button {
+        background-color: #0DAE4F;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      
