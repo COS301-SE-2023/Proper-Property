@@ -1,5 +1,11 @@
-import { Component, ElementRef, ViewChild} from '@angular/core';
+import { Component, ElementRef, Input, ViewChild} from '@angular/core';
+import { listing } from '../listing/interfaces/listing.interface';
 import Swiper from 'swiper';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ListingsService } from '../services/listings/listings.service';
+import { UserService } from '../services/user/user.service';
+import { profile } from '../profile/interfaces/profile.interface';
+
 
 @Component({
   selector: 'app-listing',
@@ -7,11 +13,13 @@ import Swiper from 'swiper';
   styleUrls: ['./listing.page.scss'],
 })
 export class ListingPage{
-  @ViewChild('swiper')
-  swiperRef: ElementRef | undefined;
+  @ViewChild('swiper') swiperRef?: ElementRef;
   swiper?: Swiper;
+  list : listing | null = null;
+  price_per_sm : number = 0;
+  lister_name : string = "";
 
-  constructor() {
+  constructor(private router: Router, private route: ActivatedRoute, private listingServices : ListingsService, private userServices : UserService) {
     this.loanAmount = 0;
     this.interestRate = 0;
     this.loanTerm = 0;
@@ -19,8 +27,24 @@ export class ListingPage{
     this.totalOnceOffCosts = 0;
     this.minGrossMonthlyIncome = 0;
    }
+
+  async ngOnInit() {
+    let list_id : string = "";
+    this.route.params.subscribe((params) => list_id = params['list']);
+    await this.listingServices.getListing(list_id).then((list) => {
+      this.list = list;
+    });
+    console.log(this.list);
+    this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
+
+    await this.userServices.getUser("" + this.list?.user_id).then((user : profile) => {
+      console.log(user);
+      this.lister_name = user.first_name + " " + user.last_name;
+    })
+  }
   
   swiperReady() {
+    console.log(this.swiperRef?.nativeElement.swiper);
     this.swiper = this.swiperRef?.nativeElement.swiper;
   }
 

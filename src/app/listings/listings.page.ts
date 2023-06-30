@@ -3,9 +3,10 @@
 
 import { GmapsService } from '../services/gmaps.service';
 import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
-
+import { ActionSheetController, ModalController } from '@ionic/angular';
+import { ListingsService } from '../services/listings/listings.service';
 import { Router } from '@angular/router';
+import { listing } from '../listing/interfaces/listing.interface';
 
 
 @Component({
@@ -23,16 +24,21 @@ export class ListingsPage  implements OnInit, OnDestroy  {
   mapClickListener: any;
   markerClickListener: any;
   markers: any[] = [];
+  listings: listing[] = []
 
 
   constructor(
     private gmaps: GmapsService,
     private renderer: Renderer2,
     private actionSheetCtrl: ActionSheetController,
-    private router: Router
+    private router: Router,
+    private listingServices : ListingsService,
     ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    await this.listingServices.getListings().then((listings) => {
+      this.listings = listings;
+    });
   }
 
   ngAfterViewInit() {
@@ -127,8 +133,9 @@ export class ListingsPage  implements OnInit, OnDestroy  {
     await actionSheet.present();
   }
 
-  redirectToPage() {
-    this.router.navigateByUrl('/listing');
+  async redirectToPage(listing : listing) {
+    console.log(listing.listing_id);
+    this.router.navigate(['/listing', {list : listing.listing_id}]);
   }
 
   ngOnDestroy() {
@@ -143,6 +150,4 @@ export class ListingsPage  implements OnInit, OnDestroy  {
   toggleColor() {
     this.isRed = !this.isRed;
   }
-  
-
 }

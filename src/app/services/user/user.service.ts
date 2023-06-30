@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { profile } from '../../profile/interfaces/profile.interface';
-import { Firestore, collection, collectionData, doc, docData, addDoc, deleteDoc, updateDoc, setDoc } from '@angular/fire/firestore';
+import { Firestore, doc, docData, updateDoc, setDoc, FirestoreDataConverter, getDoc, deleteDoc } from '@angular/fire/firestore';
 import { Observable, tap } from 'rxjs';
 
 
@@ -33,20 +33,30 @@ export class UserService {
 
   async loginUser(uid : string){
     const userRef = doc(this.firestore, `users/${uid}`);
-    let user$ = docData(userRef) as Observable<profile>;
-
-    user$.subscribe({
-      next: (user: profile) => {
-        user.user_id = uid;
-        this.setCurrentUser(user);   
-      },
-      error: (error) => {
-        console.error('Error retrieving user data:', error);
-      }
+    await getDoc(userRef).then((doc) => {
+      let user = doc.data() as profile;
+      user.user_id = uid;
+      this.setCurrentUser(user);
     });
+  }
 
-    await updateDoc(userRef, {});
-    return;
+  async updateUserEmail(Email:string) {
+    const userRef = doc(this.firestore, `users/${this.currentUser?.user_id}`);
+    await updateDoc(userRef, {email: Email});
+  }
+
+  async deleteUser(uid: string) {
+    const userRef = doc(this.firestore, `users/${uid}`);
+    await deleteDoc(userRef);
+  }
+
+  async getUser(uid: string) : Promise<profile>{
+    return new Promise<profile>(async (resolve) => {
+      const userRef = doc(this.firestore, `users/${uid}`);
+      await getDoc(userRef).then((doc) => {
+        resolve(doc.data() as profile);
+      });
+    });
   }
 }
 
