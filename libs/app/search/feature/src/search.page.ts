@@ -1,9 +1,9 @@
-import { GmapsService } from '../services/gmaps.service';
+import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActionSheetController, ModalController } from '@ionic/angular';
-import { ListingsService } from '../services/listings/listings.service';
+import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
-import { listing } from '../listing/interfaces/listing.interface';
+import { listing } from '@properproperty/app/listing/util';
 
 interface Property {
   title: string;
