@@ -50,22 +50,33 @@ yarn-error.log
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.history/*
 
-
-# Miscellaneous
-/.angular
-/.angular/cache
-.sass-cache/
+# misc
+/.sass-cache
 /connect.lock
 /coverage
 /libpeerconnection.log
+npm-debug.log
+yarn-error.log
 testem.log
 /typings
 
-# System files
+# System Files
 .DS_Store
 Thumbs.db
+
+# Angular
+.angular
+
+# Firebase Logs
+database-debug.log
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+pubsub-debug.log
+
+# Emulators
+.emulators
 
 # Keys
 .keys/*.json
