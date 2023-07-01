@@ -25,7 +25,7 @@ export class LoginPage implements OnInit {
       }
       
     })
-    .catch((err) => console.log());
+    .catch((err) => console.log(err.message));
   }
 
   googleLogin(){

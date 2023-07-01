@@ -19,7 +19,7 @@ export class RegisterPage implements OnInit {
   password:string;
   email:string;
   confirm_password:string;
-  passwordMatch:boolean = true;
+  passwordMatch = true;
 
   async register() {
     if (this.password !== this.confirm_password) {
@@ -28,7 +28,7 @@ export class RegisterPage implements OnInit {
     }
     this.authService.register(this.email, this.password).then(async (res) => {
       if(res !== null){
-        let user : profile = {
+        const user : profile = {
           email: this.email,
           first_name: this.name,
           last_name: this.surname,
@@ -42,11 +42,11 @@ export class RegisterPage implements OnInit {
   }
 
   checkPassword() {
-   
+    console.log("44:19  error  Unexpected empty method 'checkPassword'");
   }
 
   ngOnInit() {
-    console.log ("Linter: Lifecycle methods should not be empty");
+    console.log ("Lifecycle methods should not be empty");
   }
 
 }

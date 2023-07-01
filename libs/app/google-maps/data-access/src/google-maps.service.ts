@@ -1,4 +1,4 @@
-import { Injectable, Inject, InjectionToken } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 // import { environment } from 'src/environments/environment';
 import { API_KEY_TOKEN } from '@properproperty/app/google-maps/util';
 @Injectable({
@@ -6,7 +6,7 @@ import { API_KEY_TOKEN } from '@properproperty/app/google-maps/util';
 })
 export class GmapsService {
 
-  constructor(@Inject(API_KEY_TOKEN) private key: any) { }
+  constructor(@Inject(API_KEY_TOKEN) private key: string) { }
 
   loadGoogleMaps(): Promise<any> {
     const win = window as any;

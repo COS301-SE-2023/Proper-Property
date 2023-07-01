@@ -9,7 +9,7 @@ export class SavedListingsPage implements OnInit {
   isLiked: boolean = true;
 
   unlikeCard(
-    event: any // Linter: warning  'event' is defined but never used, but it is used in the template
+    // event: Event
     ) {
     // Handle unliking logic here
     this.isLiked = false;

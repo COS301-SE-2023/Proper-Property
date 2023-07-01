@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { listing } from '@properproperty/app/listing/util';
 import Swiper from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,12 +12,12 @@ import { profile } from '@properproperty/app/profile/util';
   templateUrl: './listing.page.html',
   styleUrls: ['./listing.page.scss'],
 })
-export class ListingPage{
+export class ListingPage implements OnInit{
   @ViewChild('swiper') swiperRef?: ElementRef;
   swiper?: Swiper;
   list : listing | null = null;
-  price_per_sm : number = 0;
-  lister_name : string = "";
+  price_per_sm = 0;
+  lister_name = "";
 
   constructor(private router: Router, private route: ActivatedRoute, private listingServices : ListingsService, private userServices : UserService) {
     this.loanAmount = 0;
@@ -29,7 +29,7 @@ export class ListingPage{
    }
 
   async ngOnInit() {
-    let list_id : string = "";
+    let list_id = "";
     this.route.params.subscribe((params) => list_id = params['list']);
     await this.listingServices.getListing(list_id).then((list) => {
       this.list = list;
@@ -55,7 +55,7 @@ export class ListingPage{
     this.swiper?.slidePrev();
   }
 
-  swiperSlideChanged(e:any) {
+  swiperSlideChanged(e:Event) {
     console.log('changed', e)
   }
 

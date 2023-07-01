@@ -22,15 +22,15 @@ export class ListingsService {
 
   async createListing(list : listing){
     const listingsRef = collection(this.firestore, 'listings');
-    let listingRef = addDoc(listingsRef, list);
+    const listingRef = addDoc(listingsRef, list);
     await this.uploadImages((await listingRef).id, list.photos);
     console.log("Added to listings collection")
     await this.updateUserLisitings((await listingRef).id);
   }
 
-  async uploadImages(listingID : string, input: any) {
+  async uploadImages(listingID : string, input: string[]) {
     const photoURLs : string[] = [];
-    for(var i = 0; i < input.length; i++){
+    for(let i = 0; i < input.length; i++){
       const storageRef = ref(this.storage, "gs://demo-project.appspot.com/" + listingID + "/image" + i);
       await fetch("" + input[i]).then(res => res.blob())
       .then(async (blob : Blob) => {
@@ -65,11 +65,11 @@ export class ListingsService {
 
   async getListings(){
     const listingsRef = collection(this.firestore, 'listings');
-    let listings$ = ((await getDocs(listingsRef)).docs.map(doc => doc.data()) as listing[]);
-    let listings : listing[] = [];
+    const listings$ = ((await getDocs(listingsRef)).docs.map(doc => doc.data()) as listing[]);
+    const listings : listing[] = [];
 
     for(let i = 0; i < listings$.length; i++){
-      var temp : listing = listings$[i];
+      const temp : listing = listings$[i];
       temp.listing_id = ((await getDocs(listingsRef)).docs[i].id);
       console.log(temp.listing_id);
       listings.push(temp);
@@ -78,7 +78,7 @@ export class ListingsService {
   }
 
   async getListing(listing_id : string){
-    var listing : listing | null = null;
+    let listing : listing | null = null;
     const listingRef = doc(this.firestore, 'listings/' + listing_id);
     await getDoc(listingRef).then((doc) => {
       listing = doc.data() as listing;

@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from '@properproperty/app/user/data-access';
 import { profile } from '@properproperty/app/profile/util';
 import Swiper from 'swiper';
-import { Storage, ref } from '@angular/fire/storage';
-import { uploadBytes } from 'firebase/storage';
+// import { Storage, ref } from '@angular/fire/storage';
+// import { uploadBytes } from 'firebase/storage';
 
 
 @Component({
@@ -17,7 +17,7 @@ export class HomePage implements OnInit {
   swiperRef: ElementRef | undefined;
   swiper?: Swiper;
 
-  swiperSlideChanged(e:any) {
+  swiperSlideChanged(e:Event) {
     console.log('changed', e)
   }
   
@@ -31,8 +31,8 @@ export class HomePage implements OnInit {
    ngOnInit() {
     this.currentUser = this.userService.getCurrentUser();
     this.home = this.activatedRoute.snapshot.paramMap.get('id') as string;
-    let loginBut = document.getElementById('login-button');
-    let signupBut = document.getElementById('signup-button');
+    const loginBut = document.getElementById('login-button');
+    const signupBut = document.getElementById('signup-button');
 
     if(loginBut && signupBut){
       if(this.currentUser === null){

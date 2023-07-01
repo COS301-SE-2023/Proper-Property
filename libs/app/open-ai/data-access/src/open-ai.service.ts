@@ -1,6 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+interface OpenAIResponse {
+  id: string;
+  object: string;
+  created: number;
+  model: string;
+  choices: {
+    text: string;
+    index: number;
+    logprobs: number;
+    finish_reason: string;
+  }[];
+  usage: {
+    prompt_tokens: number;
+    completion_tokens: number;
+    total_tokens: number;
+  };
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -23,7 +40,7 @@ export class OpenAIService {
       }
 
       let desc = "";
-      this.http.post(this.apiUrl, data, {headers : this.headers}).subscribe((response: any) => {
+      this.http.post<OpenAIResponse>(this.apiUrl, data, {headers : this.headers}).subscribe((response: OpenAIResponse) => {
         desc = response['choices'][0]['text'];
         console.log(desc)
         resolve(desc);
@@ -43,7 +60,7 @@ export class OpenAIService {
       }
 
       let desc = "";
-      this.http.post(this.apiUrl, data, {headers : this.headers}).subscribe((response: any) => {
+      this.http.post<OpenAIResponse>(this.apiUrl, data, {headers : this.headers}).subscribe((response: OpenAIResponse) => {
         desc = response['choices'][0]['text'];
         console.log(desc)
         resolve(desc);

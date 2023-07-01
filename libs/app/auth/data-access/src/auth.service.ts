@@ -24,17 +24,17 @@
 // }
 
 import { Injectable } from '@angular/core';
-import { GoogleAuthProvider } from 'firebase/auth';
+import { GoogleAuthProvider, AuthProvider } from 'firebase/auth';
 import { 
   Auth,
-  getAuth, 
+  // getAuth, // 30:3   warning  'getAuth' is defined but never used
   signInWithEmailAndPassword, 
   signInWithPopup, 
   createUserWithEmailAndPassword,
   deleteUser,
   updateEmail
 } from "@angular/fire/auth";
-
+import { profile } from '@properproperty/app/profile/util';
 @Injectable({
   providedIn: 'root',
 })
@@ -45,9 +45,11 @@ export class AuthService {
     return this.AuthLogin(new GoogleAuthProvider());
   }
   // Auth logic to run auth providers
-  AuthLogin(provider : any) {
+  AuthLogin(provider : AuthProvider) {
     return signInWithPopup(this.auth, provider)
-      .then((result) => {
+      .then((
+        // result // 50:14  warning  'result' is defined but never used
+        ) => {
         console.log('You have been successfully logged in!');
       })
       .catch((error) => {
@@ -56,14 +58,14 @@ export class AuthService {
       });
   }
 
-  emailLogin(email : any, password : any){
+  emailLogin(email : string, password : string){
     return signInWithEmailAndPassword(this.auth, email, password).then((userCredential) => {
       return userCredential.user;
     })
-    .catch((error : any) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    }); 
+    // .catch((error : any) => {
+    //   const errorCode = error.code; // 64:13  warning  'errorCode' is assigned a value but never used
+    //   const errorMessage = error.message; // 65:13  warning  'errorMessage' is assigned a value but never used
+    // }); 
   }
   register(email: string, password: string) {
     return createUserWithEmailAndPassword(this.auth, email, password);
@@ -112,7 +114,7 @@ export class AuthService {
   }
 
   // Save profile data in a cookie
-  saveProfileData(profile: any) {
+  saveProfileData(profile: profile) {
     setCookie(this.PROFILE_COOKIE_NAME, JSON.stringify(profile), 7); // Set the cookie to expire in 7 days
   }
 

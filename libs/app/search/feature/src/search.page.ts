@@ -1,6 +1,6 @@
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { ActionSheetController, ModalController } from '@ionic/angular';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
 import { listing } from '@properproperty/app/listing/util';
@@ -19,7 +19,7 @@ interface Property {
 })
 
 
-export class SearchPage implements OnDestroy, OnInit {
+export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   @ViewChild('map', { static: true })
   mapElementRef!: ElementRef;
   googleMaps: any;
@@ -51,7 +51,7 @@ export class SearchPage implements OnDestroy, OnInit {
 
   async loadMap() {
     try {
-      let googleMaps: any = await this.gmaps.loadGoogleMaps();
+      const googleMaps: any = await this.gmaps.loadGoogleMaps();
       this.googleMaps = googleMaps;
       const mapEl = this.mapElementRef.nativeElement;
       const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
@@ -75,7 +75,7 @@ export class SearchPage implements OnDestroy, OnInit {
   }
 
   addMarker(location: any) {
-    let googleMaps: any = this.googleMaps;
+    const googleMaps: any = this.googleMaps;
     const icon = {
       url: 'assets/icon/map_card.png',
       scaledSize: new googleMaps.Size(100, 50), 
@@ -148,7 +148,7 @@ export class SearchPage implements OnDestroy, OnInit {
     if(this.markerClickListener) this.googleMaps.event.removeListener(this.markerClickListener);
   }
   //likes:
-  isRed: boolean = false;
+  isRed = false;
 
   toggleColor() {
     this.isRed = !this.isRed;
@@ -186,27 +186,27 @@ export class SearchPage implements OnDestroy, OnInit {
 
   }
 
-  activeTab: string = 'buying';
-  searchQuery: string = '';
-  selectedPropertyType: string = '';
-  selectedMinPrice: number = 0;
-  selectedMaxPrice: number = 0;
-  selectedBedrooms: number = 0;
-  showAdditionalFilters: boolean = false;
-  selectedBathrooms: number = 0;
-  selectedParking: number = 0;
-  selectedFloorSize: number = 0;
-  selectedErfSize: number = 0;
-  petFriendly: boolean = false;
-  garden: boolean = false;
-  pool: boolean = false;
-  flatlet: boolean = false;
-  other: boolean = false;
-  retirement: boolean = false;
-  repossession: boolean = false;
-  onShow: boolean = false;
-  securityEstate: boolean = false;
-  auction: boolean = false;
+  activeTab = 'buying';
+  searchQuery = '';
+  selectedPropertyType = '';
+  selectedMinPrice = 0;
+  selectedMaxPrice = 0;
+  selectedBedrooms = 0;
+  showAdditionalFilters = false;
+  selectedBathrooms = 0;
+  selectedParking = 0;
+  selectedFloorSize = 0;
+  selectedErfSize = 0;
+  petFriendly = false;
+  garden = false;
+  pool = false;
+  flatlet = false;
+  other = false;
+  retirement = false;
+  repossession = false;
+  onShow = false;
+  securityEstate = false;
+  auction = false;
 
   properties: Property[] = [
     { title: 'House 1', type: 'house', price: 100000, bedrooms: 3 },

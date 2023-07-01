@@ -2,7 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '@properproperty/app/user/data-access';
 import {AuthService} from '@properproperty/app/auth/data-access';
 import { AlertController } from '@ionic/angular';
-import {getAuth,updateEmail,deleteUser} from 'firebase/auth'
+
+interface Interests {
+  garden: number;
+  mansion: number;
+  accessible: number;
+  openConcept: number;
+  ecoWarrior: number;
+}
 
 import { Router } from '@angular/router';
 @Component({
@@ -13,7 +20,7 @@ import { Router } from '@angular/router';
 export class ProfilePage implements OnInit {
 
   
-  user: { name: string, surname: string, email: string, interests: any };
+  user: { name: string, surname: string, email: string, interests: Interests };
   isEditingEmail: boolean;
   newEmail: string;
   // appPages = [

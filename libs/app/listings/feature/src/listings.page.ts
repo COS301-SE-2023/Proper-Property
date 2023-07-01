@@ -2,8 +2,8 @@
 
 
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { ActionSheetController, ModalController } from '@ionic/angular';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
 import { listing } from '@properproperty/app/listing/util';
@@ -14,7 +14,7 @@ import { listing } from '@properproperty/app/listing/util';
   templateUrl: './listings.page.html',
   styleUrls: ['./listings.page.scss'],
 })
-export class ListingsPage  implements OnInit, OnDestroy  {
+export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
 
   @ViewChild('map', { static: true })
   mapElementRef!: ElementRef;
@@ -47,7 +47,7 @@ export class ListingsPage  implements OnInit, OnDestroy  {
 
   async loadMap() {
     try {
-      let googleMaps: any = await this.gmaps.loadGoogleMaps();
+      const googleMaps: any = await this.gmaps.loadGoogleMaps();
       this.googleMaps = googleMaps;
       const mapEl = this.mapElementRef.nativeElement;
       const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
@@ -71,7 +71,7 @@ export class ListingsPage  implements OnInit, OnDestroy  {
   }
 
   addMarker(location: any) {
-    let googleMaps: any = this.googleMaps;
+    const googleMaps: any = this.googleMaps;
     const icon = {
       url: 'assets/icon/map_card.png',
       scaledSize: new googleMaps.Size(100, 50), 
@@ -145,7 +145,7 @@ export class ListingsPage  implements OnInit, OnDestroy  {
   }
 
   //likes:
-  isRed: boolean = false;
+  isRed = false;
 
   toggleColor() {
     this.isRed = !this.isRed;

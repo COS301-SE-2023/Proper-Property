@@ -91,7 +91,7 @@
       {{listing.property_size}} m<sup>2</sup>
     </div>
 
-    <ion-button fill="clear" (click)="unlikeCard($event)" class="like-button" [ngClass]="{'red': isRed}" (click)="toggleColor()">
+    <ion-button fill="clear" (click)="unlikeCard()" class="like-button" [ngClass]="{'red': isRed}" (click)="toggleColor()">
       <ion-icon name="heart" [ngClass]="{ 'liked': isLiked }"></ion-icon>
     </ion-button>
 
