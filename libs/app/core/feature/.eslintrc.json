@@ -4,12 +4,15 @@
   "overrides": [
     {
       "files": ["*.ts"],
+      "parserOptions": {
+        "project": ["apps/app/tsconfig.*?.json"]
+      },
       "rules": {
         "@angular-eslint/directive-selector": [
           "error",
           {
             "type": "attribute",
-            "prefix": "properproperty",
+            "prefix": "proper-property-app",
             "style": "camelCase"
           }
         ],
@@ -17,7 +20,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "properproperty",
+            "prefix": "proper-property-app",
             "style": "kebab-case"
           }
         ]

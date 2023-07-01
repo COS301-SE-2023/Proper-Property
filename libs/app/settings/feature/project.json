@@ -2,7 +2,7 @@
   "name": "app-settings-feature",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/app/settings/feature/src",
-  "prefix": "properproperty",
+  "prefix": "app",
   "tags": [],
   "projectType": "library",
   "targets": {

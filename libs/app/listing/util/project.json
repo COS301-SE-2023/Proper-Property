@@ -2,7 +2,7 @@
   "name": "app-listing-util",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/app/listing/util/src",
-  "prefix": "properproperty",
+  "prefix": "app",
   "tags": [],
   "projectType": "library",
   "targets": {

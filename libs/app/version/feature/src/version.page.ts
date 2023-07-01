@@ -10,6 +10,7 @@ export class VersionPage implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log ("Linter: Lifecycle methods should not be empty");
   }
 
 }

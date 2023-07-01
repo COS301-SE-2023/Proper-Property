@@ -2,7 +2,7 @@
   "name": "app-loading-feature",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/app/loading/feature/src",
-  "prefix": "properproperty",
+  "prefix": "app",
   "tags": [],
   "projectType": "library",
   "targets": {

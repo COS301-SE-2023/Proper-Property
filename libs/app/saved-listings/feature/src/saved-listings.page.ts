@@ -8,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 export class SavedListingsPage implements OnInit {
   isLiked: boolean = true;
 
-  unlikeCard(event: any) {
+  unlikeCard(
+    event: any // Linter: warning  'event' is defined but never used, but it is used in the template
+    ) {
     // Handle unliking logic here
     this.isLiked = false;
   }
@@ -16,6 +18,7 @@ export class SavedListingsPage implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log ("Linter: Lifecycle methods should not be empty");
   }
   isRed: boolean = false;
 

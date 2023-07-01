@@ -2,7 +2,7 @@
   "name": "app-profile-feature",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/app/profile/feature/src",
-  "prefix": "properproperty",
+  "prefix": "app",
   "tags": [],
   "projectType": "library",
   "targets": {

@@ -2,7 +2,7 @@
   "name": "app-home-feature",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/app/home/feature/src",
-  "prefix": "properproperty",
+  "prefix": "app",
   "tags": [],
   "projectType": "library",
   "targets": {

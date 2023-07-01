@@ -15,7 +15,7 @@ export class CreateListingPage implements OnInit {
   currentUser: profile | null = null;
   description: string = "";
   heading : string = "";
-  constructor(public router: Router, public userService: UserService, public listingService: ListingsService, private openAIService: OpenAIService) {
+  constructor(private readonly router: Router, private readonly userService: UserService, private readonly listingService: ListingsService, private readonly openAIService: OpenAIService) {
     this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
   }
 

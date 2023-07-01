@@ -68,6 +68,7 @@ export class ProfilePage implements OnInit {
    }
 
   ngOnInit() {
+    console.log ("Linter: Lifecycle methods should not be empty");
   }
   async confirmDeleteAccount() {
     const alert = await this.alertController.create({

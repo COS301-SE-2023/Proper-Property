@@ -1,5 +1,5 @@
-import { InjectionToken, NgModule, isDevMode } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+// import { CommonModule } from '@angular/common';
 // Http requests in lieu of firebase Cloud Functions
 import { HttpClientModule } from '@angular/common/http';
 // Firefox complained about not having this
@@ -9,13 +9,13 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { CoreRouting } from './core.routing';
 // Has router-outlet
-import { CoreShell } from './core.shell';
+import { CoreShellComponent } from './core.shell';
 
 // Firebase App
 import { 
   initializeApp, 
   provideFirebaseApp, 
-  getApp 
+  // getApp 
 } from '@angular/fire/app';
 // Firebase Auth 
 import { 
@@ -25,7 +25,7 @@ import {
 } from '@angular/fire/auth';
 // Firebase Firestore
 import { 
-  initializeFirestore, 
+  // initializeFirestore, 
   provideFirestore, 
   getFirestore, 
   connectFirestoreEmulator 
@@ -58,7 +58,7 @@ import {
   provideAnalytics,
   getAnalytics
 } from '@angular/fire/analytics';
-import { get } from 'http';
+// import { get } from 'http';
 // TODO See if better way exists to hide key
 import { API_KEY_TOKEN } from '@properproperty/app/google-maps/util';
 
@@ -79,7 +79,7 @@ if (NX_ENVIRONMENT === 'development') {
   console.log(NX_FIREBASE_CONFIG);
 }
 @NgModule({
-  declarations: [CoreShell],
+  declarations: [CoreShellComponent],
   imports: [
     HttpClientModule,
     IonicModule.forRoot(),
@@ -131,7 +131,7 @@ if (NX_ENVIRONMENT === 'development') {
     // TODO See if better way exists to hide key
     { provide: API_KEY_TOKEN, useValue: process.env['NX_GOOGLE_MAPS_KEY'] },
   ],
-  bootstrap: [CoreShell],
+  bootstrap: [CoreShellComponent],
 })
 export class CoreModule {}
 

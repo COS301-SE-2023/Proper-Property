@@ -5,4 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './core.shell.html',
   styleUrls: ['./core.shell.css'],
 })
-export class CoreShell {}
+export class CoreShellComponent {}
