@@ -11,9 +11,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - run: npm install --legacy-peer-deps --save-dev eslint-config-prettier eslint-plugin-prettier
-      - run: npm install -g @ionic/cli
+      - run: npm install
       - name: Run ESLint
         run: npx eslint .
       - name: Build App
-        run: ionic build
+        run: npm run build:app:dev
