@@ -15,7 +15,10 @@
     },
     {
       "files": ["*.js", "*.jsx"],
-      "rules": {}
+      "rules": {},
+      "parserOptions": {
+        "ecmaVersion": "latest"
+      }
     }
   ]
 }

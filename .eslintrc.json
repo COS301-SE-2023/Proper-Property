@@ -1,11 +1,11 @@
 {
   "root": true,
-  "ignorePatterns": ["projects/**/*"],
+  "ignorePatterns": ["projects/**/*", "dist/**/*", "cypress/**/*"],
   "overrides": [
     {
       "files": ["*.ts"],
       "parserOptions": {
-        "project": ["tsconfig.json"],
+        "project": ["tsconfig.*?.json"],
         "createDefaultProgram": true
       },
       "extends": [
@@ -43,6 +43,12 @@
       "files": ["*.html"],
       "extends": ["plugin:@angular-eslint/template/recommended"],
       "rules": {}
+    },
+    {
+      "files": ["*.js"],
+      "parserOptions": {
+        "ecmaVersion": "latest"
+      }
     }
   ]
 }
