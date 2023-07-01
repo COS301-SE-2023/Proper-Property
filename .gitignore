@@ -71,7 +71,7 @@ Thumbs.db
 .keys/*.json
 
 # Env
-.env
+# .env
 .env.prod
 .vscode/*
 
