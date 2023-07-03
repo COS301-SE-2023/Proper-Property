@@ -32,7 +32,8 @@ import {
   signInWithPopup, 
   createUserWithEmailAndPassword,
   deleteUser,
-  updateEmail
+  updateEmail,
+  authState
 } from "@angular/fire/auth";
 import { profile } from '@properproperty/app/profile/util';
 @Injectable({
@@ -40,6 +41,10 @@ import { profile } from '@properproperty/app/profile/util';
 })
 export class AuthService {
   constructor(private readonly auth: Auth) {}
+
+  getState$() {
+    return authState(this.auth);
+  }
   // Sign in with Google
   GoogleAuth() {
     return this.AuthLogin(new GoogleAuthProvider());
@@ -47,28 +52,28 @@ export class AuthService {
   // Auth logic to run auth providers
   AuthLogin(provider : AuthProvider) {
     return signInWithPopup(this.auth, provider)
-      .then((
-        // result // 50:14  warning  'result' is defined but never used
-        ) => {
-        console.log('You have been successfully logged in!');
+      .then((result) => {
+        return result.user;
       })
-      .catch((error) => {
-        console.log(error);
-        return null;
-      });
+      // .catch((error) => {
+      //   console.log(error);
+      //   return null;
+      // });
   }
 
-  emailLogin(email : string, password : string){
+  async emailLogin(email : string, password : string){
     return signInWithEmailAndPassword(this.auth, email, password).then((userCredential) => {
       return userCredential.user;
-    })
+    });
     // .catch((error : any) => {
     //   const errorCode = error.code; // 64:13  warning  'errorCode' is assigned a value but never used
     //   const errorMessage = error.message; // 65:13  warning  'errorMessage' is assigned a value but never used
     // }); 
   }
-  register(email: string, password: string) {
-    return createUserWithEmailAndPassword(this.auth, email, password);
+  async register(email: string, password: string) {
+    return createUserWithEmailAndPassword(this.auth, email, password).then((userCredential) => {
+      return userCredential.user;
+      });
   }
 
   deleteCurrentUser() {

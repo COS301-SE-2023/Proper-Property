@@ -18,6 +18,7 @@
       "@properproperty/app/auth/data-access": [
         "libs/app/auth/data-access/src/index.ts"
       ],
+      "@properproperty/app/auth/util": ["libs/app/auth/util/src/index.ts"],
       "@properproperty/app/copyright/feature": [
         "libs/app/copyright/feature/src/index.ts"
       ],

@@ -62,6 +62,14 @@ import {
 // TODO See if better way exists to hide key
 import { API_KEY_TOKEN } from '@properproperty/app/google-maps/util';
 
+import { NgxsModule } from '@ngxs/store';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
+import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
+import { AuthState } from '@properproperty/app/auth/data-access'
+
+import { AuthModule } from '@properproperty/app/auth/data-access';
+
 const NX_ENVIRONMENT = process.env['NX_ENVIRONMENT'] || 'development';
 const USE_EMULATORS = JSON.parse(process.env['NX_USE_EMULATORS'] || 'true');
 const NX_FIREBASE_CONFIG = {
@@ -123,6 +131,16 @@ if (NX_ENVIRONMENT === 'development') {
       }
       return storage;
     }),
+    NgxsModule.forRoot([AuthState]),
+    NgxsLoggerPluginModule.forRoot({
+      disabled: NX_ENVIRONMENT === 'production',
+    }),
+    NgxsReduxDevtoolsPluginModule.forRoot({
+      disabled: NX_ENVIRONMENT === 'production',
+    }),
+    NgxsLoggerPluginModule.forRoot(),
+    NgxsRouterPluginModule.forRoot(),
+    AuthModule,
   ],
   // exports: [CoreShell],
   // 
