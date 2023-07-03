@@ -1,0 +1,17 @@
+ion-content
+{
+  --background: rgb(240, 239, 239);
+}
+.link{
+  --color: var( --ion-color-primary-contrast);
+}
+
+.active
+{
+  --color: var( --ion-color-primary);
+}
+
+ion-toolbar{
+  --background: rgb(255, 255, 255);
+}
+

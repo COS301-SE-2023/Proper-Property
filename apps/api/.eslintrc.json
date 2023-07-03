@@ -1,0 +1,27 @@
+{
+  "extends": ["../../.eslintrc.json"],
+  "ignorePatterns": ["!**/*"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {},
+      "parserOptions": {
+        "project": ["apps/app/tsconfig.*?.json"]
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {},
+      "extends":[
+        "plugin:@typescript-eslint/recommended"
+      ]
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "rules": {},
+      "parserOptions": {
+        "ecmaVersion": "latest"
+      }
+    }
+  ]
+}

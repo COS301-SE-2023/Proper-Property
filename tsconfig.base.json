@@ -1,0 +1,91 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@properproperty/app/auth/data-access": [
+        "libs/app/auth/data-access/src/index.ts"
+      ],
+      "@properproperty/app/auth/util": ["libs/app/auth/util/src/index.ts"],
+      "@properproperty/app/copyright/feature": [
+        "libs/app/copyright/feature/src/index.ts"
+      ],
+      "@properproperty/app/core/feature": [
+        "libs/app/core/feature/src/index.ts"
+      ],
+      "@properproperty/app/create-listing/feature": [
+        "libs/app/create-listing/feature/src/index.ts"
+      ],
+      "@properproperty/app/google-maps/data-access": [
+        "libs/app/google-maps/data-access/src/index.ts"
+      ],
+      "@properproperty/app/google-maps/util": [
+        "libs/app/google-maps/util/src/index.ts"
+      ],
+      "@properproperty/app/home/feature": [
+        "libs/app/home/feature/src/index.ts"
+      ],
+      "@properproperty/app/listing/data-access": [
+        "libs/app/listing/data-access/src/index.ts"
+      ],
+      "@properproperty/app/listing/feature": [
+        "libs/app/listing/feature/src/index.ts"
+      ],
+      "@properproperty/app/listing/util": [
+        "libs/app/listing/util/src/index.ts"
+      ],
+      "@properproperty/app/listings/feature": [
+        "libs/app/listings/feature/src/index.ts"
+      ],
+      "@properproperty/app/loading/feature": [
+        "libs/app/loading/feature/src/index.ts"
+      ],
+      "@properproperty/app/login/feature": [
+        "libs/app/login/feature/src/index.ts"
+      ],
+      "@properproperty/app/my-listings/feature": [
+        "libs/app/my-listings/feature/src/index.ts"
+      ],
+      "@properproperty/app/open-ai/data-access": [
+        "libs/app/open-ai/data-access/src/index.ts"
+      ],
+      "@properproperty/app/profile/feature": [
+        "libs/app/profile/feature/src/index.ts"
+      ],
+      "@properproperty/app/profile/util": [
+        "libs/app/profile/util/src/index.ts"
+      ],
+      "@properproperty/app/register/feature": [
+        "libs/app/register/feature/src/index.ts"
+      ],
+      "@properproperty/app/saved-listings/feature": [
+        "libs/app/saved-listings/feature/src/index.ts"
+      ],
+      "@properproperty/app/search/feature": [
+        "libs/app/search/feature/src/index.ts"
+      ],
+      "@properproperty/app/settings/feature": [
+        "libs/app/settings/feature/src/index.ts"
+      ],
+      "@properproperty/app/user/data-access": [
+        "libs/app/user/data-access/src/index.ts"
+      ],
+      "@properproperty/app/version/feature": [
+        "libs/app/version/feature/src/index.ts"
+      ]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}
