@@ -5,6 +5,10 @@ import { profile } from '@properproperty/app/profile/util';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
 import { OpenAIService } from '@properproperty/app/open-ai/data-access';
+import { Select} from '@ngxs/store';
+import { AuthState } from '@properproperty/app/auth/data-access';
+import { User } from '@angular/fire/auth';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-create-listing',
@@ -12,11 +16,16 @@ import { OpenAIService } from '@properproperty/app/open-ai/data-access';
   styleUrls: ['./create-listing.page.scss'],
 })
 export class CreateListingPage implements OnInit {
-  currentUser: profile | null = null;
+  @Select(AuthState.user) user$!: Observable<User | null>;
+  currentUser: User | null = null;
   description = "";
   heading = "";
   constructor(private readonly router: Router, private readonly userService: UserService, private readonly listingService: ListingsService, private readonly openAIService: OpenAIService) {
     this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
+    
+    this.user$.subscribe((user: User | null) => {
+      this.currentUser =  user;
+    });
   }
 
   features: string[] = [];
@@ -25,7 +34,7 @@ export class CreateListingPage implements OnInit {
 
   ngOnInit() {
     this.listingType = "Sell";
-    this.currentUser = this.userService.getCurrentUser();
+    // this.currentUser = this.userService.getCurrentUser();
   }
 
   photos: string[] = [];
@@ -173,24 +182,17 @@ export class CreateListingPage implements OnInit {
   }
 
   async addListing(){
-    // let add_in = document.getElementById('address') as HTMLInputElement;
-    // let price_in = document.getElementById('price') as HTMLInputElement;
     const pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
     const env_type_in = document.getElementById('env-type') as HTMLInputElement;
     const prop_type_in = document.getElementById('prop-type') as HTMLInputElement;
     const furnish_type_in = document.getElementById('furnish-type') as HTMLInputElement;
     const orientation_in = document.getElementById('orientation') as HTMLInputElement;
-    // let floor_size_in = document.getElementById('floor-size') as HTMLInputElement;
-    // let property_size_in = document.getElementById('property-size') as HTMLInputElement;
-    // let bath_in = document.getElementById('bath') as HTMLInputElement;
-    // let bed_in = document.getElementById('bed') as HTMLInputElement;
-    // let parking_in = document.getElementById('parking') as HTMLInputElement;
     const desc_in = document.getElementById('desc') as HTMLInputElement;
 
     console.log(prop_type_in.value);
-    if(this.currentUser){
+    if(this.currentUser != null){
       const list : listing = {
-        user_id: this.currentUser.user_id,
+        user_id: this.currentUser.uid,
         address: this.address,
         price: this.price,
         pos_type: pos_type_in.value,

@@ -8,6 +8,11 @@ import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
 import { listing } from '@properproperty/app/listing/util';
 import { UserService } from '@properproperty/app/user/data-access';
+import { User } from '@angular/fire/auth';
+import { Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { AuthState } from '@properproperty/app/auth/data-access';
+
 
 
 @Component({
@@ -16,7 +21,8 @@ import { UserService } from '@properproperty/app/user/data-access';
   styleUrls: ['./my-listings.page.scss'],
 })
 export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
-
+  @Select(AuthState.user) user$!: Observable<User | null>;
+  currentUser: User | null = null;
   @ViewChild('map', { static: true })
   mapElementRef!: ElementRef;
   googleMaps: any;
@@ -36,7 +42,9 @@ export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
     private listingServices : ListingsService,
     private userServices: UserService,
     ) {
-
+      this.user$.subscribe((user: User | null) => {
+        this.currentUser =  user;
+      });
       //this.userServices.getCurrentUser()?.user_id 
       const user_listings: listing[] = [];
 
@@ -47,10 +55,8 @@ export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
         const user_ID = this.listings[i].user_id;
 
         //declare a listing[] array
-        
 
-
-        if (userServices.getCurrentUser()?.user_id == user_ID) {
+        if (this.currentUser?.uid == user_ID) {
           user_listings.push(this.listings[i]);
         }
         
@@ -77,7 +83,7 @@ export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
       
 
 
-      if (this.userServices.getCurrentUser()?.user_id == user_ID) {
+      if (this.currentUser?.uid == user_ID) {
         user_listings.push(this.listings[i]);
       }
       

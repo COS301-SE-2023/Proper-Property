@@ -8,12 +8,15 @@ import { MyListingsPageRoutingModule } from './my-listings.routing';
 
 import { MyListingsPage } from './my-listings.page';
 
+import {AuthModule} from '@properproperty/app/auth/data-access'
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MyListingsPageRoutingModule
+    MyListingsPageRoutingModule,
+    AuthModule
   ],
   declarations: [MyListingsPage]
 })
