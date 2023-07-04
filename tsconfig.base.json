@@ -15,6 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@properproperty/api/core/feature": [
+        "libs/api/core/feature/src/index.ts"
+      ],
       "@properproperty/app/auth/data-access": [
         "libs/app/auth/data-access/src/index.ts"
       ],

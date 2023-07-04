@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '@properproperty/app/user/data-access';
 import { listing } from '@properproperty/app/listing/util';
-import { profile } from '@properproperty/app/profile/util';
+// import { profile } from '@properproperty/app/profile/util';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
 import { OpenAIService } from '@properproperty/app/open-ai/data-access';
