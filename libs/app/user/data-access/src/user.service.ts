@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { profile } from '@properproperty/app/profile/util';
+import { profile } from '@properproperty/api/profile/util';
 import { Firestore, doc, updateDoc, setDoc, getDoc, deleteDoc } from '@angular/fire/firestore';
 
 

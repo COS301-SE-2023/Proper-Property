@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@properproperty/app/auth/data-access';
 import { Router } from '@angular/router';
-// import { profile } from '@properproperty/app/profile/util';
+// import { profile } from '@properproperty/api/profile/util';
 import { UserService } from '@properproperty/app/user/data-access';
 import { Store } from '@ngxs/store';
 import { Register } from '@properproperty/app/auth/util';

@@ -1,6 +1,11 @@
 import * as functions from 'firebase-functions';
-
-export const firestore = functions.auth.user().onCreate(async () => {
-  // y u no print
-  console.log("hey little mama let me whisper in your ear");
+import { CoreModule } from '../core.module';
+import { ProfileService } from '@properproperty/api/profile/feature';
+import { NestFactory } from '@nestjs/core';
+import { UserRecord } from 'firebase-admin/auth';
+export const firestore = functions.region('europe-west1').auth.user().onCreate(async (user: UserRecord) => {
+  //call createProfile of profile service
+  return NestFactory.createApplicationContext(CoreModule).then(app => {
+    return app.get(ProfileService).createProfile(user);
+  })
 });

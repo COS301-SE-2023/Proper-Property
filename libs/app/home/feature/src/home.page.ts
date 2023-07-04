@@ -1,7 +1,7 @@
 import { Component, inject, OnInit,ViewChild,ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '@properproperty/app/user/data-access';
-import { profile } from '@properproperty/app/profile/util';
+import { profile } from '@properproperty/api/profile/util';
 import Swiper from 'swiper';
 // import { Storage, ref } from '@angular/fire/storage';
 // import { uploadBytes } from 'firebase/storage';

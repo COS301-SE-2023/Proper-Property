@@ -4,7 +4,7 @@ import Swiper from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserService } from '@properproperty/app/user/data-access';
-import { profile } from '@properproperty/app/profile/util';
+import { profile } from '@properproperty/api/profile/util';
 
 
 @Component({

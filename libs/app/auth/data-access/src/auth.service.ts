@@ -35,7 +35,7 @@ import {
   updateEmail,
   authState
 } from "@angular/fire/auth";
-import { profile } from '@properproperty/app/profile/util';
+import { profile } from '@properproperty/api/profile/util';
 @Injectable({
   providedIn: 'root',
 })
