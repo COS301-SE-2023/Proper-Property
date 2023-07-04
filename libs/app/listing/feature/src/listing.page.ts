@@ -39,7 +39,7 @@ export class ListingPage implements OnInit{
 
     await this.userServices.getUser("" + this.list?.user_id).then((user : profile) => {
       console.log(user);
-      this.lister_name = user.first_name + " " + user.last_name;
+      this.lister_name = user.firstName + " " + user.lastName;
     })
   }
   

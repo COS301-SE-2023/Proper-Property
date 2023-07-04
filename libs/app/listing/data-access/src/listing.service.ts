@@ -44,10 +44,11 @@ export class ListingsService {
 
   async updateUserLisitings(listing_id : string) {
     if(this.currentUser){
-      let oldListings : string[] = [];
-      const userRef = doc(this.firestore, `users/${this.currentUser.user_id}`);
+      const oldListings: string[] = [];
+      const userRef = doc(this.firestore, `users/${this.currentUser.userId}`);
       (docData(userRef) as Observable<profile>).subscribe((user: profile) => {
-        oldListings = user.listings;
+        if (user.listings)
+          oldListings.push(...user.listings);
         }
       );
 

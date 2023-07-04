@@ -32,8 +32,8 @@ export class RegisterPage implements OnInit {
     //   if(res !== null){
     //     const user : profile = {
     //       email: this.email,
-    //       first_name: this.name,
-    //       last_name: this.surname,
+    //       firstName: this.name,
+    //       lastName: this.surname,
     //       listings: []
     //     }
     //     await this.userService.registerNewUser(user, res.user.uid);

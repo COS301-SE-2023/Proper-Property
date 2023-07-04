@@ -1,12 +1,19 @@
 import { Module } from '@nestjs/common';
 import { ProfileService } from './profile.service';
-import { CreateProfileHandler } from './commands/create-profile.handler';
+import { ProfileModule as ProfileDataAccessModule } from '@properproperty/api/profile/data-access';
 import { CqrsModule } from '@nestjs/cqrs';
+
+import { CreateProfileHandler } from './commands';
 const CommandHandlers = [CreateProfileHandler];
+
+import { ProfileCreatedHandler } from './events';
+const EventHandlers = [ProfileCreatedHandler];
+
 @Module({
-  imports: [CqrsModule],
+  imports: [ProfileDataAccessModule, CqrsModule],
   providers: [
     ...CommandHandlers,
+    ...EventHandlers,
     ProfileService
   ],
   exports: [ProfileService],

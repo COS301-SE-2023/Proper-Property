@@ -1,7 +1,7 @@
 export interface profile{
-  user_id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  listings: string[];
+  userId: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  listings?: string[];
 }

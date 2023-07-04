@@ -20,13 +20,13 @@ export class UserService {
   }
 
   printCurrentUser() {
-    return [this.currentUser?.email, this.currentUser?.first_name, this.currentUser?.last_name, this.currentUser?.user_id]
+    return [this.currentUser?.email, this.currentUser?.firstName, this.currentUser?.lastName, this.currentUser?.userId]
   }
 
   async registerNewUser(user_profile: profile, uid: string) {
     const userRef = doc(this.firestore, 'users', uid);
     await setDoc(userRef, user_profile);
-    user_profile.user_id = uid;
+    user_profile.userId = uid;
     this.setCurrentUser(user_profile);
   }
 
@@ -34,13 +34,13 @@ export class UserService {
     const userRef = doc(this.firestore, `users/${uid}`);
     await getDoc(userRef).then((doc) => {
       const user = doc.data() as profile;
-      user.user_id = uid;
+      user.userId = uid;
       this.setCurrentUser(user);
     });
   }
 
   async updateUserEmail(Email:string) {
-    const userRef = doc(this.firestore, `users/${this.currentUser?.user_id}`);
+    const userRef = doc(this.firestore, `users/${this.currentUser?.userId}`);
     await updateDoc(userRef, {email: Email});
   }
 

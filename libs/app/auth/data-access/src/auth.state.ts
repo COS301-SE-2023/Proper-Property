@@ -78,6 +78,7 @@ export class AuthState {
       user = await this.authService.AuthLogin(provider);
     }
     if (user?.email != null) {
+      
       return ctx.dispatch(new Navigate(['/']));
     }
     

@@ -18,6 +18,9 @@
       "@properproperty/api/core/feature": [
         "libs/api/core/feature/src/index.ts"
       ],
+      "@properproperty/api/profile/data-access": [
+        "libs/api/profile/data-access/src/index.ts"
+      ],
       "@properproperty/api/profile/feature": [
         "libs/api/profile/feature/src/index.ts"
       ],
