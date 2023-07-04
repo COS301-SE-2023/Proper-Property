@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class GmapsService {
+
   autocompleteService!: google.maps.places.AutocompleteService;
   constructor() { }
 
@@ -35,6 +38,7 @@ export class GmapsService {
     });
   }
   predictions: google.maps.places.AutocompletePrediction[] = [];
+
 
   handleInput(input: HTMLInputElement, defaultBounds: google.maps.LatLngBounds): void {
     

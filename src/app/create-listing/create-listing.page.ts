@@ -10,7 +10,6 @@ import { GmapsService } from '../services/gmaps.service';
 
 declare var google: any;
 
-
 @Component({
   selector: 'app-create-listing',
   templateUrl: './create-listing.page.html',
@@ -43,9 +42,12 @@ export class CreateListingPage implements OnInit {
     this.currentUser = this.userService.getCurrentUser();
 
     const inputElementId = 'address';
+
     this.gmapsService.setupSearchBox(inputElementId);
 
+    
   }
+  
   handleInputChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.gmapsService.handleInput(input, this.defaultBounds);
@@ -53,7 +55,10 @@ export class CreateListingPage implements OnInit {
   }
   
   
-
+  replaceInputText(prediction: string) {
+    this.address = prediction;
+  }
+  
   photos: string[] = [];
   address: string;
   price: string;
@@ -236,6 +241,3 @@ export class CreateListingPage implements OnInit {
   }
 
 }
-
-
-

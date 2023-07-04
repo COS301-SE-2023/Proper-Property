@@ -103,7 +103,11 @@
           <ion-input type="text" id="address" [(ngModel)]="address" required #inputElement (input)="handleInputChange($event)"></ion-input>
 
           <ul>
-            <li *ngFor="let prediction of predictions">{{ prediction.description }}</li>
+            <li *ngFor="let prediction of predictions" (click)="replaceInputText(prediction.description)">
+              <a href="#" class="prediction-button">
+                {{ prediction.description }}
+              </a>
+            </li>
           </ul>
         </ion-item>
       </ion-col>

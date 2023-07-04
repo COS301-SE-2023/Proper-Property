@@ -8,5 +8,7 @@ if (environment.production) {
   enableProdMode();
 }
 
+const googleMapsApiKey = environment.googleMapsApiKey;
+
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.log(err));
