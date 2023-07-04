@@ -77,6 +77,7 @@ pubsub-debug.log
 
 # Emulators
 .emulators
+emulators
 
 # Keys
 .keys/*.json
