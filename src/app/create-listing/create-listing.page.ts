@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewChild, ElementRef } from '@angular/core';
 import { UserService } from '../services/user/user.service';
 import { listing } from '../listing/interfaces/listing.interface';
 import { profile } from '../profile/interfaces/profile.interface';
 import { ListingsService } from '../services/listings/listings.service';
 import { Router } from '@angular/router';
 import { OpenAIService } from '../services/open-ai/open-ai.service';
+import { environment } from 'src/environments/environment';
+import { GmapsService } from '../services/gmaps.service';
+
+declare var google: any;
+
 
 @Component({
   selector: 'app-create-listing',
@@ -12,21 +17,42 @@ import { OpenAIService } from '../services/open-ai/open-ai.service';
   styleUrls: ['./create-listing.page.scss'],
 })
 export class CreateListingPage implements OnInit {
+
+  @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
+  autocomplete: any;
+  defaultBounds: google.maps.LatLngBounds;
+
+  predictions: google.maps.places.AutocompletePrediction[] = [];
   currentUser: profile | null = null;
   description: string = "";
   heading : string = "";
-  constructor(public router: Router, public userService: UserService, public listingService: ListingsService, private openAIService: OpenAIService) {
+  constructor(public router: Router, public userService: UserService, public listingService: ListingsService, private openAIService: OpenAIService,public gmapsService: GmapsService) {
     this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
+    this.predictions = [];
+    this.defaultBounds = new google.maps.LatLngBounds();
   }
 
   features: string[] = [];
   selectedValue: boolean = true;
-  listingType: string = "";
+  listingType: string = "" 
 
-  ngOnInit() {
+  
+
+  ngOnInit():void {
     this.listingType = "Sell";
     this.currentUser = this.userService.getCurrentUser();
+
+    const inputElementId = 'address';
+    this.gmapsService.setupSearchBox(inputElementId);
+
   }
+  handleInputChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.gmapsService.handleInput(input, this.defaultBounds);
+    this.predictions = this.gmapsService.predictions;
+  }
+  
+  
 
   photos: string[] = [];
   address: string;
@@ -209,6 +235,7 @@ export class CreateListingPage implements OnInit {
     }
   }
 
-
 }
+
+
 

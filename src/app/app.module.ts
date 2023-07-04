@@ -14,7 +14,7 @@ import { initializeFirestore, provideFirestore, connectFirestoreEmulator, getFir
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { provideStorage, getStorage, connectStorageEmulator } from '@angular/fire/storage';
 import { AuthService } from './services/auth/auth.service';
-
+import { NgxGpAutocompleteModule } from "@angular-magic/ngx-gp-autocomplete";
 import {HttpClientModule} from '@angular/common/http';
 
 
@@ -22,6 +22,12 @@ import {HttpClientModule} from '@angular/common/http';
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    NgxGpAutocompleteModule.forRoot({ 
+      loaderOptions: { 
+            apiKey: environment.googleMapsApiKey,
+            libraries: ['places']
+      } 
+    }),
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
