@@ -100,15 +100,20 @@
           <ion-label position="floating">Property Residential Address<span class="required-indicator" *ngIf="!address">*</span></ion-label>
           <!-- <input type="text" id="address-input" placeholder="Enter an address"> -->
 
+          <div class="search-container">
           <ion-input type="text" id="address" [(ngModel)]="address" required #inputElement (input)="handleInputChange($event)"></ion-input>
 
           <ul>
-            <li *ngFor="let prediction of predictions" (click)="replaceInputText(prediction.description)">
+            <ion-list *ngFor="let prediction of predictions" (click)="replaceInputText($event,prediction.description)">
               <a href="#" class="prediction-button">
                 {{ prediction.description }}
               </a>
-            </li>
+            </ion-list>
           </ul>
+        </div>
+
+
+        
         </ion-item>
       </ion-col>
 

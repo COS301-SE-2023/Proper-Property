@@ -16,7 +16,7 @@ import { provideStorage, getStorage, connectStorageEmulator } from '@angular/fir
 import { AuthService } from './services/auth/auth.service';
 import { NgxGpAutocompleteModule } from "@angular-magic/ngx-gp-autocomplete";
 import {HttpClientModule} from '@angular/common/http';
-
+import { ReactiveFormsModule,FormsModule  } from '@angular/forms';
 
 
 @NgModule({
@@ -31,6 +31,8 @@ import {HttpClientModule} from '@angular/common/http';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    FormsModule ,
+    ReactiveFormsModule,
     HttpClientModule,
     provideAuth(() => {
       const auth = getAuth();

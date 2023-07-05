@@ -8,6 +8,7 @@ import { OpenAIService } from '../services/open-ai/open-ai.service';
 import { environment } from 'src/environments/environment';
 import { GmapsService } from '../services/gmaps.service';
 
+
 declare var google: any;
 
 @Component({
@@ -55,8 +56,18 @@ export class CreateListingPage implements OnInit {
   }
   
   
-  replaceInputText(prediction: string) {
-    this.address = prediction;
+  replaceInputText(event: MouseEvent | undefined,prediction: string) {
+    // this.address = prediction;
+    //set the text in HTML element with id=hello to predictions
+    if (event) {
+      event.preventDefault(); // Prevent the default behavior of the <a> tag
+    }
+
+    const addressInput = document.getElementById("address") as HTMLInputElement;
+    if (addressInput) {
+      addressInput.value = prediction;
+    }
+    this.predictions = [];
   }
   
   photos: string[] = [];
