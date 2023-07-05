@@ -15,7 +15,7 @@ import { CoreShellComponent } from './core.shell';
 import { 
   initializeApp, 
   provideFirebaseApp, 
-  // getApp 
+  getApp 
 } from '@angular/fire/app';
 // Firebase Auth 
 import { 
@@ -118,7 +118,7 @@ if (NX_ENVIRONMENT === 'development') {
       return database;
     }),
     provideFunctions(() => {
-      const functions = getFunctions();
+      const functions = getFunctions(getApp(), "europe-west1");
       if (USE_EMULATORS) {
         connectFunctionsEmulator(functions, 'localhost', 5001);
       }
