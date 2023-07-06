@@ -25,6 +25,20 @@
     </ion-button>
     </div>
 
+    <div class="container">
+      <div class="searchInput">
+        <input type="text" id="address" [(ngModel)]="searchQuery" (ionInput)="filterProperties()"  placeholder="search" (onkeyup)="handleInputChange($event)">
+        <div class="resultBox">
+          <ion-list *ngFor="let prediction of predictions" (click)="replaceInputText($event,prediction.description)">
+            <a href="#" class="prediction-button">
+              {{ prediction.description }}
+            </a>
+          </ion-list>
+        </div>
+        <div class="icon"><i class="fas fa-search"></i></div>
+      </div>
+    </div>
+
 
     <ion-item class="filter">
       <ion-label>Property Type</ion-label>

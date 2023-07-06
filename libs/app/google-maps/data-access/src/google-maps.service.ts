@@ -48,7 +48,7 @@ export class GmapsService {
     });
   }
   predictions: google.maps.places.AutocompletePrediction[] = [];
-
+  regionPredictions: google.maps.places.AutocompletePrediction[] = [];
 
   //for create-listing
   handleInput(input: HTMLInputElement, defaultBounds: google.maps.LatLngBounds): void {
@@ -86,14 +86,20 @@ export class GmapsService {
   //for search
   getRegionPredictions(input: string, bounds: google.maps.LatLngBounds): void {
     this.autocompleteService.getPlacePredictions(
-      { input: input, bounds: bounds, types: ['(regions)'] },
-      (predictions: google.maps.places.AutocompletePrediction[] | null, status: google.maps.places.PlacesServiceStatus) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
-          this.predictions = predictions;
+      {
+        input: input,
+        bounds: bounds,
+        types: ['(regions)'], // Include only regions
+        componentRestrictions: { country: 'ZA' } // Replace 'your_country_code' with the appropriate country code
+      },
+      (regionPredictions: google.maps.places.AutocompletePrediction[] | null, status: google.maps.places.PlacesServiceStatus) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && regionPredictions) {
+          this.regionPredictions = regionPredictions;
         }
       }
     );
   }
+  
 
   //for search
   setupRegionSearchBox(elementId: string): Promise<any> {
@@ -123,7 +129,6 @@ export class GmapsService {
     });
   }
 
-  //for search
   handleRegionInput(input: HTMLInputElement, defaultBounds: google.maps.LatLngBounds): void {
     if (!this.autocompleteService) {
       return;
@@ -132,17 +137,19 @@ export class GmapsService {
       {
         input: input.value,
         bounds: defaultBounds,
-        types: ['(regions)']
+        types: ['(regions)'], // Include only regions
+        componentRestrictions: { country: 'ZA' } // Replace 'your_country_code' with the appropriate country code
       },
-      (predictions: google.maps.places.AutocompletePrediction[] | null, status: google.maps.places.PlacesServiceStatus) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
+      (regionPredictions: google.maps.places.AutocompletePrediction[] | null, status: google.maps.places.PlacesServiceStatus) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && regionPredictions) {
           // Process the predictions here
-          console.log('Region predictions:', predictions);
-          this.predictions = predictions;
+          console.log('Region predictions:', regionPredictions);
+          this.regionPredictions = regionPredictions;
         }
       }
     );
   }
+  
 
   //function for retrieving regions
   retrieveRegionFromAddress(address: string): Promise<string | null> {

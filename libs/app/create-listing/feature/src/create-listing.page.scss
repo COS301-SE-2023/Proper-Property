@@ -165,3 +165,64 @@ ion-grid{
   max-width: 500px;
   margin: auto;
 }
+
+      //end of scss
+      *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+      }
+      
+      body{
+        background: #f4f5;
+        padding: 0 20px;
+      }
+      
+      ::selection{
+        color: #fff;
+        background: #664AFF;
+      }
+      
+      .searchInput .resultBox{
+        padding: 0;
+        opacity: 0;
+        pointer-events: none;
+        max-height: 280px;
+        overflow-y: auto;
+      }
+      
+      .searchInput.active .resultBox{
+        padding: 10px 8px;
+        opacity: 1;
+        pointer-events: auto;
+      }
+      
+      .resultBox li{
+        list-style: none;
+        padding: 8px 12px;
+        display: none;
+        width: 100%;
+        cursor: default;
+        border-radius: 3px;
+      }
+      
+      .searchInput.active .resultBox li{
+        display: block;
+      }
+      .resultBox li:hover{
+        background: #efefef;
+      }
+      
+      .searchInput .icon{
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        height: 55px;
+        width: 55px;
+        text-align: center;
+        line-height: 55px;
+        font-size: 20px;
+        color: #644bff;
+        cursor: pointer;
+      }

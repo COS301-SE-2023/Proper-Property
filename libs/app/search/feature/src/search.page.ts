@@ -20,7 +20,14 @@ interface Property {
 
 
 export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
+  @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
   @ViewChild('map', { static: true })
+
+  autocomplete: any;
+  defaultBounds: google.maps.LatLngBounds;
+  predictions: google.maps.places.AutocompletePrediction[] = [];
+
+
   mapElementRef!: ElementRef;
   googleMaps: any;
   center = { lat: -25.7477, lng: 28.2433 };
@@ -37,15 +44,48 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     private actionSheetCtrl: ActionSheetController,
     private router: Router,
     private listingServices : ListingsService,
-    ) {}
+    public gmapsService: GmapsService
+    ) {
+      this.predictions = [];
+      this.defaultBounds = new google.maps.LatLngBounds();
+      
+    }
 
   async ngOnInit() {
     await this.listingServices.getListings().then((listings) => {
       this.listings = listings;
     });
+
+    const inputElementId = 'address';
+
+    this.gmapsService.setupRegionSearchBox(inputElementId);
   }
 
+  handleInputChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.gmapsService.handleRegionInput(input, this.defaultBounds);
+    this.predictions = this.gmapsService.regionPredictions;
+  }
+  
+  
+  replaceInputText(event: MouseEvent | undefined,prediction: string) {
+    // this.address = prediction;
+    //set the text in HTML element with id=hello to predictions
+    if (event) {
+      event.preventDefault(); // Prevent the default behavior of the <a> tag
+    }
+
+    const addressInput = document.getElementById("address") as HTMLInputElement;
+    if (addressInput) {
+      addressInput.value = prediction;
+    }
+    this.predictions = [];
+  }
+
+
+
   ngAfterViewInit() {
+    
     this.loadMap();
   }
 
@@ -256,4 +296,59 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     this.filterProperties();
   }
 
+}
+
+// // Getting all required elements
+// const searchInput = document.querySelector(".searchInput") as HTMLElement;
+// const input = searchInput.querySelector("input") as HTMLInputElement;
+// const resultBox = searchInput.querySelector(".resultBox") as HTMLElement;
+// const icon = searchInput.querySelector(".icon") as HTMLElement;
+// let linkTag = searchInput.querySelector("a") as HTMLAnchorElement;
+// let webLink: string;
+
+// // If the user presses any key and releases it
+// input.onkeyup = (e) => {
+//   let userData = (e.target as HTMLInputElement).value; // User entered data
+//   let emptyArray: string[] = [];
+//   if (userData) {
+//     emptyArray = predictions.filter((data) => {
+//       // Filtering array value and user characters to lowercase and return only those words which start with user entered chars
+//       return data.toLocaleLowerCase().startsWith(userData.toLocaleLowerCase());
+//     });
+//     emptyArray = emptyArray.map((data) => {
+//       // Passing return data inside li tag
+//       return '<li>' + data + '</li>';
+//     });
+//     searchInput.classList.add("active"); // Show autocomplete box
+//     showSuggestions(emptyArray);
+//     let allList = resultBox.querySelectorAll("li");
+//     for (let i = 0; i < allList.length; i++) {
+//       // Adding onclick attribute in all li tags
+//       allList[i].setAttribute("onclick", "select(this)");
+//     }
+//   } else {
+//     searchInput.classList.remove("active"); // Hide autocomplete box
+//   }
+// };
+
+// function showSuggestions(list: string[]): void {
+//   let listData: string;
+//   if (!list.length) {
+//     const userValue = input.value;
+//     listData = '<li>' + userValue + '</li>';
+//   } else {
+//     listData = list.join('');
+//   }
+//   resultBox.innerHTML = listData;
+// }
+
+function showSuggestions(list: string[],input:HTMLInputElement,resultBox:HTMLElement): void {
+  let listData: string;
+  if (!list.length) {
+    const userValue = input.value;
+    listData = '<li>' + userValue + '</li>';
+  } else {
+    listData = list.join('');
+  }
+  resultBox.innerHTML = listData;
 }
