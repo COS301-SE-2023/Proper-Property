@@ -1,5 +1,11 @@
 {
   "projects": {
     "default": "proper-property-51963"
+  },
+  "targets": {},
+  "etags": {
+    "proper-property-51963": {
+      "extensionInstances": {}
+    }
   }
 }

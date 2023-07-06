@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+
+declare const gtag: Function;
 
 @Component({
   selector: 'properproperty-root',
@@ -6,5 +9,13 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  // constructor() {}
+  constructor(public router: Router) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        gtag('config', 'G-4ZKFFSPB4D', { 'page_path': event.urlAfterRedirects });
+        console.log("App.component: " + event.urlAfterRedirects);
+      }      
+    })
+  }
 }
