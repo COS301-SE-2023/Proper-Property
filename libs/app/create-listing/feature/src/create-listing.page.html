@@ -92,15 +92,28 @@
     </ion-row>
     
     
-    
-    
+
 
     <ion-row>
       <ion-col size="6" class="ion-text-center">
         <ion-item>
           <ion-label position="floating">Property Residential Address<span class="required-indicator" *ngIf="!address">*</span></ion-label>
-          
-          <ion-input type="text" id="address" [(ngModel)]="address" required></ion-input>
+          <!-- <input type="text" id="address-input" placeholder="Enter an address"> -->
+
+          <div class="search-container">
+          <ion-input type="text" id="address" [(ngModel)]="address" required #inputElement (input)="handleInputChange($event)"></ion-input>
+
+          <ul>
+            <ion-list *ngFor="let prediction of predictions" (click)="replaceInputText($event,prediction.description)">
+              <a href="#" class="prediction-button">
+                {{ prediction.description }}
+              </a>
+            </ion-list>
+          </ul>
+        </div>
+
+
+        
         </ion-item>
       </ion-col>
 
@@ -258,10 +271,17 @@
         <ion-button (click)="generateDesc()">AI Generated Description</ion-button>
       </ion-col>
     </ion-row>
+    <ion-row>
 
+    </ion-row>
 
     <ion-row>
       <ion-button (click)="addListing()" [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">ADD LISTING</ion-button>
     </ion-row>
+
+
   </ion-grid>
+
+
+  <!-- <input #placesRef="ngx-places" ngx-gp-autocomplete [options]='options' (onAddressChange)="handleAddressChange($event)"/> -->
 </ion-content>

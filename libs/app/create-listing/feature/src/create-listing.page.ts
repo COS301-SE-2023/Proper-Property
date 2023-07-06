@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewChild, ElementRef} from '@angular/core';
 import { UserService } from '@properproperty/app/user/data-access';
 import { listing } from '@properproperty/app/listing/util';
 import { profile } from '@properproperty/app/profile/util';
@@ -9,6 +9,7 @@ import { Select} from '@ngxs/store';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { User } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
+import { GmapsService } from '@properproperty/app/google-maps/data-access';
 
 @Component({
   selector: 'app-create-listing',
@@ -16,13 +17,22 @@ import { Observable } from 'rxjs';
   styleUrls: ['./create-listing.page.scss'],
 })
 export class CreateListingPage implements OnInit {
+
+  @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
+
+
   @Select(AuthState.user) user$!: Observable<User | null>;
+  autocomplete: any;
+  defaultBounds: google.maps.LatLngBounds;
+  predictions: google.maps.places.AutocompletePrediction[] = [];
+
   currentUser: User | null = null;
   description = "";
   heading = "";
-  constructor(private readonly router: Router, private readonly userService: UserService, private readonly listingService: ListingsService, private readonly openAIService: OpenAIService) {
+  constructor(private readonly router: Router, private readonly userService: UserService, private readonly listingService: ListingsService, private readonly openAIService: OpenAIService,public gmapsService: GmapsService) {
     this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
-    
+    this.predictions = [];
+    this.defaultBounds = new google.maps.LatLngBounds();
     this.user$.subscribe((user: User | null) => {
       this.currentUser =  user;
     });
@@ -35,6 +45,30 @@ export class CreateListingPage implements OnInit {
   ngOnInit() {
     this.listingType = "Sell";
     // this.currentUser = this.userService.getCurrentUser();
+    const inputElementId = 'address';
+
+    this.gmapsService.setupSearchBox(inputElementId);
+  }
+
+  handleInputChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.gmapsService.handleInput(input, this.defaultBounds);
+    this.predictions = this.gmapsService.predictions;
+  }
+  
+  
+  replaceInputText(event: MouseEvent | undefined,prediction: string) {
+    // this.address = prediction;
+    //set the text in HTML element with id=hello to predictions
+    if (event) {
+      event.preventDefault(); // Prevent the default behavior of the <a> tag
+    }
+
+    const addressInput = document.getElementById("address") as HTMLInputElement;
+    if (addressInput) {
+      addressInput.value = prediction;
+    }
+    this.predictions = [];
   }
 
   photos: string[] = [];

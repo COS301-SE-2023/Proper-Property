@@ -137,3 +137,31 @@ ion-grid{
   height: 30px; /* Adjust the height value as needed */
   vertical-align: middle;
 }
+
+.prediction-button {
+  width: 50%;
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.prediction-button:hover {
+  background-color: #e0e0e0;
+}
+
+.prediction-button:focus {
+  outline: none;
+}
+
+
+.search-container {
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+}
