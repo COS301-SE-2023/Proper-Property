@@ -1,4 +1,6 @@
+// eslint-disable-next-line
 /// <reference types="@types/google.maps" />
+
 import { Injectable, Inject } from '@angular/core';
 
 // import { environment } from 'src/environments/environment';
