@@ -20,6 +20,7 @@ export class GmapsService {
 
   autocompleteService!: google.maps.places.AutocompleteService;
 
+  //for create-listing
   setupSearchBox(elementId: string): Promise<any> {
     return this.loadGoogleMaps().then((maps) => {
       const defaultBounds = new maps.LatLngBounds();
@@ -49,6 +50,7 @@ export class GmapsService {
   predictions: google.maps.places.AutocompletePrediction[] = [];
 
 
+  //for create-listing
   handleInput(input: HTMLInputElement, defaultBounds: google.maps.LatLngBounds): void {
     
     if (!this.autocompleteService) {
@@ -69,6 +71,7 @@ export class GmapsService {
     );
   }
 
+  //for create-listing
   getPlacePredictions(input: string, bounds: google.maps.LatLngBounds): void {
     this.autocompleteService.getPlacePredictions(
       { input: input, bounds: bounds },
@@ -79,6 +82,97 @@ export class GmapsService {
       }
     );
   }
+
+  //for search
+  getRegionPredictions(input: string, bounds: google.maps.LatLngBounds): void {
+    this.autocompleteService.getPlacePredictions(
+      { input: input, bounds: bounds, types: ['(regions)'] },
+      (predictions: google.maps.places.AutocompletePrediction[] | null, status: google.maps.places.PlacesServiceStatus) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
+          this.predictions = predictions;
+        }
+      }
+    );
+  }
+
+  //for search
+  setupRegionSearchBox(elementId: string): Promise<any> {
+    return this.loadGoogleMaps().then((maps) => {
+      const defaultBounds = new maps.LatLngBounds();
+
+      const input = document.getElementById(elementId) as HTMLInputElement;
+
+      const searchBox = new maps.places.SearchBox(input, {
+        bounds: defaultBounds
+      });
+
+      this.autocompleteService = new maps.places.AutocompleteService();
+
+      input.addEventListener('input', () => {
+        this.handleRegionInput(input, defaultBounds);
+      });
+
+      searchBox.addListener('places_changed', () => {
+        const places = searchBox.getPlaces();
+        if (places.length === 0) {
+          return;
+        }
+        // Handle the selected place(s) here
+        console.log('Selected place:', places[0]);
+      });
+    });
+  }
+
+  //for search
+  handleRegionInput(input: HTMLInputElement, defaultBounds: google.maps.LatLngBounds): void {
+    if (!this.autocompleteService) {
+      return;
+    }
+    this.autocompleteService.getPlacePredictions(
+      {
+        input: input.value,
+        bounds: defaultBounds,
+        types: ['(regions)']
+      },
+      (predictions: google.maps.places.AutocompletePrediction[] | null, status: google.maps.places.PlacesServiceStatus) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
+          // Process the predictions here
+          console.log('Region predictions:', predictions);
+          this.predictions = predictions;
+        }
+      }
+    );
+  }
+
+  //function for retrieving regions
+  retrieveRegionFromAddress(address: string): Promise<string | null> {
+    return this.loadGoogleMaps().then((maps) => {
+      const geocoder = new maps.Geocoder();
+
+      return new Promise<string | null>((resolve, reject) => {
+        geocoder.geocode({ address: address }, (results: google.maps.GeocoderResult[], status: google.maps.GeocoderStatus) => {
+          if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
+            const region = this.extractRegionFromGeocoderResult(results[0]);
+            resolve(region);
+          } else {
+            reject('Failed to retrieve region from address');
+          }
+        });
+      });
+    });
+  }
+
+  private extractRegionFromGeocoderResult(result: google.maps.GeocoderResult): string | null {
+    const addressComponents = result.address_components;
+    for (const component of addressComponents) {
+      if (component.types.includes('administrative_area_level_1')) {
+        return component.long_name;
+      }
+    }
+    return null;
+  }
+
+  //for listings
   loadGoogleMaps(): Promise<any> {
     const win = window as any;
     const gModule = win.google;
