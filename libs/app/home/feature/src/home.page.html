@@ -1,45 +1,29 @@
-<ion-header >
-  <ion-toolbar>
-    <ion-row class="ion-align-items-center">
-      <ion-col size="0.5"><img class="logo" src="assets/Logo_v1.png" width="60%"></ion-col>
-      <ion-col size="2">
-        Proper Property
-      </ion-col>
-      <ion-col size="9">
-        <div class="navbar" class="ion-text-end">
-          <ion-button fill="clear"  routerLink="/home" routerDirection="root" routerLinkActive="active"
-            class="link">
-            Home
-          </ion-button>
-          <ion-button fill="clear"  routerLink="/create-listing" routerDirection="root" routerLinkActive="active"
-            class="link">
-            Add Listing
-          </ion-button>
-          <ion-button fill="clear" routerLink="/listings" routerDirection="root" routerLinkActive="active"
-            class="link">
-            View Listing
-          </ion-button>
-          <ion-button id="login-button" fill="clear" routerLink="/login" routerDirection="root" routerLinkActive="active"
-          class="link">
-          Log In
-        </ion-button>
-
-        <ion-button fill="clear" routerLink="/profile" routerDirection="root" routerLinkActive="active"
-        class="link">
-        Profile
-      </ion-button>
-
-        <ion-button id="signup-button" fill="clear" routerLink="/register" routerDirection="root" routerLinkActive="active"
-          class="link">
-          Sign Up
-        </ion-button>
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-toolbar>
-</ion-header>
+<!-- Header---
+core.shell.html
+-------------->
 
 
+<ion-content>
+<!----------------------- SlideShow and Searchbar Section--------------------------->
+
+  <section class="sec1">
+
+    <div class="slogan">
+      <h1>Proper <span class="bold">Properties</span></h1>
+      <h1>For You</h1>
+      <app-search></app-search>
+      <ion-searchbar class="custom-searchbar" placeholder="Property Location Search"></ion-searchbar>
+    </div>
+    
+    <img class="deco1" src="assets/GreenDots.png">
+    <img class="deco2" src="assets/BlackDots.png">
+  </section>
+
+</ion-content>
+
+
+<!---------------------------------------------------------------------------------->
+<!-- 
 <ion-content [fullscreen]="true">
   <ion-card id="recommended">
   <div class="swiper-container-wrapper">
@@ -47,9 +31,9 @@
       (afterinit)="swiperReady()"
       (slidechange)="swiperSlideChanged($event)"
       [loop]="true"
-      [pagination]="true">
+      [pagination]="true"> -->
       <!-- Slides content goes here -->
-      <swiper-slide>
+      <!-- <swiper-slide>
             <img class="slideimg"  src="assets/Fancy House.jpg" alt="house1">
       </swiper-slide>
 
@@ -70,11 +54,11 @@
   </ion-text>
   
   <app-search></app-search>
-  <ion-searchbar class="custom-searchbar"></ion-searchbar>
+  <ion-searchbar class="custom-searchbar"></ion-searchbar> -->
   
   <!-- <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="searchItems()" class="custom-searchbar"></ion-searchbar> -->
 
-  <img class="deco1" src="assets/GreenDots.png">
+  <!-- <img class="deco1" src="assets/GreenDots.png">
   <img class="deco2" src="assets/BlackDots.png">
 
   <section class="serv" id="serv">
@@ -160,4 +144,4 @@
   </div>
   </section>
 
-  </ion-content>
+  </ion-content> -->
