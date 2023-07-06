@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
 declare const gtag: Function;
@@ -10,11 +11,13 @@ declare const gtag: Function;
 })
 export class AppComponent {
   // constructor() {}
-  constructor(public router: Router) {
+  constructor(public router: Router, @Inject(DOCUMENT) private document: Document) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        gtag('config', 'G-4ZKFFSPB4D', { 'page_path': event.urlAfterRedirects });
-        console.log("App.component: " + event.urlAfterRedirects);
+        gtag('event', 'page_view', { 
+          'page_path': event.urlAfterRedirects,
+          'page_location': this.document.location.href 
+        });
       }      
     })
   }
