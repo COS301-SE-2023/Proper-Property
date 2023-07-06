@@ -12,6 +12,7 @@ import { API_KEY_TOKEN } from '@properproperty/app/google-maps/util';
 })
 
 
+
 export class GmapsService {
 
   constructor(@Inject(API_KEY_TOKEN) private key: string) { }
