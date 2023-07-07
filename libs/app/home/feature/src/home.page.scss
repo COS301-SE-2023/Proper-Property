@@ -142,6 +142,12 @@
     //border-color: var(--ion-color-primary);
     background-color: rgb(240, 255, 240);
     transform: scale(1.02);
+    h3 
+    {
+      color: var(--ion-color-primary);
+    }
+
+    
   }
 
   .serv-box img{
@@ -149,9 +155,23 @@
     height: 300px;
   }
 
+
   .serv-box h3
   {
-    color: var(--ion-color-primary);
+    color: var(--ion-color-primary-contrast);
+  }
+
+  p
+  {
+    text-align: center;
+    position: relative;
+  }
+
+  .info
+  {
+    font-size: 15px;
+    text-align: center;
+    position: relative;
   }
 }
 
