@@ -94,6 +94,7 @@
       "@properproperty/app/user/data-access": [
         "libs/app/user/data-access/src/index.ts"
       ],
+      "@properproperty/app/user/util": ["libs/app/user/util/src/index.ts"],
       "@properproperty/app/version/feature": [
         "libs/app/version/feature/src/index.ts"
       ]

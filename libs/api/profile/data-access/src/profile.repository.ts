@@ -5,7 +5,11 @@ import * as admin from 'firebase-admin';
 @Injectable()
 export class ProfileRepository {
   async createProfile(profile: profile) {
-    await admin.firestore().collection('users').doc(profile.userId).set(profile);
+    await admin
+      .firestore()
+      .collection('users')
+      .doc(profile.userId)
+      .set(profile);
   }
 
   async getUserProfile(userId: string) {
@@ -18,6 +22,14 @@ export class ProfileRepository {
       })
       .doc(userId)
       .get();
-    return profile.data() as profile;
+    return { user: profile.data()};
+  }
+
+  async updateUserProfile(profile: profile) {
+    await admin
+      .firestore()
+      .collection('users')
+      .doc(profile.userId)
+      .set(profile, {merge: true});
   }
 }

@@ -69,6 +69,7 @@ import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { AuthState } from '@properproperty/app/auth/data-access'
 
 import { AuthModule } from '@properproperty/app/auth/data-access';
+import { UserProfileState, UserProfileModule } from '@properproperty/app/user/data-access';
 
 const NX_ENVIRONMENT = process.env['NX_ENVIRONMENT'] || 'development';
 const USE_EMULATORS = JSON.parse(process.env['NX_USE_EMULATORS'] || 'true');
@@ -131,7 +132,7 @@ if (NX_ENVIRONMENT === 'development') {
       }
       return storage;
     }),
-    NgxsModule.forRoot([AuthState]),
+    NgxsModule.forRoot([AuthState, UserProfileState]),
     NgxsLoggerPluginModule.forRoot({
       disabled: NX_ENVIRONMENT === 'production',
     }),
@@ -141,6 +142,7 @@ if (NX_ENVIRONMENT === 'development') {
     NgxsLoggerPluginModule.forRoot(),
     NgxsRouterPluginModule.forRoot(),
     AuthModule,
+    UserProfileModule,
   ],
   // exports: [CoreShell],
   // 

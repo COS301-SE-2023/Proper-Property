@@ -1,13 +1,13 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { ProfileCreatedEvent, profile } from '@properproperty/api/profile/util';
+import { UserProfileUpdatedEvent, profile } from '@properproperty/api/profile/util';
 
 export class ProfileModel extends AggregateRoot implements profile {
   constructor(
-    public readonly userId: string,
-    public readonly firstName?: string,
-    public readonly lastName?: string,
-    public readonly email?: string,
-    public readonly listings?: string[],
+    public userId: string,
+    public firstName?: string,
+    public lastName?: string,
+    public email?: string,
+    public listings?: string[],
   ) {
     super();
   }
@@ -20,7 +20,25 @@ export class ProfileModel extends AggregateRoot implements profile {
       profile.email,
       profile.listings,
     );
-    model.apply(new ProfileCreatedEvent(profile));
     return model;
+  }
+
+  updateUserProfile(profile: profile) {
+    this.email = profile.email;
+    this.firstName = profile.firstName;
+    this.lastName = profile.lastName;
+    this.listings = profile.listings;
+
+    this.apply(new UserProfileUpdatedEvent(profile));
+  }
+
+  toJSON(): profile {
+    return {
+      userId: this.userId,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      email: this.email,
+      listings: this.listings,
+    };
   }
 }

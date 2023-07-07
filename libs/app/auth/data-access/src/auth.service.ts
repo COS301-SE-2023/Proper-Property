@@ -50,11 +50,9 @@ export class AuthService {
     return this.AuthLogin(new GoogleAuthProvider());
   }
   // Auth logic to run auth providers
-  AuthLogin(provider : AuthProvider) {
-    return signInWithPopup(this.auth, provider)
-      .then((result) => {
-        return result.user;
-      })
+  async AuthLogin(provider : AuthProvider) {
+    const result = await signInWithPopup(this.auth, provider);
+    return result.user;
       // .catch((error) => {
       //   console.log(error);
       //   return null;

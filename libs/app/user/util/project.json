@@ -1,0 +1,26 @@
+{
+  "name": "app-user-util",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/app/user/util/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/app/user/util",
+        "main": "libs/app/user/util/src/index.ts",
+        "tsConfig": "libs/app/user/util/tsconfig.lib.json",
+        "assets": ["libs/app/user/util/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/app/user/util/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

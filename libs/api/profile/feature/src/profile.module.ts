@@ -3,11 +3,11 @@ import { ProfileService } from './profile.service';
 import { ProfileModule as ProfileDataAccessModule } from '@properproperty/api/profile/data-access';
 import { CqrsModule } from '@nestjs/cqrs';
 
-import { CreateProfileHandler } from './commands';
-const CommandHandlers = [CreateProfileHandler];
+import { CreateProfileHandler, UpdateUserProfileHandler } from './commands';
+const CommandHandlers = [CreateProfileHandler, UpdateUserProfileHandler];
 
-import { ProfileCreatedHandler } from './events';
-const EventHandlers = [ProfileCreatedHandler];
+import { ProfileCreatedHandler, UserProfileUpdatedHandler } from './events';
+const EventHandlers = [ProfileCreatedHandler, UserProfileUpdatedHandler];
 
 import { GetUserProfileHandler } from './queries';
 const QueryHandlers = [GetUserProfileHandler];
