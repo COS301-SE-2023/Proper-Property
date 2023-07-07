@@ -42,8 +42,6 @@ jobs:
           echo "cat .env.prod"
       - name: Build App
         run: npm run build:app:prod
-#       - name: Run Cypress Test
-#         uses: cypress-io/github-action@v4
-#         with:
-#          command: npx cypress run
-#          browser: chrome
+      - name: Run Cypress Test
+        run: npx cypress run
+
