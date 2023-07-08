@@ -1,3 +1,3 @@
-export * from './user.service';
-export * from './user.state';
-export * from './user.module';
+export * from './profile.service';
+export * from './profile.state';
+export * from './profile.module';

@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
-import { UserProfileState } from './user.state';
-import { UserService } from './user.service';
+import { UserProfileState } from './profile.state';
+import { UserService } from './profile.service';
 
 @NgModule({
   imports: [
