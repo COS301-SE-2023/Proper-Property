@@ -6,7 +6,7 @@ import { Firestore, doc, updateDoc, setDoc, getDoc, deleteDoc } from '@angular/f
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserProfileService {
   currentUser: profile | null = null;
 
   constructor(private firestore: Firestore) {}

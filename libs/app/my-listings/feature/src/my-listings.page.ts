@@ -7,7 +7,7 @@ import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
 import { listing } from '@properproperty/app/listing/util';
-import { UserService } from '@properproperty/app/profile/data-access';
+import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { User } from '@angular/fire/auth';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
@@ -40,7 +40,7 @@ export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
     private actionSheetCtrl: ActionSheetController,
     private router: Router,
     private listingServices : ListingsService,
-    private userServices: UserService,
+    private userServices: UserProfileService,
     ) {
       this.user$.subscribe((user: User | null) => {
         this.currentUser =  user;

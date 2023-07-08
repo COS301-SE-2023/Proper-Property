@@ -13,6 +13,13 @@ export class CreateProfileHandler implements ICommandHandler<CreateProfileComman
       userId: command.user.uid,
       email: command.user.email,
       listings: [],
+      interests: {
+        garden: 50,
+        mansion: 50,
+        accessible: 50,
+        openConcept: 50,
+        ecoWarrior: 50
+      }
     };
     this.profileRepo.createProfile(temp);
   }

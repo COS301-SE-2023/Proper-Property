@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { listing } from '@properproperty/app/listing/util';
 import { Firestore, collection, doc, docData, addDoc, updateDoc, getDocs, getDoc } from '@angular/fire/firestore';
 import { Storage, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
-import { UserService } from '@properproperty/app/profile/data-access';
+import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { profile } from '@properproperty/api/profile/util';
 import { Observable } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 export class ListingsService {
   currentUser: profile | null = null;
 
-  constructor(private firestore: Firestore, public userServices: UserService, private storage : Storage) {
+  constructor(private firestore: Firestore, public userServices: UserProfileService, private storage : Storage) {
     this.currentUser = this.userServices.getCurrentUser();
   }
 

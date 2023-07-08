@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '@properproperty/app/profile/data-access';
+import { UserProfileState, UserProfileService } from '@properproperty/app/profile/data-access';
 import {AuthService} from '@properproperty/app/auth/data-access';
 import { AlertController } from '@ionic/angular';
 
@@ -12,6 +12,9 @@ interface Interests {
 }
 
 import { Router } from '@angular/router';
+import { Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { profile } from '@properproperty/api/profile/util';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -19,8 +22,9 @@ import { Router } from '@angular/router';
 })
 export class ProfilePage implements OnInit {
 
-  
-  user: { name: string, surname: string, email: string, interests: Interests };
+  @Select(UserProfileState.userProfile) userProfile$!: Observable<profile | null>;
+  user: profile | null = null;
+  interests: Interests; // Needs to not be nullable cus ngModel no like
   isEditingEmail: boolean;
   newEmail: string;
   // appPages = [
@@ -36,37 +40,62 @@ export class ProfilePage implements OnInit {
 
   
   editEmail() {
+    if (!this.user) {
+      return;
+    }
     this.isEditingEmail = true;
-    this.newEmail = this.user.email;
+    this.newEmail = this.user.email ?? '';
   }
 
   saveEmail() {
-    // Perform validation or additional logic here if needed
+    if (!this.user) {
+      return;
+    }
     this.user.email = this.newEmail;
-    this.userServices.updateUserEmail(this.newEmail);
+    this.userProfileService.updateUserEmail(this.newEmail);
     this.authServices.editEmail(this.newEmail);
     this.isEditingEmail = false;
   }
 
-  constructor( private userServices: UserService, private authServices:AuthService, private alertController: AlertController, private router: Router) {
+  constructor( private userProfileService: UserProfileService, private authServices:AuthService, private alertController: AlertController, private router: Router) {
 
-    
-    this.user = {
-      email:"john@example.com",
-      name: 'John',
-      surname: 'Doe',
-      interests: {
-        garden: 50,
-        mansion: 75,
-        accessible: 25,
-        openConcept: 90,
-        ecoWarrior: 60,
-      },
+    // default value cus ngModel cries when the user is null
+    this.interests = {
+      garden: 0,
+      mansion: 0,
+      accessible: 0,
+      openConcept: 0,
+      ecoWarrior: 0,
     };
 
-    this.user.name = this.userServices.currentUser?.firstName ?? '';
-    this.user.surname = this.userServices.currentUser?.lastName ?? '';
-    this.user.email = this.userServices.currentUser?.email ?? '';
+    this.userProfile$.subscribe((profile) => {
+      this.user = profile;
+      if (profile) {
+        this.interests = profile.interests;
+      }
+      else {
+        this.interests = {
+          garden: 0,
+          mansion: 0,
+          accessible: 0,
+          openConcept: 0,
+          ecoWarrior: 0,
+        };
+      }
+    });
+
+    // this.user = {
+    //   email:"john@example.com",
+    //   name: 'John',
+    //   surname: 'Doe',
+    //   interests: {
+    //     garden: 50,
+    //     mansion: 75,
+    //     accessible: 25,
+    //     openConcept: 90,
+    //     ecoWarrior: 60,
+    //   },
+    // };
     
     this.isEditingEmail = false;
     this.newEmail = '';
@@ -105,7 +134,7 @@ export class ProfilePage implements OnInit {
 
   deleteAccount() {
     // Perform validation or additional logic here if needed
-    this.userServices.deleteUser(this.userServices.currentUser?.userId ?? '');
+    this.userProfileService.deleteUser(this.userProfileService.currentUser?.userId ?? '');
     this.authServices.deleteCurrentUser();
     //redirect to login
     this.router.navigate(['/register']);

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '@properproperty/app/profile/data-access';
+import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { listing } from '@properproperty/app/listing/util';
 // import { profile } from '@properproperty/api/profile/util';
 import { ListingsService } from '@properproperty/app/listing/data-access';
@@ -20,7 +20,7 @@ export class CreateListingPage implements OnInit {
   currentUser: User | null = null;
   description = "";
   heading = "";
-  constructor(private readonly router: Router, private readonly userService: UserService, private readonly listingService: ListingsService, private readonly openAIService: OpenAIService) {
+  constructor(private readonly router: Router, private readonly userService: UserProfileService, private readonly listingService: ListingsService, private readonly openAIService: OpenAIService) {
     this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
     
     this.user$.subscribe((user: User | null) => {

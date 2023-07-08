@@ -3,7 +3,7 @@ import { listing } from '@properproperty/app/listing/util';
 import Swiper from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListingsService } from '@properproperty/app/listing/data-access';
-import { UserService } from '@properproperty/app/profile/data-access';
+import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { profile } from '@properproperty/api/profile/util';
 
 
@@ -19,7 +19,7 @@ export class ListingPage implements OnInit{
   price_per_sm = 0;
   lister_name = "";
 
-  constructor(private router: Router, private route: ActivatedRoute, private listingServices : ListingsService, private userServices : UserService) {
+  constructor(private router: Router, private route: ActivatedRoute, private listingServices : ListingsService, private userServices : UserProfileService) {
     this.loanAmount = 0;
     this.interestRate = 0;
     this.loanTerm = 0;
