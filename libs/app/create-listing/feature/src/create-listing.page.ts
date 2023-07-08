@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '@properproperty/app/user/data-access';
+import { UserService } from '@properproperty/app/profile/data-access';
 import { listing } from '@properproperty/app/listing/util';
 // import { profile } from '@properproperty/api/profile/util';
 import { ListingsService } from '@properproperty/app/listing/data-access';

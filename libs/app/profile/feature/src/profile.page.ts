@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '@properproperty/app/user/data-access';
+import { UserService } from '@properproperty/app/profile/data-access';
 import {AuthService} from '@properproperty/app/auth/data-access';
 import { AlertController } from '@ionic/angular';
 

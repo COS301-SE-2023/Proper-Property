@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { listing } from '@properproperty/app/listing/util';
 import { Firestore, collection, doc, docData, addDoc, updateDoc, getDocs, getDoc } from '@angular/fire/firestore';
 import { Storage, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
-import { UserService } from '@properproperty/app/user/data-access';
+import { UserService } from '@properproperty/app/profile/data-access';
 import { profile } from '@properproperty/api/profile/util';
 import { Observable } from 'rxjs';
 

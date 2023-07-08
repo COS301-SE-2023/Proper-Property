@@ -7,7 +7,7 @@ import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
 import { listing } from '@properproperty/app/listing/util';
-import { UserService } from '@properproperty/app/user/data-access';
+import { UserService } from '@properproperty/app/profile/data-access';
 import { User } from '@angular/fire/auth';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';

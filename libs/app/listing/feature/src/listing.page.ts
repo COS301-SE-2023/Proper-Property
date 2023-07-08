@@ -3,7 +3,7 @@ import { listing } from '@properproperty/app/listing/util';
 import Swiper from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListingsService } from '@properproperty/app/listing/data-access';
-import { UserService } from '@properproperty/app/user/data-access';
+import { UserService } from '@properproperty/app/profile/data-access';
 import { profile } from '@properproperty/api/profile/util';
 
 

@@ -73,6 +73,9 @@
       "@properproperty/app/open-ai/data-access": [
         "libs/app/open-ai/data-access/src/index.ts"
       ],
+      "@properproperty/app/profile/data-access": [
+        "libs/app/profile/data-access/src/index.ts"
+      ],
       "@properproperty/app/profile/feature": [
         "libs/app/profile/feature/src/index.ts"
       ],
@@ -91,10 +94,6 @@
       "@properproperty/app/settings/feature": [
         "libs/app/settings/feature/src/index.ts"
       ],
-      "@properproperty/app/user/data-access": [
-        "libs/app/user/data-access/src/index.ts"
-      ],
-      "@properproperty/app/user/util": ["libs/app/user/util/src/index.ts"],
       "@properproperty/app/version/feature": [
         "libs/app/version/feature/src/index.ts"
       ]

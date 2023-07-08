@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@properproperty/app/auth/data-access';
 import { AuthProviderLogin } from '@properproperty/app/auth/util';
 import { Router } from '@angular/router'
-import { UserService } from '@properproperty/app/user/data-access';
+import { UserService } from '@properproperty/app/profile/data-access';
 import { Store } from '@ngxs/store';
 import { Login } from '@properproperty/app/auth/util';
 

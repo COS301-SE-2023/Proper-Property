@@ -4,7 +4,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { User } from '@angular/fire/auth';
 import { AuthService } from './auth.service';
 import { Login, SubscribeToAuthState, SetAuthUser, Register, AuthProviderLogin } from '@properproperty/app/auth/util';
-import { SubscribeToUserProfile } from '@properproperty/app/user/util';
+import { SubscribeToUserProfile } from '@properproperty/app/profile/util';
 import { tap } from 'rxjs';
 export interface AuthStateModel {
   user: User | null;

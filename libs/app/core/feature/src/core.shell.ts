@@ -6,7 +6,7 @@ import { AuthState } from '@properproperty/app/auth/data-access';
 import { Observable } from 'rxjs';
 import { Unsubscribe, User } from 'firebase/auth';
 // import { SubscribeToUserProfile, UnsubscribeFromUserProfile } from '@properproperty/app/user/util';
-import { UserProfileState } from '@properproperty/app/user/data-access';
+import { UserProfileState } from '@properproperty/app/profile/data-access';
 import { HttpClient } from '@angular/common/http';
 import { HostListener } from '@angular/core';
 

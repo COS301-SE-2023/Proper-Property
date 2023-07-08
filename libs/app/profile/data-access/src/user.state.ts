@@ -1,7 +1,7 @@
 import { profile } from "@properproperty/api/profile/util";
 import { State, Selector, Store, StateContext, Action } from "@ngxs/store";
 import { Injectable } from "@angular/core";
-import { SubscribeToUserProfile, UnsubscribeFromUserProfile } from "@properproperty/app/user/util";
+import { SubscribeToUserProfile, UnsubscribeFromUserProfile } from "@properproperty/app/profile/util";
 import { Firestore, doc, onSnapshot, Unsubscribe, getDoc } from "@angular/fire/firestore";
 
 // import { Unsubscribe } from "firebase/firestore";
