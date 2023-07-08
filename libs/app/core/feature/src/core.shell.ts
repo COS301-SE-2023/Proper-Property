@@ -7,11 +7,9 @@ import { Observable } from 'rxjs';
 import { Unsubscribe, User } from 'firebase/auth';
 // import { SubscribeToUserProfile, UnsubscribeFromUserProfile } from '@properproperty/app/user/util';
 import { UserProfileState } from '@properproperty/app/profile/data-access';
-import { HttpClient } from '@angular/common/http';
 import { HostListener } from '@angular/core';
 
-import { httpsCallable, Functions } from '@angular/fire/functions';
-import { GetUserProfileRequest, GetUserProfileResponse, UpdateUserProfileRequest, UpdateUserProfileResponse, profile } from '@properproperty/api/profile/util';
+// import { GetUserProfileRequest, GetUserProfileResponse, UpdateUserProfileRequest, UpdateUserProfileResponse, profile } from '@properproperty/api/profile/util';
 
 @Component({
   selector: 'proper-property-app',
@@ -24,7 +22,7 @@ export class CoreShellComponent implements OnInit, OnDestroy{
   public loggedIn = false;
   private user: User | null = null;
   private userProfileListener: Unsubscribe | null = null;
-  constructor(private readonly store: Store, private readonly http: HttpClient, private readonly functions: Functions) {
+  constructor(private readonly store: Store) {
     this.loggedIn = this.user$ != null && this.user$ != undefined;
 
     this.user$.subscribe((user) => {
@@ -39,45 +37,40 @@ export class CoreShellComponent implements OnInit, OnDestroy{
   }
   
   ngOnInit() {
-    this.http.get('http://localhost:3000/init').subscribe((res) => {
-      console.log(res);
-    });
     this.store.dispatch(new SubscribeToAuthState());
   }
   // Unsubscribes from snapshot listener when window is unloaded
   @HostListener('window:beforeunload')
   ngOnDestroy() {
-    this.http.get('http://localhost:3000/destroy').subscribe((res) => {
-      console.log(res);
-    });
     if (this.userProfileListener) {
       this.userProfileListener();
     }
   }
 
   async test() {// very duct tape, much jank. 10/10
-    const getUserProfile = httpsCallable<
-      GetUserProfileRequest,
-      GetUserProfileResponse
-    >(this.functions, 'getUserProfile');
+    alert ("OI");
+    // const getUserProfile = httpsCallable<
+    //   GetUserProfileRequest,
+    //   GetUserProfileResponse
+    // >(this.functions, 'getUserProfile');
 
-    const updateUserProfile = httpsCallable<
-      UpdateUserProfileRequest,
-      UpdateUserProfileResponse
-    >(this.functions, 'updateUserProfile');
-    let getresponse: GetUserProfileResponse;
-    let profile: profile | null = null;
-    if (this.user){
-      getresponse = (await getUserProfile({userId: this.user.uid})).data;
-      profile = getresponse.user;
-      console.warn(profile);
-    }
-    let updateResponse: UpdateUserProfileResponse;
-    if (profile) {
-      profile.email = 'test@mail.com';
-      console.log(profile);
-      updateResponse = (await updateUserProfile({user: profile})).data;
-      console.warn(updateResponse);
-    }
+    // const updateUserProfile = httpsCallable<
+    //   UpdateUserProfileRequest,
+    //   UpdateUserProfileResponse
+    // >(this.functions, 'updateUserProfile');
+    // let getresponse: GetUserProfileResponse;
+    // let profile: profile | null = null;
+    // if (this.user){
+    //   getresponse = (await getUserProfile({userId: this.user.uid})).data;
+    //   profile = getresponse.user;
+    //   console.warn(profile);
+    // }
+    // let updateResponse: UpdateUserProfileResponse;
+    // if (profile) {
+    //   profile.email = 'test@mail.com';
+    //   console.log(profile);
+    //   updateResponse = (await updateUserProfile({user: profile})).data;
+    //   console.warn(updateResponse);
+    // }
   }
 }

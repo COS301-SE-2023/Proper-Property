@@ -12,9 +12,10 @@ interface Interests {
 }
 
 import { Router } from '@angular/router';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { profile } from '@properproperty/api/profile/util';
+import { UpdateUserProfile } from '@properproperty/app/profile/util';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -48,16 +49,29 @@ export class ProfilePage implements OnInit {
   }
 
   saveEmail() {
+    this.isEditingEmail = false;
     if (!this.user) {
       return;
     }
     this.user.email = this.newEmail;
-    this.userProfileService.updateUserEmail(this.newEmail);
-    this.authServices.editEmail(this.newEmail);
+    // this.userProfileService.updateUserEmail(this.newEmail);
+    // this.authServices.editEmail(this.newEmail);
+    this.store.dispatch(new UpdateUserProfile({email: this.newEmail}));
+    this.newEmail = '';
+  }
+
+  discardEmail() {
+    this.newEmail = '';
     this.isEditingEmail = false;
   }
 
-  constructor( private userProfileService: UserProfileService, private authServices:AuthService, private alertController: AlertController, private router: Router) {
+  constructor( 
+      private readonly userProfileService: UserProfileService, 
+      private readonly authServices:AuthService, 
+      private readonly alertController: AlertController, 
+      private readonly router: Router,
+      private readonly store: Store
+    ) {
 
     // default value cus ngModel cries when the user is null
     this.interests = {

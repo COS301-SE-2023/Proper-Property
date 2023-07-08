@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { profile } from '@properproperty/api/profile/util';
+import { UpdateUserProfileRequest, UpdateUserProfileResponse, profile } from '@properproperty/api/profile/util';
 import { Firestore, doc, updateDoc, setDoc, getDoc, deleteDoc } from '@angular/fire/firestore';
-
+import { httpsCallable, Functions, HttpsCallableResult } from '@angular/fire/functions';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ import { Firestore, doc, updateDoc, setDoc, getDoc, deleteDoc } from '@angular/f
 export class UserProfileService {
   currentUser: profile | null = null;
 
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore, private readonly functions: Functions) {}
 
   setCurrentUser(user: profile): void {
     this.currentUser = user;
@@ -56,6 +56,14 @@ export class UserProfileService {
         resolve(doc.data() as profile);
       });
     });
+  }
+
+  async updateUserProfile(uProfile: profile) {
+    const resp: HttpsCallableResult = await httpsCallable<
+      UpdateUserProfileRequest,
+      UpdateUserProfileResponse
+    >(this.functions, 'updateUserProfile')({user: uProfile});
+    console.log(resp);
   }
 }
 

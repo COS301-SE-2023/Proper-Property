@@ -1,10 +1,18 @@
 import { profile } from "@properproperty/api/profile/util";
 import { State, Selector, Store, StateContext, Action } from "@ngxs/store";
 import { Injectable } from "@angular/core";
-import { SubscribeToUserProfile, UnsubscribeFromUserProfile } from "@properproperty/app/profile/util";
+import { 
+  SubscribeToUserProfile, 
+  UnsubscribeFromUserProfile, 
+  UpdateEmail, 
+  // UpdateFirstName, 
+  // UpdateLastName, 
+  UpdateUserProfile 
+} from "@properproperty/app/profile/util";
 import { Firestore, doc, onSnapshot, Unsubscribe, getDoc } from "@angular/fire/firestore";
 
 // import { Unsubscribe } from "firebase/firestore";
+import { UserProfileService } from './profile.service';
 export interface UserProfileStateModel {
   userProfile: profile | null;
   snapshotListener: Unsubscribe | null;
@@ -19,7 +27,7 @@ export interface UserProfileStateModel {
 })
 @Injectable()
 export class UserProfileState {
-  constructor(private readonly store: Store, private readonly firestore: Firestore) {}
+  constructor(private readonly store: Store, private readonly firestore: Firestore, private readonly userProfileService: UserProfileService) {}
 
   @Selector()
   static userProfile(state: UserProfileStateModel) {
@@ -73,5 +81,34 @@ export class UserProfileState {
     }
     // Update state
     ctx.patchState({ userProfile: null, snapshotListener: null });
+  }
+
+  @Action(UpdateEmail)
+  async updateEmail(ctx: StateContext<UserProfileStateModel>, { email }: UpdateEmail) {
+    // Get current user
+    const user = ctx.getState().userProfile;
+    // If user exists, update email
+    if (user) {
+      // Update email
+      const updatedUser = { ...user, email: email };
+      // Update state
+      ctx.patchState({ userProfile: updatedUser });
+
+    }
+  }
+
+  @Action(UpdateUserProfile)
+  async updateUserProfile(ctx: StateContext<UserProfileStateModel>, { userProfile }: UpdateUserProfile) {
+    // Get current user
+    const user = ctx.getState().userProfile;
+    // If user exists, update data
+    if (user) {
+
+      // Surprised this works, but it does.
+      const updatedUser = { ...user, ...userProfile };
+      // Update state
+      // ctx.patchState({ userProfile: updatedUser });
+      this.userProfileService.updateUserProfile(updatedUser);
+    }
   }
 }

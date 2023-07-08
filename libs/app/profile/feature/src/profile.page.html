@@ -80,6 +80,7 @@
           <div class="email-input-container" *ngIf="isEditingEmail">
             <ion-input type="text" [(ngModel)]="newEmail" placeholder="Enter a new email" clearInput></ion-input>
             <ion-button expand="full" color="primary" (click)="saveEmail()">Save</ion-button>
+            <ion-button expand="full" color="danger" (click)="discardEmail()">Cancel</ion-button>
           </div>
         </div>
         <br>
