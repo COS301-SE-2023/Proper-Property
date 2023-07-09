@@ -1,4 +1,4 @@
-import { profile } from '@properproperty/api/profile/util';
+import { UserProfile } from '@properproperty/api/profile/util';
 export class SubscribeToUserProfile {
   static readonly type = '[UserProfile] SubscribeToUserProfile';
   constructor(public readonly userId?: string){}
@@ -25,5 +25,5 @@ export class UpdateLastName {
 
 export class UpdateUserProfile {
   static readonly type = '[UserProfile] UpdateUserProfile';
-  constructor(public readonly userProfile: Partial<profile>){}
+  constructor(public readonly userProfile: Partial<UserProfile>){}
 }

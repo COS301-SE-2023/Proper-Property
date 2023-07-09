@@ -1,10 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { listing } from '@properproperty/app/listing/util';
+import { Listing } from '@properproperty/app/listing/util';
 import Swiper from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListingsService } from '@properproperty/app/listing/data-access';
-import { UserProfileService } from '@properproperty/app/profile/data-access';
-import { profile } from '@properproperty/api/profile/util';
+import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
+import { UserProfile } from '@properproperty/api/profile/util';
+import { Observable } from 'rxjs';
+import { Unsubscribe } from '@angular/fire/firestore';
+import { Select } from '@ngxs/store';
 
 
 @Component({
@@ -13,36 +16,54 @@ import { profile } from '@properproperty/api/profile/util';
   styleUrls: ['./listing.page.scss'],
 })
 export class ListingPage implements OnInit{
+  @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
+  user : UserProfile | null = null;
   @ViewChild('swiper') swiperRef?: ElementRef;
   swiper?: Swiper;
-  list : listing | null = null;
+  list : Listing | null = null;
   price_per_sm = 0;
   lister_name = "";
+  includes = false;
 
   constructor(private router: Router, private route: ActivatedRoute, private listingServices : ListingsService, private userServices : UserProfileService) {
+    let list_id = "";
+    this.route.params.subscribe((params) => list_id = params['list']);
+    this.listingServices.getListing(list_id).then((list) => {
+      this.list = list;
+    }).then(() => {
+      // console.log(this.list);
+      // this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
+
+      // this.userServices.getUser("" + this.list?.user_id).then((user : UserProfile) => {
+      //   console.log(user);
+      //   this.lister_name = user.firstName + " " + user.lastName;
+      });
+    // });
     this.loanAmount = 0;
     this.interestRate = 0;
     this.loanTerm = 0;
     this.monthlyPayment = 0;
     this.totalOnceOffCosts = 0;
     this.minGrossMonthlyIncome = 0;
+    this.userProfile$.subscribe((user) => {
+      this.user = user;
+      if(this.user && this.list){
+        console.log(this.user.listings);
+        console.log(this.list.listing_id);
+        if(this.user.listings?.includes("" + this.list.listing_id)){
+          this.includes = true;
+        }
+        else this.includes = false;
+      }
+    });
    }
 
   async ngOnInit() {
-    let list_id = "";
-    this.route.params.subscribe((params) => list_id = params['list']);
-    await this.listingServices.getListing(list_id).then((list) => {
-      this.list = list;
-    });
-    console.log(this.list);
-    this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
-
-    await this.userServices.getUser("" + this.list?.user_id).then((user : profile) => {
-      console.log(user);
-      this.lister_name = user.firstName + " " + user.lastName;
-    })
+    
   }
-  
+  doStuff() {
+    
+  }
   swiperReady() {
     console.log(this.swiperRef?.nativeElement.swiper);
     this.swiper = this.swiperRef?.nativeElement.swiper;

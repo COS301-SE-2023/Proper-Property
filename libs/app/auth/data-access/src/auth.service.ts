@@ -35,7 +35,7 @@ import {
   updateEmail,
   authState
 } from "@angular/fire/auth";
-import { profile } from '@properproperty/api/profile/util';
+import { UserProfile } from '@properproperty/api/profile/util';
 @Injectable({
   providedIn: 'root',
 })
@@ -117,7 +117,7 @@ export class AuthService {
   }
 
   // Save profile data in a cookie
-  saveProfileData(profile: profile) {
+  saveProfileData(profile: UserProfile) {
     setCookie(this.PROFILE_COOKIE_NAME, JSON.stringify(profile), 7); // Set the cookie to expire in 7 days
   }
 

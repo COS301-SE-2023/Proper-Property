@@ -1,10 +1,10 @@
-import { profile } from '@properproperty/api/profile/util';
+import { UserProfile } from '@properproperty/api/profile/util';
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 
 @Injectable()
 export class ProfileRepository {
-  async createProfile(profile: profile) {
+  async createProfile(profile: UserProfile) {
     await admin
       .firestore()
       .collection('users')
@@ -16,16 +16,16 @@ export class ProfileRepository {
     const profile = await admin
       .firestore()
       .collection('users')
-      .withConverter<profile>({
-        fromFirestore: (snapshot) => snapshot.data() as profile,
-        toFirestore: (profile: profile) => profile
+      .withConverter<UserProfile>({
+        fromFirestore: (snapshot) => snapshot.data() as UserProfile,
+        toFirestore: (profile: UserProfile) => profile
       })
       .doc(userId)
       .get();
     return { user: profile.data()};
   }
 
-  async updateUserProfile(profile: profile) {
+  async updateUserProfile(profile: UserProfile) {
     await admin
       .firestore()
       .collection('users')

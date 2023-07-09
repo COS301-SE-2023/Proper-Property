@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
-import { listing } from '@properproperty/app/listing/util';
+import { Listing } from '@properproperty/app/listing/util';
 // import { profile } from '@properproperty/api/profile/util';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
@@ -9,7 +9,8 @@ import { Select} from '@ngxs/store';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { User } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
-
+import { Store } from '@ngxs/store';
+import { UpdateUserProfile } from '@properproperty/app/profile/util';
 @Component({
   selector: 'app-create-listing',
   templateUrl: './create-listing.page.html',
@@ -20,7 +21,13 @@ export class CreateListingPage implements OnInit {
   currentUser: User | null = null;
   description = "";
   heading = "";
-  constructor(private readonly router: Router, private readonly userService: UserProfileService, private readonly listingService: ListingsService, private readonly openAIService: OpenAIService) {
+  constructor(
+      private readonly router: Router, 
+      private readonly userService: UserProfileService, 
+      private readonly listingService: ListingsService, 
+      private readonly openAIService: OpenAIService,
+      private readonly store: Store
+    ) {
     this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
     
     this.user$.subscribe((user: User | null) => {
@@ -191,7 +198,7 @@ export class CreateListingPage implements OnInit {
 
     console.log(prop_type_in.value);
     if(this.currentUser != null){
-      const list : listing = {
+      const list : Listing = {
         user_id: this.currentUser.uid,
         address: this.address,
         price: this.price,

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit,ViewChild,ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
-import { profile } from '@properproperty/api/profile/util';
+import { UserProfile } from '@properproperty/api/profile/util';
 import Swiper from 'swiper';
 // import { Storage, ref } from '@angular/fire/storage';
 // import { uploadBytes } from 'firebase/storage';
@@ -23,7 +23,7 @@ export class HomePage implements OnInit {
   
   public home!: string;
   private activatedRoute = inject(ActivatedRoute);
-  currentUser: profile | null = null;
+  currentUser: UserProfile | null = null;
   constructor(public userService : UserProfileService) {
     this.currentUser = this.userService.getCurrentUser();
   }

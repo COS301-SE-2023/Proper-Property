@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UpdateUserProfileRequest, UpdateUserProfileResponse, profile } from '@properproperty/api/profile/util';
+import { UpdateUserProfileRequest, UpdateUserProfileResponse, UserProfile } from '@properproperty/api/profile/util';
 import { Firestore, doc, updateDoc, setDoc, getDoc, deleteDoc } from '@angular/fire/firestore';
 import { httpsCallable, Functions, HttpsCallableResult } from '@angular/fire/functions';
 
@@ -7,11 +7,11 @@ import { httpsCallable, Functions, HttpsCallableResult } from '@angular/fire/fun
   providedIn: 'root'
 })
 export class UserProfileService {
-  currentUser: profile | null = null;
+  currentUser: UserProfile | null = null;
 
   constructor(private firestore: Firestore, private readonly functions: Functions) {}
 
-  setCurrentUser(user: profile): void {
+  setCurrentUser(user: UserProfile): void {
     this.currentUser = user;
   }
 
@@ -23,7 +23,7 @@ export class UserProfileService {
     return [this.currentUser?.email, this.currentUser?.firstName, this.currentUser?.lastName, this.currentUser?.userId]
   }
 
-  async registerNewUser(user_profile: profile, uid: string) {
+  async registerNewUser(user_profile: UserProfile, uid: string) {
     const userRef = doc(this.firestore, 'users', uid);
     await setDoc(userRef, user_profile);
     user_profile.userId = uid;
@@ -33,7 +33,7 @@ export class UserProfileService {
   async loginUser(uid : string){
     const userRef = doc(this.firestore, `users/${uid}`);
     await getDoc(userRef).then((doc) => {
-      const user = doc.data() as profile;
+      const user = doc.data() as UserProfile;
       user.userId = uid;
       this.setCurrentUser(user);
     });
@@ -49,16 +49,16 @@ export class UserProfileService {
     await deleteDoc(userRef);
   }
 
-  async getUser(uid: string) : Promise<profile>{
-    return new Promise<profile>(async (resolve) => {
+  async getUser(uid: string) : Promise<UserProfile>{
+    return new Promise<UserProfile>(async (resolve) => {
       const userRef = doc(this.firestore, `users/${uid}`);
       await getDoc(userRef).then((doc) => {
-        resolve(doc.data() as profile);
+        resolve(doc.data() as UserProfile);
       });
     });
   }
 
-  async updateUserProfile(uProfile: profile) {
+  async updateUserProfile(uProfile: UserProfile) {
     const resp: HttpsCallableResult = await httpsCallable<
       UpdateUserProfileRequest,
       UpdateUserProfileResponse

@@ -8,7 +8,7 @@ import { Unsubscribe, User } from 'firebase/auth';
 // import { SubscribeToUserProfile, UnsubscribeFromUserProfile } from '@properproperty/app/user/util';
 import { UserProfileState } from '@properproperty/app/profile/data-access';
 import { HostListener } from '@angular/core';
-
+import { httpsCallable, Functions } from '@angular/fire/functions';
 // import { GetUserProfileRequest, GetUserProfileResponse, UpdateUserProfileRequest, UpdateUserProfileResponse, profile } from '@properproperty/api/profile/util';
 
 @Component({
@@ -22,7 +22,7 @@ export class CoreShellComponent implements OnInit, OnDestroy{
   public loggedIn = false;
   private user: User | null = null;
   private userProfileListener: Unsubscribe | null = null;
-  constructor(private readonly store: Store) {
+  constructor(private readonly store: Store, private readonly functions: Functions) {
     this.loggedIn = this.user$ != null && this.user$ != undefined;
 
     this.user$.subscribe((user) => {
@@ -49,6 +49,8 @@ export class CoreShellComponent implements OnInit, OnDestroy{
 
   async test() {// very duct tape, much jank. 10/10
     alert ("OI");
+    const test = await httpsCallable(this.functions, 'getAnalyticsData')();
+    console.log(test);
     // const getUserProfile = httpsCallable<
     //   GetUserProfileRequest,
     //   GetUserProfileResponse

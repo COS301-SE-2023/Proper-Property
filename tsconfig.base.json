@@ -18,6 +18,15 @@
       "@properproperty/api/core/feature": [
         "libs/api/core/feature/src/index.ts"
       ],
+      "@properproperty/api/listings/data-access": [
+        "libs/api/listings/data-access/src/index.ts"
+      ],
+      "@properproperty/api/listings/feature": [
+        "libs/api/listings/feature/src/index.ts"
+      ],
+      "@properproperty/api/listings/util": [
+        "libs/api/listings/util/src/index.ts"
+      ],
       "@properproperty/api/profile/data-access": [
         "libs/api/profile/data-access/src/index.ts"
       ],

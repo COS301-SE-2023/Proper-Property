@@ -1,6 +1,6 @@
 import { Interests } from "./interests.interface";
 
-export interface profile{
+export interface UserProfile{
   userId: string;
   firstName?: string;
   lastName?: string;

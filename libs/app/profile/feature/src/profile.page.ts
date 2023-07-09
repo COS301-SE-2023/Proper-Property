@@ -14,7 +14,7 @@ interface Interests {
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { profile } from '@properproperty/api/profile/util';
+import { UserProfile } from '@properproperty/api/profile/util';
 import { UpdateUserProfile } from '@properproperty/app/profile/util';
 @Component({
   selector: 'app-profile',
@@ -23,8 +23,8 @@ import { UpdateUserProfile } from '@properproperty/app/profile/util';
 })
 export class ProfilePage implements OnInit {
 
-  @Select(UserProfileState.userProfile) userProfile$!: Observable<profile | null>;
-  user: profile | null = null;
+  @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
+  user: UserProfile | null = null;
   interests: Interests; // Needs to not be nullable cus ngModel no like
   isEditingEmail: boolean;
   newEmail: string;

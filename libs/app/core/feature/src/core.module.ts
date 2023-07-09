@@ -107,7 +107,7 @@ if (NX_ENVIRONMENT === 'development') {
     provideFirestore(() => {
       const firestore = getFirestore();
       if (USE_EMULATORS) {
-        connectFirestoreEmulator(firestore, 'localhost', 8080);
+        connectFirestoreEmulator(firestore, 'localhost', 8081);
       }
       return firestore;
     }),
