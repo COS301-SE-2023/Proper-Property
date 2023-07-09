@@ -3,17 +3,19 @@ import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
 import { User } from '@angular/fire/auth';
 import { AuthService } from './auth.service';
-import { Login, SubscribeToAuthState, SetUser, Register, AuthProviderLogin } from '@properproperty/app/auth/util'
+import { Login, SubscribeToAuthState, SetUser, Register, AuthProviderLogin, SetToken } from '@properproperty/app/auth/util'
 import { tap } from 'rxjs';
 
 export interface AuthStateModel {
   user: User | null;
+  oauthToken: string | null;
 }
 
 @State<AuthStateModel>({
   name: 'auth',
   defaults: {
-    user: null
+    user: null,
+    oauthToken: null
   }
 })
 @Injectable()
@@ -25,6 +27,10 @@ export class AuthState {
     return state.user;
   }
 
+  @Selector()
+  static oauthToken(state: AuthStateModel) {
+    return state.oauthToken;
+  }
   // Gets an observable of the firebase user's auth state
   // and dispatches an action to set the user in the store
   // whenever the auth state changes.
@@ -65,7 +71,7 @@ export class AuthState {
 
   @Action(SetUser)
   setUser(ctx: StateContext<AuthStateModel>, { user }: SetUser) {
-    ctx.setState({ user: user });
+    ctx.setState({ user: user, oauthToken: null });
   }
 
   @Action(AuthProviderLogin)
@@ -83,5 +89,10 @@ export class AuthState {
     }
     
     return null;
+  }
+
+  @Action(SetToken)
+  setToken(ctx: StateContext<AuthStateModel>, { token }: SetToken) {
+    ctx.patchState({oauthToken: token });
   }
 }

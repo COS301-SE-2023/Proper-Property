@@ -62,6 +62,10 @@ const routes: Routes = [
   {
     path: 'my-listings',
     loadChildren: () => import('@properproperty/app/my-listings/feature').then( m => m.MyListingsPageModule)
+  },
+  {
+    path: 'tester',
+    loadChildren: () => import('@properproperty/app/tester/feature').then( m => m.TesterModule)
   }
 
 

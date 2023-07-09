@@ -10,7 +10,6 @@ declare const gtag: Function;
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  // constructor() {}
   constructor(public router: Router, @Inject(DOCUMENT) private document: Document) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {

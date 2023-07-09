@@ -27,3 +27,8 @@ export class AuthProviderLogin {
   static readonly type = '[Auth] AuthProviderLogin';
   constructor(public readonly provider?: AuthProvider) {}
 }
+
+export class SetToken {
+  static readonly type = '[Auth] SetToken';
+  constructor(public readonly token: string) {}
+}
