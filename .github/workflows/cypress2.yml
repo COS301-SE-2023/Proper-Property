@@ -116,3 +116,4 @@ jobs:
           install-command: npm install --legacy-peer-deps
           build: npm run build:app:prod
           start: npm run start:app:prod
+          wait-on: 'http://localhost:4200'
