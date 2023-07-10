@@ -91,6 +91,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     
     this.loadMap();
     this.addPropertyMarkers();
+
   }
 
 async loadMap() {
@@ -364,7 +365,6 @@ private addPropertyMarkers() {
   // Iterate over your property data
   this.listings.forEach(async (listing) => {
     const { latitude, longitude } = await this.googleMaps.getLatLongFromAddress(listing.address);
-
     const marker = new google.maps.Marker({
       position: { lat: latitude, lng: longitude },
       map: this.map,
