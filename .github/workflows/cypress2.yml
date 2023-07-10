@@ -86,6 +86,5 @@ jobs:
       - name: Run Cypress Test
         uses: cypress-io/github-action@v5
         with:
-          install: npm install --legacy-peer-deps
+          install-command: npm install --legacy-peer-deps
           command: npx cypress run
-          browser: chrome
