@@ -82,12 +82,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "18"
-
-      - name: Install Dependencies
-        run: npm install --force
  
       - name: Run Cypress Test
         uses: cypress-io/github-action@v5
         with:
+          install: npm install --legacy-peer-deps
           command: npx cypress run
           browser: chrome
