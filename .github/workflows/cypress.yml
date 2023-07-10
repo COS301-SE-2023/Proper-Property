@@ -4,7 +4,7 @@ on:
   push:
 jobs:
   linting:
-    name: Run Lint check
+    name: Testing Cypress
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -12,6 +12,8 @@ jobs:
         with:
           node-version: "18"
       - run: npm install --legacy-peer-deps
+      - name: Run ESLint
+        run: npx eslint .
       - name: Create environment file
         env:
           NX_FIREBASE_KEY: ${{ secrets.NX_FIREBASE_KEY }}
