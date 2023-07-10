@@ -201,18 +201,39 @@ toggleColor() {
 Templistings: listing[] = []
 
 searchProperties() {
-  const filteredListings = this.listings.filter(listing => {
-    const addressMatch = listing.address.toLowerCase().includes(this.searchQuery.toLowerCase());
-    const bedroomsMatch = this.selectedBedrooms === 0 || listing.bed === this.selectedBedrooms.toString();
-    const floorMatch = this.selectedFloorSize === 0 || parseInt(listing.floor_size) >= this.selectedFloorSize;
-    const minPriceMatch = this.selectedMinPrice === 0 || parseInt(listing.price) >= this.selectedMinPrice;
-    const maxPriceMatch = this.selectedMaxPrice === 0 || parseInt(listing.price) <= this.selectedMaxPrice;
-    const propertyTypeMatch = this.selectedPropertyType === '' || listing.prop_type.includes(this.selectedPropertyType);
+  // const filteredListings = this.listings.filter(listing => {
+  //   const addressMatch = listing.address.toLowerCase().includes(this.searchQuery.toLowerCase());
+  //   const bedroomsMatch = this.selectedBedrooms === 0 || listing.bed === this.selectedBedrooms.toString();
+  //   const floorMatch = this.selectedFloorSize === 0 || parseInt(listing.floor_size) >= this.selectedFloorSize;
+  //   const minPriceMatch = this.selectedMinPrice === 0 || parseInt(listing.price) >= this.selectedMinPrice;
+  //   const maxPriceMatch = this.selectedMaxPrice === 0 || parseInt(listing.price) <= this.selectedMaxPrice;
+  //   const propertyTypeMatch = this.selectedPropertyType === '' || listing.prop_type.includes(this.selectedPropertyType);
 
-    return addressMatch && bedroomsMatch && floorMatch && minPriceMatch && maxPriceMatch && propertyTypeMatch;
-  });
+  //   return addressMatch && bedroomsMatch && floorMatch && minPriceMatch && maxPriceMatch && propertyTypeMatch;
+  // });
 
-  this.listings = filteredListings;
+  // this.listings = filteredListings;
+
+for (let j = 0; j < this.listings.length; j++) {
+  for (let i = 0; i < this.listings.length; i++) {
+    if(this.selectedBedrooms!=0){
+
+      if(parseInt(this.listings[i].bed)!=this.selectedBedrooms){
+        this.listings.splice(i,1);
+      }
+    }
+    
+    if(this.selectedBathrooms!=0){
+  
+      if(parseInt(this.listings[i].bath)!=this.selectedBathrooms){
+        this.listings.splice(i,1);
+      }
+    }
+    
+    
+  }
+}
+
 }
 
 resetFilters() {
@@ -308,4 +329,3 @@ toggleAdditionalFilters(): void {
 }
 
 }
-
