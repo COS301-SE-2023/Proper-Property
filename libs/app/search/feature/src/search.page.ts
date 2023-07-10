@@ -222,6 +222,13 @@ searchProperties() {
 for (let j = 0; j < this.listings.length; j++) {
   
   for (let i = 0; i < this.listings.length; i++) {
+
+    if(this.selectedPropertyType!=''){
+      if(this.listings[i].prop_type!=this.selectedPropertyType){
+        this.listings.splice(i,1);
+      }
+    }
+    
     if(this.selectedBedrooms!=0){
 
       if(parseInt(this.listings[i].bed)!=this.selectedBedrooms){
