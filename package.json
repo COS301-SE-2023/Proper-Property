@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start:app:dev": "npx env-cmd -f .env nx run app:serve --configuration=development",
+    "start:app:dev": "npx env-cmd -f .env.prod nx run app:serve --configuration=development",
     "start:api:dev": "npx env-cmd -f .env nx run api:serve --configuration=development",
     "build:app:dev": "npx env-cmd -f .env nx run app:build --configuration=development",
     "build:api:dev": "npx env-cmd -f .env nx run api:build --configuration=development",
