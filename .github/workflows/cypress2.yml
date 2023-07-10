@@ -3,7 +3,7 @@ name: Cypress Tests 2
 on: [push]
 
 jobs:
-  cypress-run: ubuntu-latest
+  cypress-run:
   runs-on: ubuntu-latest
   steps:
     - name: Checkout
@@ -11,5 +11,5 @@ jobs:
     - name: Cypress run
       uses: cypress-io/github-action@v2
       with:
-        build: npm run build
-        start: npm run start
+        build: npm run build:app:dev
+        start: npm run start:app:dev
