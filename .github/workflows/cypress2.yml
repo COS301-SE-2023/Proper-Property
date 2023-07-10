@@ -1,4 +1,4 @@
-name: Cypress Tests
+name: Cypress Tests 2
 
 on: [push]
 
