@@ -42,3 +42,4 @@ jobs:
           echo "cat .env.prod"
       - name: Build App
         run: npm run build:app:prod
+        run: npx cypress run
