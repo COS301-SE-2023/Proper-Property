@@ -9,17 +9,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Update @angular/compiler and @angular/compiler-cli
+        run: npm install @angular/compiler@16.1.3 @angular/compiler-cli@16.1.3 --legacy-peer-deps
+        
+      - run: npm install --legacy-peer-deps
+
       - name: Cypress install
         uses: cypress-io/github-action@v5
         with:
           # Disable running of tests within install job
           runTests: false
           build: npm run build
-
-      - name: Update @angular/compiler and @angular/compiler-cli
-        run: npm install @angular/compiler@16.1.3 @angular/compiler-cli@16.1.3 --legacy-peer-deps
-        
-      - run: npm install --legacy-peer-deps
 
       - name: Save build folder
         uses: actions/upload-artifact@v3
