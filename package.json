@@ -9,7 +9,6 @@
     "build:api:dev": "npx env-cmd -f .env nx run api:build --configuration=development",
     "build:app:prod": "npx env-cmd -f .env.prod nx run app:build --configuration=production",
     "build:api:prod": "npx env-cmd -f .env.prod nx run api:build --configuration=production",
-    "start:app:prod": "npx env-cmd -f .env.prod nx run app:serve --configuration=production",
     "start:emulators": "firebase emulators:start",
     "start:emulators_1": "firebase emulators:start --import=./emulators/emulator_1"
   },

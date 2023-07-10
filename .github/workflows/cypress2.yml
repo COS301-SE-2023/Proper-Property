@@ -95,7 +95,7 @@ jobs:
           NX_FIREBASE_MEASUREMENT_ID: ${{ secrets.NX_FIREBASE_MEASUREMENT_ID }}
           NX_GOOGLE_MAPS_KEY: ${{ secrets.NX_GOOGLE_MAPS_KEY }}
         run: |
-          cat <<EOF > .env.prod
+          cat <<EOF > .env
           NX_ENVIRONMENT=production
           NX_USE_EMULATORS=false
           NX_FIREBASE_KEY="$NX_FIREBASE_KEY"
@@ -108,12 +108,11 @@ jobs:
           NX_FIREBASE_MEASUREMENT_ID="$NX_FIREBASE_MEASUREMENT_ID"
           NX_GOOGLE_MAPS_KEY="$NX_GOOGLE_MAPS_KEY"
           EOF
-          echo "cat .env.prod"
+          echo "cat .env"
  
       - name: Run Cypress Test
         uses: cypress-io/github-action@v5
         with:
           install-command: npm install --legacy-peer-deps
-          build: npm run build:app:prod
-          start: npm start:app:prod
-          command: npx cypress run
+          build: npm run build:app:dev
+          start: npm start:app:dev
