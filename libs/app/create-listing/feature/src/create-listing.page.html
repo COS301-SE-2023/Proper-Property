@@ -117,10 +117,11 @@
         <div class="container">
           <div class="searchInput">
             <label position="floating">Property Residential Address<span class="required-indicator" *ngIf="!address">*</span></label>
-            <input type="text" id="address" placeholder="Enter an address" (onkeyup)="handleInputChange($event)" (input)="handleInputChange($event)" [(ngModel)]="address" >
+            <input type="text" id="address"  [(ngModel)]="address" placeholder="Enter an address" (input)="handleInputChange($event)" 
+            (ionChange)="handleInputChange($event)">
             <div class="resultBox">
               <ion-list *ngFor="let prediction of predictions" (click)="replaceInputText($event,prediction.description)">
-                <a href="#" class="prediction-button" (click)="replaceInputText($event,prediction.description)">
+                <a href="#" class="prediction-button">
                   {{ prediction.description }}
                 </a>
               </ion-list>
@@ -128,6 +129,7 @@
             <div class="icon"><i class="fas fa-search"></i></div>
           </div>
         </div>
+    
 
         
         </ion-item>

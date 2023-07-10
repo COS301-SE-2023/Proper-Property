@@ -75,6 +75,7 @@ export class CreateListingPage implements OnInit {
   // }
 
   replaceInputText(event: MouseEvent | undefined, prediction: string) {
+    console.log("your prediction: ",prediction);
     if (event) {
       event.preventDefault(); // Prevent the default behavior of the <a> tag
     }
@@ -83,18 +84,16 @@ export class CreateListingPage implements OnInit {
     if (addressInput) {
       addressInput.value = prediction;
     }
-
-        // Update the 'address' property of the component class
-      this.address = prediction;
-
     this.predictions = [];
-       
+    
+    // Update the 'address' property of the component class
+    this.address = prediction;
+    
   }
 
 handleAddressChange(address: string): void {
   this.address = address;
 }
-
 
   photos: string[] = [];
   address: string;
@@ -158,6 +157,8 @@ handleAddressChange(address: string): void {
   }
 
   formatPrice() {
+    this.address = (document.getElementById("address") as HTMLInputElement).value;
+    // console.log("eyy cousinn...",this.address);
     // Remove existing commas from the price
     this.price = this.price.replace(/,/g, '');
   
@@ -242,6 +243,8 @@ handleAddressChange(address: string): void {
   }
 
   async addListing(){
+    this.address = (document.getElementById("address") as HTMLInputElement).value;
+    
     const pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
     const env_type_in = document.getElementById('env-type') as HTMLInputElement;
     const prop_type_in = document.getElementById('prop-type') as HTMLInputElement;

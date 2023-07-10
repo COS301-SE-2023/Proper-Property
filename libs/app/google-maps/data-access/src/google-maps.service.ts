@@ -42,8 +42,13 @@ export class GmapsService {
         if (places.length === 0) {
           return;
         }
+        const selectedPlace = places[0];
+        input.value = selectedPlace.name;
+        
         // Handle the selected place(s) here
         console.log('Selected place:', places[0]);
+        console.log('Eyy cousin:', input.value);
+        
       });
     });
   }
