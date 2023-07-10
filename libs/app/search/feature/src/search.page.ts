@@ -214,7 +214,13 @@ searchProperties() {
 
   // this.listings = filteredListings;
 
+
+  for(let k = 0; k<this.listings.length; k++) {
+    this.listings[k].price = this.listings[k].price.replace(/,/g, '');
+  }
+
 for (let j = 0; j < this.listings.length; j++) {
+  
   for (let i = 0; i < this.listings.length; i++) {
     if(this.selectedBedrooms!=0){
 
@@ -226,6 +232,21 @@ for (let j = 0; j < this.listings.length; j++) {
     if(this.selectedBathrooms!=0){
   
       if(parseInt(this.listings[i].bath)!=this.selectedBathrooms){
+        this.listings.splice(i,1);
+      }
+    }
+
+    if(this.selectedMinPrice!=0){
+
+      if (parseInt(this.listings[i].price) < this.selectedMinPrice){
+        this.listings.splice(i,1);
+      }
+    }
+
+
+    if(this.selectedMaxPrice!=0){
+
+      if (parseInt(this.listings[i].price) > this.selectedMaxPrice){
         this.listings.splice(i,1);
       }
     }
@@ -327,5 +348,9 @@ toggleAdditionalFilters(): void {
   this.showAdditionalFilters = !this.showAdditionalFilters;
   this.filterProperties();
 }
+
+customMinPrice = 0;
+
+
 
 }

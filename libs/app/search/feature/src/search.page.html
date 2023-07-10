@@ -36,6 +36,21 @@
     </ion-item>
 
     <ion-item class="filter">
+      <label for="minPrice">Min Price</label>
+      <select id="minPrice" [(ngModel)]="selectedMinPrice" (ionChange)="filterProperties()">
+        <option value="0">R 0</option>
+        <option value="100000">R 100,000</option>
+        <option value="150000">R 150,000</option>
+        <option value="200000">R 200,000</option>
+        <option value="250000">R 250,000</option>
+        <option value="350000">R 300,350</option>
+        <option value="400000">R 400,000</option>
+        <option value="450000">R 450,000</option>
+      </select>
+
+    </ion-item>
+    
+    <!-- <ion-item class="filter">
       <ion-label>Min Price</ion-label>
       <ion-select [(ngModel)]="selectedMinPrice" (ionChange)="filterProperties()">
         <ion-select-option value="0">$0</ion-select-option>
@@ -43,9 +58,9 @@
         <ion-select-option value="1000">$1000</ion-select-option>
         <ion-select-option value="2000">$2000</ion-select-option>
       </ion-select>
-    </ion-item>
+    </ion-item> -->
 
-    <ion-item class="filter">
+    <!-- <ion-item class="filter">
       <ion-label>Max Price</ion-label>
       <ion-select [(ngModel)]="selectedMaxPrice" (ionChange)="filterProperties()">
         <ion-select-option value="1000">$1000</ion-select-option>
@@ -53,6 +68,20 @@
         <ion-select-option value="3000">$3000</ion-select-option>
         <ion-select-option value="5000">$5000</ion-select-option>
       </ion-select>
+    </ion-item> -->
+    <ion-item class="filter">
+      <label for="maxPrice">Max Price</label>
+      <select id="maxPrice" [(ngModel)]="selectedMaxPrice" (ionChange)="filterProperties()">
+        <option value="0">R 0</option>
+        <option value="100000">R 100,000</option>
+        <option value="150000">R 150,000</option>
+        <option value="200000">R 200,000</option>
+        <option value="250000">R 250,000</option>
+        <option value="350000">R 300,350</option>
+        <option value="400000">R 400,000</option>
+        <option value="450000">R 450,000</option>
+      </select>
+
     </ion-item>
 
     <ion-item class="filter">
