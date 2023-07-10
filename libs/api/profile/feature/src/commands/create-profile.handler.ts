@@ -4,6 +4,7 @@ import { CreateProfileCommand } from '@properproperty/api/profile/util';
 import { UserProfile } from '@properproperty/api/profile/util';
 // import { profile } from '@properproperty/api/profile/util';
 import { ProfileRepository } from '@properproperty/api/profile/data-access';
+
 @CommandHandler(CreateProfileCommand)
 export class CreateProfileHandler implements ICommandHandler<CreateProfileCommand> {
   constructor(private readonly profileRepo: ProfileRepository) {}

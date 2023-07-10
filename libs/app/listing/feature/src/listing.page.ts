@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, ViewChild} from '@angular/core';
 import { Listing } from '@properproperty/app/listing/util';
 import Swiper from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,7 +6,7 @@ import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { Observable } from 'rxjs';
-import { Unsubscribe } from '@angular/fire/firestore';
+// import { Unsubscribe } from '@angular/fire/firestore';
 import { Select } from '@ngxs/store';
 
 
@@ -15,7 +15,7 @@ import { Select } from '@ngxs/store';
   templateUrl: './listing.page.html',
   styleUrls: ['./listing.page.scss'],
 })
-export class ListingPage implements OnInit{
+export class ListingPage{
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   user : UserProfile | null = null;
   @ViewChild('swiper') swiperRef?: ElementRef;
@@ -31,6 +31,7 @@ export class ListingPage implements OnInit{
     this.listingServices.getListing(list_id).then((list) => {
       this.list = list;
     }).then(() => {
+      // TODO
       // console.log(this.list);
       // this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
 
@@ -58,12 +59,6 @@ export class ListingPage implements OnInit{
     });
    }
 
-  async ngOnInit() {
-    
-  }
-  doStuff() {
-    
-  }
   swiperReady() {
     console.log(this.swiperRef?.nativeElement.swiper);
     this.swiper = this.swiperRef?.nativeElement.swiper;

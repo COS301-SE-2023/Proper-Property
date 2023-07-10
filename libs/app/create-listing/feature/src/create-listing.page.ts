@@ -10,7 +10,9 @@ import { AuthState } from '@properproperty/app/auth/data-access';
 import { User } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { UpdateUserProfile } from '@properproperty/app/profile/util';
+// import { UpdateUserProfile } from '@properproperty/app/profile/util';
+import { isDevMode } from '@angular/core';
+
 @Component({
   selector: 'app-create-listing',
   templateUrl: './create-listing.page.html',
@@ -29,7 +31,15 @@ export class CreateListingPage implements OnInit {
       private readonly store: Store
     ) {
     this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
-    
+    if (isDevMode()) {
+      this.address = "123 Fake Street";
+      this.price = "1000000";
+      this.floor_size = "100";
+      this.erf_size = "100";
+      this.bathrooms = "2";
+      this.bedrooms = "3";
+      this.parking = "1";
+    }
     this.user$.subscribe((user: User | null) => {
       this.currentUser =  user;
     });
@@ -43,7 +53,7 @@ export class CreateListingPage implements OnInit {
     this.listingType = "Sell";
     // this.currentUser = this.userService.getCurrentUser();
   }
-
+  
   photos: string[] = [];
   address: string;
   price: string;
@@ -150,7 +160,7 @@ export class CreateListingPage implements OnInit {
       this.openAIService.descriptionCall("Give me a description of a property with the following information: \n" + info 
       + "Be as descriptive as possible such that I would want to buy the house after reading the description").then((res : string) => {
         if(res == "" || !res){
-          console.log("OOPSIE WHOOPSIE, FUCKEY WUCKY")
+          console.log("OOPSIE WHOOPSIE, redactedEY WUCKY")
         }
         else{
           this.description = res;

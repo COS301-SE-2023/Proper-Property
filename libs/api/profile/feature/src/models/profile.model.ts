@@ -1,7 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { Interests, UserProfileUpdatedEvent, UserProfile } from '@properproperty/api/profile/util';
 
-export class ProfileModel extends AggregateRoot implements UserProfile {
+export class UserProfileModel extends AggregateRoot implements UserProfile {
   constructor(
     public userId: string,
     public interests: Interests,
@@ -14,7 +14,7 @@ export class ProfileModel extends AggregateRoot implements UserProfile {
   }
 
   static createProfile(profile: UserProfile) {
-    const model = new ProfileModel(
+    const model = new UserProfileModel(
       profile.userId,
       profile.interests,
       profile.firstName,

@@ -1,7 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { UserRecord } from 'firebase-admin/auth';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateProfileCommand, GetUserProfileQuery, GetUserProfileResponse, UpdateUserProfileCommand, UpdateUserProfileResponse, UserProfile } from '@properproperty/api/profile/util';
+import { 
+  CreateProfileCommand, 
+  GetUserProfileQuery, 
+  GetUserProfileResponse, 
+  UpdateUserProfileCommand, 
+  UpdateUserProfileResponse, 
+  UserProfile, 
+  AddListingCommand 
+} from '@properproperty/api/profile/util';
 
 @Injectable()
 export class ProfileService {
@@ -21,5 +29,8 @@ export class ProfileService {
     console.log("User profile service");
     console.log(user);
     return this.commandBus.execute(new UpdateUserProfileCommand(user));
+  }
+  addListing(userId: string, listingId: string): Promise<UpdateUserProfileResponse> {
+    return this.commandBus.execute(new AddListingCommand(userId, listingId));
   }
 }

@@ -1,1 +1,2 @@
-export * from './lib/api-listings-data-access';
+export * from './listings.repository';
+export * from './listings.module';

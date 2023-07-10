@@ -29,3 +29,16 @@ export const updateUserProfile = functions.region('europe-west1').https.onCall(
       .updateUserProfile(request.user);
   }
 );
+
+export const listingCreated = functions
+  .region('europe-west1')
+  .firestore
+  .document('listings/{listingId}')
+  .onCreate(
+    async (snapshot, context) => {
+      const appContext = await NestFactory.createApplicationContext(CoreModule)
+      const profileService = appContext.get(ProfileService);
+      return profileService
+        .addListing(snapshot.data()['user_id'], context.params.listingId);
+    }
+  );

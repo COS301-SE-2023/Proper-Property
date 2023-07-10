@@ -7,10 +7,6 @@ import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
 import { Listing } from '@properproperty/app/listing/util';
-import { Select } from '@ngxs/store';
-import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
-import { Observable } from 'rxjs';
-import { UserProfile } from '@properproperty/api/profile/util';
 
 
 @Component({
