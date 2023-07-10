@@ -114,6 +114,6 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           install-command: npm install --legacy-peer-deps
-          build: npm run build:app:dev
-          start: npm start:app:dev
+          build: npm run build:app:prod
+          start: npm start:app:prod
           command: npx cypress run
