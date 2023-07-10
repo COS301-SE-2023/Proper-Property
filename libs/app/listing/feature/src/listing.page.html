@@ -44,7 +44,7 @@
           <ion-card class="half-green-container">
             <ion-grid style="padding-top: 20px; padding-left:20px;">
               <ion-row>
-                <ion-card-title class="house-titles">{{list.address}}</ion-card-title>
+                <ion-card-title class="house-titles">{{list.desc}}</ion-card-title>
               </ion-row>
               <ion-row>
                 <ion-card-subtitle class="house-subtitles">by {{lister_name}}</ion-card-subtitle>
@@ -53,7 +53,7 @@
                 <ion-card-title class="house-titles" style="margin-top:8px; font-size: 25px;">{{list.bed}} Bedroom House</ion-card-title>
               </ion-row>
               <ion-row>
-                <ion-card-subtitle class="house-subtitles">Brooklyn, Pretoria, South Africa</ion-card-subtitle>
+                <ion-card-subtitle class="house-subtitles">{{list.address}}</ion-card-subtitle>
               </ion-row>
               <ng-template [ngIf]="list.let_sell === 'Sell'">
                 <ion-row >

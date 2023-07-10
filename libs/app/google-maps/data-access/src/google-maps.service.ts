@@ -22,6 +22,7 @@ export class GmapsService {
 
   //for create-listing
   setupSearchBox(elementId: string): Promise<any> {
+    
     return this.loadGoogleMaps().then((maps) => {
       const defaultBounds = new maps.LatLngBounds();
 
@@ -52,6 +53,7 @@ export class GmapsService {
       });
     });
   }
+
   predictions: google.maps.places.AutocompletePrediction[] = [];
   regionPredictions: google.maps.places.AutocompletePrediction[] = [];
 
@@ -108,29 +110,39 @@ export class GmapsService {
 
   //for search
   setupRegionSearchBox(elementId: string): Promise<any> {
-    return this.loadGoogleMaps().then((maps) => {
+   
+    return this.loadGooglePlaces().then((maps) => {
       const defaultBounds = new maps.LatLngBounds();
 
       const input = document.getElementById(elementId) as HTMLInputElement;
 
       const searchBox = new maps.places.SearchBox(input, {
-        bounds: defaultBounds
+        bounds: defaultBounds,
+        types: ['(regions)'],
+        componentRestrictions: { country: 'ZA' }
       });
 
-      this.autocompleteService = new maps.places.AutocompleteService();
+      
+      //  maps.places.SearchBox(input, {
+      //    bounds: defaultBounds, types: ['(regions)'], componentRestrictions: { country: 'ZA' } });
+         
 
-      input.addEventListener('input', () => {
-        this.handleRegionInput(input, defaultBounds);
-      });
 
-      searchBox.addListener('places_changed', () => {
-        const places = searchBox.getPlaces();
-        if (places.length === 0) {
-          return;
-        }
-        // Handle the selected place(s) here
-        console.log('Selected place:', places[0]);
-      });
+      // this.autocompleteService = new maps.places.AutocompleteService();
+
+      // input.addEventListener('input', () => {
+      //   console.log("bitch");
+      //   this.handleRegionInput(input, defaultBounds);
+      // });
+
+      // searchBox.addListener('places_changed', () => {
+      //   const places = searchBox.getPlaces();
+      //   if (places.length === 0) {
+      //     return;
+      //   }
+      //   // Handle the selected place(s) here
+      //   console.log('Selected place:', places[0]);
+      // });
     });
   }
 
@@ -223,7 +235,7 @@ export class GmapsService {
       script.src =
         'https://maps.googleapis.com/maps/api/js?key=' +
         // TODO See if better way exists to hide key
-        this.key+'&libraries=places';
+        5+'&libraries=places&language=en&region=ZA';
       script.async = true;
       script.defer = true;
       document.body.appendChild(script);
@@ -235,7 +247,31 @@ export class GmapsService {
           reject('Google Map SDK is not Available');
         }
       };
+    }).then((maps: any) => {
+      // Set the region for the Places API requests to South Africa
+      maps.language = 'en';
+      maps.region = 'ZA';
+      return maps;
     });
   }
+
+
+getLatLongFromAddress(address: string): Promise<{ latitude: number; longitude: number }> {
+  return this.loadGoogleMaps().then((maps) => {
+    const geocoder = new maps.Geocoder();
+
+    return new Promise<{ latitude: number; longitude: number }>((resolve, reject) => {
+      geocoder.geocode({ address: address }, (results: google.maps.GeocoderResult[], status: google.maps.GeocoderStatus) => {
+        if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
+          const location = results[0].geometry.location;
+          resolve({ latitude: location.lat(), longitude: location.lng() });
+        } else {
+          reject('Failed to retrieve latitude and longitude from address');
+        }
+      });
+    });
+  });
+}
   
 }
+

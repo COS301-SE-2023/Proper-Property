@@ -43,7 +43,7 @@ export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
 
   ngAfterViewInit() {
     this.loadMap();
-    // this.addPropertyMarkers();
+    this.addPropertyMarkers();
   }
 
   async loadMap() {
@@ -72,25 +72,26 @@ export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
   }
 
   
-  // private addPropertyMarkers() {
-  //   // Iterate over your property data
-  //   this.listings.forEach((listing) => {
-  //     const marker = new google.maps.Marker({
-  //       position: { lat: listing.latitude, lng: listing.longitude },
-  //       map: this.map,
-  //     });
+  private addPropertyMarkers() {
+    // Iterate over your property data
+    this.listings.forEach(async (listing) => {
+      const { latitude, longitude } = await this.googleMaps.getLatLongFromAddress(listing.address);
+  
+      const marker = new google.maps.Marker({
+        position: { lat: latitude, lng: longitude },
+        map: this.map,
+      });
+      // Create info window
+      const infoWindow = new google.maps.InfoWindow({
+        content: this.generatePropertyCard(listing).outerHTML,
+      });
 
-  //     // Create info window
-  //     const infoWindow = new google.maps.InfoWindow({
-  //       content: this.generatePropertyCard(listing).outerHTML,
-  //     });
-
-  //     // Attach info window to marker click event
-  //     marker.addListener('click', () => {
-  //       infoWindow.open(this.map, marker);
-  //     });
-  //   });
-  // }
+      // Attach info window to marker click event
+      marker.addListener('click', () => {
+        infoWindow.open(this.map, marker);
+      });
+    });
+  }
 
   generatePropertyCard(property: listing): HTMLElement {
     const propertyCard = document.createElement('div');

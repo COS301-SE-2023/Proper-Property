@@ -1,4 +1,4 @@
-<ion-header>
+  <ion-header>
   <ion-toolbar>
     <ion-title>
       Property Listing App
@@ -19,24 +19,10 @@
   <div [ngSwitch]="activeTab">
 
     <div class="search-container">
-    <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterProperties()"></ion-searchbar>
-    <ion-button class="search-button" (click)="searchProperties()">
+      <input type="text" id="address" [(ngModel)]="searchQuery"   placeholder="search">
+      <ion-button class="search-button" (click)="searchProperties()">
       <ion-icon name="search"> search</ion-icon>
     </ion-button>
-    </div>
-
-    <div class="container">
-      <div class="searchInput">
-        <input type="text" id="address" [(ngModel)]="searchQuery" (ionInput)="filterProperties()"  placeholder="search" (onkeyup)="handleInputChange($event)">
-        <div class="resultBox">
-          <ion-list *ngFor="let prediction of predictions" (click)="replaceInputText($event,prediction.description)">
-            <a href="#" class="prediction-button">
-              {{ prediction.description }}
-            </a>
-          </ion-list>
-        </div>
-        <div class="icon"><i class="fas fa-search"></i></div>
-      </div>
     </div>
 
 
@@ -188,6 +174,7 @@
           </button>
         </ion-card-content>
       </ion-card>
+      
     </div>
     <div slot="fixed" class="map"  #map></div>
   </div>

@@ -21,13 +21,12 @@ interface Property {
 
 export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
-  @ViewChild('map', { static: true })
 
   autocomplete: any;
   defaultBounds: google.maps.LatLngBounds;
   predictions: google.maps.places.AutocompletePrediction[] = [];
 
-
+  @ViewChild('map', { static: true })
   mapElementRef!: ElementRef;
   googleMaps: any;
   center = { lat: -25.7477, lng: 28.2433 };
@@ -36,6 +35,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   markerClickListener: any;
   markers: any[] = [];
   listings: listing[] = []
+
 
 
   constructor(
@@ -58,7 +58,9 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
     const inputElementId = 'address';
 
+    
     this.gmapsService.setupRegionSearchBox(inputElementId);
+    
   }
 
   handleInputChange(event: Event): void {
@@ -89,266 +91,221 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     this.loadMap();
   }
 
-  async loadMap() {
-    try {
-      const googleMaps: any = await this.gmaps.loadGoogleMaps();
-      this.googleMaps = googleMaps;
-      const mapEl = this.mapElementRef.nativeElement;
-      const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
-      this.map = new googleMaps.Map(mapEl, {
-        center: location,
-        zoom: 12,
-      });
-      this.renderer.addClass(mapEl, 'visible');
-      this.addMarker(location);
-      this.onMapClick();
-    } catch(e) {
-      console.log(e);
-    }
-  }
-
-  onMapClick() {
-    this.mapClickListener = this.googleMaps.event.addListener(this.map, "click", (mapsMouseEvent: { latLng: { toJSON: () => any; }; }) => {
-      console.log(mapsMouseEvent.latLng.toJSON());
-      this.addMarker(mapsMouseEvent.latLng);
+async loadMap() {
+  try {
+    const googleMaps: any = await this.gmaps.loadGoogleMaps();
+    this.googleMaps = googleMaps;
+    const mapEl = this.mapElementRef.nativeElement;
+    const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
+    this.map = new googleMaps.Map(mapEl, {
+      center: location,
+      zoom: 12,
     });
+    this.renderer.addClass(mapEl, 'visible');
+    this.addMarker(location);
+    this.onMapClick();
+  } catch(e) {
+    console.log(e);
   }
+}
 
-  addMarker(location: any) {
-    const googleMaps: any = this.googleMaps;
-    const icon = {
-      url: 'assets/icon/map_card.png',
-      scaledSize: new googleMaps.Size(100, 50), 
-    };
-    const marker = new googleMaps.Marker({
-      position: location,
-      map: this.map,
-      icon: icon,
-      // draggable: true,
-      animation: googleMaps.Animation.DROP
-    });
-    this.markers.push(marker);
-    // this.presentActionSheet();
-    this.markerClickListener = this.googleMaps.event.addListener(marker, 'click', () => {
-      console.log('markerclick', marker);
-      this.checkAndRemoveMarker(marker);
-      console.log('markers: ', this.markers);
-    });
+onMapClick() {
+  this.mapClickListener = this.googleMaps.event.addListener(this.map, "click", (mapsMouseEvent: { latLng: { toJSON: () => any; }; }) => {
+    console.log(mapsMouseEvent.latLng.toJSON());
+    this.addMarker(mapsMouseEvent.latLng);
+  });
+}
+
+addMarker(location: any) {
+  const googleMaps: any = this.googleMaps;
+  const icon = {
+    url: 'assets/icon/map_card.png',
+    scaledSize: new googleMaps.Size(100, 50), 
+  };
+  const marker = new googleMaps.Marker({
+    position: location,
+    map: this.map,
+    icon: icon,
+    // draggable: true,
+    animation: googleMaps.Animation.DROP
+  });
+  this.markers.push(marker);
+  // this.presentActionSheet();
+  this.markerClickListener = this.googleMaps.event.addListener(marker, 'click', () => {
+    console.log('markerclick', marker);
+    this.checkAndRemoveMarker(marker);
+    console.log('markers: ', this.markers);
+  });
+}
+
+checkAndRemoveMarker(marker: { position: { lat: () => any; lng: () => any; }; }) {
+  const index = this.markers.findIndex(x => x.position.lat() == marker.position.lat() && x.position.lng() == marker.position.lng());
+  console.log('is marker already: ', index);
+  if(index >= 0) {
+    this.markers[index].setMap(null);
+    this.markers.splice(index, 1);
+    return;
   }
+}
 
-  checkAndRemoveMarker(marker: { position: { lat: () => any; lng: () => any; }; }) {
-    const index = this.markers.findIndex(x => x.position.lat() == marker.position.lat() && x.position.lng() == marker.position.lng());
-    console.log('is marker already: ', index);
-    if(index >= 0) {
-      this.markers[index].setMap(null);
-      this.markers.splice(index, 1);
-      return;
-    }
-  }
-
-  async presentActionSheet() {
-    const actionSheet = await this.actionSheetCtrl.create({
-      header: 'Added Marker',
-      subHeader: '',
-      buttons: [
-        {
-          text: 'Remove',
-          role: 'destructive',
-          data: {
-            action: 'delete',
-          },
-        },
-        {
-          text: 'Save',
-          data: {
-            action: 'share',
-          },
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          data: {
-            action: 'cancel',
-          },
-        },
-      ],
-    });
-
-    await actionSheet.present();
-  }
-
-  async redirectToPage(listing : listing) {
-    console.log(listing.listing_id);
-    this.router.navigate(['/listing', {list : listing.listing_id}]);
-  }
-
-  ngOnDestroy() {
-    // this.googleMaps.event.removeAllListeners();
-    if(this.mapClickListener) this.googleMaps.event.removeListener(this.mapClickListener);
-    if(this.markerClickListener) this.googleMaps.event.removeListener(this.markerClickListener);
-  }
-  //likes:
-  isRed = false;
-
-  toggleColor() {
-    this.isRed = !this.isRed;
-  }
-
-  Templistings: listing[] = []
-
-  searchProperties(){
-    const filteredListings = [];
-
-    for (let i = 0; i < this.listings.length; i++) {
-      const listing = this.listings[i];
-  
-      //if (listing.address.toLowerCase().includes(this.searchQuery.toLowerCase())) 
+async presentActionSheet() {
+  const actionSheet = await this.actionSheetCtrl.create({
+    header: 'Added Marker',
+    subHeader: '',
+    buttons: [
       {
-        if (listing.bed === this.selectedBedrooms.toString()) {
-          if (parseInt(listing.floor_size) >= this.selectedFloorSize) {
-            if (parseInt(listing.price) >= this.selectedMinPrice && parseFloat(listing.price) <= this.selectedMaxPrice) {
-              if (listing.prop_type.includes(this.selectedPropertyType)) {
-                //if (listing.furnish_type === this.selectedFurnishType)
-                 {
-                  //if (listing.property_size === this.selectedPropertySize) 
-                  {
-                    filteredListings.push(listing);
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+        text: 'Remove',
+        role: 'destructive',
+        data: {
+          action: 'delete',
+        },
+      },
+      {
+        text: 'Save',
+        data: {
+          action: 'share',
+        },
+      },
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        data: {
+          action: 'cancel',
+        },
+      },
+    ],
+  });
 
-    this.listings = filteredListings;
+  await actionSheet.present();
+}
 
+
+
+async redirectToPage(listing : listing) {
+  console.log(listing.listing_id);
+  this.router.navigate(['/listing', {list : listing.listing_id}]);
+}
+
+ngOnDestroy() {
+  // this.googleMaps.event.removeAllListeners();
+  if(this.mapClickListener) this.googleMaps.event.removeListener(this.mapClickListener);
+  if(this.markerClickListener) this.googleMaps.event.removeListener(this.markerClickListener);
+}
+//likes:
+isRed = false;
+
+toggleColor() {
+  this.isRed = !this.isRed;
+}
+
+Templistings: listing[] = []
+
+searchProperties() {
+  const filteredListings = this.listings.filter(listing => {
+    const addressMatch = listing.address.toLowerCase().includes(this.searchQuery.toLowerCase());
+    const bedroomsMatch = this.selectedBedrooms === 0 || listing.bed === this.selectedBedrooms.toString();
+    const floorMatch = this.selectedFloorSize === 0 || parseInt(listing.floor_size) >= this.selectedFloorSize;
+    const minPriceMatch = this.selectedMinPrice === 0 || parseInt(listing.price) >= this.selectedMinPrice;
+    const maxPriceMatch = this.selectedMaxPrice === 0 || parseInt(listing.price) <= this.selectedMaxPrice;
+    const propertyTypeMatch = this.selectedPropertyType === '' || listing.prop_type.includes(this.selectedPropertyType);
+
+    return addressMatch && bedroomsMatch && floorMatch && minPriceMatch && maxPriceMatch && propertyTypeMatch;
+  });
+
+  this.listings = filteredListings;
+}
+
+resetFilters() {
+  this.selectedPropertyType = '';
+  this.selectedMinPrice = 0;
+  this.selectedMaxPrice = 0;
+  this.selectedBedrooms = 0;
+  this.selectedBathrooms = 0;
+  this.selectedParking = 0;
+  this.selectedFloorSize = 0;
+  this.selectedErfSize = 0;
+  this.petFriendly = false;
+  this.garden = false;
+  this.pool = false;
+  this.flatlet = false;
+  this.other = false;
+  this.retirement = false;
+  this.repossession = false;
+  this.onShow = false;
+  this.securityEstate = false;
+  this.auction = false;
+}
+
+
+activeTab = 'buying';
+searchQuery = '';
+selectedPropertyType = '';
+selectedMinPrice = 0;
+selectedMaxPrice = 0;
+selectedBedrooms = 0;
+showAdditionalFilters = false;
+selectedBathrooms = 0;
+selectedParking = 0;
+selectedFloorSize = 0;
+selectedErfSize = 0;
+petFriendly = false;
+garden = false;
+pool = false;
+flatlet = false;
+other = false;
+retirement = false;
+repossession = false;
+onShow = false;
+securityEstate = false;
+auction = false;
+
+properties: Property[] = [
+  { title: 'House 1', type: 'house', price: 100000, bedrooms: 3 },
+  { title: 'Apartment 1', type: 'apartment', price: 1500, bedrooms: 2 },
+  { title: 'Condo 1', type: 'condo', price: 2000, bedrooms: 1 },
+  // Add more properties here
+];
+
+get filteredBuyingProperties(): Property[] {
+  return this.properties.filter(property =>
+    property.type.includes(this.selectedPropertyType) &&
+    property.price >= this.selectedMinPrice &&
+    property.price <= this.selectedMaxPrice &&
+    (this.selectedBedrooms === 0 || property.bedrooms === this.selectedBedrooms) &&
+    property.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+  );
+}
+
+get filteredRentingProperties(): Property[] {
+  // Add your own logic for filtering listing properties
+  // based on the selected filters and search query
+  return [];
+}
+
+filterProperties(): void {
+  // Update the filtered properties based on the selected filters and search query
+  if (this.activeTab === 'buying') {
+    this.filteredBuyingProperties;
+  } else if (this.activeTab === 'rent') {
+    this.filteredRentingProperties;
   }
+}
 
-  activeTab = 'buying';
-  searchQuery = '';
-  selectedPropertyType = '';
-  selectedMinPrice = 0;
-  selectedMaxPrice = 0;
-  selectedBedrooms = 0;
-  showAdditionalFilters = false;
-  selectedBathrooms = 0;
-  selectedParking = 0;
-  selectedFloorSize = 0;
-  selectedErfSize = 0;
-  petFriendly = false;
-  garden = false;
-  pool = false;
-  flatlet = false;
-  other = false;
-  retirement = false;
-  repossession = false;
-  onShow = false;
-  securityEstate = false;
-  auction = false;
+changeTab(): void {
+  // Reset the selected filters and search query when changing tabs
+  this.selectedPropertyType = '';
+  this.selectedMinPrice = 0;
+  this.selectedMaxPrice = 0;
+  this.selectedBedrooms = 0;
+  this.searchQuery = '';
+  this.filterProperties();
+}
 
-  properties: Property[] = [
-    { title: 'House 1', type: 'house', price: 100000, bedrooms: 3 },
-    { title: 'Apartment 1', type: 'apartment', price: 1500, bedrooms: 2 },
-    { title: 'Condo 1', type: 'condo', price: 2000, bedrooms: 1 },
-    // Add more properties here
-  ];
 
-  get filteredBuyingProperties(): Property[] {
-    return this.properties.filter(property =>
-      property.type.includes(this.selectedPropertyType) &&
-      property.price >= this.selectedMinPrice &&
-      property.price <= this.selectedMaxPrice &&
-      (this.selectedBedrooms === 0 || property.bedrooms === this.selectedBedrooms) &&
-      property.title.toLowerCase().includes(this.searchQuery.toLowerCase())
-    );
-  }
-
-  get filteredRentingProperties(): Property[] {
-    // Add your own logic for filtering listing properties
-    // based on the selected filters and search query
-    return [];
-  }
-
-  filterProperties(): void {
-    // Update the filtered properties based on the selected filters and search query
-    if (this.activeTab === 'buying') {
-      this.filteredBuyingProperties;
-    } else if (this.activeTab === 'rent') {
-      this.filteredRentingProperties;
-    }
-  }
-
-  changeTab(): void {
-    // Reset the selected filters and search query when changing tabs
-    this.selectedPropertyType = '';
-    this.selectedMinPrice = 0;
-    this.selectedMaxPrice = 0;
-    this.selectedBedrooms = 0;
-    this.searchQuery = '';
-    this.filterProperties();
-  }
-
-  
-  toggleAdditionalFilters(): void {
-    this.showAdditionalFilters = !this.showAdditionalFilters;
-    this.filterProperties();
-  }
+toggleAdditionalFilters(): void {
+  this.showAdditionalFilters = !this.showAdditionalFilters;
+  this.filterProperties();
+}
 
 }
 
-// // Getting all required elements
-// const searchInput = document.querySelector(".searchInput") as HTMLElement;
-// const input = searchInput.querySelector("input") as HTMLInputElement;
-// const resultBox = searchInput.querySelector(".resultBox") as HTMLElement;
-// const icon = searchInput.querySelector(".icon") as HTMLElement;
-// let linkTag = searchInput.querySelector("a") as HTMLAnchorElement;
-// let webLink: string;
-
-// // If the user presses any key and releases it
-// input.onkeyup = (e) => {
-//   let userData = (e.target as HTMLInputElement).value; // User entered data
-//   let emptyArray: string[] = [];
-//   if (userData) {
-//     emptyArray = predictions.filter((data) => {
-//       // Filtering array value and user characters to lowercase and return only those words which start with user entered chars
-//       return data.toLocaleLowerCase().startsWith(userData.toLocaleLowerCase());
-//     });
-//     emptyArray = emptyArray.map((data) => {
-//       // Passing return data inside li tag
-//       return '<li>' + data + '</li>';
-//     });
-//     searchInput.classList.add("active"); // Show autocomplete box
-//     showSuggestions(emptyArray);
-//     let allList = resultBox.querySelectorAll("li");
-//     for (let i = 0; i < allList.length; i++) {
-//       // Adding onclick attribute in all li tags
-//       allList[i].setAttribute("onclick", "select(this)");
-//     }
-//   } else {
-//     searchInput.classList.remove("active"); // Hide autocomplete box
-//   }
-// };
-
-// function showSuggestions(list: string[]): void {
-//   let listData: string;
-//   if (!list.length) {
-//     const userValue = input.value;
-//     listData = '<li>' + userValue + '</li>';
-//   } else {
-//     listData = list.join('');
-//   }
-//   resultBox.innerHTML = listData;
-// }
-
-function showSuggestions(list: string[],input:HTMLInputElement,resultBox:HTMLElement): void {
-  let listData: string;
-  if (!list.length) {
-    const userValue = input.value;
-    listData = '<li>' + userValue + '</li>';
-  } else {
-    listData = list.join('');
-  }
-  resultBox.innerHTML = listData;
-}
