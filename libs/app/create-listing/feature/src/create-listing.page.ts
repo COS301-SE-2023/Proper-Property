@@ -54,22 +54,47 @@ export class CreateListingPage implements OnInit {
     const input = event.target as HTMLInputElement;
     this.gmapsService.handleInput(input, this.defaultBounds);
     this.predictions = this.gmapsService.predictions;
+    this.address= input.value;
+    
+    this.handleAddressChange(input.value);
   }
   
   
-  replaceInputText(event: MouseEvent | undefined,prediction: string) {
-    // this.address = prediction;
-    //set the text in HTML element with id=hello to predictions
+  // replaceInputText(event: MouseEvent | undefined,prediction: string) {
+  //   // this.address = prediction;
+  //   //set the text in HTML element with id=hello to predictions
+  //   if (event) {
+  //     event.preventDefault(); // Prevent the default behavior of the <a> tag
+  //   }
+
+  //   const addressInput = document.getElementById("address") as HTMLInputElement;
+  //   if (addressInput) {
+  //     addressInput.value = prediction;
+  //   }
+  //   this.predictions = [];
+  // }
+
+  replaceInputText(event: MouseEvent | undefined, prediction: string) {
     if (event) {
       event.preventDefault(); // Prevent the default behavior of the <a> tag
     }
-
+  
     const addressInput = document.getElementById("address") as HTMLInputElement;
     if (addressInput) {
       addressInput.value = prediction;
     }
+
+        // Update the 'address' property of the component class
+      this.address = prediction;
+
     this.predictions = [];
+       
   }
+
+handleAddressChange(address: string): void {
+  this.address = address;
+}
+
 
   photos: string[] = [];
   address: string;
@@ -141,6 +166,7 @@ export class CreateListingPage implements OnInit {
   }
 
   async generateDesc(){
+    // const add_in = document.getElementById('address') as HTMLInputElement;
     const add_in = document.getElementById('address') as HTMLInputElement;
     const price_in = document.getElementById('price') as HTMLInputElement;
     const pos_type_in = document.getElementById('pos-type') as HTMLInputElement;

@@ -43,6 +43,7 @@ export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
 
   ngAfterViewInit() {
     this.loadMap();
+    // this.addPropertyMarkers();
   }
 
   async loadMap() {
@@ -69,6 +70,64 @@ export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
       this.addMarker(mapsMouseEvent.latLng);
     });
   }
+
+  
+  // private addPropertyMarkers() {
+  //   // Iterate over your property data
+  //   this.listings.forEach((listing) => {
+  //     const marker = new google.maps.Marker({
+  //       position: { lat: listing.latitude, lng: listing.longitude },
+  //       map: this.map,
+  //     });
+
+  //     // Create info window
+  //     const infoWindow = new google.maps.InfoWindow({
+  //       content: this.generatePropertyCard(listing).outerHTML,
+  //     });
+
+  //     // Attach info window to marker click event
+  //     marker.addListener('click', () => {
+  //       infoWindow.open(this.map, marker);
+  //     });
+  //   });
+  // }
+
+  generatePropertyCard(property: listing): HTMLElement {
+    const propertyCard = document.createElement('div');
+    propertyCard.className = 'property-card';
+  
+    const propertyImage = document.createElement('div');
+    propertyImage.className = 'property-image';
+    const image = document.createElement('img');
+    image.src = property.photos[0];
+    image.alt = 'Property Image';
+    propertyImage.appendChild(image);
+  
+    const propertyDetails = document.createElement('div');
+    propertyDetails.className = 'property-details';
+    const title = document.createElement('h3');
+    title.className = 'property-title';
+    title.textContent = property.prop_type;
+    const address = document.createElement('p');
+    address.className = 'property-address';
+    address.textContent = property.address;
+    const price = document.createElement('p');
+    price.className = 'property-price';
+    price.textContent = property.price;
+  
+    propertyDetails.appendChild(title);
+    propertyDetails.appendChild(address);
+    propertyDetails.appendChild(price);
+  
+    propertyCard.appendChild(propertyImage);
+    propertyCard.appendChild(propertyDetails);
+  
+    return propertyCard;
+  }
+  
+
+  
+  
 
   addMarker(location: any) {
     const googleMaps: any = this.googleMaps;
