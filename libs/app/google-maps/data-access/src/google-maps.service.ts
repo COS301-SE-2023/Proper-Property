@@ -44,7 +44,7 @@ export class GmapsService {
           return;
         }
         const selectedPlace = places[0];
-        input.value = selectedPlace.name;
+        input.value = selectedPlace.formatted_address;
         
         // Handle the selected place(s) here
         console.log('Selected place:', places[0]);

@@ -59,6 +59,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     const inputElementId = 'address';
 
     
+    
     this.gmapsService.setupRegionSearchBox(inputElementId);
     
   }
@@ -89,6 +90,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   ngAfterViewInit() {
     
     this.loadMap();
+    this.addPropertyMarkers();
   }
 
 async loadMap() {
@@ -103,6 +105,7 @@ async loadMap() {
     });
     this.renderer.addClass(mapEl, 'visible');
     this.addMarker(location);
+    this.addPropertyMarkers();
     this.onMapClick();
   } catch(e) {
     console.log(e);
@@ -113,6 +116,7 @@ onMapClick() {
   this.mapClickListener = this.googleMaps.event.addListener(this.map, "click", (mapsMouseEvent: { latLng: { toJSON: () => any; }; }) => {
     console.log(mapsMouseEvent.latLng.toJSON());
     this.addMarker(mapsMouseEvent.latLng);
+    this.generatePropertyCard(this.listings[4]);
   });
 }
 
@@ -356,7 +360,59 @@ toggleAdditionalFilters(): void {
   this.filterProperties();
 }
 
-customMinPrice = 0;
+private addPropertyMarkers() {
+  // Iterate over your property data
+  this.listings.forEach(async (listing) => {
+    const { latitude, longitude } = await this.googleMaps.getLatLongFromAddress(listing.address);
+
+    const marker = new google.maps.Marker({
+      position: { lat: latitude, lng: longitude },
+      map: this.map,
+    });
+    // Create info window
+    const infoWindow = new google.maps.InfoWindow({
+      content: this.generatePropertyCard(listing).outerHTML,
+    });
+
+    // Attach info window to marker click event
+    marker.addListener('click', () => {
+      infoWindow.open(this.map, marker);
+    });
+  });
+}
+
+generatePropertyCard(property: listing): HTMLElement {
+  const propertyCard = document.createElement('div');
+  propertyCard.className = 'property-card';
+
+  const propertyImage = document.createElement('div');
+  propertyImage.className = 'property-image';
+  const image = document.createElement('img');
+  image.src = property.photos[0];
+  image.alt = 'Property Image';
+  propertyImage.appendChild(image);
+
+  const propertyDetails = document.createElement('div');
+  propertyDetails.className = 'property-details';
+  const title = document.createElement('h3');
+  title.className = 'property-title';
+  title.textContent = property.prop_type;
+  const address = document.createElement('p');
+  address.className = 'property-address';
+  address.textContent = property.address;
+  const price = document.createElement('p');
+  price.className = 'property-price';
+  price.textContent = property.price;
+
+  propertyDetails.appendChild(title);
+  propertyDetails.appendChild(address);
+  propertyDetails.appendChild(price);
+
+  propertyCard.appendChild(propertyImage);
+  propertyCard.appendChild(propertyDetails);
+
+  return propertyCard;
+}
 
 
 
