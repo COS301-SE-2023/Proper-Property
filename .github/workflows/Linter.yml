@@ -40,3 +40,5 @@ jobs:
           NX_GOOGLE_MAPS_KEY="$NX_GOOGLE_MAPS_KEY"
           EOF
           echo "cat .env.prod"
+      - name: Build App
+        run: npm run build:app:prod
