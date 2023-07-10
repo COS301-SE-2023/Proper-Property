@@ -9,7 +9,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       # Install NPM dependencies, cache them correctly
-        node-version: "18"
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
       - run: npm install --legacy-peer-deps
       # and run all Cypress tests
       - name: Cypress run
