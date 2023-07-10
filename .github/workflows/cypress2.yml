@@ -117,3 +117,4 @@ jobs:
           build: npm run build:app:prod
           start: npm run start:app:prod
           wait-on: 'http://localhost:4200'
+          command: npx cypress run
