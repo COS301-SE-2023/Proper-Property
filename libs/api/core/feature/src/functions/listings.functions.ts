@@ -9,8 +9,9 @@ export const getListings = functions.region('europe-west1').https.onCall(
   async(
     request: GetListingsRequest
   ): Promise<GetListingsResponse> => {
-    console.log(request);
-    return {listings: []};// placeholder
+    const appContext = await NestFactory.createApplicationContext(CoreModule)
+    const listingService = appContext.get(ListingsService);
+    return listingService.getListings(request);
   }
 );
 

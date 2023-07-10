@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Listing, CreateListingRequest, CreateListingResponse } from '@properproperty/api/listings/util';
-import { Firestore, collection, doc, updateDoc, getDocs, getDoc } from '@angular/fire/firestore';
+import { Listing, CreateListingRequest, CreateListingResponse, GetListingsRequest, GetListingsResponse } from '@properproperty/api/listings/util';
+import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
 import { Storage, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
@@ -49,34 +49,36 @@ export class ListingsService {
       })
     }
 
+    // TODO Add this via CQRS
     const listingRef = doc(this.firestore, `listings/${listingID}`);
       await updateDoc(listingRef, {photos: photoURLs});
   }
 
   async getListings(){
-    const listingsRef = collection(this.firestore, 'listings');
-    const listings$ = ((await getDocs(listingsRef)).docs.map(doc => doc.data()) as Listing[]);
-    const listings : Listing[] = [];
-
-    for(let i = 0; i < listings$.length; i++){
-      const temp : Listing = listings$[i];
-      temp.listing_id = ((await getDocs(listingsRef)).docs[i].id);
-      console.log(temp.listing_id);
-      listings.push(temp);
+    const response = (await httpsCallable<
+      GetListingsRequest,
+      GetListingsResponse
+    >(
+      this.functions, 
+      'getListings'
+    )({})).data;
+    if (response.listings.length > 0){
+      return response.listings;
     }
-    return listings;
+    return [];
   }
 
   async getListing(listing_id : string){
-    console.log(listing_id);
-    let listing : Listing | null = null;
-    const listingRef = doc(this.firestore, 'listings/' + listing_id);
-    
-    await getDoc(listingRef).then((doc) => {
-      listing = doc.data() as Listing;
-      console.log("redacted you " + listing);
-    });
-
-    return listing;
+    const response: GetListingsResponse = (await httpsCallable<
+      GetListingsRequest,
+      GetListingsResponse
+    >(
+      this.functions, 
+      'getListings'
+    )({listingId: listing_id})).data;
+    if (response.listings.length > 0){
+      return response.listings[0];
+    }
+    return null;
   }
 }

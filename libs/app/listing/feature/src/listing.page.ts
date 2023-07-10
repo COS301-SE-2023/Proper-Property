@@ -32,14 +32,14 @@ export class ListingPage{
       this.list = list;
     }).then(() => {
       // TODO
-      // console.log(this.list);
-      // this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
+      console.log(this.list);
+      this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
 
-      // this.userServices.getUser("" + this.list?.user_id).then((user : UserProfile) => {
-      //   console.log(user);
-      //   this.lister_name = user.firstName + " " + user.lastName;
+      this.userServices.getUser("" + this.list?.user_id).then((user : UserProfile) => {
+        console.log(user);
+        this.lister_name = user.firstName + " " + user.lastName;
       });
-    // });
+    });
     this.loanAmount = 0;
     this.interestRate = 0;
     this.loanTerm = 0;

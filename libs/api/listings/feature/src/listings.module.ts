@@ -4,6 +4,8 @@ import { ListingsService } from './listings.service';
 import { CreateListingHandler } from './commands';
 import { ListingsModule as ListingsDataAccessModule } from '@properproperty/api/listings/data-access';
 const CommandHandlers = [CreateListingHandler];
+import { GetListingsHandler } from './queries';
+const QueryHandlers = [GetListingsHandler];
 @Module({
   imports: [
     CqrsModule, 
@@ -11,7 +13,8 @@ const CommandHandlers = [CreateListingHandler];
   ],
   providers: [
     ListingsService,
-    ...CommandHandlers
+    ...CommandHandlers,
+    ...QueryHandlers
   ],
   exports: [ListingsService]
 })

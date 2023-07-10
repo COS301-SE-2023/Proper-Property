@@ -1,37 +1,42 @@
 import * as admin from 'firebase-admin';
 import { Injectable } from '@nestjs/common';
-import { GetListingsRequest, Listing, CreateListingResponse } from '@properproperty/api/listings/util';
+import { GetListingsRequest, Listing, CreateListingResponse, GetListingsResponse } from '@properproperty/api/listings/util';
 // import { FieldValue, FieldPath } from 'firebase-admin/firestore';
 @Injectable()
 export class ListingsRepository {
-  async getListings(req: GetListingsRequest){
-    console.log(req);
-    // TODO
-    // if(req.userId){
-    //     let listingsIDs: string[] = 
-    //     (await admin
-    //     .firestore()
-    //     .collection('users')
-    //     .withConverter<UserProfile>({
-    //       fromFirestore: (snapshot) => snapshot.data() as UserProfile,
-    //       toFirestore: (profile: UserProfile) => profile
-    //     })
-    //     .doc(req.userId)
-    //     .get())
-    //     .data()
-    //     ?.listings ?? [];
-    //     // 
-    //     // let listings : Listing[] = [];
-    //     // for(let id in listingsIDs){
-    //     //     await admin.firestore().collection('listings').where('listing_id', '==', listingsIDs[id]).get().then((snapshot) => {
-    //     // });
-    //   // }
-    // }
-    // else{
-    //   const listings = await admin.firestore().collection('listings').get();
-    //   return listings.docs.map(listing => listing.data());
-    // }
-      return null;
+
+  async getListing(listingId: string): Promise<GetListingsResponse>{
+    const doc = await admin
+      .firestore()
+      .collection('listings')
+      .doc(listingId)
+      .get();
+    const data = doc.data();
+    if(data){
+      return {listings: [data as Listing]};
+    }
+    else{
+      return {listings: []};
+    }
+  }
+
+  async getListings(req: GetListingsRequest): Promise<GetListingsResponse>{
+    let collection = admin.firestore().collection('listings');
+    let query: admin.firestore.Query;
+
+    if(req.userId){
+      query = collection.where('user_id', '==', req.userId).limit(5);
+    }
+    else{
+      query = collection.limit(5);
+    }
+
+    const listings: Listing [] = [];
+    (await query.get()).forEach((doc) => {
+      listings.push(doc.data() as Listing);
+    });
+
+    return {listings: listings};
   }
 
   async createListing(listing : Listing): Promise<CreateListingResponse>{

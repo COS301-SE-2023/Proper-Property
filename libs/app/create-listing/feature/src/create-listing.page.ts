@@ -24,13 +24,12 @@ export class CreateListingPage implements OnInit {
   description = "";
   heading = "";
   constructor(
-      private readonly router: Router, 
-      private readonly userService: UserProfileService, 
-      private readonly listingService: ListingsService, 
-      private readonly openAIService: OpenAIService,
-      private readonly store: Store
-    ) {
-    this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
+    private readonly router: Router, 
+    private readonly userService: UserProfileService, 
+    private readonly listingService: ListingsService, 
+    private readonly openAIService: OpenAIService,
+    private readonly store: Store
+  ) {
     if (isDevMode()) {
       this.address = "123 Fake Street";
       this.price = "1000000";
@@ -39,6 +38,12 @@ export class CreateListingPage implements OnInit {
       this.bathrooms = "2";
       this.bedrooms = "3";
       this.parking = "1";
+      this.pos_type = "Leasehold";
+      this.env_type = "Urban";
+      this.prop_type = "House";
+      this.furnish_type = "Furnished";
+      this.orientation = "North";
+      this.description = "This is a description";
     }
     this.user$.subscribe((user: User | null) => {
       this.currentUser =  user;
@@ -55,14 +60,18 @@ export class CreateListingPage implements OnInit {
   }
   
   photos: string[] = [];
-  address: string;
-  price: string;
-  bathrooms:string;
-  bedrooms:string;
-  parking:string;
-  floor_size: string;
-  erf_size : string;
-
+  address = "";
+  price = "";
+  bathrooms = "";
+  bedrooms = "";
+  parking = "";
+  floor_size = "";
+  erf_size  = "";
+  pos_type = "";
+  env_type = "";
+  prop_type = "";
+  furnish_type = "";
+  orientation = "";
   count = 0;
 
   handleFileInput(event: Event) {
@@ -104,7 +113,7 @@ export class CreateListingPage implements OnInit {
   }
 
   selectPhotos() {
-    const fileInput = document.querySelector('input[type="file"]');
+    const fileInput = document.querySelector('input[type = "file"]');
     if (fileInput) {
       const event = new MouseEvent('click', {
         view: window,
@@ -199,24 +208,16 @@ export class CreateListingPage implements OnInit {
   }
 
   async addListing(){
-    const pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
-    const env_type_in = document.getElementById('env-type') as HTMLInputElement;
-    const prop_type_in = document.getElementById('prop-type') as HTMLInputElement;
-    const furnish_type_in = document.getElementById('furnish-type') as HTMLInputElement;
-    const orientation_in = document.getElementById('orientation') as HTMLInputElement;
-    const desc_in = document.getElementById('desc') as HTMLInputElement;
-
-    console.log(prop_type_in.value);
     if(this.currentUser != null){
       const list : Listing = {
         user_id: this.currentUser.uid,
         address: this.address,
         price: this.price,
-        pos_type: pos_type_in.value,
-        env_type: env_type_in.value,
-        prop_type: prop_type_in.value,
-        furnish_type: furnish_type_in.value,
-        orientation: orientation_in.value,
+        pos_type: this.pos_type,
+        env_type: this.env_type,
+        prop_type: this.prop_type,
+        furnish_type: this.furnish_type,
+        orientation: this.orientation,
         floor_size: this.floor_size,
         property_size: this.erf_size,
         bath: this.bathrooms,
@@ -224,7 +225,7 @@ export class CreateListingPage implements OnInit {
         parking: this.parking,
         features: this.features,
         photos: this.photos,
-        desc: desc_in.value,
+        desc: this.description,
         heading: this.heading,
         let_sell: this.listingType
       }

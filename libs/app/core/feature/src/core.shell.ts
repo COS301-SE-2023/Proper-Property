@@ -9,6 +9,7 @@ import { Unsubscribe, User } from 'firebase/auth';
 import { UserProfileState } from '@properproperty/app/profile/data-access';
 import { HostListener } from '@angular/core';
 import { httpsCallable, Functions } from '@angular/fire/functions';
+import { Router } from '@angular/router';
 // import { GetUserProfileRequest, GetUserProfileResponse, UpdateUserProfileRequest, UpdateUserProfileResponse, profile } from '@properproperty/api/profile/util';
 
 @Component({
@@ -22,7 +23,7 @@ export class CoreShellComponent implements OnInit, OnDestroy{
   public loggedIn = false;
   private user: User | null = null;
   private userProfileListener: Unsubscribe | null = null;
-  constructor(private readonly store: Store, private readonly functions: Functions) {
+  constructor(private readonly router: Router, private readonly store: Store, private readonly functions: Functions) {
     this.loggedIn = this.user$ != null && this.user$ != undefined;
 
     this.user$.subscribe((user) => {

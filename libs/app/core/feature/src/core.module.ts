@@ -62,6 +62,11 @@ import {
 // TODO See if better way exists to hide key
 import { API_KEY_TOKEN } from '@properproperty/app/google-maps/util';
 
+import { enableProdMode } from '@angular/core';
+if (process.env['NX_ENVIRONMENT'] === 'production') {
+  enableProdMode();
+}
+
 import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
