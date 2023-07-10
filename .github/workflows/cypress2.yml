@@ -48,7 +48,7 @@
 #           start: npm start
 #           browser: 
 
-name: Cypress Tests
+name: Cypress Test
 
 on: push
 
@@ -59,10 +59,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       
-      - run: npm install --legacy-peer-deps
+      - name: Install Dependencies
+        run: npm install --legacy-peer-deps
+
+      # - name: Update @angular/compiler and @angular/compiler-cli
+      #   run: npm install @angular/compiler@16.1.3 @angular/compiler-cli@16.1.3 --legacy-peer-deps
 
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
           build: npm run build
           start: npm start
+          wait-on: 'http://localhost:4200'
+          browser: chrome
