@@ -1,21 +1,44 @@
-name: Cypress Tests
-
-on: push
-
+---
+name: Check lint of code before commit
+on:
+  push:
 jobs:
-  cypress-run:
-    runs-on: ubuntu-22.04
+  linting:
+    name: Run Lint check
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      # Install NPM dependencies, cache them correctly
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: "18"
       - run: npm install --legacy-peer-deps
-      # and run all Cypress tests
+      - name: Create environment file
+        env:
+          NX_FIREBASE_KEY: ${{ secrets.NX_FIREBASE_KEY }}
+          NX_FIREBASE_AUTH_DOMAIN: ${{ secrets.NX_FIREBASE_AUTH_DOMAIN }}}
+          NX_FIREBASE_DATABASE_URL: ${{ secrets.NX_FIREBASE_DATABASE_URL }}
+          NX_FIREBASE_PROJECT_ID: ${{ secrets.NX_FIREBASE_PROJECT_ID }}}
+          NX_FIREBASE_STORAGE_BUCKET: ${{ secrets.NX_FIREBASE_STORAGE_BUCKET }}
+          NX_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NX_FIREBASE_MESSAGING_SENDER_ID }}}
+          NX_FIREBASE_APP_ID: ${{ secrets.NX_FIREBASE_APP_ID }}
+          NX_FIREBASE_MEASUREMENT_ID: ${{ secrets.NX_FIREBASE_MEASUREMENT_ID }}
+          NX_GOOGLE_MAPS_KEY: ${{ secrets.NX_GOOGLE_MAPS_KEY }}
+        run: |
+          cat <<EOF > .env.prod
+          NX_ENVIRONMENT=production
+          NX_USE_EMULATORS=false
+          NX_FIREBASE_KEY="$NX_FIREBASE_KEY"
+          NX_FIREBASE_AUTH_DOMAIN="$NX_FIREBASE_AUTH_DOMAIN"
+          NX_FIREBASE_DATABASE_URL="$NX_FIREBASE_DATABASE_URL"
+          NX_FIREBASE_PROJECT_ID="$NX_FIREBASE_PROJECT_ID"
+          NX_FIREBASE_STORAGE_BUCKET="$NX_FIREBASE_STORAGE_BUCKET"
+          NX_FIREBASE_MESSAGING_SENDER_ID="$NX_FIREBASE_MESSAGING_SENDER_ID"
+          NX_FIREBASE_APP_ID="$NX_FIREBASE_APP_ID"
+          NX_FIREBASE_MEASUREMENT_ID="$NX_FIREBASE_MEASUREMENT_ID"
+          NX_GOOGLE_MAPS_KEY="$NX_GOOGLE_MAPS_KEY"
+          EOF
+          echo "cat .env.prod"
+      - name: Build App
+        run: npm run start:app:dev
       - name: Cypress run
-        uses: cypress-io/github-action@v5
-        with:
-          build: npm run build
-          start: npm start
+        run: npx cypress run
