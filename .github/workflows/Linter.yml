@@ -42,3 +42,8 @@ jobs:
           echo "cat .env.prod"
       - name: Build App
         run: npm run build:app:prod
+      - name: Build App no emulator
+        run: npm run start:app:dev      
+      - name: Cypress Test
+        run: npx cypress run
+        
