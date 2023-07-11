@@ -38,15 +38,17 @@ jobs:
           EOF
           echo "cat .env.prod"
 
-      - name: Start Application and then Run tests
+      - name: Build and Start Application
         uses: cypress-io/github-action@v5
         with:
           working-directory: ./
-          wait-on: 'http://[::1]:4200/home'
+          wait-on: 'http://[::1]:4200/'
           install-command: npm install --legacy-peer-deps
           build: npm run build:app:prod
           start: npm run start:app:prod
-          command: npx cypress run
+
+      - name: Run Cypress Tests
+        run: npx cypress run
 
       - if: always()
         name: Run Cypress Tests
