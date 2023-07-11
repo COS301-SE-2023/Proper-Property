@@ -21,6 +21,8 @@ export class GmapsService {
 
   autocompleteService!: google.maps.places.AutocompleteService;
 
+  nearby!: google.maps.places.PlacesService;
+
   //for create-listing
   setupSearchBox(elementId: string): Promise<any> {
     
@@ -130,6 +132,8 @@ export class GmapsService {
       }
     );
   }
+
+
 
   //for search
   getRegionPredictions(input: string, bounds: google.maps.LatLngBounds): void {
@@ -301,6 +305,31 @@ export class GmapsService {
   }
 
 
+  getNearbyPlaces(latitude: number, longitude: number): Promise<google.maps.places.PlaceResult[]> {
+    return this.loadGoogleMaps().then((maps) => {
+      const service = new maps.places.PlacesService(document.createElement('div'));
+
+      return new Promise<google.maps.places.PlaceResult[]>((resolve, reject) => {
+        const request = {
+          location: new maps.LatLng(latitude, longitude),
+          radius: 1000, // Specify the radius within which to search for nearby places (in meters)
+          type: ['school', 'hospital'] // Specify the types of places to search for
+        };
+
+        service.nearbySearch(request, (results: google.maps.places.PlaceResult[], status: google.maps.places.PlacesServiceStatus) => {
+          if (status === maps.places.PlacesServiceStatus.OK) {
+            resolve(results);
+          } else {
+            reject('Failed to retrieve nearby places');
+          }
+        });
+      });
+    });
+  }
+
+  
+
+  
 getLatLongFromAddress(address: string): Promise<{ latitude: number; longitude: number }> {
   return this.loadGoogleMaps().then((maps) => {
     const geocoder = new maps.Geocoder();
@@ -319,4 +348,4 @@ getLatLongFromAddress(address: string): Promise<{ latitude: number; longitude: n
 }
   
 }
-
+    

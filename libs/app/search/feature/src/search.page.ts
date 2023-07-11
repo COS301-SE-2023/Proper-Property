@@ -78,7 +78,6 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     this.predictions = this.gmapsService.regionPredictions;
   }
   
-  
   replaceInputText(event: MouseEvent | undefined,prediction: string) {
     // this.address = prediction;
     //set the text in HTML element with id=hello to predictions
@@ -499,6 +498,7 @@ async addMarkersToMap() {
     }
   }
 }
+
 
 
 

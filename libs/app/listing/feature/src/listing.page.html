@@ -120,31 +120,19 @@
               <ion-card-header>
                 <ion-card-title>Points of Interest</ion-card-title>
                 <ion-card-content>
-                  <ion-grid style="z-index:1;">
+                  <ion-grid style="z-index: 1;">
                     <ion-row>
-                      <ion-col>
-                        <div class="text-large">1</div>
-                      </ion-col>
-                      <ion-col>
-                        <div class="text-large">2</div>
-                      </ion-col>
-                      <ion-col>
-                        <div class="text-large">3</div>
-                      </ion-col>
-                    </ion-row>
-                    <ion-row>
-                      <ion-col>
-                        <div class="text-large">4</div>
-                      </ion-col>
-                      <ion-col>
-                        <div class="text-large">5</div>
-                      </ion-col>
-                      <ion-col>
-                        <div class="text-large">6</div>
+                      <ion-col size="3" class="poi-card" *ngFor="let poi of pointsOfInterest; let i = index;">
+                        <img [src]="poi.photo" alt="Place Photo" class="poi-photo" *ngIf="poi.photo">
+                        <div class="text-small">{{ poi.name }}</div>
                       </ion-col>
                     </ion-row>
                   </ion-grid>
                 </ion-card-content>
+                
+                
+                
+                
               </ion-card-header>
             </ion-card>
           </ion-row>
