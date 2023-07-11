@@ -6,7 +6,7 @@ module.exports = {
     defaultCommandTimeout: 10000,
     retries: {
       runMode: 1,
-      openMode: 1,
+      openMode: 4,
       },
       screenshotOnRunFailure: true,
 
