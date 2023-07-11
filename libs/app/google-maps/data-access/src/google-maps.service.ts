@@ -17,6 +17,7 @@ export class GmapsService {
 
   constructor(@Inject(API_KEY_TOKEN) private key: string) { }
 
+  geocoder!: google.maps.Geocoder;
 
   autocompleteService!: google.maps.places.AutocompleteService;
 
@@ -50,6 +51,46 @@ export class GmapsService {
         console.log('Selected place:', places[0]);
         console.log('Eyy cousin:', input.value);
         
+      });
+    });
+  }
+
+  getGeocoder(): Promise<google.maps.Geocoder> {
+    if (this.geocoder) {
+      return Promise.resolve(this.geocoder);
+    }
+    return this.loadGoogleMaps().then((maps) => {
+      this.geocoder = new maps.Geocoder();
+      return this.geocoder;
+    });
+  }
+
+  checkAddressInArea(address1: string, address2: string): Promise<boolean> {
+    return Promise.all([
+      this.geocodeAddress(address1),
+      this.geocodeAddress(address2)
+    ]).then(([location1, location2]) => {
+      if (location1 && location2) {
+        const area1 = location1.geometry?.viewport;
+        const point2 = location2.geometry?.location;
+        if (area1 && point2) {
+          return area1.contains(point2);
+        }
+      }
+      return false;
+    });
+  }
+
+  geocodeAddress(address: string): Promise<google.maps.GeocoderResult | null> {
+    return this.getGeocoder().then((geocoder) => {
+      return new Promise<google.maps.GeocoderResult | null>((resolve, reject) => {
+        geocoder.geocode({ address: address }, (results, status) => {
+          if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
+            resolve(results[0]);
+          } else {
+            reject('Failed to geocode the address');
+          }
+        });
       });
     });
   }
@@ -123,26 +164,30 @@ export class GmapsService {
       });
 
       
-      //  maps.places.SearchBox(input, {
-      //    bounds: defaultBounds, types: ['(regions)'], componentRestrictions: { country: 'ZA' } });
+       maps.places.SearchBox(input, {
+         bounds: defaultBounds, types: ['(regions)'], componentRestrictions: { country: 'ZA' } });
          
 
 
-      // this.autocompleteService = new maps.places.AutocompleteService();
+      this.autocompleteService = new maps.places.AutocompleteService();
 
-      // input.addEventListener('input', () => {
-      //   console.log("bitch");
-      //   this.handleRegionInput(input, defaultBounds);
-      // });
+      input.addEventListener('input', () => {
+        console.log("bitch");
+        this.handleRegionInput(input, defaultBounds);
+      });
 
-      // searchBox.addListener('places_changed', () => {
-      //   const places = searchBox.getPlaces();
-      //   if (places.length === 0) {
-      //     return;
-      //   }
-      //   // Handle the selected place(s) here
-      //   console.log('Selected place:', places[0]);
-      // });
+      searchBox.addListener('places_changed', () => {
+        const places = searchBox.getPlaces();
+        if (places.length === 0) {
+          return;
+        }
+
+        const selectedPlace = places[0];
+        input.value = selectedPlace.formatted_address;
+        
+        // Handle the selected place(s) here
+        console.log('Selected place:', places[0]);
+      });
     });
   }
 

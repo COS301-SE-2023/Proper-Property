@@ -75,6 +75,7 @@ export class ListingsService {
       listings.push(temp);
     }
     return listings;
+   
   }
 
   async getListing(listing_id : string){

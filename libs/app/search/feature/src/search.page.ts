@@ -11,6 +11,13 @@ interface Property {
   price: number;
   bedrooms: number;
 }
+// const property = {
+//   id: 1,
+//   image: 'path/to/image.jpg',
+//   price: 100000,
+//   bedrooms: 3,
+//   bathrooms: 2
+// };
 
 @Component({
   selector: 'app-search',
@@ -90,7 +97,6 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   ngAfterViewInit() {
     
     this.loadMap();
-    this.addPropertyMarkers();
 
   }
 
@@ -105,8 +111,7 @@ async loadMap() {
       zoom: 12,
     });
     this.renderer.addClass(mapEl, 'visible');
-    this.addMarker(location);
-    this.addPropertyMarkers();
+    this.addMarker(location,this.listings[0]);
     this.onMapClick();
   } catch(e) {
     console.log(e);
@@ -116,12 +121,12 @@ async loadMap() {
 onMapClick() {
   this.mapClickListener = this.googleMaps.event.addListener(this.map, "click", (mapsMouseEvent: { latLng: { toJSON: () => any; }; }) => {
     console.log(mapsMouseEvent.latLng.toJSON());
-    this.addMarker(mapsMouseEvent.latLng);
-    this.generatePropertyCard(this.listings[4]);
+    this.addMarker(mapsMouseEvent.latLng,this.listings[0]);
+    // this.addMarker(location, property);
   });
 }
 
-addMarker(location: any) {
+addMarker(location: any,listing:listing) {
   const googleMaps: any = this.googleMaps;
   const icon = {
     url: 'assets/icon/map_card.png',
@@ -132,7 +137,8 @@ addMarker(location: any) {
     map: this.map,
     icon: icon,
     // draggable: true,
-    animation: googleMaps.Animation.DROP
+    animation: googleMaps.Animation.DROP,
+    property: listing // Add property object to the marker
   });
   this.markers.push(marker);
   // this.presentActionSheet();
@@ -141,6 +147,25 @@ addMarker(location: any) {
     this.checkAndRemoveMarker(marker);
     console.log('markers: ', this.markers);
   });
+
+  const infoWindow = new googleMaps.InfoWindow({
+    content: this.createPropertyCard(listing)
+  });
+  
+  this.googleMaps.event.addListener(marker, 'click', () => {
+    infoWindow.open(this.map, marker);
+    
+    // Navigate to the property listing page when the property card is clicked
+    googleMaps.event.addDomListener(infoWindow.getContent(), 'click', () => {
+      this.navigateToPropertyListingPage(marker.property);
+    });
+  });
+}
+
+navigateToPropertyListingPage(listing:listing) {
+
+  console.log(listing.listing_id);
+  this.router.navigate(['/listing', {list : listing.listing_id}]);
 }
 
 checkAndRemoveMarker(marker: { position: { lat: () => any; lng: () => any; }; }) {
@@ -184,6 +209,15 @@ async presentActionSheet() {
   await actionSheet.present();
 }
 
+createPropertyCard(property: listing) {
+  return `<div class="property-card">
+    <img src="${property.photos[0]}" alt="Property Image" class="property-image">
+    <div class="property-info">
+      <h3 class="property-price">$${property.price}</h3>
+      <p class="property-details">${property.bed} BR | ${property.bath} Bath</p>
+    </div>
+  </div>`;
+}
 
 
 async redirectToPage(listing : listing) {
@@ -219,6 +253,7 @@ searchProperties() {
 
   // this.listings = filteredListings;
 
+  this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
 
   for(let k = 0; k<this.listings.length; k++) {
     this.listings[k].price = this.listings[k].price.replace(/,/g, '');
@@ -263,7 +298,34 @@ for (let j = 0; j < this.listings.length; j++) {
       }
     }
     
+    //checkAddressinArea(searchQuery, house address);
     
+    if(this.searchQuery!='') {
+       this.gmaps.checkAddressInArea(this.searchQuery,this.listings[i].address)
+  .then((isInArea) => {
+    if (!isInArea) {
+      this.listings.splice(i,1);
+    }
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+    }
+
+  // this.gmaps.checkAddressInArea( "Hillcrest, South Africa","Hillcrest, Pretoria, 0083, South Africa")
+  // .then((isInArea) => {
+  //   if (isInArea) {
+  //     console.log('Address 1 is in the area of Address 2');
+  //   } else {
+  //     console.log('Address 1 is not in the area of Address 2');
+  //   }
+  // })
+  // .catch((error) => {
+  //   console.error('Error:', error);
+  // });
+    
+
+
   }
 }
 
@@ -313,20 +375,22 @@ onShow = false;
 securityEstate = false;
 auction = false;
 
-properties: Property[] = [
-  { title: 'House 1', type: 'house', price: 100000, bedrooms: 3 },
-  { title: 'Apartment 1', type: 'apartment', price: 1500, bedrooms: 2 },
-  { title: 'Condo 1', type: 'condo', price: 2000, bedrooms: 1 },
-  // Add more properties here
-];
+// properties: Property[] = [
+//   { title: 'House 1', type: 'house', price: 100000, bedrooms: 3 },
+//   { title: 'Apartment 1', type: 'apartment', price: 1500, bedrooms: 2 },
+//   { title: 'Condo 1', type: 'condo', price: 2000, bedrooms: 1 },
+//   // Add more properties here
+// ];
 
-get filteredBuyingProperties(): Property[] {
-  return this.properties.filter(property =>
-    property.type.includes(this.selectedPropertyType) &&
-    property.price >= this.selectedMinPrice &&
-    property.price <= this.selectedMaxPrice &&
-    (this.selectedBedrooms === 0 || property.bedrooms === this.selectedBedrooms) &&
-    property.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+get filteredBuyingProperties(): listing[] {
+
+  //stubbed for now
+  return this.listings.filter(listing =>
+    // property.type.includes(this.selectedPropertyType) &&
+    // property.price >= this.selectedMinPrice &&
+    // property.price <= this.selectedMaxPrice &&
+    // (this.selectedBedrooms === 0 || property.bedrooms === this.selectedBedrooms) &&
+    listing.desc.toLowerCase().includes(this.searchQuery.toLowerCase())
   );
 }
 
@@ -360,60 +424,5 @@ toggleAdditionalFilters(): void {
   this.showAdditionalFilters = !this.showAdditionalFilters;
   this.filterProperties();
 }
-
-private addPropertyMarkers() {
-  // Iterate over your property data
-  this.listings.forEach(async (listing) => {
-    const { latitude, longitude } = await this.googleMaps.getLatLongFromAddress(listing.address);
-    const marker = new google.maps.Marker({
-      position: { lat: latitude, lng: longitude },
-      map: this.map,
-    });
-    // Create info window
-    const infoWindow = new google.maps.InfoWindow({
-      content: this.generatePropertyCard(listing).outerHTML,
-    });
-
-    // Attach info window to marker click event
-    marker.addListener('click', () => {
-      infoWindow.open(this.map, marker);
-    });
-  });
-}
-
-generatePropertyCard(property: listing): HTMLElement {
-  const propertyCard = document.createElement('div');
-  propertyCard.className = 'property-card';
-
-  const propertyImage = document.createElement('div');
-  propertyImage.className = 'property-image';
-  const image = document.createElement('img');
-  image.src = property.photos[0];
-  image.alt = 'Property Image';
-  propertyImage.appendChild(image);
-
-  const propertyDetails = document.createElement('div');
-  propertyDetails.className = 'property-details';
-  const title = document.createElement('h3');
-  title.className = 'property-title';
-  title.textContent = property.prop_type;
-  const address = document.createElement('p');
-  address.className = 'property-address';
-  address.textContent = property.address;
-  const price = document.createElement('p');
-  price.className = 'property-price';
-  price.textContent = property.price;
-
-  propertyDetails.appendChild(title);
-  propertyDetails.appendChild(address);
-  propertyDetails.appendChild(price);
-
-  propertyCard.appendChild(propertyImage);
-  propertyCard.appendChild(propertyDetails);
-
-  return propertyCard;
-}
-
-
 
 }
