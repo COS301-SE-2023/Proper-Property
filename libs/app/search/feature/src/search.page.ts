@@ -241,7 +241,7 @@ toggleColor() {
 
 Templistings: listing[] = []
 
-searchProperties() {
+  async searchProperties() {
   // const filteredListings = this.listings.filter(listing => {
   //   const addressMatch = listing.address.toLowerCase().includes(this.searchQuery.toLowerCase());
   //   const bedroomsMatch = this.selectedBedrooms === 0 || listing.bed === this.selectedBedrooms.toString();
@@ -255,14 +255,42 @@ searchProperties() {
 
   // this.listings = filteredListings;
 
-  this.listingServices.getListings().then((listings) => {
+  // this.listingServices.getListings().then((listings) => {
+  //   this.listings = listings;
+  //   this.filterProperties();
+
+    
+  // });
+
+  this.listingServices.getListings().then(async (listings) => {
     this.listings = listings;
     this.filterProperties();
 
     this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
 
+
+
     for(let k = 0; k<this.listings.length; k++) {
+      
       this.listings[k].price = this.listings[k].price.replace(/,/g, '');
+      
+    }
+  
+    for (let i = 0; i < this.listings.length; i++) {
+      if (this.searchQuery !== '') {
+        try {
+          const isInArea = await this.gmaps.checkAddressInArea(this.searchQuery, this.listings[i].address);
+          if (!isInArea) {
+            this.listings.splice(i, 1);
+            console.log('Address 1 is not in the area of Address 2', i);
+          } else {
+            console.log('Address 1 is in the area of Address 2', i);
+            console.log(this.listings[i].address, "eyy");
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
     }
   
   for (let j = 0; j < this.listings.length; j++) {
@@ -315,23 +343,12 @@ searchProperties() {
       }
       
       //checkAddressinArea(searchQuery, house address);
-      
-      if(this.searchQuery!='') {
-         this.gmaps.checkAddressInArea(this.searchQuery,this.listings[i].address)
-    .then((isInArea) => {
-      if (!isInArea) {
-        this.listings.splice(i,1);
-      }
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-      }
   
-    // this.gmaps.checkAddressInArea( "Hillcrest, South Africa","Hillcrest, Pretoria, 0083, South Africa")
+    // this.gmaps.checkAddressInArea(this.searchQuery,"14 Umhlanga Rocks Dr, Umhlanga, uMhlanga, 4320, South Africa")
     // .then((isInArea) => {
     //   if (isInArea) {
-    //     console.log('Address 1 is in the area of Address 2');
+    //     console.log('hillcrest is in umhlanga');
+    //     console.log(this.listings[i].address,"eyy");
     //   } else {
     //     console.log('Address 1 is not in the area of Address 2');
     //   }
@@ -348,10 +365,8 @@ searchProperties() {
   
     }
   }
+  
   });
-
-
-
 }
 
 resetFilters() {
