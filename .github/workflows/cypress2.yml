@@ -10,6 +10,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "18"
+      - run: npm install --legacy-peer-deps
+      - run: npm run build:app:prod
+      - run: npm run start:app:prod
 
       - name: Create environment file
         env:
@@ -37,12 +40,6 @@ jobs:
           NX_GOOGLE_MAPS_KEY="$NX_GOOGLE_MAPS_KEY"
           EOF
           echo "cat .env.prod"
-
-      - name: Build and Start Application
-        run: |
-          npm install --legacy-peer-deps
-          npm run build:app:prod
-          npm run start:app:prod
 
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v5
