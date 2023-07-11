@@ -1,76 +1,4 @@
-# name: Cypress Tests 2
-
-# on: push
-
-# jobs:
-#   # install:
-#   #   runs-on: ubuntu-latest
-#   #   steps:
-#   #     - name: Checkout
-#   #       uses: actions/checkout@v3
-
-#   #     # - name: Update @angular/compiler and @angular/compiler-cli
-#   #     #   run: npm install @angular/compiler@16.1.3 @angular/compiler-cli@16.1.3 --legacy-peer-deps
-        
-#   #     - run: npm install --legacy-peer-deps
-
-#   #     - name: Cypress install
-#   #       uses: cypress-io/github-action@v5
-#   #       with:
-#   #         # Disable running of tests within install job
-#   #         runTests: false
-#   #         build: npm run build
-
-#   #     - name: Save build folder
-#   #       uses: actions/upload-artifact@v3
-#   #       with:
-#   #         name: build
-#   #         if-no-files-found: error
-#   #         path: build
-#   cypress-run:
-#     runs-on: ubuntu-latest
-#     # needs: install
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
-
-#       - run: npm install --legacy-peer-deps
-
-#       # - name: Download the build folder
-#       #   uses: actions/download-artifact@v3
-#       #   with:
-#       #     name: build
-#       #     path: build
-
-#       - name: Cypress run
-#         uses: cypress-io/github-action@v5
-#         with:
-#           start: npm start
-#           browser: 
-
-# name: E2E Cypress Test
-
-# on: push
-
-# jobs:
-#   cypress-run:
-#     runs-on: windows-latest
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
-      
-#       - name: Install Dependencies
-#         run: npm install --legacy-peer-deps
-
-#       - name: Cypress run
-#         uses: cypress-io/github-action@v4
-#         with:
-#           build: npm run build
-#           start: npm start
-#           wait-on: 'http://localhost:4200'
-#           browser: chrome
-
-name: E2ECypress Tests
+name: E2E Cypress Tests
 on: [push]
 jobs:
  Cypress-Test:
@@ -110,27 +38,13 @@ jobs:
           EOF
           echo "cat .env"
 
-      # - name: Build Application
-      #   uses: cypress-io/github-action@v5
-      #   with:
-      #     install-command: npm install --legacy-peer-deps
-      #     build: npm run build:app:dev
-      #     runTests: false
-
       - name: Start Application and then Run tests
         uses: cypress-io/github-action@v5
+        env: 
+          Debug: '@cypress/github-action'
         with:
           wait-on: 'http://[::1]:4200/'
           install-command: npm install --legacy-peer-deps
-          run: |
-            npm run build:app:dev
-            npm run start:app:dev
-            npx cypress run
-
-      # - name: Run Cypress Test
-      #   uses: cypress-io/github-action@v5
-      #   with:
-      #     install-command: npm install --legacy-peer-deps
-      #     config-file: ../../cypress
-      #     wait-on: 'http://[::1]:4200/'
-      #     command: npx cypress run
+          build: npm run build:app:dev
+          start: npm run start:app:dev
+          command: npx cypress run
