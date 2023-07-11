@@ -40,8 +40,6 @@ jobs:
 
       - name: Start Application and then Run tests
         uses: cypress-io/github-action@v5
-        env: 
-          Debug: '@cypress/github-action'
         with:
           working-directory: ./
           wait-on: 'http://[::1]:4200/'
@@ -49,3 +47,10 @@ jobs:
           build: npm run build:app:prod
           start: npm run start:app:prod
           command: npx cypress run
+
+      - name: Run Cypress Tests
+        run: npx cypress run
+      - uses: actions/upload-artifact@v1
+        with:
+          name: cypress-videos
+          path: cypress/videos
