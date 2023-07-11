@@ -110,20 +110,22 @@ jobs:
           EOF
           echo "cat .env"
 
-      - name: Build Application
-        uses: cypress-io/github-action@v5
-        with:
-          install-command: npm install --legacy-peer-deps
-          build: npm run build:app:dev
-          runTests: false
+      # - name: Build Application
+      #   uses: cypress-io/github-action@v5
+      #   with:
+      #     install-command: npm install --legacy-peer-deps
+      #     build: npm run build:app:dev
+      #     runTests: false
 
       - name: Start Application and then Run tests
         uses: cypress-io/github-action@v5
         with:
-          install-command: npm install --legacy-peer-deps
-          start: npm run start:app:dev
           wait-on: 'http://[::1]:4200/'
-          command: npx cypress run
+          run: |
+            npm install --legacy-peer-deps
+            npm run build:app:dev
+            npm run start:app:dev
+            npx cypress run
 
       # - name: Run Cypress Test
       #   uses: cypress-io/github-action@v5
