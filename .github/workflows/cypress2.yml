@@ -117,17 +117,18 @@ jobs:
           build: npm run build:app:dev
           runTests: false
 
-      - name: Start Application
+      - name: Start Application and then Run tests
         uses: cypress-io/github-action@v5
         with:
           install-command: npm install --legacy-peer-deps
           start: npm run start:app:dev
-          runTests: false
- 
-      - name: Run Cypress Test
-        uses: cypress-io/github-action@v5
-        with:
-          install-command: npm install --legacy-peer-deps
-          config-file: ../../cypress
-          wait-on: 'http://[::1]:4200'
+          wait-on: 'http://[::1]:4200/'
           command: npx cypress run
+
+      # - name: Run Cypress Test
+      #   uses: cypress-io/github-action@v5
+      #   with:
+      #     install-command: npm install --legacy-peer-deps
+      #     config-file: ../../cypress
+      #     wait-on: 'http://[::1]:4200/'
+      #     command: npx cypress run
