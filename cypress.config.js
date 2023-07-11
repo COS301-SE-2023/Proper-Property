@@ -1,4 +1,6 @@
 module.exports = {
+
+  videoCompression: false,
   e2e: {
 
     defaultCommandTimeout: 20000,
