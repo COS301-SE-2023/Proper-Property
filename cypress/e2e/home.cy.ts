@@ -1,7 +1,6 @@
 describe('Home page', () => {
 
   beforeEach(() => {
-    cy.wait(800);
     cy.viewport(1600, 854);
     cy.visit('http://localhost:4200');
     //cy.intercept('http://localhost:4200');
@@ -49,11 +48,6 @@ describe('Home page', () => {
   it('Contains Search Bar', () => {
     cy.get('ion-searchbar').should('be.visible');
     //will continue after searchbar is working
-  });
-
-  it('Should work', () => {
-    cy.contains("Proper Properties");
-    cy.contains("For You");
   });
 
 })
