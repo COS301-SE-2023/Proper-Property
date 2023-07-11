@@ -98,7 +98,6 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   ngAfterViewInit() {
     
     this.loadMap();
-    
 
   }
 
@@ -209,19 +208,13 @@ async loadMap() {
       }
     }
 
-    this.onMapClick();
+    
 
   } catch (e) {
     console.log(e);
   }
-}
 
-onMapClick() {
-  this.mapClickListener = this.googleMaps.event.addListener(this.map, "click", (mapsMouseEvent: { latLng: { toJSON: () => any; }; }) => {
-    console.log(mapsMouseEvent.latLng.toJSON());
-    this.addMarker(mapsMouseEvent.latLng,this.listings[0]);
-    // this.addMarker(location, property);
-  });
+  
 }
 
 addMarker(position: any, listing: listing) {
@@ -490,7 +483,63 @@ Templistings: listing[] = []
   }
   
   });
+
+  await this.addMarkersToMap() ;
+
+  
 }
+
+async addMarkersToMap() {
+  for (let i = 0; i < this.listings.length; i++) {
+    const coordinates = await this.gmapsService.geocodeAddress(this.listings[i].address);
+    if (coordinates) {
+      console.log("my coordinates ",coordinates);
+      this.addMMarker(coordinates, this.listings[i]);
+      
+    }
+  }
+}
+
+
+
+addMMarker(coordinates: google.maps.GeocoderResult, listing: any) {
+
+  const googleMaps: any = this.googleMaps;
+  const icon = {
+    url: 'assets/icon/locationpin.png',
+    scaledSize: new googleMaps.Size(40, 40), // Adjust the size of the marker icon as desired
+  };
+  const marker = new google.maps.Marker({
+    position: coordinates.geometry.location,
+    map: this.map,
+    title: listing.title,
+  });
+
+  // Create an info window for the marker
+  const infoWindow = new googleMaps.InfoWindow({
+    content: this.createListingCard(listing),
+  });
+
+  // Add a click event listener to the marker
+  googleMaps.event.addListener(marker, 'click', () => {
+    infoWindow.open(this.map, marker);
+    // this.navigateToPropertyListingPage(marker.listing);
+  });
+
+
+    // Add a click event listener to the info window
+    infoWindow.addListener('domready', () => {
+      const infoWindowElement = document.querySelector('.gm-style-iw');
+      if (infoWindowElement) {
+        infoWindowElement.addEventListener('click', () => {
+          this.navigateToPropertyListingPage(listing); // Call the navigateToPropertyListingPage function with the marker's listing object
+        });
+      }
+    });
+
+  
+}
+
 
 resetFilters() {
   this.listingServices.getListings().then((listings) => {
