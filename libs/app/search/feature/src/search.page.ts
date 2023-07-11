@@ -33,8 +33,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   defaultBounds: google.maps.LatLngBounds;
   predictions: google.maps.places.AutocompletePrediction[] = [];
 
-  @ViewChild('map', { static: true })
-  mapElementRef!: ElementRef;
+  @ViewChild('map', { static: true }) mapElementRef!: ElementRef;
   googleMaps: any;
   center = { lat: -25.7477, lng: 28.2433 };
   map: any;
@@ -99,6 +98,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   ngAfterViewInit() {
     
     this.loadMap();
+    
 
   }
 
@@ -255,95 +255,102 @@ searchProperties() {
 
   // this.listings = filteredListings;
 
-  this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
+  this.listingServices.getListings().then((listings) => {
+    this.listings = listings;
+    this.filterProperties();
 
-  for(let k = 0; k<this.listings.length; k++) {
-    this.listings[k].price = this.listings[k].price.replace(/,/g, '');
+    this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
+
+    for(let k = 0; k<this.listings.length; k++) {
+      this.listings[k].price = this.listings[k].price.replace(/,/g, '');
+    }
+  
+  for (let j = 0; j < this.listings.length; j++) {
+    
+    for (let i = 0; i < this.listings.length; i++) {
+  
+      if(this.selectedPropertyType!=''){
+        if(this.listings[i].prop_type!=this.selectedPropertyType){
+          this.listings.splice(i,1);
+        }
+      }
+      
+      if(this.selectedBedrooms!=0){
+  
+        if(parseInt(this.listings[i].bed)!=this.selectedBedrooms){
+          this.listings.splice(i,1);
+        }
+      }
+      
+      if(this.selectedBathrooms!=0){
+    
+        if(parseInt(this.listings[i].bath)!=this.selectedBathrooms){
+          this.listings.splice(i,1);
+        }
+      }
+  
+      if(this.selectedMinPrice!=0){
+  
+        if (parseInt(this.listings[i].price) < this.selectedMinPrice){
+          this.listings.splice(i,1);
+        }
+      }
+  
+  
+      if(this.selectedMaxPrice!=0){
+  
+        if (parseInt(this.listings[i].price) > this.selectedMaxPrice){
+          this.listings.splice(i,1);
+        }
+      }
+  
+      if(this.selectedParking!=0){
+          
+          if((parseInt(this.listings[i].parking)!=this.selectedParking) && (parseInt(this.listings[i].parking)<5)){
+            this.listings.splice(i,1);
+          }
+          else if ((parseInt(this.listings[i].parking)>=5) && (this.selectedParking != 5)) {
+            this.listings.splice(i,1);
+          }
+      }
+      
+      //checkAddressinArea(searchQuery, house address);
+      
+      if(this.searchQuery!='') {
+         this.gmaps.checkAddressInArea(this.searchQuery,this.listings[i].address)
+    .then((isInArea) => {
+      if (!isInArea) {
+        this.listings.splice(i,1);
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+      }
+  
+    // this.gmaps.checkAddressInArea( "Hillcrest, South Africa","Hillcrest, Pretoria, 0083, South Africa")
+    // .then((isInArea) => {
+    //   if (isInArea) {
+    //     console.log('Address 1 is in the area of Address 2');
+    //   } else {
+    //     console.log('Address 1 is not in the area of Address 2');
+    //   }
+    // })
+    // .catch((error) => {
+    //   console.error('Error:', error);
+    // });
+      
+    this.listings[i].price = this.listings[i].price.replace(/,/g, '');
+    
+    // Format the price with commas
+    this.listings[i].price = this.listings[i].price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  
+  
+    }
   }
-
-for (let j = 0; j < this.listings.length; j++) {
-  
-  for (let i = 0; i < this.listings.length; i++) {
-
-    if(this.selectedPropertyType!=''){
-      if(this.listings[i].prop_type!=this.selectedPropertyType){
-        this.listings.splice(i,1);
-      }
-    }
-    
-    if(this.selectedBedrooms!=0){
-
-      if(parseInt(this.listings[i].bed)!=this.selectedBedrooms){
-        this.listings.splice(i,1);
-      }
-    }
-    
-    if(this.selectedBathrooms!=0){
-  
-      if(parseInt(this.listings[i].bath)!=this.selectedBathrooms){
-        this.listings.splice(i,1);
-      }
-    }
-
-    if(this.selectedMinPrice!=0){
-
-      if (parseInt(this.listings[i].price) < this.selectedMinPrice){
-        this.listings.splice(i,1);
-      }
-    }
-
-
-    if(this.selectedMaxPrice!=0){
-
-      if (parseInt(this.listings[i].price) > this.selectedMaxPrice){
-        this.listings.splice(i,1);
-      }
-    }
-
-    if(this.selectedParking!=0){
-        
-        if((parseInt(this.listings[i].parking)!=this.selectedParking) && (parseInt(this.listings[i].parking)<5)){
-          this.listings.splice(i,1);
-        }
-        else if ((parseInt(this.listings[i].parking)>=5) && (this.selectedParking != 5)) {
-          this.listings.splice(i,1);
-        }
-    }
-    
-    //checkAddressinArea(searchQuery, house address);
-    
-    if(this.searchQuery!='') {
-       this.gmaps.checkAddressInArea(this.searchQuery,this.listings[i].address)
-  .then((isInArea) => {
-    if (!isInArea) {
-      this.listings.splice(i,1);
-    }
-  })
-  .catch((error) => {
-    console.error('Error:', error);
   });
-    }
-
-  // this.gmaps.checkAddressInArea( "Hillcrest, South Africa","Hillcrest, Pretoria, 0083, South Africa")
-  // .then((isInArea) => {
-  //   if (isInArea) {
-  //     console.log('Address 1 is in the area of Address 2');
-  //   } else {
-  //     console.log('Address 1 is not in the area of Address 2');
-  //   }
-  // })
-  // .catch((error) => {
-  //   console.error('Error:', error);
-  // });
-    
-  this.listings[i].price = this.listings[i].price.replace(/,/g, '');
-  
-  // Format the price with commas
-  this.listings[i].price = this.listings[i].price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
 
-  }
-}
 
 }
 
