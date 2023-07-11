@@ -102,6 +102,63 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
   }
 
+
+
+// async loadMap() {
+//   try {
+//     const googleMaps: any = await this.gmaps.loadGoogleMaps();
+//     this.googleMaps = googleMaps;
+//     const mapEl = this.mapElementRef.nativeElement;
+//     const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
+//     this.map = new googleMaps.Map(mapEl, {
+//       center: location,
+//       zoom: 12,
+//     });
+//     this.renderer.addClass(mapEl, 'visible');
+
+//     // Generate info window content for each listing
+//     const infoWindowContent = this.listings.map((listing) => this.createListingCard(listing));
+
+//     // Iterate over each listing
+//     for (let i = 0; i < this.listings.length; i++) {
+//       // Retrieve the longitude and latitude for the address
+//       const coordinates = await this.gmaps.geocodeAddress(this.listings[i].address);
+//       if (
+//         Array.isArray(coordinates) &&
+//         coordinates.length > 0 &&
+//         coordinates[0].geometry &&
+//         coordinates[0].geometry.location
+//       ) {
+//         const position = coordinates[0].geometry.location;
+
+//         // Create an info window for the marker
+//         const infoWindow = new googleMaps.InfoWindow({
+//           content: infoWindowContent[i],
+//         });
+
+//         // Create a marker without the icon
+//         const marker = new googleMaps.Marker({
+//           position: position,
+//           map: this.map,
+//           listing: this.listings[i], // Store the listing object in the marker for later use
+//         });
+
+//         // Add a click event listener to the marker
+//         googleMaps.event.addListener(marker, 'click', () => {
+//           infoWindow.open(this.map, marker);
+//           this.navigateToPropertyListingPage(marker.listing);
+//         });
+
+//         this.markers.push(marker);
+//       }
+//     }
+
+//     this.onMapClick();
+//   } catch (e) {
+//     console.log(e);
+//   }
+// }
+
 async loadMap() {
   try {
     const googleMaps: any = await this.gmaps.loadGoogleMaps();
@@ -113,9 +170,48 @@ async loadMap() {
       zoom: 12,
     });
     this.renderer.addClass(mapEl, 'visible');
-    this.addMarker(location,this.listings[0]);
+
+    // Generate info window content for each listing
+    const infoWindowContent = this.listings.map((listing) => this.createListingCard(listing));
+
+    // Iterate over each listing
+    for (let i = 0; i < this.listings.length; i++) {
+      // Retrieve the longitude and latitude for the address
+      const coordinates = await this.gmaps.geocodeAddress(this.listings[i].address);
+      if (
+        Array.isArray(coordinates) &&
+        coordinates.length > 0 &&
+        coordinates[0].geometry &&
+        coordinates[0].geometry.location
+      ) {
+        const position = coordinates[0].geometry.location;
+
+        // Create an info window for the marker
+        const infoWindow = new googleMaps.InfoWindow({
+          content: infoWindowContent[i],
+  
+        });
+
+        // Create a marker without the icon
+        const marker = new googleMaps.Marker({
+          position: position,
+          map: this.map,
+          listing: this.listings[i], // Store the listing object in the marker for later use
+        });
+
+        // Add a click event listener to the marker
+        googleMaps.event.addListener(marker, 'click', () => {
+          infoWindow.open(this.map, marker);
+          // this.navigateToPropertyListingPage(marker.listing);
+        });
+
+        this.markers.push(marker);
+      }
+    }
+
     this.onMapClick();
-  } catch(e) {
+
+  } catch (e) {
     console.log(e);
   }
 }
@@ -128,41 +224,78 @@ onMapClick() {
   });
 }
 
-addMarker(location: any,listing:listing) {
+addMarker(position: any, listing: listing) {
   const googleMaps: any = this.googleMaps;
   const icon = {
-    url: 'assets/icon/map_card.png',
-    scaledSize: new googleMaps.Size(100, 50), 
+    url: 'assets/icon/locationpin.png',
+    scaledSize: new googleMaps.Size(40, 40), // Adjust the size of the marker icon as desired
   };
   const marker = new googleMaps.Marker({
-    position: location,
+    position: position,
     map: this.map,
     icon: icon,
-    // draggable: true,
-    animation: googleMaps.Animation.DROP,
-    property: listing // Add property object to the marker
-  });
-  this.markers.push(marker);
-  // this.presentActionSheet();
-  this.markerClickListener = this.googleMaps.event.addListener(marker, 'click', () => {
-    console.log('markerclick', marker);
-    this.checkAndRemoveMarker(marker);
-    console.log('markers: ', this.markers);
+    listing: listing, // Store the listing object in the marker for later use
   });
 
+  // Create an info window for the marker
   const infoWindow = new googleMaps.InfoWindow({
-    content: this.createPropertyCard(listing)
+    content: this.createListingCard(listing),
   });
-  
-  this.googleMaps.event.addListener(marker, 'click', () => {
+
+  // Add a click event listener to the marker
+  googleMaps.event.addListener(marker, 'click', () => {
     infoWindow.open(this.map, marker);
-    
-    // Navigate to the property listing page when the property card is clicked
-    googleMaps.event.addDomListener(infoWindow.getContent(), 'click', () => {
-      this.navigateToPropertyListingPage(marker.property);
-    });
+    // this.navigateToPropertyListingPage(marker.listing);
   });
+
+
+    // Add a click event listener to the info window
+    infoWindow.addListener('domready', () => {
+      const infoWindowElement = document.querySelector('.gm-style-iw');
+      if (infoWindowElement) {
+        infoWindowElement.addEventListener('click', () => {
+          this.navigateToPropertyListingPage(marker.listing); // Call the navigateToPropertyListingPage function with the marker's listing object
+        });
+      }
+    });
+  
+    this.markers.push(marker);
+  
+  }
+
+
+
+
+createListingCard(listing: listing): string {
+  return `
+    <ion-card style="max-width: 250px; max-height: 300px;">
+      <ion-card-header style="padding: 0;">
+        <img src="${listing.photos[0]}" alt="Listing Image" style="max-width: 100%; max-height: 80px;">
+      </ion-card-header>
+      <ion-card-content style="padding: 0.5rem;">
+        <ion-card-title style="font-size: 1rem; line-height: 1.2; margin-bottom: 0.5rem;">${listing.prop_type}</ion-card-title>
+        <ion-card-subtitle style="color: #0DAE4F; font-size: 0.9rem; line-height: 1;">R ${listing.price}</ion-card-subtitle>
+        <div id="house_details" style="font-size: 0.8rem; line-height: 1.2;">
+          <img src="assets/icon/bedrooms.png" style="max-width: 7.5px; height: auto;">
+          ${listing.bed}
+          &nbsp; &nbsp;&nbsp;
+          <img src="assets/icon/bathrooms.png" style="max-width: 7.5px; height: auto;">
+          ${listing.bath}
+          &nbsp; &nbsp;&nbsp;
+          <img src="assets/icon/floorplan.png" style="max-width: 7.5px; height: auto;">
+          ${listing.floor_size} m<sup>2</sup>
+          &nbsp; &nbsp;&nbsp;
+          <img src="assets/icon/erf.png" style="max-width: 7.5px; height: auto;">
+          ${listing.property_size} m<sup>2</sup>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  `;
 }
+
+
+
+
 
 navigateToPropertyListingPage(listing:listing) {
 
@@ -209,16 +342,6 @@ async presentActionSheet() {
   });
 
   await actionSheet.present();
-}
-
-createPropertyCard(property: listing) {
-  return `<div class="property-card">
-    <img src="${property.photos[0]}" alt="Property Image" class="property-image">
-    <div class="property-info">
-      <h3 class="property-price">$${property.price}</h3>
-      <p class="property-details">${property.bed} BR | ${property.bath} Bath</p>
-    </div>
-  </div>`;
 }
 
 
