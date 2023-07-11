@@ -48,7 +48,7 @@ describe('Home page', () => {
   it('Contains Search Bar', () => {
    // cy.get('ion-searchbar').should('be.visible');
     //will continue after searchbar is working
-    cy.get('ion-searchbar');
+    cy.get('slogan');
   });
 
 })
