@@ -41,8 +41,9 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   mapClickListener: any;
   markerClickListener: any;
   markers: any[] = [];
-  listings: listing[] = []
+  listings: listing[] = [];
 
+ 
 
 
   constructor(
@@ -61,6 +62,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   async ngOnInit() {
     await this.listingServices.getListings().then((listings) => {
       this.listings = listings;
+      this.filterProperties();
     });
 
     const inputElementId = 'address';
@@ -297,6 +299,16 @@ for (let j = 0; j < this.listings.length; j++) {
         this.listings.splice(i,1);
       }
     }
+
+    if(this.selectedParking!=0){
+        
+        if((parseInt(this.listings[i].parking)!=this.selectedParking) && (parseInt(this.listings[i].parking)<5)){
+          this.listings.splice(i,1);
+        }
+        else if ((parseInt(this.listings[i].parking)>=5) && (this.selectedParking != 5)) {
+          this.listings.splice(i,1);
+        }
+    }
     
     //checkAddressinArea(searchQuery, house address);
     
@@ -324,6 +336,10 @@ for (let j = 0; j < this.listings.length; j++) {
   //   console.error('Error:', error);
   // });
     
+  this.listings[i].price = this.listings[i].price.replace(/,/g, '');
+  
+  // Format the price with commas
+  this.listings[i].price = this.listings[i].price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
 
   }
@@ -332,24 +348,17 @@ for (let j = 0; j < this.listings.length; j++) {
 }
 
 resetFilters() {
+  this.listingServices.getListings().then((listings) => {
+    this.listings = listings;
+  });
   this.selectedPropertyType = '';
   this.selectedMinPrice = 0;
   this.selectedMaxPrice = 0;
   this.selectedBedrooms = 0;
   this.selectedBathrooms = 0;
   this.selectedParking = 0;
-  this.selectedFloorSize = 0;
-  this.selectedErfSize = 0;
-  this.petFriendly = false;
-  this.garden = false;
-  this.pool = false;
-  this.flatlet = false;
-  this.other = false;
-  this.retirement = false;
-  this.repossession = false;
-  this.onShow = false;
-  this.securityEstate = false;
-  this.auction = false;
+
+  this.selectedAmenities= [];
 }
 
 
@@ -362,18 +371,7 @@ selectedBedrooms = 0;
 showAdditionalFilters = false;
 selectedBathrooms = 0;
 selectedParking = 0;
-selectedFloorSize = 0;
-selectedErfSize = 0;
-petFriendly = false;
-garden = false;
-pool = false;
-flatlet = false;
-other = false;
-retirement = false;
-repossession = false;
-onShow = false;
-securityEstate = false;
-auction = false;
+selectedAmenities: string[] = [];
 
 // properties: Property[] = [
 //   { title: 'House 1', type: 'house', price: 100000, bedrooms: 3 },
@@ -383,29 +381,53 @@ auction = false;
 // ];
 
 get filteredBuyingProperties(): listing[] {
+  this.listingServices.getListings().then((listings) => {
+    this.listings = listings;
 
-  //stubbed for now
-  return this.listings.filter(listing =>
-    // property.type.includes(this.selectedPropertyType) &&
-    // property.price >= this.selectedMinPrice &&
-    // property.price <= this.selectedMaxPrice &&
-    // (this.selectedBedrooms === 0 || property.bedrooms === this.selectedBedrooms) &&
-    listing.desc.toLowerCase().includes(this.searchQuery.toLowerCase())
-  );
+    for(let j = 0; j< this.listings.length;j++) {
+      for(let i = 0; i < this.listings.length; i++) {
+        if(this.listings[i].let_sell!="Sell"){
+          this.listings.splice(i,1);
+        }
+      }
+    }
+
+  });
+
+  return this.listings;
 }
 
-get filteredRentingProperties(): Property[] {
-  // Add your own logic for filtering listing properties
-  // based on the selected filters and search query
-  return [];
+get filteredRentingProperties(): listing[] {
+
+  this.listingServices.getListings().then((listings) => {
+    this.listings = listings;
+
+    for(let j = 0; j< this.listings.length;j++) {
+    
+      for(let i = 0; i < this.listings.length; i++) {
+        if(this.listings[i].let_sell!="Rent"){
+          console.log("fuck");
+          this.listings.splice(i,1);
+        }
+      }
+    }
+  
+  });
+    
+
+  return this.listings;
 }
 
 filterProperties(): void {
+
   // Update the filtered properties based on the selected filters and search query
   if (this.activeTab === 'buying') {
-    this.filteredBuyingProperties;
-  } else if (this.activeTab === 'rent') {
-    this.filteredRentingProperties;
+
+    this.listings = this.filteredBuyingProperties;
+
+  } else if (this.activeTab === 'renting') {
+
+    this.listings = this.filteredRentingProperties;
   }
 }
 
@@ -416,6 +438,7 @@ changeTab(): void {
   this.selectedMaxPrice = 0;
   this.selectedBedrooms = 0;
   this.searchQuery = '';
+  this.selectedAmenities = [];
   this.filterProperties();
 }
 
@@ -423,6 +446,38 @@ changeTab(): void {
 toggleAdditionalFilters(): void {
   this.showAdditionalFilters = !this.showAdditionalFilters;
   this.filterProperties();
+}
+
+amenities = [
+  { value: 'petFriendly', label: 'Pet Friendly' },
+  { value: 'garden', label: 'Garden' },
+  { value: 'pool', label: 'Pool' },
+  { value: 'flatlet', label: 'Flatlet' },
+  { value: 'securityEstate', label: 'Security Estate' },
+  { value: 'auction', label: 'Auction' },
+  // Add more amenities as needed
+];
+
+isSelected(amenity: string): boolean {
+  return this.selectedAmenities.includes(amenity);
+}
+
+updateSelectedAmenities(event: Event): void {
+  const target = event.target as HTMLSelectElement;
+  const selectedOptions = Array.from(target.options)
+    .filter((option: HTMLOptionElement) => option.selected)
+    .map((option: HTMLOptionElement) => option.value);
+
+  this.selectedAmenities = selectedOptions;
+}
+
+toggleSelection(amenity: string): void {
+  const index = this.selectedAmenities.indexOf(amenity);
+  if (index > -1) {
+    this.selectedAmenities.splice(index, 1);
+  } else {
+    this.selectedAmenities.push(amenity);
+  }
 }
 
 }
