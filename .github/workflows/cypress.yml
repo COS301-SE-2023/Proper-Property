@@ -1,19 +1,16 @@
----
-name: Check lint of code before commit
-on:
-  push:
+name: E2E Cypress Tests
+on: [push]
 jobs:
-  linting:
-    name: Testing Cypress
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+ Cypress-Test:
+   runs-on: ubuntu-latest
+   steps:
+      - name: Checkout GitCode
+        uses: actions/checkout@v2
+
       - uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - run: npm install --legacy-peer-deps
-      - name: Run ESLint
-        run: npx eslint .
+
       - name: Create environment file
         env:
           NX_FIREBASE_KEY: ${{ secrets.NX_FIREBASE_KEY }}
@@ -26,7 +23,7 @@ jobs:
           NX_FIREBASE_MEASUREMENT_ID: ${{ secrets.NX_FIREBASE_MEASUREMENT_ID }}
           NX_GOOGLE_MAPS_KEY: ${{ secrets.NX_GOOGLE_MAPS_KEY }}
         run: |
-          cat <<EOF > .env.prod
+          cat <<EOF > .env
           NX_ENVIRONMENT=production
           NX_USE_EMULATORS=false
           NX_FIREBASE_KEY="$NX_FIREBASE_KEY"
@@ -39,7 +36,14 @@ jobs:
           NX_FIREBASE_MEASUREMENT_ID="$NX_FIREBASE_MEASUREMENT_ID"
           NX_GOOGLE_MAPS_KEY="$NX_GOOGLE_MAPS_KEY"
           EOF
-          echo "cat .env.prod"
-      - name: Build App
-        run: npm run start:app:ser & sleep 400 then npx cypress run
-
+          echo "cat .env"
+      - name: Start Application and then Run tests
+        uses: cypress-io/github-action@v5
+        env: 
+          Debug: '@cypress/github-action'
+        with:
+          wait-on: 'http://[::1]:4200/'
+          install-command: npm install --legacy-peer-deps
+          build: npm run build:app:dev
+          start: npm run start:app:dev
+          command: npx cypress run
