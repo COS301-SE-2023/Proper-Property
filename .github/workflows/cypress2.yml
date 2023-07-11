@@ -114,7 +114,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           install-command: npm install --legacy-peer-deps
-          config-file: ../../cypress/tsconfig.json
+          config-file: ../../cypress
           build: npm run build:app:dev
           start: npm run start:app:dev
           wait-on: 'http://[::1]:4200/home'
