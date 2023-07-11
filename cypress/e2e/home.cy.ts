@@ -51,4 +51,9 @@ describe('Home page', () => {
     //will continue after searchbar is working
   });
 
+  it('Should work', () => {
+    cy.contains("Proper Properties");
+    cy.contains("For You");
+  });
+
 })
