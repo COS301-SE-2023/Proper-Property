@@ -45,4 +45,6 @@ jobs:
           wait-on: 'http://[::1]:4200/'
           wait-on-timeout: 180
           install-command: npm install --legacy-peer-deps
+          build: npm run build:app:dev
           start: npm run start:app:dev
+          run: npx cypress run
