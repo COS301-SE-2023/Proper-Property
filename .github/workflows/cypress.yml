@@ -10,7 +10,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "18"
-
+      - name: angular install
+        run: npm install -g @angular/cli
       - name: Create environment file
         env:
           NX_FIREBASE_KEY: ${{ secrets.NX_FIREBASE_KEY }}
