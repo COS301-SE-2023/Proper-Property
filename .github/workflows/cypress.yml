@@ -11,12 +11,6 @@ jobs:
         with:
           node-version: "18"
 
-      - name: Angular
-        run: npm install -g @angular/cli
-
-      - name: Ionic
-        run: npm install -g @ionic/cli
-
       - name: Create environment file
         env:
           NX_FIREBASE_KEY: ${{ secrets.NX_FIREBASE_KEY }}
@@ -51,5 +45,4 @@ jobs:
           wait-on: 'http://[::1]:4200/'
           wait-on-timeout: 180
           install-command: npm install --legacy-peer-deps
-          build: npm run build:app:dev
           start: npm run start:app:dev
