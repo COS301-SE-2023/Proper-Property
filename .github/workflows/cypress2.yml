@@ -48,7 +48,8 @@ jobs:
           start: npm run start:app:prod
           command: npx cypress run
 
-      - name: Run Cypress Tests
+      - if: always()
+        name: Run Cypress Tests
         run: npx cypress run
       - uses: actions/upload-artifact@v1
         with:
