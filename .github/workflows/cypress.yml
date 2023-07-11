@@ -41,7 +41,7 @@ jobs:
           EOF
           echo "cat .env.prod"
       - name: Build App
-        run: npm run start:app:dev
+        run: npm run start:app:ser
       - name: Cypress
         run: npx cypress run
 
