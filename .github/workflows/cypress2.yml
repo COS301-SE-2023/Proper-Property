@@ -48,4 +48,3 @@ jobs:
           install-command: npm install --legacy-peer-deps
           build: npm run build:app:dev
           start: npm run start:app:dev
-          command: npx cypress run
