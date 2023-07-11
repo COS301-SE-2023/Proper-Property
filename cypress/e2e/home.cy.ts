@@ -1,6 +1,7 @@
 describe('Home page', () => {
 
   beforeEach(() => {
+    cy.wait(800);
     cy.viewport(1600, 854);
     cy.visit('http://localhost:4200');
     //cy.intercept('http://localhost:4200');
