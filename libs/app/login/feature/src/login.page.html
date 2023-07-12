@@ -1,13 +1,43 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
-</ion-header>
 
 <ion-content>
-  <ion-list>
+
+  <section class="loggingIn">
+    <div class="container">
+      <div class="login">
+        <ion-list>
+          <h2>Log In</h2>
+          <ion-item>
+            <ion-icon name="mail-outline"></ion-icon>
+            <ion-input type="email" [(ngModel)]="email" placeholder="Email"></ion-input> 
+          </ion-item>
+          <ion-item>
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            <ion-input type="password" [(ngModel)]="password" placeholder="Password"></ion-input>
+          </ion-item>
+        </ion-list>
+        <div class="button-centerer">
+
+          <div class="button-centerer2">
+            <ion-button expand="full" (click)="login()">Login</ion-button>
+          </div>
+      
+          <div class="button-centerer2">
+            <ion-button class="buttons" size="default" (click)="googleLogin()">
+              Sign in with Google
+            </ion-button>
+          </div>
+      
+          <div class="ion-padding">
+            <p class="text-centrer-inator">Don't have an account? <a routerLink="/register">Sign up</a></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- <ion-list>
     <ion-item>
-      <ion-label position="floating">Email</ion-label>
+      
       <ion-input type="email" [(ngModel)]="email"></ion-input>
     </ion-item>
 
@@ -32,5 +62,5 @@
     <div class="ion-padding">
       <p class="text-centrer-inator">Don't have an account? <a routerLink="/register">Sign up</a></p>
     </div>
-  </div>
+  </div> -->
 </ion-content>
