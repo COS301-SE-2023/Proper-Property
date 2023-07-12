@@ -50,6 +50,7 @@
     "ngx-google-places-autocomplete": "^2.0.5",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.8.0",
+    "sharp": "^0.32.2",
     "swiper": "^9.4.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
@@ -89,6 +90,7 @@
     "@types/googlemaps": "^3.43.3",
     "@types/jest": "^29.4.0",
     "@types/node": "~18.7.1",
+    "@types/sharp": "^0.32.0",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
     "cypress": "^12.11.0",
