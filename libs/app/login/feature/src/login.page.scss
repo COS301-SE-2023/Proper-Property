@@ -11,7 +11,7 @@ ion-content
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  --background: #0eb13f;
+  --background: rgb(53, 52, 52);
 }
 
 .loggingIn
@@ -27,6 +27,16 @@ ion-content
   background-color: white;
 }
 
+.loggingIn::before
+{
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(-45deg, var(--ion-color-primary),#024613);
+}
+
 .container
 {
 
@@ -40,12 +50,11 @@ ion-content
 
 .login
 {
-  top: 30%;
+  top: 25%;
   justify-content: center;
   position: absolute;
   align-items: center;
   display: flex;
-  --background-color: antiquewhite;
   
 }
 
@@ -64,6 +73,7 @@ ion-list
   align-items: center;
   justify-content: center;
   width: 500px;
+  background-color: transparent;
   
 }
 
@@ -75,7 +85,7 @@ ion-item
   --background: rgba(129, 17, 17, 0) !important;
   height: 100%;
   width: 100%;
-  margin: 10px 0;
+  margin: 20px 0;
   display: flex;
   align-items: center;
 }
@@ -106,7 +116,7 @@ ion-button
 }
 
 .button-centerer1 {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   width: 150px;
   height: 50px;
   border: none;
@@ -128,4 +138,5 @@ ion-button
   --color: var(--ion-color-primary--contrast);
   font-weight: 600;
   --text-transform: lowercase;
+  --background-hover: var(--ion-color-primary);
 }
