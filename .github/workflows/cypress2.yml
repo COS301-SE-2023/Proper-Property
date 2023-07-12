@@ -2,23 +2,24 @@ name: E2E Cypress Tests
 on: [push]
 jobs:
  Cypress-Test:
-   runs-on: ubuntu-latest
+   runs-on: ubuntu-22.04
+   #container: cypress/base:18.12.0 #Required when testing actions locally in docker container via act package
    steps:
       - name: Checkout GitCode
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "18.12.0"
 
       - name: Create environment file
         env:
           NX_FIREBASE_KEY: ${{ secrets.NX_FIREBASE_KEY }}
-          NX_FIREBASE_AUTH_DOMAIN: ${{ secrets.NX_FIREBASE_AUTH_DOMAIN }}}
+          NX_FIREBASE_AUTH_DOMAIN: ${{ secrets.NX_FIREBASE_AUTH_DOMAIN }}
           NX_FIREBASE_DATABASE_URL: ${{ secrets.NX_FIREBASE_DATABASE_URL }}
-          NX_FIREBASE_PROJECT_ID: ${{ secrets.NX_FIREBASE_PROJECT_ID }}}
+          NX_FIREBASE_PROJECT_ID: ${{ secrets.NX_FIREBASE_PROJECT_ID }}
           NX_FIREBASE_STORAGE_BUCKET: ${{ secrets.NX_FIREBASE_STORAGE_BUCKET }}
-          NX_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NX_FIREBASE_MESSAGING_SENDER_ID }}}
+          NX_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NX_FIREBASE_MESSAGING_SENDER_ID }}
           NX_FIREBASE_APP_ID: ${{ secrets.NX_FIREBASE_APP_ID }}
           NX_FIREBASE_MEASUREMENT_ID: ${{ secrets.NX_FIREBASE_MEASUREMENT_ID }}
           NX_GOOGLE_MAPS_KEY: ${{ secrets.NX_GOOGLE_MAPS_KEY }}
@@ -38,20 +39,17 @@ jobs:
           EOF
           echo "cat .env.prod"
 
-      - name: Build and Start Application
+      - name: Run Cypress Tests
         uses: cypress-io/github-action@v5
         with:
-          working-directory: ./
-          wait-on: 'http://[::1]:4200/'
           install-command: npm install --legacy-peer-deps
           build: npm run build:app:prod
           start: npm run start:app:prod
-
-      - name: Run Cypress Tests
-        run: npx cypress run
+          wait-on: 'npx wait-on --timeout 100000 http://[::1]:4200'
+          command: npx cypress run
 
       - if: always()
-        name: Run Cypress Tests
+        name: Download Videos
         uses: actions/upload-artifact@v1
         with:
           name: cypress-videos
