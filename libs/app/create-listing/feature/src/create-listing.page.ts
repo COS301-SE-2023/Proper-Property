@@ -115,6 +115,7 @@ handleAddressChange(address: string): void {
       for (let index = 0; index < files.length; index++) {
         if (files.item(index))
           this.photos.push(URL.createObjectURL(files.item(index) as Blob));
+          console.log("brooo ",URL.createObjectURL(files.item(index) as Blob));
       }
     }
   }
@@ -284,6 +285,4 @@ handleAddressChange(address: string): void {
     }
   }
 
-
 }
-
