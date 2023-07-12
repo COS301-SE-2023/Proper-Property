@@ -1,0 +1,19 @@
+---
+name: Run Unit Tests on code before commit
+on:
+  push:
+jobs:
+  build-and-test:
+    name: Run Lint check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+      - run: npm install --legacy-peer-deps
+      - run: npm install -g nx --legacy-peer-deps
+      - name: Run Unit Tests on app
+        run: nx test app
+      - name: Run Unit Tests on api
+        run: nx tests api
