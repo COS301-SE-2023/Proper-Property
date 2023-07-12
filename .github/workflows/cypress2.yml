@@ -41,7 +41,7 @@ jobs:
         uses: cypress-io/github-action@v5
         timeout-minutes: 5
         with:
-          install-command: npm install --lefacy-peer-deps
+          install-command: npm install --legacy-peer-deps
           build: npm run build:app:prod
           # start-command: false
           command: npx env-cmd -f .env.prod nx run-many --target=e2e --no-cache --parallel=3
