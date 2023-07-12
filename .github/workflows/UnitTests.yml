@@ -16,4 +16,4 @@ jobs:
       - name: Run Unit Tests on app
         run: nx test app
       - name: Run Unit Tests on api
-        run: nx tests api
+        run: nx test api
