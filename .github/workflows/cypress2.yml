@@ -22,7 +22,7 @@ jobs:
           NX_GOOGLE_MAPS_KEY: ${{ secrets.NX_GOOGLE_MAPS_KEY }}
       - run: |
           cat <<EOF > .env.prod
-          NX_ENVIRONMENT=production
+          NX_ENVIRONMENT=development
           NX_USE_EMULATORS=false
           NX_FIREBASE_KEY="$NX_FIREBASE_KEY"
           NX_FIREBASE_AUTH_DOMAIN="$NX_FIREBASE_AUTH_DOMAIN"
@@ -45,3 +45,10 @@ jobs:
           build: npm run build:app:prod
           # start-command: false
           command: npx env-cmd -f .env.prod nx run-many --target=e2e --parallel=3
+
+      - if: always()
+        name: Download Videos
+        uses: actions/upload-artifact@v1
+        with:
+          name: cypress-videos
+          path: cypress/videos
