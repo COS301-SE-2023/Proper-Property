@@ -29,6 +29,22 @@
           "libs/app/home/feature/**/*.html"
         ]
       }
+    },
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "libs/app/home/feature/cypress.config.ts",
+        "testingType": "e2e",
+        "devServerTarget": "app:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "app:serve:production"
+        },
+        "ci": {
+          "devServerTarget": "app:serve-static"
+        }
+      }
     }
   }
 }
