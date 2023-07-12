@@ -1,5 +1,5 @@
 module.exports = {
-  defaultCommandTimeout: 8000,
+  // defaultCommandTimeout: 8000,
   e2e: {
     videoUploadOnPasses: false,
     setupNodeEvents(on, config) {

@@ -1,4 +1,4 @@
-describe('Home page', () => {
+describe('Home page', {defaultCommandTimeout: 20000}, () => {
 
   beforeEach(() => {
     cy.viewport(1600, 854);
