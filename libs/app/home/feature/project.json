@@ -39,7 +39,8 @@
       },
       "configurations": {
         "production": {
-          "devServerTarget": "app:serve:production"
+          "devServerTarget": "app:serve:production",
+          "headed": true
         },
         "ci": {
           "devServerTarget": "app:serve-static"

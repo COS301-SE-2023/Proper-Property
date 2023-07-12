@@ -2,14 +2,15 @@ name: E2E Cypress Tests
 on: [push]
 jobs:
  Cypress-Test:
-   runs-on: ubuntu-latest
+   runs-on: ubuntu-22.04
+   container: cypress/base:18.12.0
    steps:
       - name: Checkout GitCode
         uses: actions/checkout@v2
 
       - uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "18.12.0"
         env:
           NX_FIREBASE_KEY: ${{ secrets.NX_FIREBASE_KEY }}
           NX_FIREBASE_AUTH_DOMAIN: ${{ secrets.NX_FIREBASE_AUTH_DOMAIN }}
@@ -50,5 +51,4 @@ jobs:
         name: Download Videos
         uses: actions/upload-artifact@v1
         with:
-          name: cypress-videos
           path: cypress/videos
