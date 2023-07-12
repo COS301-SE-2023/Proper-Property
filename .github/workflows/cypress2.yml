@@ -2,12 +2,12 @@ name: E2E Cypress Tests
 on: [push]
 jobs:
  Cypress-Test:
-   runs-on: ubuntu-22.04
-   container: cypress/base:18.12.0
-   steps:
+    environment: production
+    runs-on: ubuntu-22.04
+    container: cypress/base:18.12.0
+    steps:
       - name: Checkout GitCode
         uses: actions/checkout@v2
-
       - uses: actions/setup-node@v3
         with:
           node-version: "18.12.0"
@@ -23,7 +23,7 @@ jobs:
           NX_GOOGLE_MAPS_KEY: ${{ secrets.NX_GOOGLE_MAPS_KEY }}
       - run: |
           cat <<EOF > .env.prod
-          NX_ENVIRONMENT=development
+          NX_ENVIRONMENT=production
           NX_USE_EMULATORS=false
           NX_FIREBASE_KEY="$NX_FIREBASE_KEY"
           NX_FIREBASE_AUTH_DOMAIN="$NX_FIREBASE_AUTH_DOMAIN"
