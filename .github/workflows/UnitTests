@@ -4,7 +4,7 @@ on:
   push:
 jobs:
   build-and-test:
-    name: Run Lint check
+    name: Run Unit Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
