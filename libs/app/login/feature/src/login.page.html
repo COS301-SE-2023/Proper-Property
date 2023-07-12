@@ -17,13 +17,14 @@
         </ion-list>
         <div class="button-centerer">
 
-          <div class="button-centerer2">
-            <ion-button expand="full" (click)="login()">Login</ion-button>
+          <div >
+            <ion-button class="button-centerer1"(click)="login()" shape="round">Login</ion-button>
           </div>
       
-          <div class="button-centerer2">
-            <ion-button class="buttons" size="default" (click)="googleLogin()">
-              Sign in with Google
+          <div >
+            <ion-button class="button-centerer2" size="default" (click)="googleLogin()" shape="round">
+              <ion-icon name="logo-google"></ion-icon>
+                 Sign in with Google
             </ion-button>
           </div>
       
