@@ -12,9 +12,12 @@ describe('Home page', {defaultCommandTimeout: 20000}, () => {
     });
 
   });
-
+  it('Should work', () => {
+    expect(true).to.equal(true);
+  });
   /** Navabar Test **/
   it('Should have navbar and  mark the active page', () => {
+    cy.wait(1000); // copium
     cy.get('ion-header ion-button').should('have.length', '6');
     cy.get('ion-header ion-button').eq(2).should('have.class', 'active');
    

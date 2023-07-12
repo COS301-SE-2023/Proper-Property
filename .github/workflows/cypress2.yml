@@ -47,9 +47,9 @@ jobs:
           # start-command: false
           command: npx env-cmd -f .env.prod nx run-many --target=e2e --parallel=3
 
-      #  - if: always()
-      #   name: Download Videos
-      #   uses: actions/upload-artifact@v1
-      #   with:
-      #     name: video
-      #     path: cypress/videos
+      - name: Download Videos
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: video
+          path: cypress/videos
