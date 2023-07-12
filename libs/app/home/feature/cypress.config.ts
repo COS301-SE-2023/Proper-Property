@@ -6,6 +6,6 @@ export default defineConfig({
   ...nxE2EPreset(__filename, { cypressDir: 'cypress' }),
     video: true,
     videoUploadOnPasses: false,
-    videosFolder: `${__filename}/cypress-videos`
+    videosFolder: `${__filename}/../cypress-videos`
   },
 });
