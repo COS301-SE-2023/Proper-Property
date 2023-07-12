@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { listing } from '@properproperty/app/listing/util';
 import Swiper from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,10 +17,17 @@ export class ListingPage implements OnInit{
   @ViewChild('swiper') swiperRef?: ElementRef;
   swiper?: Swiper;
   list : listing | null = null;
+  pointsOfInterest: { photo: string | undefined, name: string }[] = [];
+
+
   price_per_sm = 0;
   lister_name = "";
 
-  constructor(private router: Router, private route: ActivatedRoute, private listingServices : ListingsService, private userServices : UserService) {
+  constructor(private router: Router,
+     private route: ActivatedRoute, 
+     private listingServices : ListingsService, 
+     private userServices : UserService,
+     public gmapsService: GmapsService) {
     this.loanAmount = 0;
     this.interestRate = 0;
     this.loanTerm = 0;
@@ -28,11 +36,13 @@ export class ListingPage implements OnInit{
     this.minGrossMonthlyIncome = 0;
    }
 
+
   async ngOnInit() {
     let list_id = "";
     this.route.params.subscribe((params) => list_id = params['list']);
     await this.listingServices.getListing(list_id).then((list) => {
       this.list = list;
+      this.getNearbyPointsOfInterest();
     });
     console.log(this.list);
     this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
@@ -42,6 +52,39 @@ export class ListingPage implements OnInit{
       this.lister_name = user.first_name + " " + user.last_name;
     })
   }
+
+  async getNearbyPointsOfInterest() {
+    if (this.list && this.list.address) {
+      try {
+        const coordinates = await this.gmapsService.getLatLongFromAddress(this.list.address);
+        if (coordinates) {
+          const results = await this.gmapsService.getNearbyPlaces(
+            coordinates.latitude,
+            coordinates.longitude
+          );
+          this.processPointsOfInterestResults(results);
+        }
+      } catch (error) {
+        console.error('Error retrieving nearby places:', error);
+      }
+    }
+  }
+
+  processPointsOfInterestResults(results: google.maps.places.PlaceResult[]) {
+    // Clear the existing points of interest
+    this.pointsOfInterest = [];
+  
+    // Iterate over the results and extract the icons and names of the places
+    for (const result of results) {
+      const photo = result.photos?.[0]?.getUrl() || '';
+      const name = result.name||'';
+  
+      this.pointsOfInterest.push({ photo , name });
+    }
+  }
+  
+
+
   
   swiperReady() {
     console.log(this.swiperRef?.nativeElement.swiper);
@@ -78,6 +121,22 @@ export class ListingPage implements OnInit{
     this.totalOnceOffCosts = principal * 0.03; // Assuming once-off costs are 3% of the loan amount
 
     this.minGrossMonthlyIncome = this.monthlyPayment * 3; // Assuming minimum income requirement is 3 times the monthly payment
+  }
+
+  async getNearbyPlaces() {
+    try {
+      const coordinates = await this.gmapsService.getLatLongFromAddress(
+        this.list?.address + ""
+      );
+      const results = await this.gmapsService.getNearbyPlaces(
+        coordinates.latitude,
+        coordinates.longitude
+      );
+      // Process the nearby places results here
+      console.log('Nearby places:', results);
+    } catch (error) {
+      console.error('Error retrieving nearby places:', error);
+    }
   }
 
 }

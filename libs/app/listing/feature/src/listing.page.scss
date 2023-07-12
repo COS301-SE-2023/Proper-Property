@@ -189,3 +189,37 @@
     width: 20%;
     margin-top: 10px;
   }
+
+
+  
+  .poi-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 16px;
+  }
+  
+  .poi-name {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .quarter-container .poi-card {
+    width: calc(50% - 8px);
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .quarter-container .poi-card img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 4px;
+  }
+  
+  .quarter-container .poi-card .text-small {
+    font-size: 12px;
+    text-align: center;
+  }

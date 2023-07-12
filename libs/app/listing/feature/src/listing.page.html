@@ -44,7 +44,7 @@
           <ion-card class="half-green-container">
             <ion-grid style="padding-top: 20px; padding-left:20px;">
               <ion-row>
-                <ion-card-title class="house-titles">{{list.address}}</ion-card-title>
+                <ion-card-title class="house-titles">{{list.desc}}</ion-card-title>
               </ion-row>
               <ion-row>
                 <ion-card-subtitle class="house-subtitles">by {{lister_name}}</ion-card-subtitle>
@@ -53,7 +53,7 @@
                 <ion-card-title class="house-titles" style="margin-top:8px; font-size: 25px;">{{list.bed}} Bedroom House</ion-card-title>
               </ion-row>
               <ion-row>
-                <ion-card-subtitle class="house-subtitles">Brooklyn, Pretoria, South Africa</ion-card-subtitle>
+                <ion-card-subtitle class="house-subtitles">{{list.address}}</ion-card-subtitle>
               </ion-row>
               <ng-template [ngIf]="list.let_sell === 'Sell'">
                 <ion-row >
@@ -120,31 +120,19 @@
               <ion-card-header>
                 <ion-card-title>Points of Interest</ion-card-title>
                 <ion-card-content>
-                  <ion-grid style="z-index:1;">
+                  <ion-grid style="z-index: 1;">
                     <ion-row>
-                      <ion-col>
-                        <div class="text-large">1</div>
-                      </ion-col>
-                      <ion-col>
-                        <div class="text-large">2</div>
-                      </ion-col>
-                      <ion-col>
-                        <div class="text-large">3</div>
-                      </ion-col>
-                    </ion-row>
-                    <ion-row>
-                      <ion-col>
-                        <div class="text-large">4</div>
-                      </ion-col>
-                      <ion-col>
-                        <div class="text-large">5</div>
-                      </ion-col>
-                      <ion-col>
-                        <div class="text-large">6</div>
+                      <ion-col size="3" class="poi-card" *ngFor="let poi of pointsOfInterest; let i = index;">
+                        <img [src]="poi.photo" alt="Place Photo" class="poi-photo" *ngIf="poi.photo">
+                        <div class="text-small">{{ poi.name }}</div>
                       </ion-col>
                     </ion-row>
                   </ion-grid>
                 </ion-card-content>
+                
+                
+                
+                
               </ion-card-header>
             </ion-card>
           </ion-row>
