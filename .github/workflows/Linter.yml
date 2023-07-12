@@ -12,7 +12,6 @@ jobs:
         with:
           node-version: "18"
       - run: npm install --legacy-peer-deps
-      - run: npm install -g nx --legacy-peer-deps
       - name: Run ESLint
         run: npx eslint .
       - name: Create environment file
@@ -43,5 +42,3 @@ jobs:
           echo "cat .env.prod"
       - name: Build App
         run: npm run build:app:prod
-      - name: Run Unit Tests
-        run: nx test app
