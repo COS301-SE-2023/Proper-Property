@@ -1,43 +1,66 @@
-describe('Home page', {defaultCommandTimeout: 1000000}, () => {
+describe('Home page', {defaultCommandTimeout: 1000}, () => {
 
   beforeEach(() => {
-    cy.viewport(300, 300);
+    cy.viewport(1000, 600);
     // cy.visit('http://localhost:4200');
     //cy.intercept('http://localhost:4200');
 
   });
   it('Page should contain "profile"', () => {
-    cy.visit('/home');
-    cy.contains('Profile',{matchCase: false});
+    cy.visit('/home')
+      .wait(100)
+      .contains('Profile',{matchCase: false});
   });
   /** Navabar Test **/
   it('Should have navbar and  mark the active page', () => {
-    cy.visit('/');
-    cy.get('ion-header ion-button').should('have.length', '6');
-    cy.get('ion-header ion-button').eq(2).should('have.class', 'active');
+    cy.visit('/home')
+      .wait(100)
+      .get('.navlink')
+      .should('have.length', '6')
+      .eq(2)
+      .should('have.class', 'active');
    
-    cy.visit('/login');
-    cy.get('ion-header ion-button').eq(0).should('have.class', 'active');
+    cy.visit('/login')
+      .wait(100)
+      .get('.navlink')
+      .eq(0)
+      .should('have.class', 'active');
 
-    cy.visit('/register');
-    cy.get('ion-header ion-button').eq(1).should('have.class', 'active');
+    cy.visit('/register')
+      .wait(100)
+      .get('.navlink')
+      .eq(1)
+      .should('have.class', 'active');
 
-    cy.visit('/create-listing');
-    cy.get('ion-header ion-button').eq(3).should('have.class', 'active');
+    cy.visit('/create-listing')
+      .wait(100)
+      .get('.navlink')
+      .eq(3)
+      .should('have.class', 'active');
 
-    cy.visit('/listings');
-    cy.get('ion-header ion-button').eq(4).should('have.class', 'active');
+    cy.visit('/listings')
+      .wait(100)
+      .get('.navlink')
+      .eq(4)
+      .should('have.class', 'active');
 
-    cy.visit('/profile');
-    cy.get('ion-header ion-button').eq(5).should('have.class', 'active');
+    cy.visit('/profile')
+      .wait(100)
+      .get('.navlink')
+      .eq(5)
+      .should('have.class', 'active');
   })
 
   /** First Section Test */
   it('It should display Proper Property Home Screen Content', () => {   
-    cy.visit('/'); 
-    cy.get('ion-content').should('be.visible');
-    cy.contains("Proper Properties");
-    cy.contains("For You");
+    cy.visit('/home')
+      .wait(100)
+      .get('.slogan')
+      .should('be.visible')
+      .contains("Proper")
+      .contains("Properties");
+    cy.get('.slogan')
+      .contains("For You");
     
    // cy.contains("What makes it Unique");
     //cy.contains("Top features");
@@ -45,8 +68,10 @@ describe('Home page', {defaultCommandTimeout: 1000000}, () => {
   })
 
   it('Contains Search Bar', () => {
-    cy.visit('/');
-    cy.get('ion-searchbar').should('be.visible');
+    cy.visit('/home')
+      .wait(100)
+      .get(".custom-searchbar")
+      .should('be.visible');
     //will continue after searchbar is working
   });
 
