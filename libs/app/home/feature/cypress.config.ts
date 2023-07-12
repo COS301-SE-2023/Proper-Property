@@ -7,5 +7,6 @@ export default defineConfig({
     // video: true,
     // videoUploadOnPasses: false,
     // videosFolder: `${__filename}/../cypress-videos/`
+    baseUrl: 'http://localhost:4200',
   },
 });
