@@ -37,11 +37,4 @@ jobs:
           echo "cat .env.prod"
       - run: npm install --legacy-peer-deps
       - run: npm run build:app:prod
-      - run: npx env-cmd -f .env.prod nx run-many --target=test --no-cache --parallel --maxParallel=3 --all
-      
-      - if: always()
-        name: Download Videos
-        uses: actions/upload-artifact@v1
-        with:
-          name: cypress-videos
-          path: cypress/videos
+      - run: npx env-cmd -f .env.prod nx run-many --target=e2e --no-cache --parallel=3
