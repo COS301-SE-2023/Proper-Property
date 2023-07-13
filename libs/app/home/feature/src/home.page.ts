@@ -48,14 +48,14 @@ export class HomePage implements OnInit {
     }
   }
 
-  swiperReady() {
-    this.swiper = this.swiperRef?.nativeElement.swiper;
-  }
+  // swiperReady() {
+  //   this.swiper = this.swiperRef?.nativeElement.swiper;
+  // }
 
-  goNext() {
-    this.swiper?.slideNext();
-  }
-  goPrev() {
-    this.swiper?.slidePrev();
-  }
+  // goNext() {
+  //   this.swiper?.slideNext();
+  // }
+  // goPrev() {
+  //   this.swiper?.slidePrev();
+  // }
 }
