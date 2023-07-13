@@ -2,7 +2,7 @@
     "ci": {
       "collect": {
         "numberOfRuns": 2,
-        "url": ["http://localhost:4200/home"]
+        "url": ["https://google.com"]
       },
       "output": [
         "html",
