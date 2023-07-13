@@ -9,6 +9,7 @@
     "build:api:dev": "npx env-cmd -f .env nx run api:build --configuration=development",
     "build:app:prod": "npx env-cmd -f .env.prod nx run app:build --configuration=production",
     "build:api:prod": "npx env-cmd -f .env.prod nx run api:build --configuration=production",
+    "start:app:ser": "npx env-cmd -f .env.prod nx run app:serve --configuration=development",
     "start:emulators": "firebase emulators:start",
     "start:emulators_1": "firebase emulators:start --import=./emulators/emulator_1"
   },
@@ -91,7 +92,7 @@
     "@types/node": "~18.7.1",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
-    "cypress": "^12.11.0",
+    "cypress": "^12.17.0",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-cypress": "^2.10.3",
