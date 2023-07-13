@@ -44,5 +44,5 @@ jobs:
           npm run build:app:prod 
       - name: Start server and run tests
         run: |
-          npm run build:app:prod & npx wait-on http://localhost:4200
+          npm run build:app:prod
           ./k6 run k6Loadtest.ts
