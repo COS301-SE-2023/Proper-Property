@@ -2,8 +2,8 @@ describe('Home page', {defaultCommandTimeout: 20000}, () => {
 
   beforeEach(() => {
     cy.viewport(1600, 854);
-    cy.visit('http://localhost:4200');
-    //cy.intercept('http://localhost:4200');
+    cy.visit('http://localhost:8080');
+    //cy.intercept('http://localhost:8080');
     cy.location('pathname').then((current) => {
       if(current.includes('home')) {
        // cy.get('ion-tab-button').contains('Profile').click();
@@ -21,19 +21,19 @@ describe('Home page', {defaultCommandTimeout: 20000}, () => {
     cy.get('ion-header ion-button').should('have.length', '6');
     cy.get('ion-header ion-button').eq(2).should('have.class', 'active');
    
-    cy.visit('http://localhost:4200/login');
+    cy.visit('http://localhost:8080/login');
     cy.get('ion-header ion-button').eq(0).should('have.class', 'active');
 
-    cy.visit('http://localhost:4200/register');
+    cy.visit('http://localhost:8080/register');
     cy.get('ion-header ion-button').eq(1).should('have.class', 'active');
 
-    cy.visit('http://localhost:4200/create-listing');
+    cy.visit('http://localhost:8080/create-listing');
     cy.get('ion-header ion-button').eq(3).should('have.class', 'active');
 
-    cy.visit('http://localhost:4200/listings');
+    cy.visit('http://localhost:8080/listings');
     cy.get('ion-header ion-button').eq(4).should('have.class', 'active');
 
-    cy.visit('http://localhost:4200/profile');
+    cy.visit('http://localhost:8080/profile');
     cy.get('ion-header ion-button').eq(5).should('have.class', 'active');
   })
 
