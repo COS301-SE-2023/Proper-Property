@@ -1,67 +1,84 @@
-
 /************************* Sec 1******************************/
 
-.sec1
-{
+.sec1 {
   width: 100%;
   height: 95vh;
   border: 1px solid #000;
   background: rgba(13, 174, 79, 0.40);
 
-  .slogan
-  {
+  .slogan {
     position: absolute;
     top: 20%;
     left: 6%;
   }
-  h1 
-  {
-    color: white;
-    font-size: 75px;
-    font-weight: 500;
-    line-height: 120.5%;
-  }
-  .bold
-  {
-    color: var(--ion-color-primary-contrast);
+
+  #mainHeading-Container {
+    width: 744px;
+    height: 179px;
+    flex-shrink: 0;
   }
 
-  input 
-  {
+  .mainHeading {
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 79px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 120.5%;
+    /* 95.195px */
+  }
+
+  #captionContainer {
+    width: 40%;
+    height: 15%;
+    flex-shrink: 0;
+    margin-top: 5%;
+  }
+
+  #caption {
+    color: #797979;
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 120.5%;
+    /* 43.38px */
+  }
+
+  input {
     width: 90%;
     height: 30px;
     border-radius: 25px;
     padding: 16px 20px;
     border: none;
     outline: none;
-    background: rgba(255, 255, 255, 0.7); 
+    background: rgba(255, 255, 255, 0.7);
   }
 
-  .deco1
-  {
-    position:absolute;
+  .homeCover {
+    position: absolute;
     width: 45%;
-    height: 55%;
+    height: 65%;
     top: 15%;
     right: 1%;
+  }
+
+  .search-container{
+    margin-top: 5%;
   }
 }
 
 
 /************************Sec 2*************************************/
-.heading
-{
+.heading {
   text-align: center;
   font-size: 4.5rem;
   position: relative;
 }
 
-.bold2
-{
+.bold2 {
   color: var(--ion-color-primary);
 }
-.sec2
-{
+
+.sec2 {
   width: 100%;
   height: 100vh;
   position: absolute;
@@ -70,8 +87,7 @@
   margin-right: 1%;
   top: 100%;
 
-  .serv-container
-  {
+  .serv-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -79,8 +95,7 @@
     gap: 1rem;
   }
 
-  .serv-container .serv-box
-  {
+  .serv-container .serv-box {
     flex: 1 1 10rem;
     background: white;
     padding: 3rem 2rem 4rem;
@@ -91,38 +106,34 @@
 
   }
 
-  .serv-container .serv-box:hover
-  {
+  .serv-container .serv-box:hover {
     //border-color: var(--ion-color-primary);
     background-color: rgb(240, 255, 240);
     transform: scale(1.02);
-    h3 
-    {
+
+    h3 {
       color: var(--ion-color-primary);
     }
 
-    
+
   }
 
-  .serv-box img{
+  .serv-box img {
     width: 300px;
     height: 300px;
   }
 
 
-  .serv-box h3
-  {
+  .serv-box h3 {
     color: var(--ion-color-primary-contrast);
   }
 
-  p
-  {
+  p {
     text-align: center;
     position: relative;
   }
 
-  .info
-  {
+  .info {
     font-size: 15px;
     text-align: center;
     position: relative;
@@ -131,8 +142,7 @@
 
 /************************Sec 3*************************************/
 
-.sec3
-{
+.sec3 {
   width: 100%;
   height: 100vh;
   position: absolute;
@@ -140,13 +150,11 @@
   top: 170%;
   background-color: rgb(248, 246, 246);
 
-  .sec3 h2
-  {
+  .sec3 h2 {
     margin-bottom: 4rem;
   }
 
-  .case-container
-  {
+  .case-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
@@ -154,8 +162,7 @@
     margin-left: 10%;
   }
 
-  .case-container .case-box
-  {
+  .case-container .case-box {
     position: relative;
     width: 80%;
     border-radius: 2rem;
@@ -164,27 +171,24 @@
     display: flex;
   }
 
-  .case-box img
-  {
+  .case-box img {
     width: 100%;
     transition: .5s ease;
   }
 
-    .case-box:hover img
-  {
+  .case-box:hover img {
     width: 100%;
-    transform: scale(1.1)  ;
+    transform: scale(1.1);
 
   }
 
-  .case-box .case-layer
-  {
+  .case-box .case-layer {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(rgba(0,0,0,.1), var(--ion-color-primary));
+    background: linear-gradient(rgba(0, 0, 0, .1), var(--ion-color-primary));
     display: flex;
     justify-content: center;
     align-items: center;
@@ -195,31 +199,20 @@
     transition: .5s ease;
   }
 
-  .case-box:hover .case-layer
-  {
+  .case-box:hover .case-layer {
     transform: translateY(0);
   }
 
-  .case-layer h4
-  {
+  .case-layer h4 {
     font-size: 1.8rem;
     color: white;
     margin: 3rem 0 1rem;
   }
 
-  .case-layer p
-  {
+  .case-layer p {
     font-size: 1.6rem;
     color: white;
     margin: .3rem 0 1rem;
   }
 
 }
-
-
-
-
-
-
-
-
