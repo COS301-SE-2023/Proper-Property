@@ -12,7 +12,12 @@ core.shell.html
       <h1>Proper <span class="bold">Properties</span></h1>
       <h1>For You</h1>
       <app-search></app-search>
-      <ion-searchbar class="custom-searchbar" placeholder="Property Location Search"></ion-searchbar>
+      <div class="search-container">
+        <input type="text" id="address" [(ngModel)]="searchQuery"   placeholder="search">
+        <ion-button class="search-button" (click)="searchProperties()">
+        <ion-icon name="search"> search</ion-icon>
+      </ion-button>
+      </div>
     </div>
     
     <img class="deco1" src="assets/GreenDots.png">
