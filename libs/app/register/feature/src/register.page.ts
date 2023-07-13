@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@properproperty/app/auth/data-access';
 import { Router } from '@angular/router';
-// import { profile } from '@properproperty/app/profile/util';
-import { UserService } from '@properproperty/app/user/data-access';
+// import { profile } from '@properproperty/api/profile/util';
+import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { Store } from '@ngxs/store';
 import { Register } from '@properproperty/app/auth/util';
 
@@ -12,7 +12,7 @@ import { Register } from '@properproperty/app/auth/util';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  constructor(private readonly store: Store, public authService: AuthService, public router: Router, public userService: UserService) {
+  constructor(private readonly store: Store, public authService: AuthService, public router: Router, public userProfileService: UserProfileService) {
     this.name = this.surname = this.password = this.email = this.confirm_password = "";
   }
 
@@ -32,8 +32,8 @@ export class RegisterPage implements OnInit {
     //   if(res !== null){
     //     const user : profile = {
     //       email: this.email,
-    //       first_name: this.name,
-    //       last_name: this.surname,
+    //       firstName: this.name,
+    //       lastName: this.surname,
     //       listings: []
     //     }
     //     await this.userService.registerNewUser(user, res.user.uid);

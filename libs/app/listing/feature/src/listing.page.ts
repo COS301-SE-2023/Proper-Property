@@ -1,11 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, ViewChild} from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { listing } from '@properproperty/app/listing/util';
+import { Listing } from '@properproperty/app/listing/util';
 import Swiper from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListingsService } from '@properproperty/app/listing/data-access';
-import { UserService } from '@properproperty/app/user/data-access';
-import { profile } from '@properproperty/app/profile/util';
+import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
+import { UserProfile } from '@properproperty/api/profile/util';
+import { Observable } from 'rxjs';
+// import { Unsubscribe } from '@angular/fire/firestore';
+import { Select } from '@ngxs/store';
 
 
 @Component({
@@ -13,44 +16,55 @@ import { profile } from '@properproperty/app/profile/util';
   templateUrl: './listing.page.html',
   styleUrls: ['./listing.page.scss'],
 })
-export class ListingPage implements OnInit{
+export class ListingPage{
+  @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
+  user : UserProfile | null = null;
   @ViewChild('swiper') swiperRef?: ElementRef;
   swiper?: Swiper;
-  list : listing | null = null;
+  list : Listing | null = null;
   pointsOfInterest: { photo: string | undefined, name: string }[] = [];
 
 
   price_per_sm = 0;
   lister_name = "";
+  includes = false;
 
-  constructor(private router: Router,
-     private route: ActivatedRoute, 
-     private listingServices : ListingsService, 
-     private userServices : UserService,
-     public gmapsService: GmapsService) {
+  constructor(private router: Router, private route: ActivatedRoute, private listingServices : ListingsService, private userServices : UserProfileService, public gmapsService: GmapsService) {
+    let list_id = "";
+    this.route.params.subscribe((params) => {
+      console.warn(params); 
+      list_id = params['list'];
+      this.listingServices.getListing(list_id).then((list) => {
+        console.warn(list);
+        this.list = list;
+      }).then(() => {
+        // TODO
+        console.log(this.list);
+        this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
+  
+        this.userServices.getUser("" + this.list?.user_id).then((user : UserProfile) => {
+          console.log(user);
+          this.lister_name = user.firstName + " " + user.lastName;
+        });
+        this.getNearbyPointsOfInterest();
+      });
+    });
+
     this.loanAmount = 0;
     this.interestRate = 0;
     this.loanTerm = 0;
     this.monthlyPayment = 0;
     this.totalOnceOffCosts = 0;
     this.minGrossMonthlyIncome = 0;
-   }
-
-
-  async ngOnInit() {
-    let list_id = "";
-    this.route.params.subscribe((params) => list_id = params['list']);
-    await this.listingServices.getListing(list_id).then((list) => {
-      this.list = list;
-      this.getNearbyPointsOfInterest();
+    this.userProfile$.subscribe((user) => {
+      this.user = user;
+      if(this.user && this.list){
+        console.log(this.user.listings);
+        console.log(this.list.listing_id);
+        this.includes = this.user.listings?.includes("" + this.list.listing_id) ?? false;
+      }
     });
     console.log(this.list);
-    this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
-
-    await this.userServices.getUser("" + this.list?.user_id).then((user : profile) => {
-      console.log(user);
-      this.lister_name = user.first_name + " " + user.last_name;
-    })
   }
 
   async getNearbyPointsOfInterest() {
@@ -71,6 +85,7 @@ export class ListingPage implements OnInit{
   }
 
   processPointsOfInterestResults(results: google.maps.places.PlaceResult[]) {
+    console.log(results);
     // Clear the existing points of interest
     this.pointsOfInterest = [];
   

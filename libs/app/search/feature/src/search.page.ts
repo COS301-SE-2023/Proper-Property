@@ -3,7 +3,7 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, Vie
 import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
-import { listing } from '@properproperty/app/listing/util';
+import { Listing } from '@properproperty/app/listing/util';
 
 interface Property {
   title: string;
@@ -40,9 +40,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   mapClickListener: any;
   markerClickListener: any;
   markers: any[] = [];
-  listings: listing[] = [];
-
- 
+  listings: Listing[] = []
 
 
   constructor(
@@ -216,7 +214,7 @@ async loadMap() {
   
 }
 
-addMarker(position: any, listing: listing) {
+addMarker(position: any, listing: Listing) {
   const googleMaps: any = this.googleMaps;
   const icon = {
     url: 'assets/icon/locationpin.png',
@@ -258,7 +256,7 @@ addMarker(position: any, listing: listing) {
 
 
 
-createListingCard(listing: listing): string {
+createListingCard(listing: Listing): string {
   return `
     <ion-card style="max-width: 250px; max-height: 300px;">
       <ion-card-header style="padding: 0;">
@@ -289,10 +287,10 @@ createListingCard(listing: listing): string {
 
 
 
-navigateToPropertyListingPage(listing:listing) {
+navigateToPropertyListingPage(listing: Listing) {
 
   console.log(listing.listing_id);
-  this.router.navigate(['/listing', {list : listing.listing_id}]);
+  this.router.navigate(['/listing', {list: listing.listing_id}]);
 }
 
 checkAndRemoveMarker(marker: { position: { lat: () => any; lng: () => any; }; }) {
@@ -337,10 +335,10 @@ async presentActionSheet() {
 }
 
 
-async redirectToPage(listing : listing) {
-  console.log(listing.listing_id);
-  this.router.navigate(['/listing', {list : listing.listing_id}]);
-}
+  async redirectToPage(listing: Listing) {
+    console.log(listing.listing_id);
+    this.router.navigate(['/listing', {list : listing.listing_id}]);
+  }
 
 ngOnDestroy() {
   // this.googleMaps.event.removeAllListeners();
@@ -354,7 +352,7 @@ toggleColor() {
   this.isRed = !this.isRed;
 }
 
-Templistings: listing[] = []
+  Templistings: Listing[] = []
 
   async searchProperties() {
   // const filteredListings = this.listings.filter(listing => {
@@ -574,7 +572,7 @@ selectedAmenities: string[] = [];
 //   // Add more properties here
 // ];
 
-get filteredBuyingProperties(): listing[] {
+get filteredBuyingProperties(): Listing[] {
   this.listingServices.getListings().then((listings) => {
     this.listings = listings;
 
@@ -591,7 +589,7 @@ get filteredBuyingProperties(): listing[] {
   return this.listings;
 }
 
-get filteredRentingProperties(): listing[] {
+get filteredRentingProperties(): Listing[] {
 
   this.listingServices.getListings().then((listings) => {
     this.listings = listings;

@@ -1,7 +1,7 @@
 import { Component, OnInit , ViewChild, ElementRef} from '@angular/core';
-import { UserService } from '@properproperty/app/user/data-access';
-import { listing } from '@properproperty/app/listing/util';
-import { profile } from '@properproperty/app/profile/util';
+import { UserProfileService } from '@properproperty/app/profile/data-access';
+import { Listing } from '@properproperty/app/listing/util';
+// import { profile } from '@properproperty/api/profile/util';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
 import { OpenAIService } from '@properproperty/app/open-ai/data-access';
@@ -9,6 +9,9 @@ import { Select} from '@ngxs/store';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { User } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
+import { Store } from '@ngxs/store';
+// import { UpdateUserProfile } from '@properproperty/app/profile/util';
+import { isDevMode } from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 
 @Component({
@@ -29,10 +32,31 @@ export class CreateListingPage implements OnInit {
   currentUser: User | null = null;
   description = "";
   heading = "";
-  constructor(private readonly router: Router, private readonly userService: UserService, private readonly listingService: ListingsService, private readonly openAIService: OpenAIService,public gmapsService: GmapsService) {
+  constructor(
+    private readonly router: Router, 
+    private readonly userService: UserProfileService, 
+    private readonly listingService: ListingsService, 
+    private readonly openAIService: OpenAIService,public gmapsService: GmapsService,
+    private readonly store: Store
+  ) {
     this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
     this.predictions = [];
     this.defaultBounds = new google.maps.LatLngBounds();
+    if (isDevMode()) {
+      this.address = "123 Fake Street";
+      this.price = "1000000";
+      this.floor_size = "100";
+      this.erf_size = "100";
+      this.bathrooms = "2";
+      this.bedrooms = "3";
+      this.parking = "1";
+      this.pos_type = "Leasehold";
+      this.env_type = "Urban";
+      this.prop_type = "House";
+      this.furnish_type = "Furnished";
+      this.orientation = "North";
+      this.description = "This is a description";
+    }
     this.user$.subscribe((user: User | null) => {
       this.currentUser =  user;
     });
@@ -96,14 +120,18 @@ handleAddressChange(address: string): void {
 }
 
   photos: string[] = [];
-  address: string;
-  price: string;
-  bathrooms:string;
-  bedrooms:string;
-  parking:string;
-  floor_size: string;
-  erf_size : string;
-
+  address = "";
+  price = "";
+  bathrooms = "";
+  bedrooms = "";
+  parking = "";
+  floor_size = "";
+  erf_size  = "";
+  pos_type = "";
+  env_type = "";
+  prop_type = "";
+  furnish_type = "";
+  orientation = "";
   count = 0;
 
   handleFileInput(event: Event) {
@@ -145,7 +173,7 @@ handleAddressChange(address: string): void {
   }
 
   selectPhotos() {
-    const fileInput = document.querySelector('input[type="file"]');
+    const fileInput = document.querySelector('input[type = "file"]');
     if (fileInput) {
       const event = new MouseEvent('click', {
         view: window,
@@ -204,7 +232,7 @@ handleAddressChange(address: string): void {
       this.openAIService.descriptionCall("Give me a description of a property with the following information: \n" + info 
       + "Be as descriptive as possible such that I would want to buy the house after reading the description").then((res : string) => {
         if(res == "" || !res){
-          console.log("OOPSIE WHOOPSIE, FUCKEY WUCKY")
+          console.log("OOPSIE WHOOPSIE, redactedEY WUCKY")
         }
         else{
           this.description = res;
@@ -254,15 +282,15 @@ handleAddressChange(address: string): void {
 
     console.log(prop_type_in.value);
     if(this.currentUser != null){
-      const list : listing = {
+      const list : Listing = {
         user_id: this.currentUser.uid,
         address: this.address,
         price: this.price,
-        pos_type: pos_type_in.value,
-        env_type: env_type_in.value,
-        prop_type: prop_type_in.value,
-        furnish_type: furnish_type_in.value,
-        orientation: orientation_in.value,
+        pos_type: this.pos_type,
+        env_type: this.env_type,
+        prop_type: this.prop_type,
+        furnish_type: this.furnish_type,
+        orientation: this.orientation,
         floor_size: this.floor_size,
         property_size: this.erf_size,
         bath: this.bathrooms,
@@ -270,7 +298,7 @@ handleAddressChange(address: string): void {
         parking: this.parking,
         features: this.features,
         photos: this.photos,
-        desc: desc_in.value,
+        desc: this.description,
         heading: this.heading,
         let_sell: this.listingType
       }

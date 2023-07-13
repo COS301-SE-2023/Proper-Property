@@ -6,7 +6,7 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, Vie
 import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
-import { listing } from '@properproperty/app/listing/util';
+import { Listing } from '@properproperty/app/listing/util';
 
 
 @Component({
@@ -24,7 +24,7 @@ export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
   mapClickListener: any;
   markerClickListener: any;
   markers: any[] = [];
-  listings: listing[] = []
+  listings: Listing[] = []
 
 
   constructor(
@@ -93,7 +93,7 @@ export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
     });
   }
 
-  generatePropertyCard(property: listing): HTMLElement {
+  generatePropertyCard(property: Listing): HTMLElement {
     const propertyCard = document.createElement('div');
     propertyCard.className = 'property-card';
   
@@ -193,7 +193,7 @@ export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
     await actionSheet.present();
   }
 
-  async redirectToPage(listing : listing) {
+  async redirectToPage(listing : Listing) {
     console.log(listing.listing_id);
     this.router.navigate(['/listing', {list : listing.listing_id}]);
   }

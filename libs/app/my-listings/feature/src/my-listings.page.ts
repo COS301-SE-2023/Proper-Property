@@ -6,8 +6,8 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, Vie
 import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
-import { listing } from '@properproperty/app/listing/util';
-import { UserService } from '@properproperty/app/user/data-access';
+import { Listing } from '@properproperty/app/listing/util';
+import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { User } from '@angular/fire/auth';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
@@ -31,7 +31,7 @@ export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
   mapClickListener: any;
   markerClickListener: any;
   markers: any[] = [];
-  listings: listing[] = []
+  listings: Listing[] = []
 
 
   constructor(
@@ -40,13 +40,13 @@ export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
     private actionSheetCtrl: ActionSheetController,
     private router: Router,
     private listingServices : ListingsService,
-    private userServices: UserService,
+    private userServices: UserProfileService,
     ) {
       this.user$.subscribe((user: User | null) => {
         this.currentUser =  user;
       });
       //this.userServices.getCurrentUser()?.user_id 
-      const user_listings: listing[] = [];
+      const user_listings: Listing[] = [];
 
       //for i = 0; i< listings size i++
        for (let i = 0; i < this.listings.length; i++) {
@@ -71,7 +71,7 @@ export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
       this.listings = listings;
     });
 
-    const user_listings: listing[] = [];
+    const user_listings: Listing[] = [];
 
     //for i = 0; i< listings size i++
      for (let i = 0; i < this.listings.length; i++) {
@@ -185,7 +185,7 @@ export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
     await actionSheet.present();
   }
 
-  async redirectToPage(listing : listing) {
+  async redirectToPage(listing : Listing) {
     console.log(listing.listing_id);
     this.router.navigate(['/listing', {list : listing.listing_id}]);
   }

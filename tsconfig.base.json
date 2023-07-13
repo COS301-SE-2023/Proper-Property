@@ -15,6 +15,27 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@properproperty/api/core/feature": [
+        "libs/api/core/feature/src/index.ts"
+      ],
+      "@properproperty/api/listings/data-access": [
+        "libs/api/listings/data-access/src/index.ts"
+      ],
+      "@properproperty/api/listings/feature": [
+        "libs/api/listings/feature/src/index.ts"
+      ],
+      "@properproperty/api/listings/util": [
+        "libs/api/listings/util/src/index.ts"
+      ],
+      "@properproperty/api/profile/data-access": [
+        "libs/api/profile/data-access/src/index.ts"
+      ],
+      "@properproperty/api/profile/feature": [
+        "libs/api/profile/feature/src/index.ts"
+      ],
+      "@properproperty/api/profile/util": [
+        "libs/api/profile/util/src/index.ts"
+      ],
       "@properproperty/app/auth/data-access": [
         "libs/app/auth/data-access/src/index.ts"
       ],
@@ -61,6 +82,9 @@
       "@properproperty/app/open-ai/data-access": [
         "libs/app/open-ai/data-access/src/index.ts"
       ],
+      "@properproperty/app/profile/data-access": [
+        "libs/app/profile/data-access/src/index.ts"
+      ],
       "@properproperty/app/profile/feature": [
         "libs/app/profile/feature/src/index.ts"
       ],
@@ -78,9 +102,6 @@
       ],
       "@properproperty/app/settings/feature": [
         "libs/app/settings/feature/src/index.ts"
-      ],
-      "@properproperty/app/user/data-access": [
-        "libs/app/user/data-access/src/index.ts"
       ],
       "@properproperty/app/version/feature": [
         "libs/app/version/feature/src/index.ts"

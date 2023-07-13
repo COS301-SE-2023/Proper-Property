@@ -44,7 +44,7 @@
           <ion-card class="half-green-container">
             <ion-grid style="padding-top: 20px; padding-left:20px;">
               <ion-row>
-                <ion-card-title class="house-titles">{{list.desc}}</ion-card-title>
+                <ion-card-title class="house-titles">House</ion-card-title>
               </ion-row>
               <ion-row>
                 <ion-card-subtitle class="house-subtitles">by {{lister_name}}</ion-card-subtitle>
@@ -238,6 +238,12 @@
   
         </ion-card>
       </ion-row>
+        <ion-template *ngIf="includes">
+          <script>alert("You")</script>
+          <ion-row>
+          <p>Your listing</p>
+        </ion-row>
+      </ion-template>
     </ion-grid>
   </ion-content>
   </ion-template>
