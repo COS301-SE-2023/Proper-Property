@@ -10,6 +10,6 @@ export const options = {
 };
 
 export default function () {
-  const res = http.get('http://localhost:4200/home');
+  const res = http.get('https://bing.com');
   sleep(1);
 }
