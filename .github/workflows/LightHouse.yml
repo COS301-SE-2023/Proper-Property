@@ -42,7 +42,7 @@ jobs:
         EOF
         echo "cat .env.prod"
     - name: Build App
-      run: npm run build:app:prod &
+      run: npm run build:app:prod 
 
     - name: 'Run Lighthouse tests'
       continue-on-error: true
