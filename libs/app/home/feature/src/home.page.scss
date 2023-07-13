@@ -29,13 +29,15 @@
     color: var(--ion-color-primary-contrast);
   }
 
-  .custom-searchbar 
+  input 
   {
-    top: 100px;
-    width: 150%;
-    --border-radius: 25px;
-    --background: rgba(255, 255, 255, 0.7); 
-    --icon-color: var(--ion-color-primary);
+    width: 90%;
+    height: 30px;
+    border-radius: 25px;
+    padding: 16px 20px;
+    border: none;
+    outline: none;
+    background: rgba(255, 255, 255, 0.7); 
   }
 
   .deco1
