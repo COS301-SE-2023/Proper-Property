@@ -45,4 +45,4 @@ jobs:
       - name: Start server and run tests
         run: |
           npm run build:app:prod & npx wait-on http://localhost:4200
-          ./k6 run __tests__/k6-loadTest.ts
+          ./k6 run k6Loadtest.ts
