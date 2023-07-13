@@ -43,5 +43,5 @@ jobs:
       run: npm run build:app:prod
     - name: run Lighthouse CI
       run: |
-        npm install -g @lhci/cli@0.3.x
+        npm install -g @lhci/cli
         lhci autorun --no-lighthouserc --upload.target=temporary-public-storage || echo "LHCI failed, Kea!"
