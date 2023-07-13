@@ -2,7 +2,7 @@
 
 .sec1 {
   width: 100%;
-  height: 95vh;
+  height: 98vh;
   border: 1px solid #000;
   background: rgba(13, 174, 79, 0.40);
 
@@ -43,14 +43,37 @@
     /* 43.38px */
   }
 
-  input {
-    width: 90%;
-    height: 30px;
-    border-radius: 25px;
-    padding: 16px 20px;
-    border: none;
-    outline: none;
-    background: rgba(255, 255, 255, 0.7);
+  .search-container {
+    margin-top: 10%;
+    width: 70%;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 30px;
+    border:0;
+    background: white;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    // padding-left: 2%;
+  }
+
+  #address{
+    border: 0;
+    width: 68%;
+    height: 100%;
+    border-radius: 30px;
+    padding-left: 4%;
+  }
+
+  #search-button{
+    height: 100%;
+    border-radius: 30px;
+    width: 30%;
+  }
+
+  #search-button-text{
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 120.5%;
   }
 
   .homeCover {
@@ -61,9 +84,9 @@
     right: 1%;
   }
 
-  .search-container{
-    margin-top: 5%;
-  }
+  ion-button {
+    --border-radius: 30px; /* Your desired border-radius value */
+  }  
 }
 
 

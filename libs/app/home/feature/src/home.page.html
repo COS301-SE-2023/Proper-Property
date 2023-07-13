@@ -17,8 +17,8 @@ core.shell.html
       </div>
       <div class="search-container">
         <input type="text" id="address" [(ngModel)]="searchQuery" placeholder="Property Location Search">
-        <ion-button class="search-button" (click)="searchProperties()">
-          <ion-icon name="search"> search</ion-icon>
+        <ion-button style="border-radius: 20%;" id="search-button" (click)="searchProperties()">
+          <h1 id="search-button-text">Search</h1>
         </ion-button>
       </div>
     </div>
