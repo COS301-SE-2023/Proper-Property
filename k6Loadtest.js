@@ -10,6 +10,6 @@ export const options = {
 };
 
 export default function () {
-  const res = http.get('https://bing.com');
+  const res = http.get('https://kauai.co.za');
   sleep(1);
 }
