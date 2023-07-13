@@ -43,8 +43,9 @@ jobs:
         echo "cat .env.prod"
     - name: Build App
       run: npm run build:app:prod &
-      continue-on-error: true
+
     - name: 'Run Lighthouse tests'
+      continue-on-error: true
       run: lhci autorun
 
     - name: 'Upload report'
