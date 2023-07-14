@@ -47,7 +47,8 @@
     margin-top: 10%;
     width: 70%;
     height: 50px;
-    flex-shrink: 0;
+    display: flex;
+    align-items: center;
     border-radius: 30px;
     border:0;
     background: white;
@@ -65,8 +66,10 @@
 
   #search-button{
     height: 100%;
-    border-radius: 30px;
-    width: 30%;
+    --border-radius: 30px;
+    width: 32%;
+    margin-right: 0;
+    --margin: 0;
   }
 
   #search-button-text{
@@ -80,13 +83,13 @@
     position: absolute;
     width: 45%;
     height: 65%;
-    top: 15%;
+    top: 18%;
     right: 1%;
-  }
+  } 
 
-  ion-button {
-    --border-radius: 30px; /* Your desired border-radius value */
-  }  
+  .homeCover:hover {
+    top: 16%;
+  } 
 }
 
 
