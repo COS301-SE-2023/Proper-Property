@@ -95,50 +95,33 @@
 
 
     <ion-row id="house-details">
-      <ion-row>
-        <ion-col size="6" class="ion-text-center">
-          <ion-item>
-            <!-- <ion-label position="floating">Property Residential Address<span class="required-indicator" *ngIf="!address">*</span></ion-label>
-          <input type="text" id="address-input" placeholder="Enter an address">
+      <ion-row style="width: 100%">
+        <ion-item>
 
-          <div class="search-container">
-          <ion-input type="text" id="address" [(ngModel)]="address" required #inputElement (input)="handleInputChange($event)"></ion-input>
-
-          <div class="resultBox">
-            <ion-list *ngFor="let prediction of predictions" (click)="replaceInputText($event,prediction.description)">
-              <a href="#" class="prediction-button">
-                {{ prediction.description }}
-              </a>
-            </ion-list>
-          </div>
-          <div class="icon"><i class="fas fa-search"></i></div>
-        </div>
-      -->
-
-            <div class="container">
-              <div class="searchInput">
-                <label position="floating">Property Residential Address<span class="required-indicator"
-                    *ngIf="!address">*</span></label>
-                <input type="text" id="address" [(ngModel)]="address" placeholder="Enter an address"
-                  (input)="handleInputChange($event)" (ionChange)="handleInputChange($event)">
-                <div class="resultBox">
-                  <ion-list *ngFor="let prediction of predictions"
-                    (click)="replaceInputText($event,prediction.description)">
-                    <a href="#" class="prediction-button">
-                      {{ prediction.description }}
-                    </a>
-                  </ion-list>
-                </div>
-                <div class="icon"><i class="fas fa-search"></i></div>
+          <div class="container">
+            <div class="searchInput">
+              <label position="floating">Property Residential Address<span class="required-indicator"
+                  *ngIf="!address">*</span></label>
+              <input type="text" id="address" [(ngModel)]="address" placeholder="Enter an address"
+                (input)="handleInputChange($event)" (ionChange)="handleInputChange($event)">
+              <div class="resultBox">
+                <ion-list *ngFor="let prediction of predictions"
+                  (click)="replaceInputText($event,prediction.description)">
+                  <a href="#" class="prediction-button">
+                    {{ prediction.description }}
+                  </a>
+                </ion-list>
               </div>
+              <div class="icon"><i class="fas fa-search"></i></div>
             </div>
+          </div>
 
 
+        </ion-item>
+      </ion-row>
 
-          </ion-item>
-        </ion-col>
-
-        <ion-col size="6" class="ion-text-center">
+      <ion-row style="width: 100%">
+        <ion-col>
           <ion-item>
             <ion-label position="floating">Listing Price<span class="required-indicator"
                 *ngIf="!price">*</span></ion-label>
@@ -147,8 +130,49 @@
             <ion-note slot="end">ZAR</ion-note>
           </ion-item>
         </ion-col>
+        <ion-col>
+          <ion-select id="pos-type" aria-label="pos-type" placeholder="Possession Type">
+            <ion-select-option value="Leasehold">Leasehold</ion-select-option>
+            <ion-select-option value="Freehold">Freehold</ion-select-option>
+            <ion-select-option value="Condominium">Condominium</ion-select-option>
+          </ion-select>
+        </ion-col>
       </ion-row>
 
+      <ion-row style="width: 100%">
+        <ion-col>
+          <ion-select id="prop-type" aria-label="prop-type" placeholder="Property Type">
+            <ion-select-option value="House">House</ion-select-option>
+            <ion-select-option value="Apartment">Apartment</ion-select-option>
+            <ion-select-option value="Commercial">Commercial Property</ion-select-option>
+          </ion-select>
+        </ion-col>
+        <ion-col>
+          <ion-select id="env-type" aria-label="env-type" placeholder="Community Environment">
+            <ion-select-option value="Rural">Gated Community</ion-select-option>
+            <ion-select-option value="Semi-Rural">Complex</ion-select-option>
+            <ion-select-option value="Urban">Standalone House</ion-select-option>
+          </ion-select>
+        </ion-col>
+      </ion-row>
+
+      <ion-row style="width: 100%;">
+        <ion-col>
+          <ion-select id="furnish-type" aria-label="furnishing" placeholder="Furnishing">
+            <ion-select-option value="Furnished">Furnished</ion-select-option>
+            <ion-select-option value="Partly Furnished">Partly Furnished</ion-select-option>
+            <ion-select-option value="Not Furnished">Not Furnished</ion-select-option>
+          </ion-select>
+        </ion-col>
+        <ion-col>
+          <ion-select id="orientation" aria-label="orientation" placeholder="Orientation">
+            <ion-select-option value="North">North</ion-select-option>
+            <ion-select-option value="East">East</ion-select-option>
+            <ion-select-option value="West">West</ion-select-option>
+            <ion-select-option value="South">South</ion-select-option>
+          </ion-select>
+        </ion-col>
+      </ion-row>
 
 
       <ion-row>
@@ -170,14 +194,6 @@
             <ion-input type="number" id="bath" [(ngModel)]="bathrooms" required></ion-input>
 
           </ion-item>
-        </ion-col>
-
-        <ion-col>
-          <ion-select id="prop-type" aria-label="prop-type" placeholder="Property Type">
-            <ion-select-option value="House">House</ion-select-option>
-            <ion-select-option value="Apartment">Apartment</ion-select-option>
-            <ion-select-option value="Commercial">Commercial Property</ion-select-option>
-          </ion-select>
         </ion-col>
 
       </ion-row>
@@ -202,14 +218,6 @@
 
           </ion-item>
         </ion-col>
-        <ion-col>
-          <ion-select id="orientation" aria-label="orientation" placeholder="Orientation">
-            <ion-select-option value="North">North</ion-select-option>
-            <ion-select-option value="East">East</ion-select-option>
-            <ion-select-option value="West">West</ion-select-option>
-            <ion-select-option value="South">South</ion-select-option>
-          </ion-select>
-        </ion-col>
       </ion-row>
       <ion-row>
 
@@ -233,35 +241,7 @@
           </ion-list>
         </ion-col>
 
-        <ion-col>
-          <ion-select id="env-type" aria-label="env-type" placeholder="Distinct">
-            <ion-select-option value="Rural">Rural</ion-select-option>
-            <ion-select-option value="Semi-Rural">Semi-Rural</ion-select-option>
-            <ion-select-option value="Urban">Urban</ion-select-option>
-          </ion-select>
-        </ion-col>
-
       </ion-row>
-
-      <ion-row>
-        <ion-col size="3" class="ion-text-center">
-          <ion-select id="pos-type" aria-label="pos-type" placeholder="Possession Type">
-            <ion-select-option value="Leasehold">Leasehold</ion-select-option>
-            <ion-select-option value="Freehold">Freehold</ion-select-option>
-            <ion-select-option value="Condominium">Condominium</ion-select-option>
-          </ion-select>
-        </ion-col>
-
-        <ion-col size="3">
-          <ion-select id="furnish-type" aria-label="furnishing" placeholder="Furnishing">
-            <ion-select-option value="Furnished">Furnished</ion-select-option>
-            <ion-select-option value="Partly Furnished">Partly Furnished</ion-select-option>
-            <ion-select-option value="Not Furnished">Not Furnished</ion-select-option>
-          </ion-select>
-        </ion-col>
-      </ion-row>
-      <br><br>
-
       <ion-row>
 
 
