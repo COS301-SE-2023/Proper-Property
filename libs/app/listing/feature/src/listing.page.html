@@ -245,5 +245,18 @@
         </ion-row>
       </ion-template>
     </ion-grid>
+
+    <div *ngIf="admin" id="approvalBox">
+      <ion-grid>
+        <ion-row>
+          <ion-col id="approvalCol">
+            <ion-button id="approveBut" (click)="true">Approve</ion-button>
+          </ion-col>
+          <ion-col id="rejectionCol">
+            <ion-button color="danger" id="rejectBut" (click)="false">Reject</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
   </ion-content>
   </ion-template>

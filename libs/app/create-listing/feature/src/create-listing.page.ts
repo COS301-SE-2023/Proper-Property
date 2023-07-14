@@ -1,6 +1,6 @@
 import { Component, OnInit , ViewChild, ElementRef} from '@angular/core';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
-import { Listing } from '@properproperty/app/listing/util';
+import { Listing } from '@properproperty/api/listings/util';
 // import { profile } from '@properproperty/api/profile/util';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
@@ -300,7 +300,8 @@ handleAddressChange(address: string): void {
         photos: this.photos,
         desc: this.description,
         heading: this.heading,
-        let_sell: this.listingType
+        let_sell: this.listingType,
+        approved: false
       }
 
       console.log(list);

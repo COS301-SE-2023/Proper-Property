@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild} from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { Listing } from '@properproperty/app/listing/util';
+import { Listing } from '@properproperty/api/listings/util';
 import Swiper from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListingsService } from '@properproperty/app/listing/data-access';
@@ -23,6 +23,7 @@ export class ListingPage{
   swiper?: Swiper;
   list : Listing | null = null;
   pointsOfInterest: { photo: string | undefined, name: string }[] = [];
+  admin: boolean = false;
 
 
   price_per_sm = 0;
@@ -31,13 +32,18 @@ export class ListingPage{
 
   constructor(private router: Router, private route: ActivatedRoute, private listingServices : ListingsService, private userServices : UserProfileService, public gmapsService: GmapsService) {
     let list_id = "";
+    let admin = "";
     this.route.params.subscribe((params) => {
       console.warn(params); 
       list_id = params['list'];
+      admin = params['admin'];
       this.listingServices.getListing(list_id).then((list) => {
         console.warn(list);
         this.list = list;
       }).then(() => {
+        if(admin && admin != ""){
+          this.admin = true;
+        }
         // TODO
         console.log(this.list);
         this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);

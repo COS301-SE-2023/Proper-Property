@@ -1,15 +1,76 @@
 <p>admin-page works!</p>
 
 <ion-content [fullscreen]="true">
-  <ion-grid style="margin-top: 15%;">
+  <ion-grid>
     <ion-row>
-      <ion-col>
-        <h2>Not Approved</h2>
+      <ion-col id="notApprovedHeadCol">
+        <h2 id="notApprovedHead">Not Approved</h2>
       </ion-col>
-      <ion-col>
-        <h2>Not Approved</h2>
+      <ion-col id="approvedHeadCol">
+        <h2 id="approvedHead">Approved</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col id="notApprovedBodyCol">
+        <ion-card *ngFor="let listing of nonAppListings" (click)="redirectToPage(listing)">
+          <ion-card-header>
+            <img src="{{listing.photos[0]}}" class="headerImg" alt="house1">
+            <ion-card-title>House</ion-card-title>
+            <ion-card-subtitle style="color: #94d2ae;">R {{listing.price}}</ion-card-subtitle>
+          </ion-card-header>
+        
+          <ion-card-content>
+            <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+            {{listing.desc}}
+            </p>
+            <br>
+            <br>
+            <div id="house_details">
+              <img src="assets/icon/bedrooms.png">
+              {{listing.bed}}
+              &nbsp; &nbsp;&nbsp;
+              <img src="assets/icon/bathrooms.png">
+              {{listing.bath}}
+              &nbsp; &nbsp;&nbsp;
+              <img src="assets/icon/floorplan.png">
+                {{listing.floor_size}} m<sup>2</sup> 
+                &nbsp; &nbsp;&nbsp;
+              <img src="assets/icon/erf.png">
+              {{listing.property_size}} m<sup>2</sup>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col id="approvedBodyCol">
+        <ion-card *ngFor="let listing of appListings" (click)="redirectToPage(listing)">
+          <ion-card-header>
+            <img src="{{listing.photos[0]}}" alt="house1">
+            <ion-card-title>House</ion-card-title>
+            <ion-card-subtitle style="color: #94d2ae;">R {{listing.price}}</ion-card-subtitle>
+          </ion-card-header>
+        
+          <ion-card-content>
+            <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+            {{listing.desc}}
+            </p>
+            <br>
+            <br>
+            <div id="house_details">
+              <img src="assets/icon/bedrooms.png">
+              {{listing.bed}}
+              &nbsp; &nbsp;&nbsp;
+              <img src="assets/icon/bathrooms.png">
+              {{listing.bath}}
+              &nbsp; &nbsp;&nbsp;
+              <img src="assets/icon/floorplan.png">
+                {{listing.floor_size}} m<sup>2</sup> 
+                &nbsp; &nbsp;&nbsp;
+              <img src="assets/icon/erf.png">
+              {{listing.property_size}} m<sup>2</sup>
+            </div>
+          </ion-card-content>
+        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
-  <div style="height: 100%; width: 100%; background-color: green;"></div>
 </ion-content>
