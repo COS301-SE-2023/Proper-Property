@@ -9,6 +9,7 @@ import { UserProfile } from '@properproperty/api/profile/util';
 import { Observable } from 'rxjs';
 // import { Unsubscribe } from '@angular/fire/firestore';
 import { Select } from '@ngxs/store';
+import { app } from 'firebase-admin';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class ListingPage{
   list : Listing | null = null;
   pointsOfInterest: { photo: string | undefined, name: string }[] = [];
   admin: boolean = false;
+  adminId: string = "";
 
 
   price_per_sm = 0;
@@ -43,6 +45,7 @@ export class ListingPage{
       }).then(() => {
         if(admin && admin != ""){
           this.admin = true;
+          this.adminId = admin;
         }
         // TODO
         console.log(this.list);
@@ -71,6 +74,12 @@ export class ListingPage{
       }
     });
     console.log(this.list);
+  }
+
+  async changeStatus(){
+    if(this.list && this.adminId != ""){
+      this.listingServices.changeStatus("" + this.list.listing_id, this.adminId);
+    }
   }
 
   async getNearbyPointsOfInterest() {

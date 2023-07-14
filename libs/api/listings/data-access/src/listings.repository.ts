@@ -1,6 +1,12 @@
 import * as admin from 'firebase-admin';
 import { Injectable } from '@nestjs/common';
-import { GetListingsRequest, Listing, CreateListingResponse, GetListingsResponse } from '@properproperty/api/listings/util';
+import { GetListingsRequest,
+  Listing,
+  CreateListingResponse,
+  GetListingsResponse, 
+  ChangeStatusRequest, 
+  ChangeStatusResponse 
+} from '@properproperty/api/listings/util';
 // import { FieldValue, FieldPath } from 'firebase-admin/firestore';
 @Injectable()
 export class ListingsRepository {
@@ -92,5 +98,18 @@ export class ListingsRepository {
           message: error.message
         }
     });
+  }
+
+  async changeStatus(req : ChangeStatusRequest): Promise<ChangeStatusResponse>{
+    console.log("Its show time");
+    // const listingRef = admin
+    // .firestore()
+    // .doc(`listings/${req.listingId}`)
+    // .withConverter<Listing>({
+    //   fromFirestore: (snapshot) => snapshot.data() as Listing,
+    //   toFirestore: (listing: Listing) => listing
+    // });
+    
+    return {timeOfApproval : "no time"};
   }
 }
