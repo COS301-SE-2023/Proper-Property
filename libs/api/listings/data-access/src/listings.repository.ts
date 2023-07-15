@@ -7,6 +7,7 @@ import { GetListingsRequest,
   ChangeStatusRequest, 
   ChangeStatusResponse 
 } from '@properproperty/api/listings/util';
+import { updateDoc } from 'firebase/firestore';
 // import { FieldValue, FieldPath } from 'firebase-admin/firestore';
 @Injectable()
 export class ListingsRepository {
@@ -102,14 +103,43 @@ export class ListingsRepository {
 
   async changeStatus(req : ChangeStatusRequest): Promise<ChangeStatusResponse>{
     console.log("Its show time");
-    // const listingRef = admin
-    // .firestore()
-    // .doc(`listings/${req.listingId}`)
-    // .withConverter<Listing>({
-    //   fromFirestore: (snapshot) => snapshot.data() as Listing,
-    //   toFirestore: (listing: Listing) => listing
-    // });
+    const listingDoc = admin
+    .firestore()
+    .doc(`listings/${req.listingId}`)
+    .withConverter<Listing>({
+      fromFirestore: (snapshot) => snapshot.data() as Listing,
+      toFirestore: (listing: Listing) => listing
+    }).get();
+
+    listingDoc.then((doc) => {
+      let tempStatusChanges = doc.data()?.statusChanges;
+      if(tempStatusChanges){
+        tempStatusChanges.push({adminId : req.adminId, status : !doc.data()?.approved, date : new Date().toISOString()});
+      }
+      else{
+        tempStatusChanges = [{adminId : req.adminId, status : !doc.data()?.approved, date : new Date().toISOString()}];
+      }
+
+      admin.firestore().doc(`listings/${req.listingId}`).update({approved : !doc.data()?.approved, statusChanges : tempStatusChanges});
+      return {statusChange : tempStatusChanges[tempStatusChanges.length - 1]};
+    })
+
+    return {statusChange : {adminId : "", status : false, date : ""}};
+  }
+
+  async getApprovedListings(): Promise<GetListingsResponse>{
+    let query = admin
+    .firestore()
+    .collection('listings').where("approved", "==", true);
     
-    return {timeOfApproval : "no time"};
+    let listings : Listing[] = [];
+    (await query.get()).docs.map((doc) => {
+      doc.data() as Listing;
+      listings.push(doc.data() as Listing);
+    })
+
+    console.log(listings);
+
+    return {listings : listings};
   }
 }

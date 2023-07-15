@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { ChangeStatusRequest, ChangeStatusResponse, CreateListingRequest, CreateListingResponse, GetListingsRequest, GetListingsResponse } from '@properproperty/api/listings/util';
+import { ChangeStatusRequest, ChangeStatusResponse, CreateListingRequest, CreateListingResponse, GetApprovedListingsResponse, GetListingsRequest, GetListingsResponse } from '@properproperty/api/listings/util';
 import { NestFactory } from '@nestjs/core';
 import { CoreModule } from '../core.module';
 import { ListingsService } from '@properproperty/api/listings/feature';
@@ -34,6 +34,15 @@ export const changeStatus = functions.region('europe-west1').https.onCall(
     const listingService = appContext.get(ListingsService);
 
     return listingService.changeStatus(request);
+  }
+);
+
+export const getApprovedListings = functions.region('europe-west1').https.onCall(
+  async(
+  ): Promise<GetApprovedListingsResponse> => {
+    const appContext = await NestFactory.createApplicationContext(CoreModule)
+    const listingService = appContext.get(ListingsService);
+    return listingService.getApprovedListings();
   }
 );
   

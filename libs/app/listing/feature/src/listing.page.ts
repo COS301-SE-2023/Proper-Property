@@ -43,7 +43,7 @@ export class ListingPage{
         console.warn(list);
         this.list = list;
       }).then(() => {
-        if(admin && admin != ""){
+        if(admin){
           this.admin = true;
           this.adminId = admin;
         }
@@ -78,7 +78,10 @@ export class ListingPage{
 
   async changeStatus(){
     if(this.list && this.adminId != ""){
-      this.listingServices.changeStatus("" + this.list.listing_id, this.adminId);
+      this.listingServices.changeStatus("" + this.list.listing_id, this.adminId).then((response) => {
+        console.log(response);
+        this.router.navigate(['/admin', {statusChange : response}]);
+      });
     }
   }
 

@@ -5,8 +5,8 @@ import { CreateListingHandler } from './commands';
 import { ChangeStatusHandler } from './commands';
 import { ListingsModule as ListingsDataAccessModule } from '@properproperty/api/listings/data-access';
 const CommandHandlers = [CreateListingHandler, ChangeStatusHandler];
-import { GetListingsHandler } from './queries';
-const QueryHandlers = [GetListingsHandler];
+import { GetListingsHandler, GetApprovedListingsHandler } from './queries';
+const QueryHandlers = [GetListingsHandler, GetApprovedListingsHandler];
 @Module({
   imports: [
     CqrsModule, 

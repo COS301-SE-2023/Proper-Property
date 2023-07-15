@@ -19,7 +19,7 @@
             <ion-button id="approveBut" [attr.disabled]="this.list.approved ? '' : null" (click)="changeStatus()">Approve</ion-button>
           </ion-col>
           <ion-col id="rejectionCol">
-            <ion-button color="danger" id="rejectBut" (click)="changeStatus()">Reject</ion-button>
+            <ion-button color="danger" [attr.disabled]="!this.list.approved ? '' : null" id="rejectBut" (click)="changeStatus()">Reject</ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>

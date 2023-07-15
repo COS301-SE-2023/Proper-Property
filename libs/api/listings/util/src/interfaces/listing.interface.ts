@@ -1,3 +1,5 @@
+import { StatusChange } from './index';
+
 export interface Listing{
   listing_id?: string;
   user_id: string | undefined;
@@ -19,4 +21,5 @@ export interface Listing{
   let_sell: string;
   heading: string;
   approved: boolean;
+  statusChanges?: StatusChange[];
 }
