@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Select } from '@ngxs/store';
-import { Listing } from '@properproperty/api/listings/util';
+import { Listing, StatusChange } from '@properproperty/api/listings/util';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
@@ -45,8 +45,9 @@ export class AdminPage implements OnInit{
     });
 
     route.params.subscribe((params) => {
-      let time = params['time'];
-      if(time){
+      let statusChange : StatusChange = params['statusChange'];
+      console.log("Status change: " + statusChange);
+      if(statusChange.adminId){
         router.navigate(['/admin']);
       }
     });
@@ -67,9 +68,6 @@ export class AdminPage implements OnInit{
           this.nonAppListings.push(listing);
         }
       }
-
-      console.log("OnInit: " + this.appListings);
-      console.log("OnInit: " + this.nonAppListings);
     });
   }
 
