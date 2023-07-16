@@ -79,7 +79,7 @@ export class ListingPage{
   async changeStatus(){
     if(this.list && this.adminId != ""){
       this.listingServices.changeStatus("" + this.list.listing_id, this.adminId).then((response) => {
-        console.log(response);
+        console.log("Listing page: " + response);
         this.router.navigate(['/admin', {statusChange : response}]);
       });
     }

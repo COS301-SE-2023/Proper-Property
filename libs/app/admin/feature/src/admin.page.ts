@@ -29,8 +29,13 @@ export class AdminPage implements OnInit{
     this.user$.subscribe((user) => {
       this.user = user;
       this.profileServices.getUser("" + user?.uid).then((profile) => {
-        if(profile.admin){
-          this.adminLogged = true;
+        if(profile !== undefined && profile){
+          if(profile.admin){
+            this.adminLogged = true;
+          }
+          else{
+            router.navigate(['/home']);
+          }
         }
         else{
           router.navigate(['/home']);
@@ -47,7 +52,7 @@ export class AdminPage implements OnInit{
     route.params.subscribe((params) => {
       let statusChange : StatusChange = params['statusChange'];
       console.log("Status change: " + statusChange);
-      if(statusChange.adminId){
+      if(statusChange !== undefined && statusChange.adminId){
         router.navigate(['/admin']);
       }
     });
