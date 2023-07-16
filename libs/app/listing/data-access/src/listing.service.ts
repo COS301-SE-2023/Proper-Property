@@ -78,7 +78,7 @@ export class ListingsService {
       'getApprovedListings'
     )()).data;
 
-    console.log(response);
+    console.log(response.approvedListings);
 
     if(response.approvedListings.length > 0){
       return response.approvedListings;

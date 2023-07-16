@@ -36,7 +36,7 @@ export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
     ) {}
 
   async ngOnInit() {
-    await this.listingServices.getListings().then((listings) => {
+    await this.listingServices.getApprovedListings().then((listings) => {
       this.listings = listings;
     });
   }

@@ -5,7 +5,8 @@ import { GetListingsRequest,
   CreateListingResponse,
   GetListingsResponse, 
   ChangeStatusRequest, 
-  ChangeStatusResponse 
+  ChangeStatusResponse, 
+  GetApprovedListingsResponse
 } from '@properproperty/api/listings/util';
 import { updateDoc } from 'firebase/firestore';
 // import { FieldValue, FieldPath } from 'firebase-admin/firestore';
@@ -127,7 +128,7 @@ export class ListingsRepository {
     return {statusChange : {adminId : "", status : false, date : ""}};
   }
 
-  async getApprovedListings(): Promise<GetListingsResponse>{
+  async getApprovedListings(): Promise<GetApprovedListingsResponse>{
     let query = admin
     .firestore()
     .collection('listings').where("approved", "==", true);
@@ -138,8 +139,6 @@ export class ListingsRepository {
       listings.push(doc.data() as Listing);
     })
 
-    console.log(listings);
-
-    return {listings : listings};
+    return {approvedListings : listings};
   }
 }
