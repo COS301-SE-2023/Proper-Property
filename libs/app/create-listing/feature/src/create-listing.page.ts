@@ -301,7 +301,8 @@ handleAddressChange(address: string): void {
         desc: this.description,
         heading: this.heading,
         let_sell: this.listingType,
-        approved: false
+        approved: false,
+        listingDate: "" + new Date()
       }
 
       console.log(list);

@@ -36,7 +36,7 @@ export class ListingsRepository {
       query = collection.where('user_id', '==', req.userId).limit(5);
     }
     else{
-      query = collection.limit(5);
+      query = collection.limit(10);
     }
 
     const listings: Listing [] = [];

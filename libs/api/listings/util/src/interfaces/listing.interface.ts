@@ -22,4 +22,5 @@ export interface Listing{
   heading: string;
   approved: boolean;
   statusChanges?: StatusChange[];
+  listingDate: string;
 }

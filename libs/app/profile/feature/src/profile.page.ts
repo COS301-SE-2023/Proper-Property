@@ -77,7 +77,9 @@ export class ProfilePage implements OnInit {
     this.userProfile$.subscribe((profile) => {
       this.user = profile;
       if (profile) {
-        this.interests = profile.interests;
+        if(profile.interests !== undefined){
+          this.interests = profile.interests;
+        }
       }
       else {
         this.interests = {

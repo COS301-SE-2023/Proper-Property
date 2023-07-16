@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Listing, StatusChange } from '@properproperty/api/listings/util';
+import { UserProfile } from '@properproperty/api/profile/util';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
@@ -13,14 +14,13 @@ import { Observable } from 'rxjs';
   templateUrl: './admin.page.html',
   styleUrls: ['./admin.page.scss'],
 })
-export class AdminPage implements OnInit{
+export class AdminPage{
 
   @Select(AuthState.user) user$!: Observable<User | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
   private user: User | null = null;
   private userProfileListener: Unsubscribe | null = null;
   public adminLogged = false;
-
 
   nonAppListings : Listing[] = [];
   appListings : Listing[] = [];
@@ -37,9 +37,6 @@ export class AdminPage implements OnInit{
             router.navigate(['/home']);
           }
         }
-        else{
-          router.navigate(['/home']);
-        }
       });
     });
 
@@ -49,16 +46,6 @@ export class AdminPage implements OnInit{
       this.userProfileListener = listener;
     });
 
-    route.params.subscribe((params) => {
-      let statusChange : StatusChange = params['statusChange'];
-      console.log("Status change: " + statusChange);
-      if(statusChange !== undefined && statusChange.adminId){
-        router.navigate(['/admin']);
-      }
-    });
-  }
-
-  ngOnInit(){
     this.appListings = [];
     this.nonAppListings = [];
     let listings : Listing[] = [];
@@ -72,6 +59,51 @@ export class AdminPage implements OnInit{
         else if(!listing.approved){
           this.nonAppListings.push(listing);
         }
+      }
+
+      //sorting listings by date created
+      this.appListings = this.appListings.sort((a, b) => {
+        let tempA2 = a.statusChanges?.[a.statusChanges.length - 1].date ?? "";
+        let tempB2 = b.statusChanges?.[b.statusChanges.length - 1].date ?? "";
+
+        let tempA = new Date(tempA2);
+        let tempB = new Date(tempB2);
+        console.log({tempA : tempA, tempB : tempB});
+        if(tempA > tempB){
+          return -1
+        }
+        else if(tempA < tempB){
+          return 1;
+        }
+        else{
+          return 0;
+        }
+      })
+
+      this.nonAppListings = this.nonAppListings.sort((a, b) => {
+        let tempA = new Date(a.listingDate);
+        let tempB = new Date(b.listingDate);
+        console.log({tempA : tempA, tempB : tempB});
+        if(tempA > tempB){
+          console.log(-1);
+          return -1
+        }
+        else if(tempA < tempB){
+          console.log(1);
+          return 1;
+        }
+        else{
+          console.log(0);
+          return 0;
+        }
+      })
+    });
+    
+
+    route.params.subscribe((params) => {
+      let statusChange : StatusChange = params['statusChange'];
+      if(statusChange !== undefined){
+        router.navigate(['/admin']);
       }
     });
   }
