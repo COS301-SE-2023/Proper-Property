@@ -175,18 +175,8 @@
       </ion-row>
 
 
-      <ion-row>
-        <ion-col size="3" class="ion-text-center">
-          <ion-item>
-            <ion-label position="floating">Bedroom Count<span class="required-indicator"
-                *ngIf="!bedrooms">*</span></ion-label>
-
-            <ion-input type="number" id="bed" [(ngModel)]="bedrooms" required></ion-input>
-
-          </ion-item>
-        </ion-col>
-
-        <ion-col size="3" class="ion-text-center">
+      <ion-row style="width:100%;">
+        <ion-col>
           <ion-item>
             <ion-label position="floating">Bathroom Count<span class="required-indicator"
                 *ngIf="!bathrooms">*</span></ion-label>
@@ -195,10 +185,15 @@
 
           </ion-item>
         </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Bedroom Count<span class="required-indicator"
+                *ngIf="!bedrooms">*</span></ion-label>
 
-      </ion-row>
-      <ion-row>
+            <ion-input type="number" id="bed" [(ngModel)]="bedrooms" required></ion-input>
 
+          </ion-item>
+        </ion-col>
         <ion-col size="3" class="ion-text-center">
           <ion-item>
             <ion-label position="floating">Floor Size &#40; m<sup>2</sup>&#41;<span class="required-indicator"
@@ -208,6 +203,8 @@
 
           </ion-item>
         </ion-col>
+      </ion-row>
+      <ion-row>
 
         <ion-col size="3" class="ion-text-center">
           <ion-item>
