@@ -68,7 +68,6 @@ export class AdminPage{
 
         let tempA = new Date(tempA2);
         let tempB = new Date(tempB2);
-        console.log({tempA : tempA, tempB : tempB});
         if(tempA > tempB){
           return -1
         }
@@ -83,17 +82,13 @@ export class AdminPage{
       this.nonAppListings = this.nonAppListings.sort((a, b) => {
         let tempA = new Date(a.listingDate);
         let tempB = new Date(b.listingDate);
-        console.log({tempA : tempA, tempB : tempB});
         if(tempA > tempB){
-          console.log(-1);
           return -1
         }
         else if(tempA < tempB){
-          console.log(1);
           return 1;
         }
         else{
-          console.log(0);
           return 0;
         }
       })
@@ -102,7 +97,7 @@ export class AdminPage{
 
     route.params.subscribe((params) => {
       let statusChange : StatusChange = params['statusChange'];
-      if(statusChange !== undefined){
+      if(statusChange !== undefined && statusChange.adminId){
         router.navigate(['/admin']);
       }
     });

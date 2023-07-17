@@ -1,8 +1,12 @@
 import { BetaAnalyticsDataClient } from '@google-analytics/data';
 import * as fs from 'fs';
 import * as functions from 'firebase-functions';
-import path = require('path');
+import * as path from 'path';
 
+export interface GetAnalyticsDataResponse {
+  dates: Date[];
+  pageViews: number[];
+}
 
 export const getAnalyticsData = functions.region("europe-west1").https.onCall(
   async () => {
@@ -22,6 +26,9 @@ export const getAnalyticsData = functions.region("europe-west1").https.onCall(
       }],
       dimensions: [{
         name: "pagePath"
+      },
+      {
+        name: "date"
       }],
       metrics:[{
         name: "screenPageViews"
@@ -38,8 +45,32 @@ export const getAnalyticsData = functions.region("europe-west1").https.onCall(
       }
     });
 
+    // let dates : Date[] = [];
+    // let pageViews : number[] = [];
+
+    // let rows: any = response.rows ?? [];
+    // for(let i = 0; rows && i < rows.length; i++){
+    //   if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
+    //     let dimensionValue = rows[i].dimensionValues[1].value;
+    //     let year : number = Number(dimensionValue.substring(0,4));
+    //     let month : number = Number(dimensionValue.substring(4,6));
+    //     let day : number = Number(dimensionValue.substring(6,8));
+
+    //     dates[i] = new Date(year, month, day);
+    //     console.log(dates[i]);
+
+    //     let metricValue = rows[i].metricValues[0].value;
+    //     pageViews[i] = Number(metricValue);
+    //   }
+    // }
+
+    // let vals : GetAnalyticsDataResponse = {
+    //   dates: dates,
+    //   pageViews: pageViews
+    // }
+
     console.log(response.rows);
     // TODO return stuff I guess
-    return;
+    return response;
   }
 );

@@ -284,7 +284,7 @@ export class GmapsService {
       script.src =
         'https://maps.googleapis.com/maps/api/js?key=' +
         // TODO See if better way exists to hide key
-        5+'&libraries=places&language=en&region=ZA';
+        this.key +'&libraries=places&language=en&region=ZA';
       script.async = true;
       script.defer = true;
       document.body.appendChild(script);
