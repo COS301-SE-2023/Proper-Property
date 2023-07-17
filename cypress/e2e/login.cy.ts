@@ -37,7 +37,6 @@ describe('Login Page', () => {
   it('Contains Form', () => {
     cy.get('ion-list').should('be.visible');
     cy.get('ion-button').contains("Login").should('be.visible');
-    cy.get('ion-button').contains("Sign in with Google").should('be.visible');
   });
 
   it('Contains Email Input field', () => {
@@ -50,6 +49,15 @@ describe('Login Page', () => {
     cy.get('ion-input[placeholder="  Password"]')
     .find('input')
     .should('have.attr', 'type', 'password');
+  });
+
+  it('Contains Sign In With Google Option', () => {
+    cy.get('ion-button').contains(' Sign in with Google').should('be.visible');
+  });
+
+  it('Navigates to Register Page', () => {
+    cy.get('a').contains('Sign up').click();
+    cy.url().should('include', '/register');
   });
 
 
