@@ -1,4 +1,4 @@
-#full-grid{
+#full-grid {
   // background-image: url('../../assets/create-listing-background.png');
   margin-bottom: 15%;
 }
@@ -10,6 +10,15 @@
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   width: 80%;
   margin: auto;
+}
+
+#photoHeading{
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120.5%;
+  margin-left: 10%;
 }
 
 .uploaded-image {
@@ -243,4 +252,8 @@ body {
   font-size: 20px;
   color: #644bff;
   cursor: pointer;
+}
+
+.ion-container {
+  --ion-background-color: transparent;
 }
