@@ -221,7 +221,7 @@
           </ion-item>
         </ion-col>
         <ion-col>
-          <ion-list class="ion-container">
+          <ion-list class="ion-container" style="margin-top: 4.5%;">
             <ion-item>
               <ion-label class="house-text">Let</ion-label>
               <ion-toggle style="padding: 10px;" [checked]="false" (click)="changeListingType()"
@@ -233,9 +233,9 @@
         </ion-col>
       </ion-row>
 
-      <ion-row style="width: 100%;">
+      <ion-row style="width: 100%; margin-top: 1.5%;">
         <ion-col size="6">
-          <ion-label class="house-text">Add Property Features</ion-label>
+          <ion-label class="house-text">Add Property Features:</ion-label>
           <input id="feat-in" type="text" placeholder="Feature" class="addFeat"
             (keydown.enter)="addFeature()">&nbsp;<ion-button (click)="addFeature()" class="addButt">Add</ion-button><br>
           <ion-item class="ion-container" *ngFor="let feat of features,; let i = index">
@@ -249,7 +249,7 @@
             </ion-label>
           </ion-item>
         </ion-col>
-        <ion-col size="6" offset="6">
+        <ion-col size="6">
           <ion-label class="house-text">Property Description</ion-label>
           <textarea id="desc" rows="10" cols="50">{{description}}</textarea><br>
           <ion-button (click)="generateDesc()">AI Generated Description</ion-button>
