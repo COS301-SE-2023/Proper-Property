@@ -13,7 +13,7 @@
   margin: auto;
 }
 
-#photoHeading{
+#photoHeading {
   color: rgba(0, 0, 0, 0.85);
   font-size: 28px;
   font-style: normal;
@@ -258,10 +258,10 @@ body {
 
 .ion-container {
   --ion-background-color: transparent;
-  width:100%;
+  width: 100%;
 }
 
-#address{
+#address {
   border-radius: 10px;
   border: 1.5px solid #000;
   background: #FFF;
@@ -271,7 +271,7 @@ body {
   margin-bottom: 1%;
 }
 
-#feat-in{
+#feat-in {
   border-radius: 10px;
   border: 1.5px solid #000;
   background: #FFF;
@@ -279,15 +279,30 @@ body {
   width: 40%;
   margin-left: 1%;
   margin-bottom: 1%;
+  padding: 3px;
 }
 
-.container{
+.container {
   width: 100%;
 }
 
-.house-text{
+.house-text {
   color: rgb(68, 68, 68);
   font-size: 22px;
   font-style: normal;
   font-weight: 500;
+}
+
+#desc {
+  border-radius: 10px;
+  border: 1.5px solid #000;
+  background: #FFF;
+  width:100%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.addButt{
+  height: 35px;
+
 }
