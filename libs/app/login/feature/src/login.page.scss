@@ -163,6 +163,24 @@ ion-input
   margin-right: 10%;
 }
 
+.forgot
+{
+  
+  text-align: right;
+  font-size: 15px;
+  text-decoration: underline;
+  color: var(--ion-color-primary);
+}
+
+.forgot1:after
+{
+  content: 'Forgot Password?';
+}
+
+.forgot1:hover:after
+{
+  content: 'Too Bad, Buddy';
+}
 
 h3
 {
