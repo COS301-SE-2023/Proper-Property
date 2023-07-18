@@ -266,7 +266,7 @@ body {
   border: 1.5px solid #000;
   background: #FFF;
   height: 40px;
-  width: 60%;
+  width: 67%;
   margin-left: 3%;
   margin-bottom: 1%;
 }
@@ -290,7 +290,7 @@ body {
   color: rgb(68, 68, 68);
   font-size: 22px;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 #desc {
@@ -300,9 +300,25 @@ body {
   width:100%;
   margin-top: 2%;
   margin-bottom: 2%;
+  padding:2%;
 }
 
 .addButt{
   height: 35px;
+}
 
+.dropdown{
+  bottom: 0;
+  position: absolute; 
+  width: 100%; 
+  padding-bottom: 1%;
+}
+
+.house-dropdown {
+  color: rgb(68, 68, 68);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  background-color: transparent;
+  border: none;
 }
