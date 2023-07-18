@@ -54,6 +54,7 @@
     "@nx/angular": "16.4.0",
     "@nxext/ionic-angular": "^16.2.0",
     "axios": "^1.0.0",
+    "chart.js": "^4.3.0",
     "env-cmd": "^10.1.0",
     "firebase": "^9.23.0",
     "firebase-admin": "^11.9.0",

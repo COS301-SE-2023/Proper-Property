@@ -11,7 +11,6 @@ import { HostListener } from '@angular/core';
 import { httpsCallable, Functions } from '@angular/fire/functions';
 import { Router } from '@angular/router';
 import { isDevMode } from '@angular/core';
-import { GetAnalyticsDataResponse } from '@properproperty/api/core/feature';
 // import { GetUserProfileRequest, GetUserProfileResponse, UpdateUserProfileRequest, UpdateUserProfileResponse, profile } from '@properproperty/api/profile/util';
 
 @Component({
@@ -75,12 +74,7 @@ export class CoreShellComponent implements OnInit, OnDestroy{
       }
     }
 
-    let vals : GetAnalyticsDataResponse = {
-      dates: dates,
-      pageViews: pageViews
-    }
-
-    console.log(vals);
+    console.log({pageViews, dates});
     // const getUserProfile = httpsCallable<
     //   GetUserProfileRequest,
     //   GetUserProfileResponse

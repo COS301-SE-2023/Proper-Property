@@ -9,8 +9,9 @@ import { UserProfile } from '@properproperty/api/profile/util';
 import { Observable } from 'rxjs';
 // import { Unsubscribe } from '@angular/fire/firestore';
 import { Select } from '@ngxs/store';
-import { app } from 'firebase-admin';
-
+import { httpsCallable, Functions } from '@angular/fire/functions';
+import { Chart, registerables } from 'chart.js';
+import { GetAnalyticsDataRequest } from '@properproperty/api/core/feature';
 
 @Component({
   selector: 'app-listing',
@@ -26,13 +27,32 @@ export class ListingPage{
   pointsOfInterest: { photo: string | undefined, name: string }[] = [];
   admin: boolean = false;
   adminId: string = "";
+  public showAnalyticsData = true;
 
 
   price_per_sm = 0;
   lister_name = "";
   includes = false;
+  Months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
 
-  constructor(private router: Router, private route: ActivatedRoute, private listingServices : ListingsService, private userServices : UserProfileService, public gmapsService: GmapsService) {
+  constructor(private router: Router, private route: ActivatedRoute,
+    private listingServices : ListingsService,
+    private userServices : UserProfileService,
+    public gmapsService: GmapsService,
+    private functions: Functions) {
     let list_id = "";
     let admin = "";
     this.route.params.subscribe((params) => {
@@ -74,6 +94,70 @@ export class ListingPage{
       }
     });
     console.log(this.list);
+    Chart.register(...registerables);
+  }
+
+  async showAnalytics(){
+    let request : GetAnalyticsDataRequest = {listingId : this.list?.listing_id ?? ""};
+    let analyticsData : any = (await httpsCallable<GetAnalyticsDataRequest>(this.functions, 'getAnalyticsData')(request)).data;
+    if(analyticsData == null){
+      return false;
+    }
+
+    console.log(analyticsData);
+    let dates : string[] = [];
+    let pageViews : number[] = [];
+
+    let rows: any = analyticsData.rows ?? [];
+    for(let i = 0; rows && i < rows.length; i++){
+      if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
+        let dimensionValue = rows[i].dimensionValues[1].value;
+        let year : number = Number(dimensionValue.substring(0,4));
+        let month : number = Number(dimensionValue.substring(4,6));
+        let day : number = Number(dimensionValue.substring(6,8));
+        let tempDate = new Date(year, month, day)
+
+        dates[i] = tempDate.getDate() + " " + this.Months[tempDate.getMonth() - 1];
+
+        let metricValue = rows[i].metricValues[0].value;
+        pageViews[i] = Number(metricValue);
+      }
+    }
+    
+    const data = {
+      labels: dates,
+      datasets: [{
+        label: 'Page Views per Day',
+        data: pageViews,
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0,
+        options: {
+          scales: {
+            y: {
+              ticks:{
+                stepSize: 10,
+              }
+            }
+          }
+        }
+      }]
+    };
+
+    let canvas = document.getElementById('lineGraph');
+
+    if(canvas){
+      console.log(true);
+      new Chart(canvas as HTMLCanvasElement, {
+        type: 'line',
+        data: data,
+      });
+    }
+    else{
+      console.log('boo');
+    }
+
+    return true;
   }
 
   async changeStatus(){
