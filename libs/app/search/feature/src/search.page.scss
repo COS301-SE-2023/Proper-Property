@@ -1,18 +1,42 @@
 .sortFilter
 {
   position: absolute;
-  top: 60px;
+  top: 10%;
   width: 100%;
 }
 
 .search-container
 {
-
+  width: 100%;
 }
+
+.dropdown
+{
+  position: absolute;
+  width: 100%;
+}
+
+.dropbtn
+{
+  position: absolute;
+  width: 80%;
+  font-size: 20px;
+  
+  height: 70%;
+  border-radius: 25px;
+}
+
+.butDown
+{
+  --background: rgba(226, 226, 226, 0.7);
+  --border-radius: 25px;
+}
+
+
 #address
 {
   position: relative;
-  width: 50%;
+  width: 85%;
   height: 35px;
   left: 20px;
   border-radius: 20px;
@@ -30,9 +54,19 @@
   top: -6px;
 }
 
+
 .sandf
 {
-  background: red;
+  position: absolute;
+  height: 20px;
+  top: 15%;
+  width: 100%;
+  display: none;
+}
+
+.show
+{
+  display:inline-block;
 }
 
 

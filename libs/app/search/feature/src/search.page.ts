@@ -356,6 +356,22 @@ toggleColor() {
 
 Templistings: listing[] = []
 
+dropDown(){
+
+  const sec = document.getElementById("sandf") as HTMLInputElement;
+  const sec2 = document.getElementById("iconic") as HTMLInputElement;
+  if (sec) {
+    sec.classList.toggle("show");
+    if(sec2)
+    {
+      sec2.name = "chevron-up-outline";
+    }
+  }
+
+
+
+}
+
   async searchProperties() {
   // const filteredListings = this.listings.filter(listing => {
   //   const addressMatch = listing.address.toLowerCase().includes(this.searchQuery.toLowerCase());
