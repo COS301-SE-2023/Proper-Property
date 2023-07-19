@@ -203,16 +203,14 @@ export class ListingPage{
   
     // Iterate over the results and extract the icons and names of the places
     for (const result of results) {
-      const photo = result.photos?.[0]?.getUrl() || '';
-      const name = result.name||'';
-  
-      this.pointsOfInterest.push({ photo , name });
+      if(result.photos && result.photos.length > 0 && result.name && result.types){
+        // for(let types of result.types){
+          this.pointsOfInterest.push({ photo : result.photos[0].getUrl(), name : result.name });
+        // }
+      }
     }
   }
-  
 
-
-  
   swiperReady() {
     console.log(this.swiperRef?.nativeElement.swiper);
     this.swiper = this.swiperRef?.nativeElement.swiper;
