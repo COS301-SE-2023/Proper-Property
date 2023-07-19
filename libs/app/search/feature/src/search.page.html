@@ -1,21 +1,18 @@
-  <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Property Listing App
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-  <ion-segment [(ngModel)]="activeTab" (ionChange)="changeTab()">
-    <ion-segment-button value="buying">
-      <ion-label>buy</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="renting">
-      <ion-label>Rent</ion-label>
-    </ion-segment-button>
-  </ion-segment>
 
+  <section class="sortFilter">
+    <div [ngSwitch]="activeTab">
+      <div class="search-container">
+        <input type="text" id="address" [(ngModel)]="searchQuery"   placeholder="    Property Location Search">
+        <ion-button class="search-button" (click)="searchProperties()">
+        <ion-icon name="search"> search</ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </section>
+
+</ion-content>
+<!-- 
   <div [ngSwitch]="activeTab">
 
     <div class="search-container">
@@ -49,7 +46,7 @@
       </select>
 
     </ion-item>
-    
+     -->
     <!-- <ion-item class="filter">
       <ion-label>Min Price</ion-label>
       <ion-select [(ngModel)]="selectedMinPrice" (ionChange)="filterProperties()">
@@ -69,7 +66,7 @@
         <ion-select-option value="5000">$5000</ion-select-option>
       </ion-select>
     </ion-item> -->
-    <ion-item class="filter">
+    <!-- <ion-item class="filter">
       <label for="maxPrice">Max Price</label>
       <select id="maxPrice" [(ngModel)]="selectedMaxPrice" (ionChange)="filterProperties()">
         <option value="0">R 0</option>
@@ -101,10 +98,10 @@
         {{ showAdditionalFilters ? 'Less Filters' : 'More Filters' }}
       </ion-button>
     </ion-item>
-    
+     -->
 
     <!-- Additional Filters -->
-    <div *ngIf="showAdditionalFilters">
+    <!-- <div *ngIf="showAdditionalFilters">
       <ion-item>
         <ion-label>Bathrooms</ion-label>
         <ion-select [(ngModel)]="selectedBathrooms" (ionChange)="filterProperties()">
@@ -145,6 +142,15 @@
       
     </div>
 
+    <ion-segment [(ngModel)]="activeTab" (ionChange)="changeTab()">
+      <ion-segment-button value="buying">
+        <ion-label>buy</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="renting">
+        <ion-label>Rent</ion-label>
+      </ion-segment-button>
+    </ion-segment> -->
+
 
 
     <!-- Property listings here -->
@@ -159,7 +165,7 @@
         {{ property.let_sell }}
       </ion-item>
     </ion-list> -->
-  </div>
+  <!-- </div>
 
   
 
@@ -203,4 +209,4 @@
     <div slot="fixed" class="map"  #map></div>
   </div>
 
-</ion-content>
+</ion-content> -->
