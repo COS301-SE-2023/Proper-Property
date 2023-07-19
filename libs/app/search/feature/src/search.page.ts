@@ -356,16 +356,27 @@ toggleColor() {
 
 Templistings: listing[] = []
 
+clicked = false;
 dropDown(){
 
   const sec = document.getElementById("sandf") as HTMLInputElement;
   const sec2 = document.getElementById("iconic") as HTMLInputElement;
-  if (sec) {
+  if (sec && !this.clicked) {
     sec.classList.toggle("show");
     if(sec2)
     {
       sec2.name = "chevron-up-outline";
     }
+    this.clicked=true;
+  }
+  else
+  {
+    sec.classList.remove("show");
+    if(sec2)
+    {
+      sec2.name = "chevron-down-outline";
+    }
+    this.clicked=false;
   }
 
 
