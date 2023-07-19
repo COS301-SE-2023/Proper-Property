@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { Listing } from '@properproperty/api/listings/util';
 import Swiper from 'swiper';
@@ -6,12 +6,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 // import { Unsubscribe } from '@angular/fire/firestore';
 import { Select } from '@ngxs/store';
 import { httpsCallable, Functions } from '@angular/fire/functions';
 import { Chart, registerables } from 'chart.js';
 import { GetAnalyticsDataRequest } from '@properproperty/api/core/feature';
+import { AuthState } from '@properproperty/app/auth/data-access';
+import { Unsubscribe, User } from 'firebase/auth';
 
 @Component({
   selector: 'app-listing',
@@ -19,16 +21,19 @@ import { GetAnalyticsDataRequest } from '@properproperty/api/core/feature';
   styleUrls: ['./listing.page.scss'],
 })
 export class ListingPage{
-  @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
-  user : UserProfile | null = null;
+  @Select(AuthState.user) user$!: Observable<User | null>;
+  @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
+  private user: User | null = null;
+  private userProfile : UserProfile | null = null;
+  private userProfileListener: Unsubscribe | null = null;
   @ViewChild('swiper') swiperRef?: ElementRef;
   swiper?: Swiper;
   list : Listing | null = null;
+  listerId : string = "";
   pointsOfInterest: { photo: string | undefined, name: string }[] = [];
   admin: boolean = false;
   adminId: string = "";
-  public showAnalyticsData = true;
-
+  public showAnalyticsData$ : Observable<boolean> = of(false);
 
   price_per_sm = 0;
   lister_name = "";
@@ -48,11 +53,13 @@ export class ListingPage{
     "December"
   ];
 
-  constructor(private router: Router, private route: ActivatedRoute,
+  constructor(private router: Router,
+    private route: ActivatedRoute,
     private listingServices : ListingsService,
     private userServices : UserProfileService,
     public gmapsService: GmapsService,
-    private functions: Functions) {
+    private functions: Functions,
+    private profileServices : UserProfileService) {
     let list_id = "";
     let admin = "";
     this.route.params.subscribe((params) => {
@@ -75,6 +82,14 @@ export class ListingPage{
           console.log(user);
           this.lister_name = user.firstName + " " + user.lastName;
         });
+
+        this.user$.subscribe((user) => {
+          this.user = user;
+          if(user && this.list && this.user?.uid == this.list?.user_id){
+            this.showAnalyticsData$ = of(true);
+          }
+        });
+
         this.getNearbyPointsOfInterest();
       });
     });
@@ -85,26 +100,22 @@ export class ListingPage{
     this.monthlyPayment = 0;
     this.totalOnceOffCosts = 0;
     this.minGrossMonthlyIncome = 0;
-    this.userProfile$.subscribe((user) => {
-      this.user = user;
-      if(this.user && this.list){
-        console.log(this.user.listings);
-        console.log(this.list.listing_id);
-        this.includes = this.user.listings?.includes("" + this.list.listing_id) ?? false;
-      }
-    });
-    console.log(this.list);
     Chart.register(...registerables);
+
+    // Update listener whenever is changes such that it can be unsubscribed from
+    // when the window is unloaded
+    this.userProfileListener$.subscribe((listener) => {
+      this.userProfileListener = listener;
+    });
   }
 
   async showAnalytics(){
     let request : GetAnalyticsDataRequest = {listingId : this.list?.listing_id ?? ""};
     let analyticsData : any = (await httpsCallable<GetAnalyticsDataRequest>(this.functions, 'getAnalyticsData')(request)).data;
     if(analyticsData == null){
-      return false;
+      return;
     }
 
-    console.log(analyticsData);
     let dates : string[] = [];
     let pageViews : number[] = [];
 
@@ -123,6 +134,9 @@ export class ListingPage{
         pageViews[i] = Number(metricValue);
       }
     }
+
+    dates = dates.reverse();
+    pageViews = pageViews.reverse();
     
     const data = {
       labels: dates,
@@ -147,17 +161,13 @@ export class ListingPage{
     let canvas = document.getElementById('lineGraph');
 
     if(canvas){
-      console.log(true);
       new Chart(canvas as HTMLCanvasElement, {
         type: 'line',
         data: data,
       });
     }
-    else{
-      console.log('boo');
-    }
 
-    return true;
+    return;
   }
 
   async changeStatus(){

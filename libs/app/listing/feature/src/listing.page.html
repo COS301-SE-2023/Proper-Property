@@ -247,12 +247,10 @@
   
         </ion-card>
       </ion-row>
-        <ion-row>
-          <ion-button (click)="showAnalytics()">Show Analytics</ion-button><br>
-        </ion-row>
-        <ion-row>
-          <canvas id="lineGraph"></canvas>
-        </ion-row>
-      </ion-grid>
-    </ion-content>
-  </ion-template>
+      <ion-row *ngIf="(showAnalyticsData$ | async)">
+        <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
+        <canvas id="lineGraph"></canvas>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+</ion-template>
