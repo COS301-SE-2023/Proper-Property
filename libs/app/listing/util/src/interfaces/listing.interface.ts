@@ -18,4 +18,5 @@ export interface Listing{
   desc: string;
   let_sell: string;
   heading: string;
+  quality_rating?: number;
 }
