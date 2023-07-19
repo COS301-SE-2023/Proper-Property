@@ -6,21 +6,13 @@ import { Injectable, Inject } from '@angular/core';
 // import { environment } from 'src/environments/environment';
 import { API_KEY_TOKEN } from '@properproperty/app/google-maps/util';
 
-
 @Injectable({
   providedIn: 'root'
 })
-
-
-
 export class GmapsService {
-
   constructor(@Inject(API_KEY_TOKEN) private key: string) { }
-
   geocoder!: google.maps.Geocoder;
-
   autocompleteService!: google.maps.places.AutocompleteService;
-
   nearby!: google.maps.places.PlacesService;
 
   //for create-listing
@@ -312,8 +304,7 @@ export class GmapsService {
       return new Promise<google.maps.places.PlaceResult[]>((resolve, reject) => {
         const request = {
           location: new maps.LatLng(latitude, longitude),
-          radius: 1000, // Specify the radius within which to search for nearby places (in meters)
-          type: ['school', 'hospital'] // Specify the types of places to search for
+          radius: 2500, // Specify the radius within which to search for nearby places (in meters)
         };
 
         service.nearbySearch(request, (results: google.maps.places.PlaceResult[], status: google.maps.places.PlacesServiceStatus) => {

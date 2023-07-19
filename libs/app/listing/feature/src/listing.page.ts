@@ -200,15 +200,45 @@ export class ListingPage{
     console.log(results);
     // Clear the existing points of interest
     this.pointsOfInterest = [];
-  
+    let wantedTypes : string[] = [
+      "airport",
+      "school",
+      "liquor_store",
+      "atm", // so I can pay for my liquor
+      "bar",
+      "casino",
+      "pharmacy", //for the hangover
+      "car_repair", // to deal with the consequences of my actions
+      "hospital", // for the liver poisoning I will have
+      "cemetary", // consequences of my actions
+      "laundry", // to clean up the mess
+      "bakery", // for those late night munchies
+      "bank", // to plead for a loan for liquour  
+      "bus_station",
+      "cafe",
+      "church",
+      "drugstore",
+      "gym",
+      "park",
+      "shopping_mall",
+      "tourist_attraction",
+      "train_station",
+      "university"
+    ]
+
     // Iterate over the results and extract the icons and names of the places
     for (const result of results) {
       if(result.photos && result.photos.length > 0 && result.name && result.types){
-        // for(let types of result.types){
-          this.pointsOfInterest.push({ photo : result.photos[0].getUrl(), name : result.name });
-        // }
+        for(let type of result.types){
+          if(wantedTypes.includes(type)){
+            this.pointsOfInterest.push({ photo : result.photos[0].getUrl(), name : result.name });
+            break;
+          }
+        }
       }
     }
+
+    console.log("Accepted: " + this.pointsOfInterest);
   }
 
   swiperReady() {
