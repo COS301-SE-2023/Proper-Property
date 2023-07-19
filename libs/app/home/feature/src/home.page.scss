@@ -98,6 +98,7 @@
       opacity: 0;
       transform: translateX(100%);
     }
+
     100% {
       opacity: 1;
       transform: translateX(0);
@@ -258,4 +259,12 @@
     margin: .3rem 0 1rem;
   }
 
+}
+
+#footer {
+  height: 100px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  background-image: url('/apps/app/src/assets/footer.svg');
 }

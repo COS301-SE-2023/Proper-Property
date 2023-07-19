@@ -1,33 +1,82 @@
 .filter {
   border-radius: 10px;
   //make it smaller so that 4 can fit in 1 line
-  width: 24%;
   margin: 0 5px;
   //make all of them fit in 1 line
   display: inline-block;
+  --ion-background-color: transparent;
+  border-bottom: none;
+}
+
+#filter-container {
+  border-radius: 30px;
+  border: 1px solid #000;
+  background: rgba(13, 174, 79, 0.40);
+  width: 92%;
+  margin-left: 4%;
+  height: auto;
 }
 
 .filter-text {
   color: rgb(68, 68, 68);
-  font-size: 20px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 400;
 }
 
+#additional-features {
+  width: 88%;
+  margin-left: 6%;
+  height: auto;
+  border-radius: 0px 0px 30px 30px;
+  border-right: 2px solid #0DAE4F;
+  border-bottom: 2px solid #0DAE4F;
+  border-left: 2px solid #0DAE4F;
+  background: #FFF;
+  padding: 10px;
+}
+
 #address {
-  border-radius: 10px;
+  border-radius: 30px;
   border: 1.5px solid #000;
   background: #FFF;
   height: 40px;
-  width: 60%;
-  margin-left: 3%;
+  width: 92%;
+  margin-left: 4%;
   margin-bottom: 1%;
-  padding: 5px;
+  padding-left: 18px;
+  height: 50px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
 }
 
-.btnFilters {
-  width: 15%;
+.dropdown {
+  color: rgb(68, 68, 68);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  background-color: transparent;
+  border: none;
+}
 
+.filter-button {
+  width: 90%;
+  height: 80%;
+  margin-right: 10%;
+  --border-radius: 30px;
+  margin-top: 1%;
+}
+
+.search-button {
+  width: 90%;
+  height: 70%;
+  margin-right: 10%;
+  color: white;
+  border: none;
+  --border-radius: 30px;
+  cursor: pointer;
+  margin-top: 1%;
 }
 
 .link {
@@ -155,15 +204,6 @@ ion-card {
   align-items: center;
   justify-content: space-between;
   margin: 10px;
-}
-
-.search-button {
-  background-color: #0DAE4F;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
 }
 
 //end of scss
