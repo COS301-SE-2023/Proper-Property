@@ -97,7 +97,7 @@ export class AdminPage{
 
     route.params.subscribe((params) => {
       let statusChange : StatusChange = params['statusChange'];
-      if(statusChange !== undefined && statusChange.adminId){
+      if(statusChange && statusChange.adminId){
         router.navigate(['/admin']);
       }
     });
