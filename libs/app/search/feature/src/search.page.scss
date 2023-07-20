@@ -30,7 +30,19 @@
 {
   --background: rgba(226, 226, 226, 0.7);
   --border-radius: 25px;
+  --color: var(--ion-color-primary-contrast);
 }
+
+.butDown ion-icon
+{
+  --color: red !important;
+}
+
+.butDown:hover
+{
+  --background: var(--ion-color-primary)
+}
+
 
 
 #address
@@ -59,11 +71,15 @@
 {
   position: absolute;
   height: 20px;
-  top: 15%;
+  top: 18%;
   width: 100%;
   display: none;
 }
 
+.Amenities
+{
+   text-align: center;
+}
 .show
 {
   display:inline-block;
@@ -124,7 +140,7 @@
 
 .slides
 {
-  top: 220px;
+  top: 338px;
   position: absolute;
   height: 9px;
   width: 50%;
@@ -151,7 +167,7 @@
 .theranges input
 {
   position: absolute;
-  top: 43px;
+  top: 42px;
   height: 8px;
   width: 100%;
   background: none;
