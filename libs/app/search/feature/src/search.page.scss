@@ -70,19 +70,20 @@
 }
 
 
-.filter {
-  //make it smaller so that 4 can fit in 1 line
-  width: 90%;
+// .filter {
+//   //make it smaller so that 4 can fit in 1 line
+//   width: 90%;
   
-  //make all of them fit in 1 line
+//   //make all of them fit in 1 line
 
-}
+// }
 
 .wrapper
 {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 120px;
 
 }
 
@@ -125,12 +126,57 @@
 {
   top: 220px;
   position: absolute;
-  height: 8px;
+  height: 9px;
   width: 50%;
   border-radius: 5px;
-  background: rgb(168, 168, 168);
+  background: rgb(204, 204, 204);
 }
 
+.slides .bar
+{
+  height: 8px;
+  left: 25%;
+  right: 25%;
+  position: absolute ;
+  border-radius: 5px;
+  background: var(--ion-color-primary);
+}
+
+.theranges
+{
+  position: absolute;
+  width: 50%;
+}
+
+.theranges input
+{
+  position: absolute;
+  top: 43px;
+  height: 8px;
+  width: 100%;
+  background: none;
+  pointer-events: none;
+  -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb{
+  height:17px;
+  width: 17px;
+  pointer-events: auto;
+  border-radius: 50%;
+  -webkit-appearance: none;
+  background: var(--ion-color-primary);
+}
+
+input[type="range"]::-moz-range-thumb{
+  height:17px;
+  width: 17px;
+  pointer-events: auto;
+  border-radius: 50%;
+  -moz-appearance: none;
+  border: none;
+  background: var(--ion-color-primary);
+}
 // .btnFilters {
 //   width: 15%;
  
