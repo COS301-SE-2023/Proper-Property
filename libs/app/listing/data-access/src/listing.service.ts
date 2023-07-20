@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Listing, CreateListingRequest, CreateListingResponse, GetListingsRequest, GetListingsResponse } from '@properproperty/api/listings/util';
+import { Listing, CreateListingRequest, CreateListingResponse, GetListingsRequest, GetListingsResponse, ChangeStatusResponse, ChangeStatusRequest, GetApprovedListingsResponse } from '@properproperty/api/listings/util';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
 import { Storage, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
@@ -69,6 +69,22 @@ export class ListingsService {
    
   }
 
+  async getApprovedListings(){
+    const response = (await httpsCallable<
+      {},
+      GetApprovedListingsResponse
+    >(
+      this.functions, 
+      'getApprovedListings'
+    )()).data;
+
+    if(response.approvedListings.length > 0){
+      return response.approvedListings;
+    }
+
+    return [];
+  }
+
   async getListing(listing_id : string){
     const response: GetListingsResponse = (await httpsCallable<
       GetListingsRequest,
@@ -81,5 +97,17 @@ export class ListingsService {
       return response.listings[0];
     }
     return null;
+  }
+
+  async changeStatus(listingId : string, admin : string){
+    const response: ChangeStatusResponse = (await httpsCallable<
+      ChangeStatusRequest,
+      ChangeStatusResponse
+    >(
+      this.functions,
+      'changeStatus'
+    )({listingId : listingId, adminId : admin})).data;
+
+    return response;
   }
 }

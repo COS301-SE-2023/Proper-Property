@@ -223,3 +223,26 @@
     font-size: 12px;
     text-align: center;
   }
+
+  #approvalBox{
+    width: 100%;
+    outline: 1px solid red;
+  }
+
+  #approvalCol{
+    outline: 1px solid red;
+    text-align: center;
+  }
+
+  #rejectionCol{
+    outline: 1px solid red;
+    text-align: center;
+  }
+
+  #rejectBut{
+    width: 100%;
+  }
+
+  #approveBut{
+    width: 100%;
+  }

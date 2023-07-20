@@ -52,9 +52,29 @@ export class CoreShellComponent implements OnInit, OnDestroy{
   }
 
   async test() {// very duct tape, much jank. 10/10
+
+    if (isDevMode()) {
     alert ("OI");
-    const test = await httpsCallable(this.functions, 'getAnalyticsData')();
-    console.log(test);
+    const test : any = (await httpsCallable(this.functions, 'getAnalyticsData')()).data;
+    let dates : Date[] = [];
+    let pageViews : number[] = [];
+
+    let rows: any = test.rows ?? [];
+    for(let i = 0; rows && i < rows.length; i++){
+      if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
+        let dimensionValue = rows[i].dimensionValues[1].value;
+        let year : number = Number(dimensionValue.substring(0,4));
+        let month : number = Number(dimensionValue.substring(4,6));
+        let day : number = Number(dimensionValue.substring(6,8));
+
+        dates[i] = new Date(year, month, day);
+
+        let metricValue = rows[i].metricValues[0].value;
+        pageViews[i] = Number(metricValue);
+      }
+    }
+
+    console.log({pageViews, dates});
     // const getUserProfile = httpsCallable<
     //   GetUserProfileRequest,
     //   GetUserProfileResponse
@@ -78,5 +98,6 @@ export class CoreShellComponent implements OnInit, OnDestroy{
     //   updateResponse = (await updateUserProfile({user: profile})).data;
     //   console.warn(updateResponse);
     // }
+    }
   }
 }

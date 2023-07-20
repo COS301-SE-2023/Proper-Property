@@ -6,7 +6,7 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, Vie
 import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
-import { Listing } from '@properproperty/app/listing/util';
+import { Listing } from '@properproperty/api/listings/util';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { User } from '@angular/fire/auth';
 import { Select } from '@ngxs/store';

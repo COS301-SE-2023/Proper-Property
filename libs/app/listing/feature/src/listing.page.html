@@ -12,6 +12,18 @@
   
   
   <ion-content [fullscreen]="true">
+    <div *ngIf="admin" id="approvalBox">
+      <ion-grid>
+        <ion-row>
+          <ion-col id="approvalCol">
+            <ion-button id="approveBut" [attr.disabled]="this.list.approved ? '' : null" (click)="changeStatus()">Approve</ion-button>
+          </ion-col>
+          <ion-col id="rejectionCol">
+            <ion-button color="danger" [attr.disabled]="!this.list.approved ? '' : null" id="rejectBut" (click)="changeStatus()">Reject</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
     <div class="swiper-container-wrapper">
       <ion-buttons slot="start" class="swiper-button1" #one>
         <ion-button style="height:100px;" (click)="goPrev()" #one>
@@ -129,10 +141,7 @@
                     </ion-row>
                   </ion-grid>
                 </ion-card-content>
-                
-                
-                
-                
+                  
               </ion-card-header>
             </ion-card>
           </ion-row>
@@ -238,12 +247,10 @@
   
         </ion-card>
       </ion-row>
-        <ion-template *ngIf="includes">
-          <script>alert("You")</script>
-          <ion-row>
-          <p>Your listing</p>
-        </ion-row>
-      </ion-template>
+      <ion-row *ngIf="(showAnalyticsData$ | async)">
+        <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
+        <canvas id="lineGraph"></canvas>
+      </ion-row>
     </ion-grid>
   </ion-content>
-  </ion-template>
+</ion-template>

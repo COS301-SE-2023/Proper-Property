@@ -20,7 +20,8 @@ export class CreateProfileHandler implements ICommandHandler<CreateProfileComman
         accessible: 50,
         openConcept: 50,
         ecoWarrior: 50
-      }
+      },
+      admin: false
     };
     this.profileRepo.createProfile(temp);
   }

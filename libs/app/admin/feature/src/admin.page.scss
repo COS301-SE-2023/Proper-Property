@@ -1,0 +1,64 @@
+#notApprovedHeadCol{
+  outline: 1px solid black;
+}
+
+#notApprovedHead{
+  width: 100%;
+  text-align: center;
+}
+
+#notApprovedBodyCol{
+  width: 50%;
+  outline: 1px solid red;
+}
+
+#approvedHeadCol{
+  outline: 1px solid black;
+}
+
+#approvedHead{
+  width: 100%;
+  text-align: center;
+}
+
+#approvedBodyCol{
+  width: 50%;
+  outline: 1px solid blue;
+}
+
+//make the img in ion-card-header smaller
+ion-card-header img {
+  width: 200px;
+  height: 130px;
+  //rounded edges
+  border-radius: 10px;
+}
+
+//Make the ion-card-title in  ion-card-header to the right of ion-card-header img
+ion-card-header ion-card-title {
+  margin-left: 220px;
+  //move ths up
+    margin-top: -130px;
+}
+
+ion-card-header ion-card-subtitle {
+    margin-left: 220px;
+  }
+
+ion-card ion-card-content {
+    margin-left: 220px;
+  }
+
+//make the ion-card take only half of the page
+  ion-card {
+      width: 90%;
+      margin-left: 2%;
+      margin-top: 10px;
+      border-radius: 10px;
+  }
+
+  #house_details img {
+    //set image size
+    width: 15px;
+    height: 15px;
+  }

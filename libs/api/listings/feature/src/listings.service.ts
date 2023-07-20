@@ -7,6 +7,11 @@ import {
   GetListingsRequest,
   GetListingsResponse,
   GetListingsQuery,
+  ChangeStatusRequest,
+  ChangeStatusResponse,
+  ChangeStatusCommand,
+  GetApprovedListingsResponse,
+  GetApprovedListingsQuery
 } from '@properproperty/api/listings/util';
 
 @Injectable()
@@ -24,5 +29,12 @@ export class ListingsService {
     req: CreateListingRequest
   ): Promise<CreateListingResponse> {
     return this.commandBus.execute(new CreateListingCommand(req.listing));
+  }
+
+  async changeStatus(req: ChangeStatusRequest): Promise<ChangeStatusResponse>{
+    return this.commandBus.execute(new ChangeStatusCommand(req));
+  }
+  async getApprovedListings(): Promise<GetApprovedListingsResponse>{
+    return this.queryBus.execute(new GetApprovedListingsQuery());
   }
 }

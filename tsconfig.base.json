@@ -36,6 +36,13 @@
       "@properproperty/api/profile/util": [
         "libs/api/profile/util/src/index.ts"
       ],
+      "@properproperty/app/admin/data-access": [
+        "libs/app/admin/data-access/src/index.ts"
+      ],
+      "@properproperty/app/admin/feature": [
+        "libs/app/admin/feature/src/index.ts"
+      ],
+      "@properproperty/app/admin/util": ["libs/app/admin/util/src/index.ts"],
       "@properproperty/app/auth/data-access": [
         "libs/app/auth/data-access/src/index.ts"
       ],

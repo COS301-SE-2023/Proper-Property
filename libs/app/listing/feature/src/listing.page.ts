@@ -1,15 +1,19 @@
-import { Component, ElementRef, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { Listing } from '@properproperty/app/listing/util';
+import { Listing } from '@properproperty/api/listings/util';
 import Swiper from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 // import { Unsubscribe } from '@angular/fire/firestore';
 import { Select } from '@ngxs/store';
-
+import { httpsCallable, Functions } from '@angular/fire/functions';
+import { Chart, registerables } from 'chart.js';
+import { GetAnalyticsDataRequest } from '@properproperty/api/core/feature';
+import { AuthState } from '@properproperty/app/auth/data-access';
+import { Unsubscribe, User } from 'firebase/auth';
 
 @Component({
   selector: 'app-listing',
@@ -17,27 +21,59 @@ import { Select } from '@ngxs/store';
   styleUrls: ['./listing.page.scss'],
 })
 export class ListingPage{
-  @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
-  user : UserProfile | null = null;
+  @Select(AuthState.user) user$!: Observable<User | null>;
+  @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
+  private user: User | null = null;
+  private userProfile : UserProfile | null = null;
+  private userProfileListener: Unsubscribe | null = null;
   @ViewChild('swiper') swiperRef?: ElementRef;
   swiper?: Swiper;
   list : Listing | null = null;
+  listerId : string = "";
   pointsOfInterest: { photo: string | undefined, name: string }[] = [];
-
+  admin: boolean = false;
+  adminId: string = "";
+  public showAnalyticsData$ : Observable<boolean> = of(false);
 
   price_per_sm = 0;
   lister_name = "";
   includes = false;
+  Months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
 
-  constructor(private router: Router, private route: ActivatedRoute, private listingServices : ListingsService, private userServices : UserProfileService, public gmapsService: GmapsService) {
+  constructor(private router: Router,
+    private route: ActivatedRoute,
+    private listingServices : ListingsService,
+    private userServices : UserProfileService,
+    public gmapsService: GmapsService,
+    private functions: Functions,
+    private profileServices : UserProfileService) {
     let list_id = "";
+    let admin = "";
     this.route.params.subscribe((params) => {
       console.warn(params); 
       list_id = params['list'];
+      admin = params['admin'];
       this.listingServices.getListing(list_id).then((list) => {
         console.warn(list);
         this.list = list;
       }).then(() => {
+        if(admin){
+          this.admin = true;
+          this.adminId = admin;
+        }
         // TODO
         console.log(this.list);
         this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
@@ -46,6 +82,14 @@ export class ListingPage{
           console.log(user);
           this.lister_name = user.firstName + " " + user.lastName;
         });
+
+        this.user$.subscribe((user) => {
+          this.user = user;
+          if(user && this.list && this.user?.uid == this.list?.user_id){
+            this.showAnalyticsData$ = of(true);
+          }
+        });
+
         this.getNearbyPointsOfInterest();
       });
     });
@@ -56,15 +100,83 @@ export class ListingPage{
     this.monthlyPayment = 0;
     this.totalOnceOffCosts = 0;
     this.minGrossMonthlyIncome = 0;
-    this.userProfile$.subscribe((user) => {
-      this.user = user;
-      if(this.user && this.list){
-        console.log(this.user.listings);
-        console.log(this.list.listing_id);
-        this.includes = this.user.listings?.includes("" + this.list.listing_id) ?? false;
-      }
+    Chart.register(...registerables);
+
+    // Update listener whenever is changes such that it can be unsubscribed from
+    // when the window is unloaded
+    this.userProfileListener$.subscribe((listener) => {
+      this.userProfileListener = listener;
     });
-    console.log(this.list);
+  }
+
+  async showAnalytics(){
+    let request : GetAnalyticsDataRequest = {listingId : this.list?.listing_id ?? ""};
+    let analyticsData : any = (await httpsCallable<GetAnalyticsDataRequest>(this.functions, 'getAnalyticsData')(request)).data;
+    if(analyticsData == null){
+      return;
+    }
+
+    let dates : string[] = [];
+    let pageViews : number[] = [];
+
+    let rows: any = analyticsData.rows ?? [];
+    for(let i = 0; rows && i < rows.length; i++){
+      if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
+        let dimensionValue = rows[i].dimensionValues[1].value;
+        let year : number = Number(dimensionValue.substring(0,4));
+        let month : number = Number(dimensionValue.substring(4,6));
+        let day : number = Number(dimensionValue.substring(6,8));
+        let tempDate = new Date(year, month, day)
+
+        dates[i] = tempDate.getDate() + " " + this.Months[tempDate.getMonth() - 1];
+
+        let metricValue = rows[i].metricValues[0].value;
+        pageViews[i] = Number(metricValue);
+      }
+    }
+
+    dates = dates.reverse();
+    pageViews = pageViews.reverse();
+    
+    const data = {
+      labels: dates,
+      datasets: [{
+        label: 'Page Views per Day',
+        data: pageViews,
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0,
+        options: {
+          scales: {
+            y: {
+              ticks:{
+                stepSize: 10,
+              }
+            }
+          }
+        }
+      }]
+    };
+
+    let canvas = document.getElementById('lineGraph');
+
+    if(canvas){
+      new Chart(canvas as HTMLCanvasElement, {
+        type: 'line',
+        data: data,
+      });
+    }
+
+    return;
+  }
+
+  async changeStatus(){
+    if(this.list && this.adminId != ""){
+      this.listingServices.changeStatus("" + this.list.listing_id, this.adminId).then((response) => {
+        console.log("Listing page: " + response);
+        this.router.navigate(['/admin', {statusChange : response}]);
+      });
+    }
   }
 
   async getNearbyPointsOfInterest() {
@@ -88,19 +200,47 @@ export class ListingPage{
     console.log(results);
     // Clear the existing points of interest
     this.pointsOfInterest = [];
-  
+    let wantedTypes : string[] = [
+      "airport",
+      "school",
+      "liquor_store",
+      "atm", // so I can pay for my liquor
+      "bar",
+      "casino",
+      "pharmacy", //for the hangover
+      "car_repair", // to deal with the consequences of my actions
+      "hospital", // for the liver poisoning I will have
+      "cemetary", // consequences of my actions
+      "laundry", // to clean up the mess
+      "bakery", // for those late night munchies
+      "bank", // to plead for a loan for liquour  
+      "bus_station",
+      "cafe",
+      "church",
+      "drugstore",
+      "gym",
+      "park",
+      "shopping_mall",
+      "tourist_attraction",
+      "train_station",
+      "university"
+    ]
+
     // Iterate over the results and extract the icons and names of the places
     for (const result of results) {
-      const photo = result.photos?.[0]?.getUrl() || '';
-      const name = result.name||'';
-  
-      this.pointsOfInterest.push({ photo , name });
+      if(result.photos && result.photos.length > 0 && result.name && result.types){
+        for(let type of result.types){
+          if(wantedTypes.includes(type)){
+            this.pointsOfInterest.push({ photo : result.photos[0].getUrl(), name : result.name });
+            break;
+          }
+        }
+      }
     }
+
+    console.log("Accepted: " + this.pointsOfInterest);
   }
-  
 
-
-  
   swiperReady() {
     console.log(this.swiperRef?.nativeElement.swiper);
     this.swiper = this.swiperRef?.nativeElement.swiper;

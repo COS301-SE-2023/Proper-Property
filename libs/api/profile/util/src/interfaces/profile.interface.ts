@@ -6,5 +6,6 @@ export interface UserProfile{
   lastName?: string;
   email?: string;
   listings?: string[];
-  interests: Interests; 
+  interests: Interests;
+  admin?: boolean;
 }
