@@ -347,5 +347,13 @@ getLatLongFromAddress(address: string): Promise<{ latitude: number; longitude: n
   });
 }
   
+getBoundsFromLatLng(latitude: number, longitude: number): google.maps.LatLngBounds {
+  const bounds = new google.maps.LatLngBounds();
+  const latLng = new google.maps.LatLng(latitude, longitude);
+  bounds.extend(latLng);
+  return bounds;
+}
+
+
 }
     
