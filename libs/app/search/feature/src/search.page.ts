@@ -1,5 +1,5 @@
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
@@ -65,12 +65,12 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     });
 
     const inputElementId = 'address';
-
-    
     
     this.gmapsService.setupRegionSearchBox(inputElementId);
     
   }
+
+  
 
   handleInputChange(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -361,11 +361,17 @@ dropDown(){
 
   const sec = document.getElementById("sandf") as HTMLInputElement;
   const sec2 = document.getElementById("iconic") as HTMLInputElement;
+  const sec3 = document.getElementById("ListAndMap") as HTMLInputElement;
   if (sec && !this.clicked) {
     sec.classList.toggle("show");
     if(sec2)
     {
       sec2.name = "chevron-up-outline";
+    }
+    if(sec3)
+    {
+      sec3.classList.toggle("lower");
+      sec3.classList.remove("upper");
     }
     this.clicked=true;
   }
@@ -375,6 +381,11 @@ dropDown(){
     if(sec2)
     {
       sec2.name = "chevron-down-outline";
+    }
+    if(sec3)
+    {
+      sec3.classList.remove("lower");
+      sec3.classList.toggle("upper");
     }
     this.clicked=false;
   }
