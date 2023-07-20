@@ -28,6 +28,9 @@
       "@properproperty/app/create-listing/feature": [
         "libs/app/create-listing/feature/src/index.ts"
       ],
+      "@properproperty/app/footer/feature": [
+        "libs/app/footer/feature/src/index.ts"
+      ],
       "@properproperty/app/google-maps/data-access": [
         "libs/app/google-maps/data-access/src/index.ts"
       ],
