@@ -45,7 +45,6 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
  
 
-
   async setCentre(){
 
 
@@ -439,7 +438,32 @@ dropDown(){
 async centerMap(listing : listing)
 {
   
+    this.listingServices.getListings().then(async (listings) => {
+    this.filterProperties();
+
+    this.searchQuery = listing.address;
+    this.setCentre();
+
+  });
+
+  await this.addOneMarkersToMap(listing) ;
+ 
 }
+
+async addOneMarkersToMap(listing : listing) {
+  
+  const coordinates = await this.gmapsService.geocodeAddress(listing.address);
+  if (coordinates) {
+    console.log("my coordinates ",coordinates);
+    this.addMarker(coordinates, listing);
+    
+  }
+}
+
+
+
+
+
 
   async searchProperties() {
   // const filteredListings = this.listings.filter(listing => {
