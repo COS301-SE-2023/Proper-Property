@@ -1,19 +1,27 @@
 import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { listing } from '@properproperty/app/listing/util';
 import Swiper from 'swiper';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserService } from '@properproperty/app/user/data-access';
 import { profile } from '@properproperty/app/profile/util';
-
+import { Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { AuthState } from '@properproperty/app/auth/data-access';
+import { User } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.page.html',
   styleUrls: ['./listing.page.scss'],
 })
+
 export class ListingPage implements OnInit{
+  
+  @Select(AuthState.user) user$!: Observable<User | null>;
+  currentUser: User | null = null;
+
   @ViewChild('swiper') swiperRef?: ElementRef;
   swiper?: Swiper;
   list : listing | null = null;
@@ -34,6 +42,10 @@ export class ListingPage implements OnInit{
     this.monthlyPayment = 0;
     this.totalOnceOffCosts = 0;
     this.minGrossMonthlyIncome = 0;
+
+    this.user$.subscribe((user: User | null) => {
+      this.currentUser =  user;
+    });
    }
 
 
@@ -140,6 +152,10 @@ export class ListingPage implements OnInit{
   }
 
   saveListing() {
-   console.log("hi"); 
+    // this.user$.subscribe((user: User | null) => {
+    //   this.currentUser =  user;
+    // });
+
+    console.log("hellow");
   }
 }
