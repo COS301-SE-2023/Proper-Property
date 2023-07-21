@@ -166,7 +166,7 @@
 
   <div id="listings-and-map">
 
-    <div>
+    <div  class="scrollable-container">
       <ion-card *ngFor="let listing of listings" (click)="redirectToPage(listing)">
         <ion-card-header>
           <img src="{{listing.photos[0]}}" alt="house1">
@@ -200,6 +200,7 @@
       </ion-card>
       
     </div>
+
     <div slot="fixed" class="map"  #map></div>
   </div>
 
