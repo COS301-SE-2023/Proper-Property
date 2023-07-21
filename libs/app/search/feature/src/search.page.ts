@@ -605,7 +605,7 @@ resetFilters() {
 }
 
 
-activeTab = 'buying';
+activeTab = 'all';
 searchQuery = '';
 selectedPropertyType = '';
 selectedMinPrice = 0;

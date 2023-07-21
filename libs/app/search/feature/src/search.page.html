@@ -41,6 +41,9 @@
       <ion-segment-button value="buying">
         <ion-label>buy</ion-label>
       </ion-segment-button>
+      <ion-segment-button value="all">
+        <ion-label>All</ion-label>
+      </ion-segment-button>
       <ion-segment-button value="renting">
         <ion-label>Rent</ion-label>
       </ion-segment-button>
@@ -165,7 +168,7 @@
             <ng-template [ngIf] ="listing.let_sell === 'Sell'">
               <p>For Sale!</p>
             </ng-template>
-            <ng-template [ngIf] ="listing.let_sell === 'Let'">
+            <ng-template [ngIf] ="listing.let_sell === 'Rent'">
               <p>To Let!</p>
             </ng-template>
             <p>
