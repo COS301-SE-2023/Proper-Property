@@ -36,16 +36,15 @@ export class ListingPage implements OnInit{
      private listingServices : ListingsService, 
      private userServices : UserService,
      public gmapsService: GmapsService) {
+  
+
+
     this.loanAmount = 0;
     this.interestRate = 0;
     this.loanTerm = 0;
     this.monthlyPayment = 0;
     this.totalOnceOffCosts = 0;
     this.minGrossMonthlyIncome = 0;
-
-    this.user$.subscribe((user: User | null) => {
-      this.currentUser =  user;
-    });
    }
 
 
@@ -155,6 +154,8 @@ export class ListingPage implements OnInit{
     // this.user$.subscribe((user: User | null) => {
     //   this.currentUser =  user;
     // });
+
+
 
     console.log("hellow");
   }
