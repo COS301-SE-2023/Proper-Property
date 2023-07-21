@@ -64,7 +64,10 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
         
       }
     }
-   this.loadMap();
+    
+   await this.loadMap();
+   await this.addMarkersToMap();
+
   }
   constructor(
     private gmaps: GmapsService,
