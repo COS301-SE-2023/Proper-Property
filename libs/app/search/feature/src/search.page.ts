@@ -47,21 +47,19 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
 
   async setCentre(){
-    console.log("bafo");
-    console.log("bafoo ",this.searchQuery);
+
 
     if(this.searchQuery==""){
       
       this.center = { lat: -25.7477, lng: 28.2433 };
     }
     else {
-      console.log("bafo wami");
+   
       const coord = await this.gmapsService.geocodeAddress(this.searchQuery);
 
       if (coord) {
         this.center.lat = coord.geometry.location.lat();
-        console.log("aweh",coord.geometry.location.lat());
-        console.log(coord.geometry.location.lat())
+
         this.center.lng = coord.geometry.location.lng();
         
       }
@@ -633,7 +631,6 @@ get filteredRentingProperties(): listing[] {
     
       for(let i = 0; i < this.listings.length; i++) {
         if(this.listings[i].let_sell!="Rent"){
-          console.log("fuck");
           this.listings.splice(i,1);
         }
       }

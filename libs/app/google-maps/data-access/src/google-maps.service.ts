@@ -51,7 +51,6 @@ export class GmapsService {
         
         // Handle the selected place(s) here
         console.log('Selected place:', places[0]);
-        console.log('Eyy cousin:', input.value);
         
       });
     });
@@ -176,7 +175,7 @@ export class GmapsService {
       this.autocompleteService = new maps.places.AutocompleteService();
 
       input.addEventListener('input', () => {
-        console.log("bitch");
+      
         this.handleRegionInput(input, defaultBounds);
       });
 
