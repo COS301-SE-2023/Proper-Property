@@ -139,7 +139,4 @@ export class ListingPage implements OnInit{
     }
   }
 
-  saveListing() {
-   console.log("hi"); 
-  }
 }

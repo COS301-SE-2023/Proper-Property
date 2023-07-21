@@ -4,5 +4,4 @@ export interface profile{
   last_name: string;
   email: string;
   listings: string[];
-  saved_listings: string[];
 }

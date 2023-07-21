@@ -709,6 +709,4 @@ toggleSelection(amenity: string): void {
   }
 }
 
-
-
 }
