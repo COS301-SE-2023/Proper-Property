@@ -35,7 +35,8 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
   @ViewChild('map', { static: true }) mapElementRef!: ElementRef;
   googleMaps: any;
-  center = { lat: -25.7477, lng: 28.2433 };
+  // center = { lat: -25.7477, lng: 28.2433 };
+  center = { lat: 0, lng: 0 };
   map: any;
   mapClickListener: any;
   markerClickListener: any;
@@ -45,6 +46,26 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
  
 
 
+  async setCentre(){
+
+
+    if(this.searchQuery==""){
+      
+      this.center = { lat: -25.7477, lng: 28.2433 };
+    }
+    else {
+   
+      const coord = await this.gmapsService.geocodeAddress(this.searchQuery);
+
+      if (coord) {
+        this.center.lat = coord.geometry.location.lat();
+
+        this.center.lng = coord.geometry.location.lng();
+        
+      }
+    }
+   this.loadMap();
+  }
   constructor(
     private gmaps: GmapsService,
     private renderer: Renderer2,
@@ -95,6 +116,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
 
   ngAfterViewInit() {
+    this.setCentre();
     
     this.loadMap();
 
@@ -162,11 +184,20 @@ async loadMap() {
     const googleMaps: any = await this.gmaps.loadGoogleMaps();
     this.googleMaps = googleMaps;
     const mapEl = this.mapElementRef.nativeElement;
-    const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
-    this.map = new googleMaps.Map(mapEl, {
-      center: location,
-      zoom: 12,
-    });
+    
+      const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
+      this.map = new googleMaps.Map(mapEl, {
+        center: location,
+        zoom: 15,
+        maxZoom: 18, // Set the maximum allowed zoom level
+        minZoom: 5,
+      });
+
+
+      //this.map.fitBounds(this.gmaps.getBoundsFromLatLng(this.center.lat,this.center.lng));
+    
+    //const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
+
     this.renderer.addClass(mapEl, 'visible');
 
     // Generate info window content for each listing
@@ -431,6 +462,11 @@ dropDown(){
     this.filterProperties();
 
     this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
+   
+    this.setCentre();
+    // this.center.lat = (await this.gmaps.getLatLongFromAddress(this.searchQuery)).latitude;
+    // console.log("beach");
+    // this.center.lng =  (await this.gmaps.getLatLongFromAddress(this.searchQuery)).longitude;
 
 
 
@@ -734,5 +770,7 @@ toggleSelection(amenity: string): void {
     this.selectedAmenities.push(amenity);
   }
 }
+
+
 
 }
