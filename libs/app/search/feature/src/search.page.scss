@@ -141,7 +141,7 @@ ion-toggle::part(track) {
 
 .dropping
 {
-  top: 75px !important;
+  top: 85px !important;
 }
 
 .upper
@@ -264,6 +264,7 @@ input[type="range"]::-moz-range-thumb{
   width: 50%;
   position: absolute;
   overflow: auto;
+  top: -8px;
 
 }
 
@@ -272,10 +273,8 @@ input[type="range"]::-moz-range-thumb{
   padding-top: 10px;
   left:0;
   position:fixed !important;
-
   width: 40%;
   margin-left: 55%;
-  margin-top: -10px;
   overflow: hidden;
 
   height: 710px;
@@ -294,9 +293,14 @@ ion-card {
   border-radius: 10px;
 }
 
+ion-card-header{
+
+  width: 80%;
+}
+
 //make the img in ion-card-header smaller
 ion-card-header img {
-  width: 200px;
+  width: 250px;
   height: 130px;
   //rounded edges
   border-radius: 10px;
@@ -316,8 +320,23 @@ ion-card-header ion-card-subtitle {
 
 ion-card ion-card-content {
   margin-left: 220px;
+  width: 65%;
 }
 
+.heart-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  //move it to right hand corner
+  margin-left: 90%;
+  margin-top: -30px;
+}
 //make the ion-card take only half of the page
 
 
@@ -345,7 +364,6 @@ ion-card ion-card-content {
 #map {
   width: 50%;
   margin-left: 2%;
-  margin-top: 10px;
   border-radius: 10px;
 }
 
