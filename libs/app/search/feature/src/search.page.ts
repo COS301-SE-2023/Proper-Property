@@ -436,6 +436,11 @@ dropDown(){
 
 }
 
+async centerMap(listing : listing)
+{
+  
+}
+
   async searchProperties() {
   // const filteredListings = this.listings.filter(listing => {
   //   const addressMatch = listing.address.toLowerCase().includes(this.searchQuery.toLowerCase());

@@ -160,9 +160,9 @@
             <img src="{{listing.photos[0]}}" alt="house1">
             <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
           </ion-card-header>
-          <button class="heart-button" [ngClass]="{'red': isRed}">
-            <ion-icon name="heart" class="heart-icon"></ion-icon>
-          </button>
+          <ion-button class="pin" (click)="centerMap(listing)">
+            <ion-icon name="location-outline" size="large"></ion-icon>
+          </ion-button>
           <ion-card-content (click)="redirectToPage(listing)">
            
             <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
@@ -177,7 +177,6 @@
             <p>
              In {{listing.address}}
             </p>
-            <br>
             <br>
             <div id="house_details">
               <img src="assets/icon/bedrooms.png">

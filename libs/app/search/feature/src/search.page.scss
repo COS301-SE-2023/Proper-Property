@@ -323,37 +323,27 @@ ion-card ion-card-content {
   width: 65%;
 }
 
-.heart-button {
-  background-color: transparent;
-  border: none;
+.pin {
+  --background: transparent;
+  --border-radius: 50%;
+
   padding: 0;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   //move it to right hand corner
   margin-left: 90%;
   margin-top: -30px;
 }
-//make the ion-card take only half of the page
-
 
 //styling for div with id="house_details"
 #house_details img {
   //set image size
   width: 15px;
   height: 15px;
-}
-
-
-.red {
-  color: red;
-}
-
-.grey {
-  color: grey;
 }
 
 
