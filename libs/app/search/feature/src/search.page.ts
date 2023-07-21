@@ -660,6 +660,15 @@ get filteredRentingProperties(): listing[] {
   return this.listings;
 }
 
+get filteredAllProperties(): listing[] {
+
+  this.listingServices.getListings().then((listings) => {
+    this.listings = listings;
+  
+  });
+  return this.listings;
+}
+
 filterProperties(): void {
 
   // Update the filtered properties based on the selected filters and search query
@@ -670,6 +679,10 @@ filterProperties(): void {
   } else if (this.activeTab === 'renting') {
 
     this.listings = this.filteredRentingProperties;
+  }
+  else
+  {
+    this.listings = this.filteredAllProperties;
   }
 }
 
