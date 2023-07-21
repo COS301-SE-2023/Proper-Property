@@ -3,13 +3,6 @@ import { UserService } from '@properproperty/app/user/data-access';
 import {AuthService} from '@properproperty/app/auth/data-access';
 import { AlertController } from '@ionic/angular';
 
-import { Store } from '@ngxs/store';
-import { SubscribeToAuthState } from '@properproperty/app/auth/util';
-import { Select } from '@ngxs/store';
-import { AuthState } from '@properproperty/app/auth/data-access';
-import { Observable } from 'rxjs';
-import { User } from 'firebase/auth';
-
 interface Interests {
   garden: number;
   mansion: number;
@@ -25,9 +18,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
-
-  @Select(AuthState.user) user$!: Observable<User | null>;
-  public loggedIn = false;
 
   
   user: { name: string, surname: string, email: string, interests: Interests };
@@ -58,20 +48,9 @@ export class ProfilePage implements OnInit {
     this.isEditingEmail = false;
   }
 
-  constructor( private userServices: UserService, private readonly store: Store, private authServices:AuthService, private alertController: AlertController, private router: Router) {
+  constructor( private userServices: UserService, private authServices:AuthService, private alertController: AlertController, private router: Router) {
 
-  
-      this.loggedIn = this.user$ != null && this.user$ != undefined;
-  
-      this.user$.subscribe((user) => {
-        this.loggedIn = user != null && user != undefined;
-        
-        this.user.email= user?.email?? '';
-        this.user.name = user?.displayName?? '';
-       
-      
-      });
-  
+    
     this.user = {
       email:"john@example.com",
       name: 'John',
@@ -84,10 +63,9 @@ export class ProfilePage implements OnInit {
         ecoWarrior: 60,
       },
     };
-    
+
 
     this.user.name = this.userServices.currentUser?.first_name ?? '';
-    console.log("weeh",this.user.name);
     this.user.surname = this.userServices.currentUser?.last_name ?? '';
     this.user.email = this.userServices.currentUser?.email ?? '';
     
@@ -97,33 +75,9 @@ export class ProfilePage implements OnInit {
   
    }
 
-  async ngOnInit() {
+  ngOnInit() {
     console.log ("Linter: Lifecycle methods should not be empty");
-
-
-    // try {
-     
-    //   await this.loadCurrentUser();
-    //   if (!this.user) {
-    //     this.router.navigate(['/login']);
-    //   }
-    // } catch (error) {
-    //   console.error('Error getting current user:', error);
-    // }
   }
-
-  // async loadCurrentUser() {
-  //   const currentUser = await this.userServices.getCurrentUser();
-  //   this.user.name = currentUser?.first_name ?? '';
-  //   this.user.surname = currentUser?.last_name ?? '';
-  //   this.user.email = currentUser?.email ?? '';
-
-  //   // Check if the user is logged in, if not, redirect to login page
-  //   if (!currentUser) {
-  //     this.router.navigate(['/login']);
-  //   }
-  // }
-
   async confirmDeleteAccount() {
     const alert = await this.alertController.create({
       header: 'Confirmation',
