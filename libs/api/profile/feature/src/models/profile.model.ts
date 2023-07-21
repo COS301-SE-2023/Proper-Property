@@ -9,6 +9,7 @@ export class UserProfileModel extends AggregateRoot implements UserProfile {
     public lastName?: string,
     public email?: string,
     public listings?: string[],
+    public savedListings?: string[],
   ) {
     super();
   }
