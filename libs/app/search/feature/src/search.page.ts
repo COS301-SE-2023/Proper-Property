@@ -257,7 +257,6 @@ addMarker(position: any, listing: listing) {
 
 
 
-
 createListingCard(listing: listing): string {
   return `
     <ion-card style="max-width: 250px; max-height: 300px;">
@@ -357,6 +356,7 @@ toggleColor() {
 Templistings: listing[] = []
 
 clicked = false;
+
 dropDown(){
 
   const sec = document.getElementById("sandf") as HTMLInputElement;

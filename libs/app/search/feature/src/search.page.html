@@ -155,13 +155,21 @@
         <ion-card *ngFor="let listing of listings" (click)="redirectToPage(listing)">
           <ion-card-header>
             <img src="{{listing.photos[0]}}" alt="house1">
-            <ion-card-title>House</ion-card-title>
-            <ion-card-subtitle style="color: #0DAE4F;">R {{listing.price}}</ion-card-subtitle>
+            <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
           </ion-card-header>
   
           <ion-card-content>
             <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-              {{listing.desc}}
+              {{listing.bed}} bedroom/{{listing.prop_type}}
+            </p>
+            <ng-template [ngIf] ="listing.let_sell === 'Sell'">
+              <p>For Sale!</p>
+            </ng-template>
+            <ng-template [ngIf] ="listing.let_sell === 'Let'">
+              <p>To Let!</p>
+            </ng-template>
+            <p>
+             In {{listing.address}}
             </p>
             <br>
             <br>
@@ -178,9 +186,9 @@
               <img src="assets/icon/erf.png">
               {{listing.property_size}} m<sup>2</sup>
             </div>
-            <button class="heart-button" [ngClass]="{'red': isRed}" (click)="toggleColor()">
+            <!-- <button class="heart-button" [ngClass]="{'red': isRed}" (click)="toggleColor()">
               <ion-icon name="heart" class="heart-icon"></ion-icon>
-            </button>
+            </button> -->
           </ion-card-content>
         </ion-card>
   
