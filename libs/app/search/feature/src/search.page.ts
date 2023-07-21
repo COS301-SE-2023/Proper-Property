@@ -188,9 +188,14 @@ async loadMap() {
       const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
       this.map = new googleMaps.Map(mapEl, {
         center: location,
-        zoom: 12,
+        zoom: 15,
+        maxZoom: 18, // Set the maximum allowed zoom level
+        minZoom: 5,
       });
-  
+
+
+      //this.map.fitBounds(this.gmaps.getBoundsFromLatLng(this.center.lat,this.center.lng));
+    
     //const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
 
     this.renderer.addClass(mapEl, 'visible');
