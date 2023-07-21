@@ -35,7 +35,8 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
   @ViewChild('map', { static: true }) mapElementRef!: ElementRef;
   googleMaps: any;
-  center = { lat: -25.7477, lng: 28.2433 };
+  // center = { lat: -25.7477, lng: 28.2433 };
+  center = { lat: 0, lng: 0 };
   map: any;
   mapClickListener: any;
   markerClickListener: any;
@@ -45,6 +46,28 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
  
 
 
+  async setCentre(){
+    console.log("bafo");
+    console.log("bafoo ",this.searchQuery);
+
+    if(this.searchQuery==""){
+      
+      this.center = { lat: -25.7477, lng: 28.2433 };
+    }
+    else {
+      console.log("bafo wami");
+      const coord = await this.gmapsService.geocodeAddress(this.searchQuery);
+
+      if (coord) {
+        this.center.lat = coord.geometry.location.lat();
+        console.log("aweh",coord.geometry.location.lat());
+        console.log(coord.geometry.location.lat())
+        this.center.lng = coord.geometry.location.lng();
+        
+      }
+    }
+   this.loadMap();
+  }
   constructor(
     private gmaps: GmapsService,
     private renderer: Renderer2,
@@ -95,6 +118,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
 
   ngAfterViewInit() {
+    this.setCentre();
     
     this.loadMap();
 
@@ -162,11 +186,15 @@ async loadMap() {
     const googleMaps: any = await this.gmaps.loadGoogleMaps();
     this.googleMaps = googleMaps;
     const mapEl = this.mapElementRef.nativeElement;
-    const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
-    this.map = new googleMaps.Map(mapEl, {
-      center: location,
-      zoom: 12,
-    });
+    
+      const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
+      this.map = new googleMaps.Map(mapEl, {
+        center: location,
+        zoom: 12,
+      });
+  
+    //const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
+
     this.renderer.addClass(mapEl, 'visible');
 
     // Generate info window content for each listing
@@ -382,6 +410,11 @@ Templistings: listing[] = []
     this.filterProperties();
 
     this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
+   
+    this.setCentre();
+    // this.center.lat = (await this.gmaps.getLatLongFromAddress(this.searchQuery)).latitude;
+    // console.log("beach");
+    // this.center.lng =  (await this.gmaps.getLatLongFromAddress(this.searchQuery)).longitude;
 
 
 
