@@ -64,7 +64,6 @@ export class ProfilePage implements OnInit {
       },
     };
 
-
     this.user.name = this.userServices.currentUser?.first_name ?? '';
     this.user.surname = this.userServices.currentUser?.last_name ?? '';
     this.user.email = this.userServices.currentUser?.email ?? '';
