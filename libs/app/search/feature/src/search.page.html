@@ -2,7 +2,7 @@
 
   <section class="sortFilter">
 
-    <ion-grid>
+    <ion-grid class="grid1">
       <ion-row>
         <ion-col size="8">
           <!-- Search bar-->
@@ -119,8 +119,6 @@
           </ion-col>
         </ion-row>
 
-
-
       </ion-grid>
 
       <!-- MIn-Max -->
@@ -146,91 +144,50 @@
           <input type="range" class="maxrange" min="0" max="1000000" value="450000">
         </div>
       </div>
-
-      
-      
-      <!--   
-            <ion-item class="filter">
-              <label for="minPrice">Min Price</label>
-              <select id="minPrice" [(ngModel)]="selectedMinPrice" (ionChange)="filterProperties()">
-                <option value="0">R 0</option>
-                <option value="100000">R 100,000</option>
-                <option value="150000">R 150,000</option>
-                <option value="200000">R 200,000</option>
-                <option value="250000">R 250,000</option>
-                <option value="350000">R 300,350</option>
-                <option value="400000">R 400,000</option>
-                <option value="450000">R 450,000</option>
-              </select>
-        s
-            </ion-item>
-
-            <ion-item class="filter">
-              <label for="maxPrice">Max Price</label>
-              <select id="maxPrice" [(ngModel)]="selectedMaxPrice" (ionChange)="filterProperties()">
-                <option value="0">R 0</option>
-                <option value="100000">R 100,000</option>
-                <option value="150000">R 150,000</option>
-                <option value="200000">R 200,000</option>
-                <option value="250000">R 250,000</option>
-                <option value="350000">R 300,350</option>
-                <option value="400000">R 400,000</option>
-                <option value="450000">R 450,000</option>
-              </select>
-        
-            </ion-item> -->  
     </div>
   </section>
 
-  <section class="listAndMap upper" id="ListAndMap">
 
+  <!-- Map And Listings -->
+  <section id="listings-and-map" class="upper">
+
+      <div class="lists">
+        <ion-card *ngFor="let listing of listings" (click)="redirectToPage(listing)">
+          <ion-card-header>
+            <img src="{{listing.photos[0]}}" alt="house1">
+            <ion-card-title>House</ion-card-title>
+            <ion-card-subtitle style="color: #0DAE4F;">R {{listing.price}}</ion-card-subtitle>
+          </ion-card-header>
+  
+          <ion-card-content>
+            <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+              {{listing.desc}}
+            </p>
+            <br>
+            <br>
+            <div id="house_details">
+              <img src="assets/icon/bedrooms.png">
+              {{listing.bed}}
+              &nbsp; &nbsp;&nbsp;
+              <img src="assets/icon/bathrooms.png">
+              {{listing.bath}}
+              &nbsp; &nbsp;&nbsp;
+              <img src="assets/icon/floorplan.png">
+              {{listing.floor_size}} m<sup>2</sup>
+              &nbsp; &nbsp;&nbsp;
+              <img src="assets/icon/erf.png">
+              {{listing.property_size}} m<sup>2</sup>
+            </div>
+            <button class="heart-button" [ngClass]="{'red': isRed}" (click)="toggleColor()">
+              <ion-icon name="heart" class="heart-icon"></ion-icon>
+            </button>
+          </ion-card-content>
+        </ion-card>
+  
+      </div>
+      <div slot="fixed" class="map" #map></div>
  
 
+
   </section>
-
 </ion-content>
-<!-- 
-
-  
-
-
-  <div id="listings-and-map">
-
-    <div>
-      <ion-card *ngFor="let listing of listings" (click)="redirectToPage(listing)">
-        <ion-card-header>
-          <img src="{{listing.photos[0]}}" alt="house1">
-          <ion-card-title>House</ion-card-title>
-          <ion-card-subtitle style="color: #0DAE4F;">R {{listing.price}}</ion-card-subtitle>
-        </ion-card-header>
-      
-        <ion-card-content>
-          <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-          {{listing.desc}}
-          </p>
-          <br>
-          <br>
-          <div id="house_details">
-            <img src="assets/icon/bedrooms.png">
-            {{listing.bed}}
-            &nbsp; &nbsp;&nbsp;
-            <img src="assets/icon/bathrooms.png">
-            {{listing.bath}}
-            &nbsp; &nbsp;&nbsp;
-            <img src="assets/icon/floorplan.png">
-              {{listing.floor_size}} m<sup>2</sup> 
-              &nbsp; &nbsp;&nbsp;
-            <img src="assets/icon/erf.png">
-            {{listing.property_size}} m<sup>2</sup>
-          </div>
-          <button class="heart-button" [ngClass]="{'red': isRed}" (click)="toggleColor()">
-            <ion-icon name="heart" class="heart-icon"></ion-icon>
-          </button>
-        </ion-card-content>
-      </ion-card>
-      
-    </div>
-    <div slot="fixed" class="map"  #map></div>
-  </div>
-
-</ion-content> -->
