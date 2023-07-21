@@ -19,11 +19,12 @@ body{
   z-index: 7;
   background: white;
   height: 80px;
+  margin-bottom: 10px;
 }
 
 .grid1
 {
-  padding-top: 20px;
+  padding-top: 35px;
 }
 .search-container
 {
@@ -83,11 +84,13 @@ body{
 /* Sort and Filter section*/
 .sandf
 {
-  position: absolute;
-  height: 20px;
-  top: 18%;
+  position: fixed;
+  overflow: hidden;
+  top: 14%;
   width: 100%;
   display: none;
+  z-index: 6;
+  background: white;
 }
 
 .Amenities
@@ -111,12 +114,12 @@ body{
 
 .dropping
 {
-  top: 80px !important;
+  top: 75px !important;
 }
 
 .upper
 {
-  top: 20%;
+  top: 15%;
   position: relative;
 }
 
@@ -238,8 +241,8 @@ input[type="range"]::-moz-range-thumb{
 }
 
 .map {
-  // margin-left: 50%;
- // top: 200px !important;
+
+  padding-top: 10px;
   left:0;
   position:fixed !important;
 
@@ -248,7 +251,7 @@ input[type="range"]::-moz-range-thumb{
   margin-top: -10px;
   overflow: hidden;
 
-  height: 690px;
+  height: 710px;
   border-radius: 10px;
   background-color: transparent;
   opacity: 0;
@@ -257,9 +260,10 @@ input[type="range"]::-moz-range-thumb{
 
 ion-card {
   width: 90%;
-  height: 600px;
+  height: 180px;
   margin-left: 2%;
   margin-top: 15px;
+  margin-bottom: 10px;
   border-radius: 10px;
 }
 
