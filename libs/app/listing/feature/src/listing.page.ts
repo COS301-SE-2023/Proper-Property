@@ -29,10 +29,10 @@ export class ListingPage{
   @ViewChild('swiper') swiperRef?: ElementRef;
   swiper?: Swiper;
   list : Listing | null = null;
-  listerId : string = "";
+  listerId  = "";
   pointsOfInterest: { photo: string | undefined, name: string }[] = [];
-  admin: boolean = false;
-  adminId: string = "";
+  admin = false;
+  adminId = "";
   public showAnalyticsData$ : Observable<boolean> = of(false);
 
   price_per_sm = 0;
@@ -110,8 +110,8 @@ export class ListingPage{
   }
 
   async showAnalytics(){
-    let request : GetAnalyticsDataRequest = {listingId : this.list?.listing_id ?? ""};
-    let analyticsData : any = (await httpsCallable<GetAnalyticsDataRequest>(this.functions, 'getAnalyticsData')(request)).data;
+    const request : GetAnalyticsDataRequest = {listingId : this.list?.listing_id ?? ""};
+    const analyticsData : any = (await httpsCallable<GetAnalyticsDataRequest>(this.functions, 'getAnalyticsData')(request)).data;
     if(analyticsData == null){
       return;
     }
@@ -119,18 +119,20 @@ export class ListingPage{
     let dates : string[] = [];
     let pageViews : number[] = [];
 
-    let rows: any = analyticsData.rows ?? [];
+    const rows: any = analyticsData.rows ?? [];
     for(let i = 0; rows && i < rows.length; i++){
       if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
-        let dimensionValue = rows[i].dimensionValues[1].value;
-        let year : number = Number(dimensionValue.substring(0,4));
-        let month : number = Number(dimensionValue.substring(4,6));
-        let day : number = Number(dimensionValue.substring(6,8));
-        let tempDate = new Date(year, month, day)
+        const dimensionValue = rows[i].dimensionValues[1].value;
+        const year  = Number(dimensionValue.substring(0,4));
+        const month  = Number(dimensionValue.substring(4,6));
+        const day  = Number(dimensionValue.substring(6,8));
+      
+      
+        const tempDate = new Date(year, month, day)
 
         dates[i] = tempDate.getDate() + " " + this.Months[tempDate.getMonth() - 1];
 
-        let metricValue = rows[i].metricValues[0].value;
+        const metricValue = rows[i].metricValues[0].value;
         pageViews[i] = Number(metricValue);
       }
     }
@@ -158,7 +160,7 @@ export class ListingPage{
       }]
     };
 
-    let canvas = document.getElementById('lineGraph');
+    const canvas = document.getElementById('lineGraph');
 
     if(canvas){
       new Chart(canvas as HTMLCanvasElement, {
@@ -200,7 +202,7 @@ export class ListingPage{
     console.log(results);
     // Clear the existing points of interest
     this.pointsOfInterest = [];
-    let wantedTypes : string[] = [
+    const wantedTypes : string[] = [
       "airport",
       "school",
       "liquor_store",
@@ -229,7 +231,7 @@ export class ListingPage{
     // Iterate over the results and extract the icons and names of the places
     for (const result of results) {
       if(result.photos && result.photos.length > 0 && result.name && result.types){
-        for(let type of result.types){
+        for(const type of result.types){
           if(wantedTypes.includes(type)){
             this.pointsOfInterest.push({ photo : result.photos[0].getUrl(), name : result.name });
             break;
@@ -294,4 +296,13 @@ export class ListingPage{
     }
   }
 
+  saveListing(){
+    console.log("save listing");
+  }
+
+  isRed = false;
+
+toggleColor() {
+  this.isRed = !this.isRed;
+}
 }

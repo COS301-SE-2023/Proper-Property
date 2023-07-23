@@ -245,6 +245,7 @@
 
   #approveBut{
     width: 100%;
+  }
  
 
   .save-button {
@@ -254,8 +255,22 @@
     margin-top: 5px;
     margin-right: 5px;
     color: #000000; /* Set the desired color */
+    --background: transparent;
   }
   
   .save-button ion-icon {
     margin-right: 5px; /* Add some space between the icon and the text */
+    --background: transparent;
+  }
+
+  
+
+
+
+  .red {
+    color: green;
+  }
+  
+  .grey {
+    color: grey;
   }

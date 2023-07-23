@@ -169,6 +169,7 @@
     <ion-grid>
       <ion-row>
         <ion-col size="12" >
+          <div class="left-container">
           <div  class="scrollable-container">
             <ion-card *ngFor="let listing of listings" (click)="redirectToPage(listing)">
               <ion-card-header>
@@ -201,12 +202,15 @@
                 </button>
               </ion-card-content>
             </ion-card>
-            
+          </div>
           </div>
         </ion-col>
 
         <ion-col size="12">
+        <div class="right-container">
+          
           <div  class="map"  #map></div>
+        </div>
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -56,6 +56,7 @@ ion-card-header img {
         margin-left: 2%;
         margin-top: 10px;
         border-radius: 10px;
+        
     }
 
     //styling for div with id="house_details"
@@ -97,8 +98,8 @@ ion-card-header img {
       // margin-left: 50%;
       width: 40%;
       margin-left: 55%;
-      margin-top: 10px;
-  
+      margin-top: -10px;
+     
       height: 600px;
       border-radius: 10px;
       background-color: transparent;
@@ -110,9 +111,9 @@ ion-card-header img {
       opacity: 1;
     }
     .scrollable-container {
-      flex: 1;
-      overflow-y: auto; /* Enable vertical scrolling */
-    }
+  /* Set max height for the scrollable container to fit the screen */
+       max-height: calc(100vh - 120px);
+}
 
     #map {
       width: 40%;
@@ -135,6 +136,8 @@ ion-card-header img {
     }
 
     #listings-and-map { 
+      display: flex;
+      justify-content: space-between;
       transition: transform 0.3s ease-in-out;
     
     }
@@ -237,3 +240,5 @@ body{
   color: #644bff;
   cursor: pointer;
 }
+
+
