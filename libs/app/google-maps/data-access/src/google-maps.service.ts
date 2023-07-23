@@ -12,6 +12,7 @@ import { API_KEY_TOKEN } from '@properproperty/app/google-maps/util';
 export class GmapsService {
   constructor(@Inject(API_KEY_TOKEN) private key: string) { }
   geocoder!: google.maps.Geocoder;
+  geometry!: google.maps.GeometryLibrary;
   autocompleteService!: google.maps.places.AutocompleteService;
   nearby!: google.maps.places.PlacesService;
 
@@ -254,7 +255,7 @@ export class GmapsService {
       script.src =
         'https://maps.googleapis.com/maps/api/js?key=' +
         // TODO See if better way exists to hide key
-        this.key;
+        this.key+ '&libraries=places,geometry';
       script.async = true;
       script.defer = true;
       document.body.appendChild(script);
@@ -281,7 +282,7 @@ export class GmapsService {
       script.src =
         'https://maps.googleapis.com/maps/api/js?key=' +
         // TODO See if better way exists to hide key
-        this.key +'&libraries=places&language=en&region=ZA';
+        this.key +'&libraries=places,geometry&language=en&region=ZA';
       script.async = true;
       script.defer = true;
       document.body.appendChild(script);
@@ -309,12 +310,13 @@ export class GmapsService {
       return new Promise<google.maps.places.PlaceResult[]>((resolve, reject) => {
         const request = {
           location: new maps.LatLng(latitude, longitude),
-          radius: 2500, // Specify the radius within which to search for nearby places (in meters)
+          radius: 5000, // Specify the radius within which to search for nearby places (in meters)
         };
 
         service.nearbySearch(request, (results: google.maps.places.PlaceResult[], status: google.maps.places.PlacesServiceStatus) => {
           if (status === maps.places.PlacesServiceStatus.OK) {
             resolve(results);
+            console.log("results: ",results)
           } else {
             reject('Failed to retrieve nearby places');
           }
@@ -342,6 +344,18 @@ getLatLongFromAddress(address: string): Promise<{ latitude: number; longitude: n
     });
   });
 }
+
+calculateDistanceInMeters(lat1: number, lon1: number, lat2: number, lon2: number): Promise<number> {
+  return this.loadGoogleMaps().then(() => {
+    const point1 = new google.maps.LatLng(lat1, lon1);
+    const point2 = new google.maps.LatLng(lat2, lon2);
+
+   
+    const distanceInMeters = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
+
+    return distanceInMeters;
+  });
+}
   
 getBoundsFromLatLng(latitude: number, longitude: number): google.maps.LatLngBounds {
   const bounds = new google.maps.LatLngBounds();
@@ -349,6 +363,8 @@ getBoundsFromLatLng(latitude: number, longitude: number): google.maps.LatLngBoun
   bounds.extend(latLng);
   return bounds;
 }
+
+
 
 
 }
