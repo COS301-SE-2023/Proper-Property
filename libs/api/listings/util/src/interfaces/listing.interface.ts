@@ -23,4 +23,5 @@ export interface Listing{
   approved: boolean;
   statusChanges?: StatusChange[];
   listingDate: string;
+  quality_rating?: number;
 }

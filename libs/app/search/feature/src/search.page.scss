@@ -97,7 +97,7 @@ ion-card-header img {
       // margin-left: 50%;
       width: 40%;
       margin-left: 55%;
-      margin-top: -10px;
+      margin-top: 10px;
   
       height: 600px;
       border-radius: 10px;
@@ -109,12 +109,20 @@ ion-card-header img {
     .map.visible {
       opacity: 1;
     }
+    .scrollable-container {
+      flex: 1;
+      overflow-y: auto; /* Enable vertical scrolling */
+    }
 
     #map {
-      width: 50%;
-      margin-left: 2%;
-      margin-top: 10px;
+      width: 40%;
+      height: 600px;
       border-radius: 10px;
+      background-color: transparent;
+      opacity: 0;
+      transition: opacity 150ms ease-in;
+      position: sticky;
+      top: 0; 
     }
 
     // #login-button{
@@ -126,8 +134,9 @@ ion-card-header img {
       color: #0DAE4F;
     }
 
-    #listings-and-map {
+    #listings-and-map { 
       transition: transform 0.3s ease-in-out;
+    
     }
     
     .more-filters-visible #listings-and-map {

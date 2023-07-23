@@ -43,7 +43,6 @@ export class GmapsService {
         
         // Handle the selected place(s) here
         console.log('Selected place:', places[0]);
-        console.log('Eyy cousin:', input.value);
         
       });
     });
@@ -147,66 +146,72 @@ export class GmapsService {
 
   //for search
   setupRegionSearchBox(elementId: string): Promise<any> {
-   
     return this.loadGooglePlaces().then((maps) => {
       const defaultBounds = new maps.LatLngBounds();
-
+  
       const input = document.getElementById(elementId) as HTMLInputElement;
-
-      const searchBox = new maps.places.SearchBox(input, {
+  
+      const options = {
         bounds: defaultBounds,
         types: ['(regions)'],
-        componentRestrictions: { country: 'ZA' }
-      });
-
-      
-       maps.places.SearchBox(input, {
-         bounds: defaultBounds, types: ['(regions)'], componentRestrictions: { country: 'ZA' } });
-         
-
-
+        componentRestrictions: { country: 'ZA' },
+      };
+  
       this.autocompleteService = new maps.places.AutocompleteService();
-
-      input.addEventListener('input', () => {
-        console.log("bitch");
-        this.handleRegionInput(input, defaultBounds);
-      });
-
+  
+      const searchBox = new maps.places.Autocomplete(input, options);
+  
       searchBox.addListener('places_changed', () => {
+        
         const places = searchBox.getPlaces();
+
         if (places.length === 0) {
           return;
         }
-
+  
         const selectedPlace = places[0];
         input.value = selectedPlace.formatted_address;
-        
+  
         // Handle the selected place(s) here
         console.log('Selected place:', places[0]);
       });
     });
   }
-
+  
+  
+  
   handleRegionInput(input: HTMLInputElement, defaultBounds: google.maps.LatLngBounds): void {
     if (!this.autocompleteService) {
       return;
     }
+  
     this.autocompleteService.getPlacePredictions(
       {
         input: input.value,
         bounds: defaultBounds,
-        types: ['(regions)'], // Include only regions
-        componentRestrictions: { country: 'ZA' } // Replace 'your_country_code' with the appropriate country code
+        types: ['(regions)'],
+        componentRestrictions: { country: 'ZA' },
       },
-      (regionPredictions: google.maps.places.AutocompletePrediction[] | null, status: google.maps.places.PlacesServiceStatus) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK && regionPredictions) {
-          // Process the predictions here
-          console.log('Region predictions:', regionPredictions);
-          this.regionPredictions = regionPredictions;
+      (predictions: google.maps.places.AutocompletePrediction[] | null, status: google.maps.places.PlacesServiceStatus) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
+          // Filter out street addresses from the predictions
+          this.regionPredictions = predictions.filter((prediction) => !prediction.types.includes('street_address'));
+        } else {
+          this.regionPredictions = [];
         }
       }
     );
   }
+  
+  filterOutStreetAddresses(predictions: google.maps.places.AutocompletePrediction[]): google.maps.places.AutocompletePrediction[] {
+    return predictions.filter((prediction) => {
+      // Exclude street addresses (types: 'street_address' and 'premise')
+      return !prediction.types.includes('street_address');
+    });
+  }
+  
+  
+  
   
 
   //function for retrieving regions
@@ -338,5 +343,13 @@ getLatLongFromAddress(address: string): Promise<{ latitude: number; longitude: n
   });
 }
   
+getBoundsFromLatLng(latitude: number, longitude: number): google.maps.LatLngBounds {
+  const bounds = new google.maps.LatLngBounds();
+  const latLng = new google.maps.LatLng(latitude, longitude);
+  bounds.extend(latLng);
+  return bounds;
+}
+
+
 }
     
