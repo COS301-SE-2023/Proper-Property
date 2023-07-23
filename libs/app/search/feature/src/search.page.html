@@ -197,6 +197,9 @@
                   <img src="assets/icon/erf.png">
                   {{listing.property_size}} m<sup>2</sup>
                 </div>
+                <button class="heart-button" [ngClass]="{'red': isRed}" (click)="toggleColor()">
+                  <ion-icon name="heart" class="heart-icon"></ion-icon>
+                </button>
               </ion-card-content>
             </ion-card>
           </div>

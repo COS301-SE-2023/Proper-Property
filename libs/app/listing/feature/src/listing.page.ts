@@ -24,14 +24,12 @@ export class ListingPage{
   @Select(AuthState.user) user$!: Observable<User | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
   private user: User | null = null;
-  private profile : UserProfile | null = null;
   private userProfile : UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
   @ViewChild('swiper') swiperRef?: ElementRef;
   swiper?: Swiper;
   list : Listing | null = null;
   listerId  = "";
-  listingId = "";
   pointsOfInterest: { photo: string | undefined, name: string }[] = [];
   admin = false;
   adminId = "";
@@ -55,8 +53,6 @@ export class ListingPage{
     "December"
   ];
 
-  isRed = false;
-
   constructor(private router: Router,
     private route: ActivatedRoute,
     private listingServices : ListingsService,
@@ -66,13 +62,10 @@ export class ListingPage{
     private profileServices : UserProfileService) {
     let list_id = "";
     let admin = "";
-   
     this.route.params.subscribe((params) => {
       console.warn(params); 
       list_id = params['list'];
       admin = params['admin'];
-      this.listingId = list_id;
-      
       this.listingServices.getListing(list_id).then((list) => {
         console.warn(list);
         this.list = list;
@@ -81,8 +74,6 @@ export class ListingPage{
           this.admin = true;
           this.adminId = admin;
         }
-
-        
         // TODO
         console.log(this.list);
         this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
@@ -97,19 +88,7 @@ export class ListingPage{
           if(user && this.list && this.user?.uid == this.list?.user_id){
             this.showAnalyticsData$ = of(true);
           }
-
-          if(this.user){
-            this.profileServices.getUser(this.user.uid).then((profile) =>{
-              this.profile = profile;
-              this.isRed = this.isSaved(this.listingId);
-            });
-          }
         });
-
-              // when the window is unloaded
-      this.userProfileListener$.subscribe((listener) => {
-        this.userProfileListener = listener;
-      });
 
         this.getNearbyPointsOfInterest();
       });
@@ -211,15 +190,7 @@ export class ListingPage{
             coordinates.latitude,
             coordinates.longitude
           );
-          
           this.processPointsOfInterestResults(results);
-
-          // const testing = await this.gmapsService.getLatLongFromAddress("Durban, South Africa");
-
-          // await this.gmapsService.calculateDistanceInMeters(coordinates.latitude,coordinates.longitude,testing.latitude,testing.longitude).then((distanceInMeters) => {
-          //   console.log('Distance between the two coordinates:', distanceInMeters, 'meters');
-          // });
-
         }
       } catch (error) {
         console.error('Error retrieving nearby places:', error);
@@ -227,7 +198,6 @@ export class ListingPage{
     }
   }
 
-  
   processPointsOfInterestResults(results: google.maps.places.PlaceResult[]) {
     console.log(results);
     // Clear the existing points of interest
@@ -326,68 +296,13 @@ export class ListingPage{
     }
   }
 
-  // saveListing(){
-  //   console.log("save listing");
-  // }
+  saveListing(){
+    console.log("save listing");
+  }
 
-  
+  isRed = false;
 
 toggleColor() {
-  if(this.isRed)
-    this.unsaveListing();
-  else
-    this.saveListing();
-
-
   this.isRed = !this.isRed;
 }
-
-isSaved(listing_id : string){
-  if(this.profile){
-    if(this.profile.savedListings){
-      if(this.profile.savedListings.includes(listing_id)){
-        console.log("Listing found in saved: " + listing_id);
-        return true;
-      }
-    }
-  }
-  else{
-    console.log("Profile not found");
-  }
-
-  console.log("Not found");
-  return false;
-}
-
-saveListing() {
-
-    if(!this.isSaved(this.listingId)){
-      if(this.profile){
-        if(this.profile.savedListings){
-          this.profile.savedListings.push(this.listingId);
-        }
-        else{
-          this.profile.savedListings = [this.listingId];
-        }
-
-        this.profileServices.updateUserProfile(this.profile);
-    }
-    }
-
-  
-}
-
-unsaveListing(){
-
-  if(this.isSaved(this.listingId)){
-    if(this.profile){
-      if(this.profile.savedListings){
-        this.profile.savedListings.splice(this.profile.savedListings.indexOf(this.listingId), 1);
-      }
-
-      this.profileServices.updateUserProfile(this.profile);
-  }
-  }
-  } 
-
 }
