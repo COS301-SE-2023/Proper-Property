@@ -8,4 +8,5 @@ export interface UserProfile{
   listings?: string[];
   interests: Interests;
   admin?: boolean;
+  savedListings? : string[];
 }
