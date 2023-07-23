@@ -211,7 +211,15 @@ export class ListingPage{
             coordinates.latitude,
             coordinates.longitude
           );
+          
           this.processPointsOfInterestResults(results);
+
+          // const testing = await this.gmapsService.getLatLongFromAddress("Durban, South Africa");
+
+          // await this.gmapsService.calculateDistanceInMeters(coordinates.latitude,coordinates.longitude,testing.latitude,testing.longitude).then((distanceInMeters) => {
+          //   console.log('Distance between the two coordinates:', distanceInMeters, 'meters');
+          // });
+
         }
       } catch (error) {
         console.error('Error retrieving nearby places:', error);
@@ -219,6 +227,7 @@ export class ListingPage{
     }
   }
 
+  
   processPointsOfInterestResults(results: google.maps.places.PlaceResult[]) {
     console.log(results);
     // Clear the existing points of interest
