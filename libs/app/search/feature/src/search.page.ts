@@ -720,4 +720,12 @@ onChange()
 {
   const tog1 = document.getElementById("lists") as HTMLInputElement;
   const tog2 = document.getElementById("lists2") as HTMLInputElement;
+
+  if(this.status)
+  {
+    if(tog1)
+    {
+      tog1.style.display= 'inline';
+    }
+  }
 }
