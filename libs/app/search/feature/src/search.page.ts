@@ -714,4 +714,10 @@ toggleSelection(amenity: string): void {
   }
 }
 
+status=true;
+
+onChange()
+{
+  const tog1 = document.getElementById("lists") as HTMLInputElement;
+  const tog2 = document.getElementById("lists2") as HTMLInputElement;
 }
