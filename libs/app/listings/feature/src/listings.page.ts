@@ -235,7 +235,6 @@ export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
     if(this.profile){
       if(this.profile.savedListings){
         if(this.profile.savedListings.includes(listing_id)){
-          console.log("Listing found in saved: " + listing_id);
           return true;
         }
       }
@@ -244,7 +243,6 @@ export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
       console.log("Profile not found");
     }
 
-    console.log("Not found");
     return false;
   }
 
