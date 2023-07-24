@@ -321,11 +321,10 @@ ion-card-header img {
 
 //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
 ion-card-header ion-card-title {
-  margin-left: 220px;
+  margin-left: 55%;
   padding-top: 10px;
   //move ths up
   margin-top: -200px;
-  left: 18%;
 }
 
 ion-card-header ion-card-subtitle {
@@ -333,10 +332,9 @@ ion-card-header ion-card-subtitle {
 }
 
 ion-card ion-card-content {
-  margin-left: 220px;
+  margin-left: 39%;
   margin-right: 5%;
   width: 65%;
-  left: 13%;
 }
 
 .pin {
