@@ -723,9 +723,10 @@ onChange()
 
   if(this.status)
   {
-    if(tog1)
+    if(tog1 && tog2)
     {
       tog1.style.display= 'inline';
+      tog2.style.display = 'none';
     }
   }
 }
