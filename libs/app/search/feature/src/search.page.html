@@ -200,7 +200,7 @@
         <ion-card *ngFor="let listing of listings" >
           <ion-card-header (click)="redirectToPage(listing)">
             <img src="{{listing.photos[0]}}" alt="house1">
-            <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
+            <ion-card-title style="color: #8b1882;">R {{listing.price}}</ion-card-title>
           </ion-card-header>
           <ion-button class="pin" (click)="centerMap(listing)">
             <ion-icon name="location-outline" size="large" color="primary"></ion-icon>
@@ -208,30 +208,11 @@
           <ion-card-content (click)="redirectToPage(listing)">
            
             <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-              {{listing.bed}} bedroom/{{listing.prop_type}}
-            </p>
-            <ng-template [ngIf] ="listing.let_sell === 'Sell'">
-              <p>For Sale!</p>
-            </ng-template>
-            <ng-template [ngIf] ="listing.let_sell === 'Rent'">
-              <p>To Let!</p>
-            </ng-template>
-            <p>
-             In {{listing.address}}
+           
             </p>
             <br>
             <div id="house_details">
-              <img src="assets/icon/bedrooms.png">
-              {{listing.bed}}
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/bathrooms.png">
-              {{listing.bath}}
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/floorplan.png">
-              {{listing.floor_size}} m<sup>2</sup>
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/erf.png">
-              {{listing.property_size}} m<sup>2</sup>
+             
             </div>
           </ion-card-content>
         </ion-card>
