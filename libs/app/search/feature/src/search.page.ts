@@ -1,5 +1,5 @@
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
@@ -11,13 +11,6 @@ interface Property {
   price: number;
   bedrooms: number;
 }
-// const property = {
-//   id: 1,
-//   image: 'path/to/image.jpg',
-//   price: 100000,
-//   bedrooms: 3,
-//   bathrooms: 2
-// };
 
 @Component({
   selector: 'app-search',
@@ -41,9 +34,8 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   mapClickListener: any;
   markerClickListener: any;
   markers: any[] = [];
-  listings: listing[] = [];
+  listings: listing[] = []
 
- 
 
   async setCentre(){
 
@@ -63,7 +55,10 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
         
       }
     }
-   this.loadMap();
+    
+   await this.loadMap();
+   await this.addMarkersToMap();
+
   }
   constructor(
     private gmaps: GmapsService,
@@ -78,105 +73,48 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       
     }
 
-  async ngOnInit() {
-    await this.listingServices.getListings().then((listings) => {
-      this.listings = listings;
-      this.filterProperties();
-    });
-
-    const inputElementId = 'address';
-    
-    this.gmapsService.setupRegionSearchBox(inputElementId);
-    
-  }
-
+    async ngOnInit() {
+      await this.listingServices.getListings().then((listings) => {
+        this.listings = listings;
+        this.filterProperties();
+      });
   
-
-  handleInputChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.gmapsService.handleRegionInput(input, this.defaultBounds);
-    this.predictions = this.gmapsService.regionPredictions;
-  }
+      const inputElementId = 'address';
   
-  replaceInputText(event: MouseEvent | undefined,prediction: string) {
-    // this.address = prediction;
-    //set the text in HTML element with id=hello to predictions
-    if (event) {
-      event.preventDefault(); // Prevent the default behavior of the <a> tag
+      
+      
+      this.gmapsService.setupRegionSearchBox(inputElementId);
+      
     }
-
-    const addressInput = document.getElementById("address") as HTMLInputElement;
-    if (addressInput) {
-      addressInput.value = prediction;
+  
+    handleInputChange(event: Event): void {
+      const input = event.target as HTMLInputElement;
+      this.gmapsService.handleRegionInput(input, this.defaultBounds);
+      this.predictions = this.gmapsService.regionPredictions;
     }
-    this.predictions = [];
-  }
-
-
-
-  ngAfterViewInit() {
-    this.setCentre();
-    
-    this.loadMap();
-
-  }
-
-
-
-// async loadMap() {
-//   try {
-//     const googleMaps: any = await this.gmaps.loadGoogleMaps();
-//     this.googleMaps = googleMaps;
-//     const mapEl = this.mapElementRef.nativeElement;
-//     const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
-//     this.map = new googleMaps.Map(mapEl, {
-//       center: location,
-//       zoom: 12,
-//     });
-//     this.renderer.addClass(mapEl, 'visible');
-
-//     // Generate info window content for each listing
-//     const infoWindowContent = this.listings.map((listing) => this.createListingCard(listing));
-
-//     // Iterate over each listing
-//     for (let i = 0; i < this.listings.length; i++) {
-//       // Retrieve the longitude and latitude for the address
-//       const coordinates = await this.gmaps.geocodeAddress(this.listings[i].address);
-//       if (
-//         Array.isArray(coordinates) &&
-//         coordinates.length > 0 &&
-//         coordinates[0].geometry &&
-//         coordinates[0].geometry.location
-//       ) {
-//         const position = coordinates[0].geometry.location;
-
-//         // Create an info window for the marker
-//         const infoWindow = new googleMaps.InfoWindow({
-//           content: infoWindowContent[i],
-//         });
-
-//         // Create a marker without the icon
-//         const marker = new googleMaps.Marker({
-//           position: position,
-//           map: this.map,
-//           listing: this.listings[i], // Store the listing object in the marker for later use
-//         });
-
-//         // Add a click event listener to the marker
-//         googleMaps.event.addListener(marker, 'click', () => {
-//           infoWindow.open(this.map, marker);
-//           this.navigateToPropertyListingPage(marker.listing);
-//         });
-
-//         this.markers.push(marker);
-//       }
-//     }
-
-//     this.onMapClick();
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }
+  
+    replaceInputText(event: MouseEvent | undefined,prediction: string) {
+      // this.address = prediction;
+      //set the text in HTML element with id=hello to predictions
+      if (event) {
+        event.preventDefault(); // Prevent the default behavior of the <a> tag
+      }
+  
+      const addressInput = document.getElementById("address") as HTMLInputElement;
+      if (addressInput) {
+        addressInput.value = prediction;
+      }
+      this.predictions = [];
+    }
+  
+  
+  
+    ngAfterViewInit() {
+      this.setCentre();
+      
+      this.loadMap();
+  
+    }
 
 async loadMap() {
   try {
@@ -194,8 +132,7 @@ async loadMap() {
 
 
       //this.map.fitBounds(this.gmaps.getBoundsFromLatLng(this.center.lat,this.center.lng));
-    
-    //const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
+      //const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
 
     this.renderer.addClass(mapEl, 'visible');
 
@@ -271,19 +208,20 @@ addMarker(position: any, listing: listing) {
   });
 
 
-    // Add a click event listener to the info window
-    infoWindow.addListener('domready', () => {
-      const infoWindowElement = document.querySelector('.gm-style-iw');
-      if (infoWindowElement) {
-        infoWindowElement.addEventListener('click', () => {
-          this.navigateToPropertyListingPage(marker.listing); // Call the navigateToPropertyListingPage function with the marker's listing object
-        });
-      }
-    });
+  // Add a click event listener to the info window
+  infoWindow.addListener('domready', () => {
+    const infoWindowElement = document.querySelector('.gm-style-iw');
+    if (infoWindowElement) {
+      infoWindowElement.addEventListener('click', () => {
+        this.navigateToPropertyListingPage(marker.listing); // Call the navigateToPropertyListingPage function with the marker's listing object
+      });
+    }
+  });
+
+  this.markers.push(marker);
   
-    this.markers.push(marker);
-  
-  }
+}
+
 
 
 
@@ -315,13 +253,10 @@ createListingCard(listing: listing): string {
 }
 
 
-
-
-
-navigateToPropertyListingPage(listing:listing) {
+navigateToPropertyListingPage(listing: listing) {
 
   console.log(listing.listing_id);
-  this.router.navigate(['/listing', {list : listing.listing_id}]);
+  this.router.navigate(['/listing', {list: listing.listing_id}]);
 }
 
 checkAndRemoveMarker(marker: { position: { lat: () => any; lng: () => any; }; }) {
@@ -366,10 +301,11 @@ async presentActionSheet() {
 }
 
 
-async redirectToPage(listing : listing) {
+async redirectToPage(listing: listing) {
   console.log(listing.listing_id);
   this.router.navigate(['/listing', {list : listing.listing_id}]);
 }
+
 
 ngOnDestroy() {
   // this.googleMaps.event.removeAllListeners();
@@ -382,6 +318,7 @@ isRed = false;
 toggleColor() {
   this.isRed = !this.isRed;
 }
+
 
 Templistings: listing[] = []
 
@@ -461,30 +398,8 @@ async addOneMarkersToMap(listing : listing) {
 }
 
 
+async searchProperties() {
 
-
-
-
-  async searchProperties() {
-  // const filteredListings = this.listings.filter(listing => {
-  //   const addressMatch = listing.address.toLowerCase().includes(this.searchQuery.toLowerCase());
-  //   const bedroomsMatch = this.selectedBedrooms === 0 || listing.bed === this.selectedBedrooms.toString();
-  //   const floorMatch = this.selectedFloorSize === 0 || parseInt(listing.floor_size) >= this.selectedFloorSize;
-  //   const minPriceMatch = this.selectedMinPrice === 0 || parseInt(listing.price) >= this.selectedMinPrice;
-  //   const maxPriceMatch = this.selectedMaxPrice === 0 || parseInt(listing.price) <= this.selectedMaxPrice;
-  //   const propertyTypeMatch = this.selectedPropertyType === '' || listing.prop_type.includes(this.selectedPropertyType);
-
-  //   return addressMatch && bedroomsMatch && floorMatch && minPriceMatch && maxPriceMatch && propertyTypeMatch;
-  // });
-
-  // this.listings = filteredListings;
-
-  // this.listingServices.getListings().then((listings) => {
-  //   this.listings = listings;
-  //   this.filterProperties();
-
-    
-  // });
 
   this.listingServices.getListings().then(async (listings) => {
     this.listings = listings;
@@ -613,9 +528,6 @@ async addMarkersToMap() {
   }
 }
 
-
-
-
 addMMarker(coordinates: google.maps.GeocoderResult, listing: any) {
 
   const googleMaps: any = this.googleMaps;
@@ -669,7 +581,6 @@ resetFilters() {
   this.selectedAmenities= [];
 }
 
-
 activeTab = 'all';
 searchQuery = '';
 selectedPropertyType = '';
@@ -680,6 +591,7 @@ showAdditionalFilters = false;
 selectedBathrooms = 0;
 selectedParking = 0;
 selectedAmenities: string[] = [];
+
 
 // properties: Property[] = [
 //   { title: 'House 1', type: 'house', price: 100000, bedrooms: 3 },
@@ -704,6 +616,7 @@ get filteredBuyingProperties(): listing[] {
 
   return this.listings;
 }
+
 
 get filteredRentingProperties(): listing[] {
 
@@ -733,6 +646,7 @@ get filteredAllProperties(): listing[] {
   });
   return this.listings;
 }
+
 
 filterProperties(): void {
 
@@ -799,7 +713,5 @@ toggleSelection(amenity: string): void {
     this.selectedAmenities.push(amenity);
   }
 }
-
-
 
 }
