@@ -311,7 +311,7 @@ ion-card-header{
 
 //make the img in ion-card-header smaller
 ion-card-header img {
-  width: 300px;
+  width: 50%;
   height: 200px;
   position: relative;
   top: -10px;
@@ -407,4 +407,10 @@ ion-card ion-card-content {
   background-color: green;
   border-radius: 5px;
   transition: width 0.3s ease-in-out;
+}
+
+ion-card-header ion-grid
+{
+  width: 50%;
+  height: 25%;
 }
