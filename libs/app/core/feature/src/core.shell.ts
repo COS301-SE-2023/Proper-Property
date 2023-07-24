@@ -11,6 +11,7 @@ import { HostListener } from '@angular/core';
 import { httpsCallable, Functions } from '@angular/fire/functions';
 import { Router } from '@angular/router';
 import { isDevMode } from '@angular/core';
+import { NotificationsService } from 'libs/app/notifications/data-access/src/notifications.service';
 // import { GetUserProfileRequest, GetUserProfileResponse, UpdateUserProfileRequest, UpdateUserProfileResponse, profile } from '@properproperty/api/profile/util';
 
 @Component({
@@ -25,13 +26,24 @@ export class CoreShellComponent implements OnInit, OnDestroy{
   private user: User | null = null;
   dev: boolean;
   private userProfileListener: Unsubscribe | null = null;
-  constructor(private readonly router: Router, private readonly store: Store, private readonly functions: Functions) {
+  private NotificationToken = 'whups';
+  constructor(
+    private readonly router: Router, 
+    private readonly store: Store, 
+    private readonly functions: Functions,
+    private readonly notificationsService: NotificationsService
+  ) {
     this.dev = isDevMode();
     this.loggedIn = this.user$ != null && this.user$ != undefined;
 
     this.user$.subscribe((user) => {
       this.user = user;
       this.loggedIn = user != null && user != undefined;
+      if (this.user) {
+        this.notificationsService.registerNotifications(this.user.uid).then(tkn => {
+          this.NotificationToken = tkn;
+        });
+      }
     });
     // Update listener whenever is changes such that it can be unsubscribed from
     // when the window is unloaded
@@ -55,26 +67,27 @@ export class CoreShellComponent implements OnInit, OnDestroy{
 
     if (isDevMode()) {
     alert ("OI");
-    const test : any = (await httpsCallable(this.functions, 'getAnalyticsData')()).data;
-    let dates : Date[] = [];
-    let pageViews : number[] = [];
+    console.log(this.NotificationToken);
+    // const test : any = (await httpsCallable(this.functions, 'getAnalyticsData')()).data;
+    // let dates : Date[] = [];
+    // let pageViews : number[] = [];
 
-    let rows: any = test.rows ?? [];
-    for(let i = 0; rows && i < rows.length; i++){
-      if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
-        let dimensionValue = rows[i].dimensionValues[1].value;
-        let year : number = Number(dimensionValue.substring(0,4));
-        let month : number = Number(dimensionValue.substring(4,6));
-        let day : number = Number(dimensionValue.substring(6,8));
+    // let rows: any = test.rows ?? [];
+    // for(let i = 0; rows && i < rows.length; i++){
+    //   if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
+    //     let dimensionValue = rows[i].dimensionValues[1].value;
+    //     let year : number = Number(dimensionValue.substring(0,4));
+    //     let month : number = Number(dimensionValue.substring(4,6));
+    //     let day : number = Number(dimensionValue.substring(6,8));
 
-        dates[i] = new Date(year, month, day);
+    //     dates[i] = new Date(year, month, day);
 
-        let metricValue = rows[i].metricValues[0].value;
-        pageViews[i] = Number(metricValue);
-      }
-    }
+    //     let metricValue = rows[i].metricValues[0].value;
+    //     pageViews[i] = Number(metricValue);
+    //   }
+    // }
 
-    console.log({pageViews, dates});
+    // console.log({pageViews, dates});
     // const getUserProfile = httpsCallable<
     //   GetUserProfileRequest,
     //   GetUserProfileResponse

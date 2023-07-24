@@ -62,12 +62,6 @@
       "@properproperty/app/google-maps/util": [
         "libs/app/google-maps/util/src/index.ts"
       ],
-      "@properproperty/app/quality-scoring/data-access": [
-        "libs/app/quality-scoring/data-access/src/index.ts"
-      ],
-      "@properproperty/app/quality-scoring/util": [
-        "libs/app/quality-scoring/util/src/index.ts"
-      ],
       "@properproperty/app/home/feature": [
         "libs/app/home/feature/src/index.ts"
       ],
@@ -92,6 +86,9 @@
       "@properproperty/app/my-listings/feature": [
         "libs/app/my-listings/feature/src/index.ts"
       ],
+      "@properproperty/app/notifications/data-access": [
+        "libs/app/notifications/data-access/src/index.ts"
+      ],
       "@properproperty/app/open-ai/data-access": [
         "libs/app/open-ai/data-access/src/index.ts"
       ],
@@ -103,6 +100,12 @@
       ],
       "@properproperty/app/profile/util": [
         "libs/app/profile/util/src/index.ts"
+      ],
+      "@properproperty/app/quality-scoring/data-access": [
+        "libs/app/quality-scoring/data-access/src/index.ts"
+      ],
+      "@properproperty/app/quality-scoring/util": [
+        "libs/app/quality-scoring/util/src/index.ts"
       ],
       "@properproperty/app/register/feature": [
         "libs/app/register/feature/src/index.ts"

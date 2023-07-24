@@ -75,7 +75,7 @@ import { AuthState } from '@properproperty/app/auth/data-access'
 
 import { AuthModule } from '@properproperty/app/auth/data-access';
 import { UserProfileState, UserProfileModule } from '@properproperty/app/profile/data-access';
-
+import { NotificationsModule } from '@properproperty/app/notifications/data-access';
 const NX_ENVIRONMENT = process.env['NX_ENVIRONMENT'] || 'development';
 const USE_EMULATORS = JSON.parse(process.env['NX_USE_EMULATORS'] || 'true');
 const NX_FIREBASE_CONFIG = {
@@ -148,6 +148,7 @@ if (NX_ENVIRONMENT === 'development') {
     NgxsRouterPluginModule.forRoot(),
     AuthModule,
     UserProfileModule,
+    NotificationsModule
   ],
   // exports: [CoreShell],
   // 

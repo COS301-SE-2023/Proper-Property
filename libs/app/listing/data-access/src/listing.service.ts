@@ -71,7 +71,7 @@ export class ListingsService {
 
   async getApprovedListings(){
     const response = (await httpsCallable<
-      {},
+      undefined,
       GetApprovedListingsResponse
     >(
       this.functions, 

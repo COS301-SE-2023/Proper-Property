@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-
+const CopyPlugin = require('copy-webpack-plugin');
 function getClientEnvironment() {
   // Grab NX_* environment variables and prepare them to be injected
   // into the application via DefinePlugin in webpack configuration.
@@ -25,5 +25,12 @@ module.exports = (config, options, context) => {
   // Overwrite the mode set by Angular if the NODE_ENV is set
   config.mode = process.env.NODE_ENV || config.mode;
   config.plugins.push(new webpack.DefinePlugin(getClientEnvironment()));
+  config.plugins.push(
+    new CopyPlugin({
+      patterns: [
+        {from: 'firebase-messaging-sw.js', to: 'firebase-messaging-sw.js'}
+      ]
+    })
+  )
   return config;
 };

@@ -250,7 +250,7 @@ export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
 
   saveListing($event : any, listing_id : string) {
     if(listing_id != ''){
-      let heartBut = $event.target as HTMLButtonElement;
+      const heartBut = $event.target as HTMLButtonElement;
       heartBut.style.color = "red";
       
       if(this.profile){
@@ -268,7 +268,7 @@ export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
 
   unsaveListing($event : any, listing_id : string){
     if(listing_id != ''){
-      let heartBut = $event.target as HTMLButtonElement;
+      const heartBut = $event.target as HTMLButtonElement;
       heartBut.style.color = "red";
       
       if(this.profile){
