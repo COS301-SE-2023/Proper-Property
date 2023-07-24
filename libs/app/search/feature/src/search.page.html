@@ -199,7 +199,9 @@
       <div class="lists2" id="lists2">
         <ion-card *ngFor="let listing of listings" >
           <ion-card-header (click)="redirectToPage(listing)">
-            <img src="{{listing.photos[0]}}" alt="house1">
+
+          <img src="{{listing.photos[0]}}" alt="house1">
+             
             <ion-card-title style="color: #0DAE4F;">Area Rating 4.3</ion-card-title>
           </ion-card-header>
           <ion-button class="pin" (click)="centerMap(listing)">
