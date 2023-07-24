@@ -1,111 +1,52 @@
-<ion-header >
-  <ion-toolbar>
-    <ion-row class="ion-align-items-center">
-      <ion-col size="0.5"><img class="logo" src="assets/Logo_v1.png" width="60%"></ion-col>
-      <ion-col size="2">
-        Proper Property
-      </ion-col>
-      <ion-col size="9">
-        <div class="navbar" class="ion-text-end">
-          <ion-button fill="clear"  routerLink="/home" routerDirection="root" routerLinkActive="active"
-            class="link">
-            Home
-          </ion-button>
-          <ion-button fill="clear"  routerLink="/create-listing" routerDirection="root" routerLinkActive="active"
-            class="link">
-            Add Listing
-          </ion-button>
-          <ion-button fill="clear" routerLink="/listings" routerDirection="root" routerLinkActive="active"
-            class="link">
-            View Listing
-          </ion-button>
-          <ion-button id="login-button" fill="clear" routerLink="/login" routerDirection="root" routerLinkActive="active"
-          class="link">
-          Log In
-        </ion-button>
-
-        <ion-button fill="clear" routerLink="/profile" routerDirection="root" routerLinkActive="active"
-        class="link">
-        Profile
-      </ion-button>
-
-        <ion-button id="signup-button" fill="clear" routerLink="/register" routerDirection="root" routerLinkActive="active"
-          class="link">
-          Sign Up
-        </ion-button>
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-toolbar>
-</ion-header>
+<!-- Header---
+core.shell.html
+-------------->
 
 
-<ion-content [fullscreen]="true">
-  <ion-card id="recommended">
-  <div class="swiper-container-wrapper">
-    <swiper-container #swiper
-      (afterinit)="swiperReady()"
-      (slidechange)="swiperSlideChanged($event)"
-      [loop]="true"
-      [pagination]="true">
-      <!-- Slides content goes here -->
-      <swiper-slide>
-            <img class="slideimg"  src="assets/Fancy House.jpg" alt="house1">
-      </swiper-slide>
+<ion-content>
+<!----------------------- SlideShow and Searchbar Section--------------------------->
 
-      <swiper-slide> 
-            <img class="slideimg"  src="assets/Cottage.jpg" alt="house1">
-      </swiper-slide>
-      
-      <swiper-slide>
-            <img class="slideimg" src="assets/house1.png" alt="house1">
-      </swiper-slide>
-    </swiper-container>
-  </div>
-  </ion-card>
+  <section class="sec1">
 
-  <ion-text class="title-P" >
-    <h1 >Proper Properties</h1>
-    <h2 >for you</h2>
-  </ion-text>
-  
-  <app-search></app-search>
-  <ion-searchbar class="custom-searchbar"></ion-searchbar>
-  
-  <!-- <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="searchItems()" class="custom-searchbar"></ion-searchbar> -->
-
-  <img class="deco1" src="assets/GreenDots.png">
-  <img class="deco2" src="assets/BlackDots.png">
-
-  <section class="serv" id="serv">
-    <h2 class="heading">What we Offer </h2>
-
-    <div class="serv-container">
-
-      <div class="serv-box">
-        <img src="../../assets/fakeNN.avif">
-        <h3>Proper Recommendations</h3>
-        <p>Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.  Ut non enim finibus, tempus dui eget, tincidunt sem.</p>
-      </div>
-      
-      <div class="serv-box">
-        <img src="../../assets/mapImg.webp">
-        <h3>Proper Communities</h3>
-        <p>Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.  Ut non enim finibus, tempus dui eget, tincidunt sem.</p>
-      </div>
-
-      <div class="serv-box">
-        <img src="../../assets/Cottage.jpg">
-        <h3>Proper Properties</h3>
-        <p>Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.  Ut non enim finibus, tempus dui eget, tincidunt sem.</p>
-      </div>
-
-
+    <div class="slogan">
+      <h1>Proper <span class="bold">Properties</span></h1>
+      <h1>For You</h1>
+      <app-search></app-search>
+      <ion-searchbar class="custom-searchbar" placeholder="Property Location Search"></ion-searchbar>
     </div>
+    
+    <img class="deco1" src="assets/GreenDots.png">
+    <img class="deco2" src="assets/BlackDots.png">
   </section>
+<!------------------------------------Summarised Descriptions Section---------------------------------------------->
+<section class="sec2" id="serv">
+  <h2 class="heading">What makes it <span class="bold2">Unique </span></h2>
+  <p><span class="info">(the pics will be replaced with video examples when app is complete)</span></p>
 
-  <section class="usecase">
-    <h2 class="heading">Some features</h2>
+  <div class="serv-container">
+
+    <div class="serv-box">
+      <img src="../../assets/fakeNN.avif">
+      <h3>Proper Recommendations</h3>
+      <p>With the use of our recommendation system powered by artificial intelligence, we will be sure to understand your preferences and offer the <span class = "bold2">Proper Property</span>  you are looking for.</p>
+    </div>
+    
+    <div class="serv-box">
+      <img src="../../assets/mapImg.webp">
+      <h3>Proper Communities</h3>
+      <p>At Proper Property, we understand the importance of the surrounding area when choosing a property. We consider everything, from essential utilities to amenities' quality. Whether you crave <span class="bold2">mountain landscapes</span> or <span class="bold2">vibrant nightlife</span>, we cater to your preferences.
+    </div>
+
+    <div class="serv-box">
+      <img src="../../assets/Cottage.jpg">
+      <h3>Proper Properties</h3>
+      <p>Properties of all types, cultures, prices, and <span class="bold2">more</span>. Renting or sharing. Stairs or elevators. The library is endless and always Proper</p>
+    </div>
+  </div>
+</section>
+<!------------------------------------Use Case Section---------------------------------------------->
+<section class="sec3">
+  <h2 class="heading">Top <span class="bold2">features</span></h2>
 
     <div class="case-container">
 
@@ -158,6 +99,8 @@
     </div>
     
   </div>
-  </section>
 
-  </ion-content>
+</section>
+
+
+</ion-content>

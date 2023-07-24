@@ -1,21 +1,16 @@
 {
   "functions": [
     {
-      "source": "functions",
-      "codebase": "default"
-    },
-    {
-      "source": "cloud-functions",
-      "codebase": "cloud-functions",
+      "source": "dist/apps/api",
+      "codebase": "default",
       "ignore": [
         "node_modules",
         ".git",
         "firebase-debug.log",
-        "firebase-debug.*.log"
+        "firebase-debug.*.log",
+        "package-lock.json"
       ],
-      "predeploy": [
-        "npm --prefix \"$RESOURCE_DIR\" run build"
-      ]
+      "runtime": "nodejs18"
     }
   ],
   "database": {
@@ -44,7 +39,7 @@
       "port": 5001
     },
     "firestore": {
-      "port": 8080
+      "port": 8081
     },
     "database": {
       "port": 9000

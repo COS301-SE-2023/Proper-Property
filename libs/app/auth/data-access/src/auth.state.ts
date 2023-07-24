@@ -3,9 +3,9 @@ import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
 import { User } from '@angular/fire/auth';
 import { AuthService } from './auth.service';
-import { Login, SubscribeToAuthState, SetUser, Register, AuthProviderLogin } from '@properproperty/app/auth/util'
+import { Login, SubscribeToAuthState, SetAuthUser, Register, AuthProviderLogin } from '@properproperty/app/auth/util';
+import { SubscribeToUserProfile } from '@properproperty/app/profile/util';
 import { tap } from 'rxjs';
-
 export interface AuthStateModel {
   user: User | null;
 }
@@ -34,7 +34,7 @@ export class AuthState {
   async subscribeToAuthState(ctx: StateContext<AuthStateModel>) {
     return this.authService.getState$().pipe(
       tap( (user: User | null) => {
-        return ctx.dispatch(new SetUser(user)) 
+        return ctx.dispatch(new SetAuthUser(user));
       })
     );
   }
@@ -63,9 +63,10 @@ export class AuthState {
     });
   }
 
-  @Action(SetUser)
-  setUser(ctx: StateContext<AuthStateModel>, { user }: SetUser) {
+  @Action(SetAuthUser)
+  setAuthUser(ctx: StateContext<AuthStateModel>, { user }: SetAuthUser) {
     ctx.setState({ user: user });
+    return ctx.dispatch(new SubscribeToUserProfile(user?.uid));
   }
 
   @Action(AuthProviderLogin)
@@ -78,6 +79,7 @@ export class AuthState {
       user = await this.authService.AuthLogin(provider);
     }
     if (user?.email != null) {
+      
       return ctx.dispatch(new Navigate(['/']));
     }
     

@@ -15,7 +15,7 @@ import { CoreShellComponent } from './core.shell';
 import { 
   initializeApp, 
   provideFirebaseApp, 
-  // getApp 
+  getApp 
 } from '@angular/fire/app';
 // Firebase Auth 
 import { 
@@ -62,6 +62,11 @@ import {
 // TODO See if better way exists to hide key
 import { API_KEY_TOKEN } from '@properproperty/app/google-maps/util';
 
+import { enableProdMode } from '@angular/core';
+if (process.env['NX_ENVIRONMENT'] === 'production') {
+  enableProdMode();
+}
+
 import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
@@ -69,6 +74,7 @@ import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { AuthState } from '@properproperty/app/auth/data-access'
 
 import { AuthModule } from '@properproperty/app/auth/data-access';
+import { UserProfileState, UserProfileModule } from '@properproperty/app/profile/data-access';
 
 const NX_ENVIRONMENT = process.env['NX_ENVIRONMENT'] || 'development';
 const USE_EMULATORS = JSON.parse(process.env['NX_USE_EMULATORS'] || 'true');
@@ -106,7 +112,7 @@ if (NX_ENVIRONMENT === 'development') {
     provideFirestore(() => {
       const firestore = getFirestore();
       if (USE_EMULATORS) {
-        connectFirestoreEmulator(firestore, 'localhost', 8080);
+        connectFirestoreEmulator(firestore, 'localhost', 8081);
       }
       return firestore;
     }),
@@ -118,7 +124,7 @@ if (NX_ENVIRONMENT === 'development') {
       return database;
     }),
     provideFunctions(() => {
-      const functions = getFunctions();
+      const functions = getFunctions(getApp(), "europe-west1");
       if (USE_EMULATORS) {
         connectFunctionsEmulator(functions, 'localhost', 5001);
       }
@@ -131,7 +137,7 @@ if (NX_ENVIRONMENT === 'development') {
       }
       return storage;
     }),
-    NgxsModule.forRoot([AuthState]),
+    NgxsModule.forRoot([AuthState, UserProfileState]),
     NgxsLoggerPluginModule.forRoot({
       disabled: NX_ENVIRONMENT === 'production',
     }),
@@ -141,6 +147,7 @@ if (NX_ENVIRONMENT === 'development') {
     NgxsLoggerPluginModule.forRoot(),
     NgxsRouterPluginModule.forRoot(),
     AuthModule,
+    UserProfileModule,
   ],
   // exports: [CoreShell],
   // 

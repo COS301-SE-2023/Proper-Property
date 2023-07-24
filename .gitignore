@@ -89,4 +89,5 @@ emulators
 
 src/environments/environment.prod.ts
 src/environments/environment.ts
+victorias-secret-google-credentials
 .angular

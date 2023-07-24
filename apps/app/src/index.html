@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Ionic App</title>
+    <title>Proper Property</title>
+    <link rel="icon" type="image/x-icon" href="assets/Logo_v1.png">
 
     <base href="/" />
 
@@ -14,13 +15,24 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
 
-    <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCI8fuLmmnPFtqvfVHzT6hxu5oa-Y6TrRg&libraries=places"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCI8fuLmmnPFtqvfVHzT6hxu5oa-Y6TrRg&libraries=places,geometry"></script>
     
 
     <!-- add to homescreen for ios -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <!-- Google Analytics Scripts -->
+      <!-- Export -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-4ZKFFSPB4D"></script>
+
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+  
+        gtag('config', 'G-4ZKFFSPB4D');
+      </script>
   </head>
 
   <body>

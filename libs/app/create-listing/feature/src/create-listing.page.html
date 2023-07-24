@@ -167,7 +167,7 @@
       </ion-col>
 
       <ion-col>
-        <ion-select id="prop-type" aria-label="prop-type" placeholder="Property Type">
+        <ion-select id="prop-type" aria-label="prop-type" placeholder="Property Type" [(ngModel)]="prop_type">
           <ion-select-option value="House">House</ion-select-option>
           <ion-select-option value="Apartment">Apartment</ion-select-option>
           <ion-select-option value="Commercial">Commercial Property</ion-select-option>
@@ -195,7 +195,7 @@
         </ion-item>
       </ion-col>
       <ion-col>
-        <ion-select id="orientation" aria-label="orientation" placeholder="Orientation">
+        <ion-select id="orientation" aria-label="orientation" placeholder="Orientation" [(ngModel)]="orientation">
           <ion-select-option value="North">North</ion-select-option>
           <ion-select-option value="East">East</ion-select-option>
           <ion-select-option value="West">West</ion-select-option>
@@ -226,7 +226,7 @@
       </ion-col>
 
       <ion-col>
-        <ion-select id="env-type" aria-label="env-type" placeholder="Distinct">
+        <ion-select id="env-type" aria-label="env-type" placeholder="Distinct" [(ngModel)]="env_type">
           <ion-select-option value="Rural">Rural</ion-select-option>
           <ion-select-option value="Semi-Rural">Semi-Rural</ion-select-option>
           <ion-select-option value="Urban">Urban</ion-select-option>
@@ -237,7 +237,7 @@
   
     <ion-row>
       <ion-col size ="3" class="ion-text-center">
-        <ion-select id="pos-type" aria-label="pos-type" placeholder="Possession Type">
+        <ion-select id="pos-type" aria-label="pos-type" placeholder="Possession Type" [(ngModel)]="pos_type">
           <ion-select-option value="Leasehold">Leasehold</ion-select-option>
           <ion-select-option value="Freehold">Freehold</ion-select-option>
           <ion-select-option value="Condominium">Condominium</ion-select-option>
@@ -245,7 +245,7 @@
       </ion-col>
 
       <ion-col size ="3">
-        <ion-select id="furnish-type" aria-label="furnishing" placeholder="Furnishing">
+        <ion-select id="furnish-type" aria-label="furnishing" placeholder="Furnishing" [(ngModel)]="furnish_type">
           <ion-select-option value="Furnished">Furnished</ion-select-option>
           <ion-select-option value="Partly Furnished">Partly Furnished</ion-select-option>
           <ion-select-option value="Not Furnished">Not Furnished</ion-select-option>
@@ -285,7 +285,7 @@
     <ion-row>
       <ion-col>
         <h2>Property Description</h2>
-        <textarea id="desc" rows="10" cols="50">{{description}}</textarea><br>
+        <textarea id="desc" rows="10" cols="50" [(ngModel)]="description">{{description}}</textarea><br>
         <ion-button (click)="generateDesc()">AI Generated Description</ion-button>
       </ion-col>
     </ion-row>
