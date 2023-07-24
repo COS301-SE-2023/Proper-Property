@@ -8,7 +8,8 @@ import { CreateListingPageRoutingModule } from './create-listing.routing';
 
 import { CreateListingPage } from './create-listing.page';
 
-import { AuthModule } from '@properproperty/app/auth/data-access'
+import { AuthModule } from '@properproperty/app/auth/data-access';
+import { FooterComponent } from '../../../footer/feature/src/footer.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,6 @@ import { AuthModule } from '@properproperty/app/auth/data-access'
     CreateListingPageRoutingModule,
     AuthModule
   ],
-  declarations: [CreateListingPage]
+  declarations: [CreateListingPage, FooterComponent]
 })
 export class CreateListingPageModule {}

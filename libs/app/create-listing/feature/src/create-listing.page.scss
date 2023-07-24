@@ -4,7 +4,7 @@
   height: auto;
   background-position: bottom;
   background-repeat: no-repeat;
-  background-size:contain;
+  background-size: contain;
 }
 
 #add-photos {
@@ -300,20 +300,20 @@ body {
   border-radius: 10px;
   border: 1.5px solid #000;
   background: #FFF;
-  width:100%;
+  width: 100%;
   margin-top: 2%;
   margin-bottom: 2%;
-  padding:2%;
+  padding: 2%;
 }
 
-.addButt{
+.addButt {
   height: 35px;
 }
 
-.dropdown{
+.dropdown {
   bottom: 0;
-  position: absolute; 
-  width: 100%; 
+  position: absolute;
+  width: 100%;
   padding-bottom: 1%;
 }
 
@@ -324,4 +324,8 @@ body {
   font-weight: 500;
   background-color: transparent;
   border: none;
+}
+
+::ng-deep ion-footer{
+  margin-top: -6%;
 }
