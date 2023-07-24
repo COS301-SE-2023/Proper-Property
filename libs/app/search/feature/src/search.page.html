@@ -200,19 +200,47 @@
         <ion-card *ngFor="let listing of listings" >
           <ion-card-header (click)="redirectToPage(listing)">
             <img src="{{listing.photos[0]}}" alt="house1">
-            <ion-card-title style="color: #8b1882;">R {{listing.price}}</ion-card-title>
+            <ion-card-title style="color: #0DAE4F;">Area Rating 4.3</ion-card-title>
           </ion-card-header>
           <ion-button class="pin" (click)="centerMap(listing)">
             <ion-icon name="location-outline" size="large" color="primary"></ion-icon>
           </ion-button>
           <ion-card-content (click)="redirectToPage(listing)">
            
-            <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-           
-            </p>
+            <ion-grid style="z-index:1;">
+              <ion-row>
+                <ion-col>
+                  <div class="white-text">Water</div>
+                    <div class="slider">
+                      <div class="progress" style="width: 80%"></div>
+                    </div>
+                </ion-col>
+                <ion-col>
+                <div class="white-text">Power</div>
+                <div class="slider">
+                  <div class="progress" style="width: 30%"></div>
+                </div>
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+                <ion-col>
+                <div class="white-text">Crime</div>
+                <div class="slider">
+                  <div class="progress" style="width: 60%"></div>
+                </div>
+                </ion-col>
+                <ion-col>
+                <div class="white-text">Pollution</div>
+                <div class="slider">
+                  <div class="progress" style="width: 50%"></div>
+                </div>                  
+                </ion-col>
+              </ion-row>
+            </ion-grid>
             <br>
             <div id="house_details">
-             
+              {{listing.address}}
             </div>
           </ion-card-content>
         </ion-card>

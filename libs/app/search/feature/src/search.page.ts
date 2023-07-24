@@ -737,5 +737,7 @@ onChange()
       tog2.style.display = 'block';
     }
   }
-  }
+
+}
+
 }
