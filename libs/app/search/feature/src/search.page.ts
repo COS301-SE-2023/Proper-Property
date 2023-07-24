@@ -725,8 +725,17 @@ onChange()
   {
     if(tog1 && tog2)
     {
-      tog1.style.display= 'inline';
+      tog1.style.display= 'block';
       tog2.style.display = 'none';
     }
+  }
+  else
+  {
+    if(tog1 && tog2)
+    {
+      tog1.style.display= 'none';
+      tog2.style.display = 'block';
+    }
+  }
   }
 }
