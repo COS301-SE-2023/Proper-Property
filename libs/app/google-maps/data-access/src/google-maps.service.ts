@@ -6,14 +6,21 @@ import { Injectable, Inject } from '@angular/core';
 // import { environment } from 'src/environments/environment';
 import { API_KEY_TOKEN } from '@properproperty/app/google-maps/util';
 
+
 @Injectable({
   providedIn: 'root'
 })
+
+
+
 export class GmapsService {
+
   constructor(@Inject(API_KEY_TOKEN) private key: string) { }
+
   geocoder!: google.maps.Geocoder;
-  geometry!: google.maps.GeometryLibrary;
+
   autocompleteService!: google.maps.places.AutocompleteService;
+
   nearby!: google.maps.places.PlacesService;
 
   //for create-listing
@@ -147,72 +154,66 @@ export class GmapsService {
 
   //for search
   setupRegionSearchBox(elementId: string): Promise<any> {
+   
     return this.loadGooglePlaces().then((maps) => {
       const defaultBounds = new maps.LatLngBounds();
-  
+
       const input = document.getElementById(elementId) as HTMLInputElement;
-  
-      const options = {
+
+      const searchBox = new maps.places.SearchBox(input, {
         bounds: defaultBounds,
         types: ['(regions)'],
-        componentRestrictions: { country: 'ZA' },
-      };
-  
-      this.autocompleteService = new maps.places.AutocompleteService();
-  
-      const searchBox = new maps.places.Autocomplete(input, options);
-  
-      searchBox.addListener('places_changed', () => {
-        
-        const places = searchBox.getPlaces();
+        componentRestrictions: { country: 'ZA' }
+      });
 
+      
+       maps.places.SearchBox(input, {
+         bounds: defaultBounds, types: ['(regions)'], componentRestrictions: { country: 'ZA' } });
+         
+
+
+      this.autocompleteService = new maps.places.AutocompleteService();
+
+      input.addEventListener('input', () => {
+      
+        this.handleRegionInput(input, defaultBounds);
+      });
+
+      searchBox.addListener('places_changed', () => {
+        const places = searchBox.getPlaces();
         if (places.length === 0) {
           return;
         }
-  
+
         const selectedPlace = places[0];
         input.value = selectedPlace.formatted_address;
-  
+        
         // Handle the selected place(s) here
         console.log('Selected place:', places[0]);
       });
     });
   }
-  
-  
-  
+
   handleRegionInput(input: HTMLInputElement, defaultBounds: google.maps.LatLngBounds): void {
     if (!this.autocompleteService) {
       return;
     }
-  
     this.autocompleteService.getPlacePredictions(
       {
         input: input.value,
         bounds: defaultBounds,
-        types: ['(regions)'],
-        componentRestrictions: { country: 'ZA' },
+        types: ['(regions)'], // Include only regions
+        componentRestrictions: { country: 'ZA' } // Replace 'your_country_code' with the appropriate country code
       },
-      (predictions: google.maps.places.AutocompletePrediction[] | null, status: google.maps.places.PlacesServiceStatus) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
-          // Filter out street addresses from the predictions
-          this.regionPredictions = predictions.filter((prediction) => !prediction.types.includes('street_address'));
-        } else {
-          this.regionPredictions = [];
+      (regionPredictions: google.maps.places.AutocompletePrediction[] | null, status: google.maps.places.PlacesServiceStatus) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && regionPredictions) {
+          // Process the predictions here
+          console.log('Region predictions:', regionPredictions);
+          this.regionPredictions = regionPredictions;
         }
       }
     );
   }
-  
-  filterOutStreetAddresses(predictions: google.maps.places.AutocompletePrediction[]): google.maps.places.AutocompletePrediction[] {
-    return predictions.filter((prediction) => {
-      // Exclude street addresses (types: 'street_address' and 'premise')
-      return !prediction.types.includes('street_address');
-    });
-  }
-  
-  
-  
   
 
   //function for retrieving regions
@@ -255,7 +256,7 @@ export class GmapsService {
       script.src =
         'https://maps.googleapis.com/maps/api/js?key=' +
         // TODO See if better way exists to hide key
-        this.key+ '&libraries=places,geometry';
+        this.key;
       script.async = true;
       script.defer = true;
       document.body.appendChild(script);
@@ -282,7 +283,7 @@ export class GmapsService {
       script.src =
         'https://maps.googleapis.com/maps/api/js?key=' +
         // TODO See if better way exists to hide key
-        this.key +'&libraries=places,geometry&language=en&region=ZA';
+        5+'&libraries=places&language=en&region=ZA';
       script.async = true;
       script.defer = true;
       document.body.appendChild(script);
@@ -310,13 +311,13 @@ export class GmapsService {
       return new Promise<google.maps.places.PlaceResult[]>((resolve, reject) => {
         const request = {
           location: new maps.LatLng(latitude, longitude),
-          radius: 5000, // Specify the radius within which to search for nearby places (in meters)
+          radius: 1000, // Specify the radius within which to search for nearby places (in meters)
+          type: ['school', 'hospital'] // Specify the types of places to search for
         };
 
         service.nearbySearch(request, (results: google.maps.places.PlaceResult[], status: google.maps.places.PlacesServiceStatus) => {
           if (status === maps.places.PlacesServiceStatus.OK) {
             resolve(results);
-            console.log("results: ",results)
           } else {
             reject('Failed to retrieve nearby places');
           }
@@ -344,18 +345,6 @@ getLatLongFromAddress(address: string): Promise<{ latitude: number; longitude: n
     });
   });
 }
-
-calculateDistanceInMeters(lat1: number, lon1: number, lat2: number, lon2: number): Promise<number> {
-  return this.loadGoogleMaps().then(() => {
-    const point1 = new google.maps.LatLng(lat1, lon1);
-    const point2 = new google.maps.LatLng(lat2, lon2);
-
-   
-    const distanceInMeters = google.maps.geometry.spherical.computeDistanceBetween(point1, point2);
-
-    return distanceInMeters;
-  });
-}
   
 getBoundsFromLatLng(latitude: number, longitude: number): google.maps.LatLngBounds {
   const bounds = new google.maps.LatLngBounds();
@@ -363,8 +352,6 @@ getBoundsFromLatLng(latitude: number, longitude: number): google.maps.LatLngBoun
   bounds.extend(latLng);
   return bounds;
 }
-
-
 
 
 }

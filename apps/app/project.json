@@ -63,9 +63,6 @@
     },
     "serve": {
       "executor": "@nrwl/angular:webpack-dev-server",
-      "options":{
-        "port": 8080
-      },
       "configurations": {
         "production": {
           "browserTarget": "app:build:production"

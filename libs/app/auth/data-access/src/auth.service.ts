@@ -35,7 +35,7 @@ import {
   updateEmail,
   authState
 } from "@angular/fire/auth";
-import { UserProfile } from '@properproperty/api/profile/util';
+import { profile } from '@properproperty/app/profile/util';
 @Injectable({
   providedIn: 'root',
 })
@@ -50,9 +50,11 @@ export class AuthService {
     return this.AuthLogin(new GoogleAuthProvider());
   }
   // Auth logic to run auth providers
-  async AuthLogin(provider : AuthProvider) {
-    const result = await signInWithPopup(this.auth, provider);
-    return result.user;
+  AuthLogin(provider : AuthProvider) {
+    return signInWithPopup(this.auth, provider)
+      .then((result) => {
+        return result.user;
+      })
       // .catch((error) => {
       //   console.log(error);
       //   return null;
@@ -117,7 +119,7 @@ export class AuthService {
   }
 
   // Save profile data in a cookie
-  saveProfileData(profile: UserProfile) {
+  saveProfileData(profile: profile) {
     setCookie(this.PROFILE_COOKIE_NAME, JSON.stringify(profile), 7); // Set the cookie to expire in 7 days
   }
 

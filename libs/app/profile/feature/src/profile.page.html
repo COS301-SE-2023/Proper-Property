@@ -71,38 +71,37 @@
     <div class="profile-header">
       <ion-icon slot="icon-only" name="person"></ion-icon>
       <div class="profile-details">
-        <h1>{{ user?.firstName }} {{ user?.lastName }}</h1>
+        <h1>{{ user.name }} {{ user.surname }}</h1>
         <div class="edit-icons">
           <h2>
-            <span class="email-text">{{ user?.email }}</span>
+            <span class="email-text">{{ user.email }}</span>
             <ion-icon name="create-outline" class="edit-icon" (click)="editEmail()"></ion-icon>
           </h2>
           <div class="email-input-container" *ngIf="isEditingEmail">
             <ion-input type="text" [(ngModel)]="newEmail" placeholder="Enter a new email" clearInput></ion-input>
             <ion-button expand="full" color="primary" (click)="saveEmail()">Save</ion-button>
-            <ion-button expand="full" color="danger" (click)="discardEmail()">Cancel</ion-button>
           </div>
         </div>
         <br>
         <ion-item>
           <ion-label position="stacked">Garden Lover</ion-label>
-          <ion-range [(ngModel)]="interests.garden" ></ion-range>
+          <ion-range [(ngModel)]="user.interests.garden" ></ion-range>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Mansion Passion</ion-label>
-          <ion-range [(ngModel)]="interests.mansion" ></ion-range>
+          <ion-range [(ngModel)]="user.interests.mansion" ></ion-range>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Make it Accessible</ion-label>
-          <ion-range [(ngModel)]="interests.accessible" ></ion-range>
+          <ion-range [(ngModel)]="user.interests.accessible" ></ion-range>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Open Concept Trend</ion-label>
-          <ion-range [(ngModel)]="interests.openConcept"></ion-range>
+          <ion-range [(ngModel)]="user.interests.openConcept"></ion-range>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">Eco-Warrior</ion-label>
-          <ion-range [(ngModel)]="interests.ecoWarrior"></ion-range>
+          <ion-range [(ngModel)]="user.interests.ecoWarrior"></ion-range>
         </ion-item>
       </div>
     </div>

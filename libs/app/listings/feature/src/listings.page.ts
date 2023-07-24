@@ -6,13 +6,7 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, Vie
 import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
-import { Listing } from '@properproperty/api/listings/util';
-import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
-import { Select } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { AuthState } from '@properproperty/app/auth/data-access';
-import { Unsubscribe, User } from '@angular/fire/auth';
-import { UserProfile } from '@properproperty/api/profile/util';
+import { listing } from '@properproperty/app/listing/util';
 
 
 @Component({
@@ -21,12 +15,6 @@ import { UserProfile } from '@properproperty/api/profile/util';
   styleUrls: ['./listings.page.scss'],
 })
 export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
-  @Select(AuthState.user) user$!: Observable<User | null>;
-  @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
-  private user: User | null = null;
-  private profile : UserProfile | null = null;
-  private userProfileListener: Unsubscribe | null = null;
-
 
   @ViewChild('map', { static: true })
   mapElementRef!: ElementRef;
@@ -36,7 +24,7 @@ export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
   mapClickListener: any;
   markerClickListener: any;
   markers: any[] = [];
-  listings: Listing[] = []
+  listings: listing[] = []
 
 
   constructor(
@@ -45,25 +33,10 @@ export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
     private actionSheetCtrl: ActionSheetController,
     private router: Router,
     private listingServices : ListingsService,
-    private profileServices : UserProfileService
-    ) {
-      this.user$.subscribe((user) => {
-        this.user = user;
-        if(this.user){
-          this.profileServices.getUser(this.user.uid).then((profile) =>{
-            this.profile = profile;
-          });
-        }
-      });
-      // Update listener whenever is changes such that it can be unsubscribed from
-      // when the window is unloaded
-      this.userProfileListener$.subscribe((listener) => {
-        this.userProfileListener = listener;
-      });
-    }
+    ) {}
 
   async ngOnInit() {
-    await this.listingServices.getApprovedListings().then((listings) => {
+    await this.listingServices.getListings().then((listings) => {
       this.listings = listings;
     });
   }
@@ -120,7 +93,7 @@ export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
     });
   }
 
-  generatePropertyCard(property: Listing): HTMLElement {
+  generatePropertyCard(property: listing): HTMLElement {
     const propertyCard = document.createElement('div');
     propertyCard.className = 'property-card';
   
@@ -220,7 +193,7 @@ export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
     await actionSheet.present();
   }
 
-  async redirectToPage(listing : Listing) {
+  async redirectToPage(listing : listing) {
     console.log(listing.listing_id);
     this.router.navigate(['/listing', {list : listing.listing_id}]);
   }
@@ -231,53 +204,10 @@ export class ListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
     if(this.markerClickListener) this.googleMaps.event.removeListener(this.markerClickListener);
   }
 
-  isSaved(listing_id : string){
-    if(this.profile){
-      if(this.profile.savedListings){
-        if(this.profile.savedListings.includes(listing_id)){
-          console.log("Listing found in saved: " + listing_id);
-          return true;
-        }
-      }
-    }
-    else{
-      console.log("Profile not found");
-    }
+  //likes:
+  isRed = false;
 
-    console.log("Not found");
-    return false;
-  }
-
-  saveListing($event : any, listing_id : string) {
-    if(listing_id != ''){
-      let heartBut = $event.target as HTMLButtonElement;
-      heartBut.style.color = "red";
-      
-      if(this.profile){
-          if(this.profile.savedListings){
-            this.profile.savedListings.push(listing_id);
-          }
-          else{
-            this.profile.savedListings = [listing_id];
-          }
-  
-          this.profileServices.updateUserProfile(this.profile);
-      }
-    } 
-  }
-
-  unsaveListing($event : any, listing_id : string){
-    if(listing_id != ''){
-      let heartBut = $event.target as HTMLButtonElement;
-      heartBut.style.color = "red";
-      
-      if(this.profile){
-          if(this.profile.savedListings){
-            this.profile.savedListings.splice(this.profile.savedListings.indexOf(listing_id), 1);
-          }
-  
-          this.profileServices.updateUserProfile(this.profile);
-      }
-    } 
+  toggleColor() {
+    this.isRed = !this.isRed;
   }
 }

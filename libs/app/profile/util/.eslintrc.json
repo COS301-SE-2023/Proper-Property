@@ -11,10 +11,7 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "rules": {},
-      "extends": [
-        "plugin:@typescript-eslint/recommended"
-      ]
+      "rules": {}
     },
     {
       "files": ["*.js", "*.jsx"],

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@properproperty/app/auth/data-access';
 import { AuthProviderLogin } from '@properproperty/app/auth/util';
 import { Router } from '@angular/router'
-import { UserProfileService } from '@properproperty/app/profile/data-access';
+import { UserService } from '@properproperty/app/user/data-access';
 import { Store } from '@ngxs/store';
 import { Login } from '@properproperty/app/auth/util';
 
@@ -13,7 +13,7 @@ import { Login } from '@properproperty/app/auth/util';
 })
 export class LoginPage implements OnInit {
 
-  constructor(private readonly store: Store, public authService: AuthService, public router: Router, public userService : UserProfileService) {
+  constructor(private readonly store: Store, public authService: AuthService, public router: Router, public userService : UserService) {
     this.email = this.password = "";
   }
 

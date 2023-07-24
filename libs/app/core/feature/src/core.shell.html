@@ -8,34 +8,32 @@
         </ion-col>
         <ion-col size="9">
           <div class="navbar" class="ion-text-end">
-            <ion-button *ngIf="!this.loggedIn" id="login-button" fill="clear" routerLink="login" routerDirection="root" routerLinkActive="active"
+            <ion-button *ngIf="!this.loggedIn" id="login-button" fill="clear" routerLink="/login" routerDirection="root" routerLinkActive="active"
             class="link">
             Log In
           </ion-button>
-            <ion-button *ngIf="!this.loggedIn" id="signup-button" fill="clear" routerLink="register" routerDirection="root" routerLinkActive="active"
+            <ion-button *ngIf="!this.loggedIn" id="signup-button" fill="clear" routerLink="/register" routerDirection="root" routerLinkActive="active"
             class="link">
             Sign Up
           </ion-button>
-            <ion-button fill="clear"  routerLink="home" routerDirection="root" routerLinkActive="active"
+            <ion-button fill="clear"  routerLink="/home" routerDirection="root" routerLinkActive="active"
               class="link">
               Home
             </ion-button>
-            <ion-button   *ngIf="this.loggedIn" fill="clear"  routerLink="/create-listing" routerDirection="root" routerLinkActive="active"
+            <ion-button fill="clear"  routerLink="/create-listing" routerDirection="root" routerLinkActive="active"
               class="link">
               Add Listing
             </ion-button>
-            <ion-button fill="clear" routerLink="search" routerDirection="root" routerLinkActive="active"
+            <ion-button fill="clear" routerLink="/search" routerDirection="root" routerLinkActive="active"
               class="link">
               View Listings
             </ion-button>
   
-          <ion-button  *ngIf="this.loggedIn" fill="clear"  routerLink="/profile" routerDirection="root" routerLinkActive="active"
+          <ion-button fill="clear" routerLink="/profile" routerDirection="root" routerLinkActive="active"
           class="link">
           Profile
         </ion-button>
-        <ion-button *ngIf="dev" fill="clear" (click)="test()" class="link">
-          don't click &gt;:0
-        </ion-button>
+  
           
           </div>
         </ion-col>
