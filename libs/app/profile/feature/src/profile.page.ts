@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { UserProfileState, UserProfileService } from '@properproperty/app/profile/data-access';
 import {AuthService} from '@properproperty/app/auth/data-access';
+import { Logout } from '@properproperty/app/auth/util';
 import { AlertController } from '@ionic/angular';
 
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { UserProfile, Interests } from '@properproperty/api/profile/util';
-import { UpdateUserProfile } from '@properproperty/app/profile/util';
+import { UpdateUserProfile, RemoveCurrentUser } from '@properproperty/app/profile/util';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -146,6 +147,12 @@ export class ProfilePage implements OnInit {
     this.authServices.deleteCurrentUser();
     //redirect to login
     this.router.navigate(['/register']);
+  }
+
+  logout(){
+    this.store.dispatch(new RemoveCurrentUser());
+    this.store.dispatch(new Logout());
+    this.router.navigate(['/login']);
   }
 
 }
