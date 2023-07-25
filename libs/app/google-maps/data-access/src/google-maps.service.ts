@@ -302,7 +302,6 @@ export class GmapsService {
     });
   }
 
-
   getNearbyPlaces(latitude: number, longitude: number): Promise<google.maps.places.PlaceResult[]> {
     return this.loadGoogleMaps().then((maps) => {
       const service = new maps.places.PlacesService(document.createElement('div'));

@@ -232,6 +232,7 @@ export class ListingPage{
     console.log(results);
     // Clear the existing points of interest
     this.pointsOfInterest = [];
+    
     const wantedTypes : string[] = [
       "airport",
       "school",
@@ -248,6 +249,7 @@ export class ListingPage{
       "bank", // to plead for a loan for liquour  
       "bus_station",
       "cafe",
+      "food",
       "church",
       "drugstore",
       "gym",
