@@ -13,7 +13,6 @@ import { Store } from '@ngxs/store';
 // import { UpdateUserProfile } from '@properproperty/app/profile/util';
 import { isDevMode } from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import {QualityScoreService} from '@properproperty/app/quality-scoring/data-access'
 
 @Component({
   selector: 'app-create-listing',
@@ -38,8 +37,7 @@ export class CreateListingPage implements OnInit {
     private readonly userService: UserProfileService, 
     private readonly listingService: ListingsService, 
     private readonly openAIService: OpenAIService,public gmapsService: GmapsService,
-    private readonly store: Store,
-    public qualityScoreService:QualityScoreService
+    private readonly store: Store
   ) {
     this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
     this.predictions = [];
