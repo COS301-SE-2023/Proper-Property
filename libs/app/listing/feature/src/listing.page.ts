@@ -14,7 +14,7 @@ import { Chart, registerables } from 'chart.js';
 import { GetAnalyticsDataRequest } from '@properproperty/api/core/feature';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { Unsubscribe, User } from 'firebase/auth';
-import { IonContent } from '@ionic/angular';
+import { IonContent, IonRow } from '@ionic/angular';
 
 @Component({
   selector: 'app-listing',
@@ -23,7 +23,6 @@ import { IonContent } from '@ionic/angular';
 })
 export class ListingPage{
   @ViewChild(IonContent) content: IonContent | undefined;
-  @ViewChild('calculateButton') calculateButton: ElementRef | undefined;
 
   @Select(AuthState.user) user$!: Observable<User | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
@@ -331,38 +330,28 @@ export class ListingPage{
     }
   }
 
-  // saveListing(){
-  //   console.log("save listing");
-  // }
-
-  
-
-toggleColor() {
-  if(this.isRed)
-    this.unsaveListing();
-  else
-    this.saveListing();
+  toggleColor() {
+    if(this.isRed)
+      this.unsaveListing();
+    else
+      this.saveListing();
 
 
-  this.isRed = !this.isRed;
-}
+    this.isRed = !this.isRed;
+  }
 
-isSaved(listing_id : string){
-  if(this.profile){
-    if(this.profile.savedListings){
-      if(this.profile.savedListings.includes(listing_id)){
-        console.log("Listing found in saved: " + listing_id);
-        return true;
+  isSaved(listing_id : string){
+    if(this.profile){
+      if(this.profile.savedListings){
+        if(this.profile.savedListings.includes(listing_id)){
+          console.log("Listing found in saved: " + listing_id);
+          return true;
+        }
       }
     }
-  }
-  else{
-    console.log("Profile not found");
-  }
 
-  console.log("Not found");
-  return false;
-}
+    return false;
+  }
 
   saveListing() {
     if(!this.isSaved(this.listingId)){
@@ -397,10 +386,10 @@ isSaved(listing_id : string){
   }
 
   scrollToBottom() {
-    if(this.content && this.calculateButton) {
-      console.log((this.calculateButton.nativeElement as HTMLButtonElement).offsetTop);
-      const buttonElement = this.calculateButton.nativeElement as HTMLElement;
-      this.content.scrollToPoint(0, buttonElement.offsetTop, 500);
+    if(this.content && document.getElementById('calculator')) {
+      console.log(document.getElementById('calculator')?.getBoundingClientRect().top);
+      const calculatorRow =  document.getElementById('calculator')?.getBoundingClientRect().top;
+      this.content.scrollToPoint(0, ((calculatorRow ?? 100) - 100), 500);
     }
   }
 }
