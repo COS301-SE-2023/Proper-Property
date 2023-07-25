@@ -63,7 +63,15 @@ export class ListingsService {
       'getListings'
     )({})).data;
     if (response.listings.length > 0){
-      return response.listings;
+      //sorted listings by quality score
+      let tempListings:Listing[]=[];
+
+      //sort response.listings array and put result into temp listings 
+
+      tempListings = response.listings.sort((a,b) => ((a.quality_rating ?? 0) > (b.quality_rating ?? 0)) ? -1 : 1);
+    
+      
+      return tempListings;
     }
     return [];
    

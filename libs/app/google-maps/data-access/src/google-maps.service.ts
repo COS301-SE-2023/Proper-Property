@@ -112,8 +112,9 @@ export class GmapsService {
       (predictions: google.maps.places.AutocompletePrediction[] | null, status: google.maps.places.PlacesServiceStatus) => {
         if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
           // Process the predictions here
-          console.log('Autocomplete predictions:', predictions);
+          
           this.predictions = predictions.filter((prediction) => !prediction.types.includes('street_address'));
+          console.log('Autocomplete predictions:', this.predictions);
         } else {
           this.predictions = [];
         }
