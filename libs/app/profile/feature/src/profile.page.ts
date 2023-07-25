@@ -20,7 +20,12 @@ export class ProfilePage implements OnInit {
   user: UserProfile | null = null;
   interests: Interests; // Needs to not be nullable cus ngModel no like
   isEditingEmail: boolean;
+  isEditingName: boolean;
+  isEditingPhoneNumber: boolean;
   newEmail: string;
+  newFirstName: string;
+  newLastName: string;
+  newPhoneNumber: string;
   // appPages = [
   //   { title: 'Saved Listings', url: '/saved-listings', icon: 'bookmark' },
   //   { title: 'My Listings', url: '/my-listings', icon: 'list' },
@@ -107,9 +112,12 @@ export class ProfilePage implements OnInit {
     // };
     
     this.isEditingEmail = false;
+    this.isEditingName = false;
+    this.isEditingPhoneNumber = false;
     this.newEmail = '';
-
-  
+    this.newFirstName = '';
+    this.newLastName = '';
+    this.newPhoneNumber = '';
    }
 
   ngOnInit() {
@@ -155,4 +163,51 @@ export class ProfilePage implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  editName(){
+    if (!this.user) {
+      return;
+    }
+    this.isEditingName = true;
+    this.newFirstName = this.user.firstName ?? '';
+    this.newLastName = this.user.lastName ?? '';
+  }
+
+  saveName() {
+    this.isEditingName = false;
+    if (!this.user) {
+      return;
+    }
+    this.user.firstName = this.newFirstName;
+    this.user.lastName = this.newLastName;
+    this.store.dispatch(new UpdateUserProfile({firstName: this.newFirstName, lastName: this.newLastName}));
+    this.newEmail = '';
+  }
+
+  discardName() {
+    this.newEmail = '';
+    this.isEditingEmail = false;
+  }
+
+  editPhoneNumber(){
+    if (!this.user) {
+      return;
+    }
+    this.isEditingPhoneNumber = true;
+    this.newPhoneNumber = this.user.phoneNumber ?? '';
+  }
+
+  savePhoneNumber() {
+    this.isEditingPhoneNumber = false;
+    if (!this.user) {
+      return;
+    }
+    this.user.phoneNumber = this.newPhoneNumber;
+    this.store.dispatch(new UpdateUserProfile({phoneNumber: this.newPhoneNumber}));
+    this.newPhoneNumber = '';
+  }
+
+  discardPhoneNumber() {
+    this.newPhoneNumber = '';
+    this.isEditingPhoneNumber = false;
+  }
 }

@@ -178,11 +178,6 @@
     z-index:2;
   }
 
-  #calculate-hyperlink{
-    color:#0DAE4F;
-    background-color: transparent;
-  }
-
   #heart-button{
     color: #969696;
     border-radius: 10px;
@@ -273,4 +268,14 @@
   
   .grey {
     color: grey;
+  }
+
+  // .contactDetails{
+  //   background-color: rgba(13, 175, 81, 0.5);
+  // }
+
+  ion-modal.contactDetails {
+    ion-content {
+      --ion-background-color: rgba(13, 175, 81, 0.5); /* Replace with your desired background color */
+    }
   }

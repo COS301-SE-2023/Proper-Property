@@ -14,6 +14,7 @@ import { Chart, registerables } from 'chart.js';
 import { GetAnalyticsDataRequest } from '@properproperty/api/core/feature';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { Unsubscribe, User } from 'firebase/auth';
+import { IonContent } from '@ionic/angular';
 
 @Component({
   selector: 'app-listing',
@@ -21,6 +22,9 @@ import { Unsubscribe, User } from 'firebase/auth';
   styleUrls: ['./listing.page.scss'],
 })
 export class ListingPage{
+  @ViewChild(IonContent) content: IonContent | undefined;
+  @ViewChild('calculateButton') calculateButton: ElementRef | undefined;
+
   @Select(AuthState.user) user$!: Observable<User | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
   private user: User | null = null;
@@ -36,6 +40,7 @@ export class ListingPage{
   admin = false;
   adminId = "";
   public showAnalyticsData$ : Observable<boolean> = of(false);
+  lister : UserProfile | null = null;
 
   price_per_sm = 0;
   lister_name = "";
@@ -88,8 +93,8 @@ export class ListingPage{
         this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
   
         this.userServices.getUser("" + this.list?.user_id).then((user : UserProfile) => {
+          this.lister = user;
           this.lister_name = user.firstName + " " + user.lastName;
-          console.log(this.lister_name);
         });
 
         this.user$.subscribe((user) => {
@@ -359,8 +364,7 @@ isSaved(listing_id : string){
   return false;
 }
 
-saveListing() {
-
+  saveListing() {
     if(!this.isSaved(this.listingId)){
       if(this.profile){
         if(this.profile.savedListings){
@@ -371,23 +375,32 @@ saveListing() {
         }
 
         this.profileServices.updateUserProfile(this.profile);
-    }
-    }
-
-  
-}
-
-unsaveListing(){
-
-  if(this.isSaved(this.listingId)){
-    if(this.profile){
-      if(this.profile.savedListings){
-        this.profile.savedListings.splice(this.profile.savedListings.indexOf(this.listingId), 1);
       }
-
-      this.profileServices.updateUserProfile(this.profile);
+    }
   }
-  }
-  } 
 
+  unsaveListing(){
+    if(this.isSaved(this.listingId)){
+        if(this.profile){
+          if(this.profile.savedListings){
+            this.profile.savedListings.splice(this.profile.savedListings.indexOf(this.listingId), 1);
+          }
+          this.profileServices.updateUserProfile(this.profile);
+      }
+    }
+  }
+
+  isModalOpen = false;
+
+  setOpen(isOpen: boolean) {
+    this.isModalOpen = isOpen;
+  }
+
+  scrollToBottom() {
+    if(this.content && this.calculateButton) {
+      console.log((this.calculateButton.nativeElement as HTMLButtonElement).offsetTop);
+      const buttonElement = this.calculateButton.nativeElement as HTMLElement;
+      this.content.scrollToPoint(0, buttonElement.offsetTop, 500);
+    }
+  }
 }
