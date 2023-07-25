@@ -88,8 +88,8 @@ export class ListingPage{
         this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
   
         this.userServices.getUser("" + this.list?.user_id).then((user : UserProfile) => {
-          console.log(user);
           this.lister_name = user.firstName + " " + user.lastName;
+          console.log(this.lister_name);
         });
 
         this.user$.subscribe((user) => {
