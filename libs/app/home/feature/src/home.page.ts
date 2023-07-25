@@ -1,7 +1,6 @@
 import { Component, inject, OnInit,ViewChild,ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UserProfileService } from '@properproperty/app/profile/data-access';
-import { UserProfile } from '@properproperty/api/profile/util';
+import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import Swiper from 'swiper';
 // import { Storage, ref } from '@angular/fire/storage';
 // import { uploadBytes } from 'firebase/storage';
@@ -13,6 +12,13 @@ import Swiper from 'swiper';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
+
+  autocomplete: any;
+
+  predictions: google.maps.places.AutocompletePrediction[] = [];
+
+
   @ViewChild('swiper')
   swiperRef: ElementRef | undefined;
   swiper?: Swiper;
@@ -20,34 +26,37 @@ export class HomePage implements OnInit {
   swiperSlideChanged(e:Event) {
     console.log('changed', e)
   }
+
   
   public home!: string;
   private activatedRoute = inject(ActivatedRoute);
-  currentUser: UserProfile | null = null;
-  constructor(public userService : UserProfileService) {
-    this.currentUser = this.userService.getCurrentUser();
+ 
+  constructor(
+ 
+    public gmapsService: GmapsService) {
+
   }
 
    ngOnInit() {
-    this.currentUser = this.userService.getCurrentUser();
+
     this.home = this.activatedRoute.snapshot.paramMap.get('id') as string;
     const loginBut = document.getElementById('login-button');
     const signupBut = document.getElementById('signup-button');
 
-    if(loginBut && signupBut){
-      if(this.currentUser === null){
-        console.log("Home page - onInit: Current user is null");
-        loginBut.style.visibility = 'visible';
-        signupBut.style.visibility = 'visible';
-      }
-      else{
-        console.log("Home page - onInit: " + this.userService.printCurrentUser());
-        loginBut.style.visibility = 'hidden';
-        signupBut.style.visibility = 'hidden';
-      }
-    }
+    
+    
+    const inputElementId = 'address';
+
+    
+    
+    this.gmapsService.setupRegionSearchBox(inputElementId);
   }
 
+  searchQuery = '';
+  //to be implemented
+  searchProperties() {
+    this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
+  }
   // swiperReady() {
   //   this.swiper = this.swiperRef?.nativeElement.swiper;
   // }

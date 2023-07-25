@@ -12,17 +12,7 @@
   
   
   <ion-content [fullscreen]="true">
-    <div *ngIf="admin" id="approvalBox">
-      <ion-grid>
-        <ion-row>
-          <ion-col id="approvalCol">
-            <ion-button id="approveBut" [attr.disabled]="this.list.approved ? '' : null" (click)="changeStatus()">Approve</ion-button>
-          </ion-col>
-          <ion-col id="rejectionCol">
-            <ion-button color="danger" [attr.disabled]="!this.list.approved ? '' : null" id="rejectBut" (click)="changeStatus()">Reject</ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+    <div id="top-half">
     </div>
     <div class="swiper-container-wrapper">
       <ion-buttons slot="start" class="swiper-button1" #one>
@@ -56,17 +46,10 @@
           <ion-card class="half-green-container">
             <ion-grid style="padding-top: 20px; padding-left:20px;">
               <ion-row>
-                <ion-card-title class="house-titles">{{list.desc}}</ion-card-title>
-                <ion-button class="save-button" (click)="saveListing()" [ngClass]="{'red': isRed}" (click)="toggleColor()" ion-tooltip="Save Listing">
-                  <ion-icon name="save" ion-tooltip="Save Listing"></ion-icon>
-                </ion-button>
-
-
+                <ion-card-title class="house-titles">House</ion-card-title>
               </ion-row>
               <ion-row>
                 <ion-card-subtitle class="house-subtitles">by {{lister_name}}</ion-card-subtitle>
-              
-                
               </ion-row>
               <ion-row>
                 <ion-card-title class="house-titles" style="margin-top:8px; font-size: 25px;">{{list.bed}} Bedroom House</ion-card-title>
@@ -128,9 +111,7 @@
                     <div class="black-text">{{list.property_size}} sq.m</div>
                     <div class="grey-text">Property Size</div>
                   </ion-col>
-
                 </ion-row>
-
               </ion-grid>
             </ion-card-content>
           </ion-card>
@@ -150,7 +131,10 @@
                     </ion-row>
                   </ion-grid>
                 </ion-card-content>
-                  
+                
+                
+                
+                
               </ion-card-header>
             </ion-card>
           </ion-row>
@@ -256,10 +240,6 @@
   
         </ion-card>
       </ion-row>
-      <ion-row *ngIf="(showAnalyticsData$ | async)">
-        <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
-        <canvas id="lineGraph"></canvas>
-      </ion-row>
     </ion-grid>
   </ion-content>
-</ion-template>
+  </ion-template>
