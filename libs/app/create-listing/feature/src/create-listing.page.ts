@@ -340,14 +340,13 @@ handleAddressChange(address: string): void {
     
     const pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
     const env_type_in = document.getElementById('env-type') as HTMLInputElement;
-    const prop_type_in = document.getElementById('prop-type') as HTMLInputElement;
+    const prop_type_in = this.prop_type;
     const furnish_type_in = document.getElementById('furnish-type') as HTMLInputElement;
     const orientation_in = document.getElementById('orientation') as HTMLInputElement;
     const desc_in = document.getElementById('desc') as HTMLInputElement;
 
     const score = await calculateQualityScore(this.photos,this.address,this.price,this.bedrooms,this.bathrooms,this.parking,this.floor_size,this.erf_size,this.pos_type,this.env_type,this.prop_type,this.furnish_type,this.orientation,this.gmapsService);
     
-    console.log(prop_type_in.value);
     if(this.currentUser != null){
       const list : Listing = {
         user_id: this.currentUser.uid,
