@@ -1,4 +1,39 @@
+<<<<<<< HEAD
 <ion-header >
+=======
+<!-- <ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Proper Property</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/home" routerDirection="root">
+        <ion-icon slot="icon-only" name="home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/listings" routerDirection="root">
+        <ion-icon slot="icon-only" name="list"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/search" routerDirection="root">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/profile" routerDirection="root">
+        <ion-icon slot="icon-only" name="person"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons id="login-button" slot="end">
+      <ion-button routerLink="/login" routerDirection="root">
+       Login
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-header>
+>>>>>>> origin/Murray-UI
   <ion-toolbar>
     <ion-row class="ion-align-items-center">
       <ion-col size="0.5"><img class="logo" src="assets/Logo_v1.png" width="60%"></ion-col>
@@ -7,32 +42,29 @@
       </ion-col>
       <ion-col size="9">
         <div class="navbar" class="ion-text-end">
-          <ion-button fill="clear"  routerLink="/home" routerDirection="root" routerLinkActive="active"
-            class="link">
+          <ion-button fill="clear" routerLink="/home" routerDirection="root" routerLinkActive="active" class="link">
             Home
           </ion-button>
-          <ion-button fill="clear"  routerLink="/create-listing" routerDirection="root" routerLinkActive="active"
+          <ion-button fill="clear" routerLink="/create-listing" routerDirection="root" routerLinkActive="active"
             class="link">
             Add Listing
           </ion-button>
-          <ion-button fill="clear" routerLink="/listings" routerDirection="root" routerLinkActive="active"
-            class="link">
+          <ion-button fill="clear" routerLink="/listings" routerDirection="root" routerLinkActive="active" class="link">
             View Listing
           </ion-button>
-          <ion-button id="login-button" fill="clear" routerLink="/login" routerDirection="root" routerLinkActive="active"
-          class="link">
-          Log In
-        </ion-button>
+          <ion-button id="login-button" fill="clear" routerLink="/login" routerDirection="root"
+            routerLinkActive="active" class="link">
+            Log In
+          </ion-button>
 
-        <ion-button fill="clear" routerLink="/profile" routerDirection="root" routerLinkActive="active"
-        class="link">
-        Profile
-      </ion-button>
+          <ion-button fill="clear" routerLink="/profile" routerDirection="root" routerLinkActive="active" class="link">
+            Profile
+          </ion-button>
 
-        <ion-button id="signup-button" fill="clear" routerLink="/register" routerDirection="root" routerLinkActive="active"
-          class="link">
-          Sign Up
-        </ion-button>
+          <ion-button id="signup-button" fill="clear" routerLink="/register" routerDirection="root"
+            routerLinkActive="active" class="link">
+            Sign Up
+          </ion-button>
         </div>
       </ion-col>
     </ion-row>
@@ -41,6 +73,7 @@
 
 
 <ion-content [fullscreen]="true">
+<<<<<<< HEAD
     <div>
         <ion-card *ngFor="let listing of listings">
           <div (click)="redirectToPage(listing)">
@@ -85,3 +118,40 @@
     </div>
     <div slot="fixed" class="map"  #map></div>
 </ion-content>
+=======
+  <div>
+    <ion-card *ngFor="let listing of listings" (click)="redirectToPage(listing)">
+      <ion-card-header>
+        <img src="{{listing.photos[0]}}" alt="house1">
+        <ion-card-title>House</ion-card-title>
+        <ion-card-subtitle style="color: #94d2ae;">R {{listing.price}}</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+          {{listing.desc}}
+        </p>
+        <br>
+        <br>
+        <div id="house_details">
+          <img src="assets/icon/bedrooms.png">
+          {{listing.bed}}
+          &nbsp; &nbsp;&nbsp;
+          <img src="assets/icon/bathrooms.png">
+          {{listing.bath}}
+          &nbsp; &nbsp;&nbsp;
+          <img src="assets/icon/floorplan.png">
+          {{listing.floor_size}} m<sup>2</sup>
+          &nbsp; &nbsp;&nbsp;
+          <img src="assets/icon/erf.png">
+          {{listing.property_size}} m<sup>2</sup>
+        </div>
+        <button class="heart-button" [ngClass]="{'red': isRed}" (click)="toggleColor()">
+          <ion-icon name="heart" class="heart-icon"></ion-icon>
+        </button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <div slot="fixed" class="map" #map></div>
+</ion-content>
+>>>>>>> origin/Murray-UI

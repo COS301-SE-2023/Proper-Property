@@ -8,7 +8,8 @@ import { CreateListingPageRoutingModule } from './create-listing.routing';
 
 import { CreateListingPage } from './create-listing.page';
 
-import { AuthModule } from '@properproperty/app/auth/data-access'
+import { AuthModule } from '@properproperty/app/auth/data-access';
+import { FooterModule } from '@properproperty/app/footer/feature';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { AuthModule } from '@properproperty/app/auth/data-access'
     FormsModule,
     IonicModule,
     CreateListingPageRoutingModule,
-    AuthModule
+    AuthModule,
+    FooterModule
   ],
   declarations: [CreateListingPage]
 })

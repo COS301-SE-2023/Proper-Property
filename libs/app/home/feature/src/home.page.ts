@@ -13,6 +13,13 @@ import Swiper from 'swiper';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
+
+  autocomplete: any;
+
+  predictions: google.maps.places.AutocompletePrediction[] = [];
+
+
   @ViewChild('swiper')
   swiperRef: ElementRef | undefined;
   swiper?: Swiper;
@@ -20,6 +27,7 @@ export class HomePage implements OnInit {
   swiperSlideChanged(e:Event) {
     console.log('changed', e)
   }
+
   
   public home!: string;
   private activatedRoute = inject(ActivatedRoute);
@@ -46,8 +54,19 @@ export class HomePage implements OnInit {
         signupBut.style.visibility = 'hidden';
       }
     }
+    
+    const inputElementId = 'address';
+
+    
+    
+    this.gmapsService.setupRegionSearchBox(inputElementId);
   }
 
+  searchQuery = '';
+  //to be implemented
+  searchProperties() {
+    this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
+  }
   // swiperReady() {
   //   this.swiper = this.swiperRef?.nativeElement.swiper;
   // }

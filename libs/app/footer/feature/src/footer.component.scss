@@ -1,0 +1,25 @@
+#footer {
+  margin-top: 10px;
+  height: 348px;
+  width: 100%;
+  bottom: 0;
+  background-image: url('../../../assets/footer.svg');
+  background-size: contain;
+  box-shadow: none;
+}
+
+#contactUs {
+  display: flex;
+  width: 274px;
+  height: 66px;
+  padding: 5px 26px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: #FFF;
+  margin-left: 2%;
+  position: absolute;
+  bottom: 40%;
+}

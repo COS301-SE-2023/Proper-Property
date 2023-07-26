@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { SearchPageRoutingModule } from './search.routing';
 
 import { SearchPage } from './search.page';
+import { FooterModule } from '@properproperty/app/footer/feature';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SearchPageRoutingModule
+    SearchPageRoutingModule,
+    FooterModule
   ],
   declarations: [SearchPage]
 })
