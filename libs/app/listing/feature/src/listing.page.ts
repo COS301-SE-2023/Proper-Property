@@ -389,7 +389,7 @@ export class ListingPage{
     if(this.content && document.getElementById('calculator')) {
       console.log(document.getElementById('calculator')?.getBoundingClientRect().top);
       const calculatorRow =  document.getElementById('calculator')?.getBoundingClientRect().top;
-      this.content.scrollToPoint(0, ((calculatorRow ?? 100) - 100), 500);
+      this.content.scrollToPoint(0, ((calculatorRow ?? 100)), 500);
     }
   }
 
