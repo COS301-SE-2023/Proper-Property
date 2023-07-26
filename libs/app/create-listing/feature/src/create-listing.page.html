@@ -298,7 +298,25 @@
           LISTING</ion-button>
       </ion-row>
     </ion-row>
-    <br><br><br><br><br><br><br>
+    <br><br>
+
+    <ion-row>
+      <ion-col>
+        <h2>Property Description</h2>
+        <textarea id="desc" rows="10" cols="50" [(ngModel)]="description">{{description}}</textarea><br>
+        <ion-button (click)="generateDesc()">AI Generated Description</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+
+    </ion-row>
+
+    <ion-row>
+      <ion-button *ngIf="!ownerViewing; else ownerView" (click)="addListing()" [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">ADD LISTING</ion-button>
+      <ng-template  #ownerView>
+        <ion-button (click)="editListing()" [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">Edit Listing</ion-button>
+      </ng-template>
+    </ion-row>
   </ion-grid>
   <properproperty-footer></properproperty-footer>
 

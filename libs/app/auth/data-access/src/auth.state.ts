@@ -3,7 +3,7 @@ import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
 import { User } from '@angular/fire/auth';
 import { AuthService } from './auth.service';
-import { Login, SubscribeToAuthState, SetAuthUser, Register, AuthProviderLogin } from '@properproperty/app/auth/util';
+import { Login, SubscribeToAuthState, SetAuthUser, Register, AuthProviderLogin, Logout } from '@properproperty/app/auth/util';
 import { SubscribeToUserProfile } from '@properproperty/app/profile/util';
 import { tap } from 'rxjs';
 export interface AuthStateModel {
@@ -44,6 +44,7 @@ export class AuthState {
     return this.authService.emailLogin(email, password).then((user: User) => {
       // check if login was successful
       if (user.email != null) {
+        ctx.dispatch(new SetAuthUser(user));
         return ctx.dispatch(new Navigate(['/']));
       }
       // else do something
@@ -56,6 +57,7 @@ export class AuthState {
     return this.authService.register(email, password).then((user: User) => {
       // check if register was successful
       if (user.email != null) {
+        ctx.dispatch(new SetAuthUser(user));
         return ctx.dispatch(new Navigate(['/']));
       }
       // else do something
@@ -84,5 +86,10 @@ export class AuthState {
     }
     
     return null;
+  }
+
+  @Action(Logout)
+  logout(ctx: StateContext<AuthStateModel>) {
+    ctx.setState({ user: null });
   }
 }

@@ -14,6 +14,7 @@ import { Chart, registerables } from 'chart.js';
 import { GetAnalyticsDataRequest } from '@properproperty/api/core/feature';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { Unsubscribe, User } from 'firebase/auth';
+import { IonContent, IonRow } from '@ionic/angular';
 
 @Component({
   selector: 'app-listing',
@@ -21,6 +22,8 @@ import { Unsubscribe, User } from 'firebase/auth';
   styleUrls: ['./listing.page.scss'],
 })
 export class ListingPage{
+  @ViewChild(IonContent) content: IonContent | undefined;
+
   @Select(AuthState.user) user$!: Observable<User | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
   private user: User | null = null;
@@ -35,7 +38,8 @@ export class ListingPage{
   pointsOfInterest: { photo: string | undefined, name: string }[] = [];
   admin = false;
   adminId = "";
-  public showAnalyticsData$ : Observable<boolean> = of(false);
+  public ownerViewing$ : Observable<boolean> = of(false);
+  lister : UserProfile | null = null;
 
   price_per_sm = 0;
   lister_name = "";
@@ -88,14 +92,14 @@ export class ListingPage{
         this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
   
         this.userServices.getUser("" + this.list?.user_id).then((user : UserProfile) => {
-          console.log(user);
+          this.lister = user;
           this.lister_name = user.firstName + " " + user.lastName;
         });
 
         this.user$.subscribe((user) => {
           this.user = user;
           if(user && this.list && this.user?.uid == this.list?.user_id){
-            this.showAnalyticsData$ = of(true);
+            this.ownerViewing$ = of(true);
           }
 
           if(this.user){
@@ -328,41 +332,30 @@ export class ListingPage{
     }
   }
 
-  // saveListing(){
-  //   console.log("save listing");
-  // }
-
-  
-
-toggleColor() {
-  if(this.isRed)
-    this.unsaveListing();
-  else
-    this.saveListing();
+  toggleColor() {
+    if(this.isRed)
+      this.unsaveListing();
+    else
+      this.saveListing();
 
 
-  this.isRed = !this.isRed;
-}
+    this.isRed = !this.isRed;
+  }
 
-isSaved(listing_id : string){
-  if(this.profile){
-    if(this.profile.savedListings){
-      if(this.profile.savedListings.includes(listing_id)){
-        console.log("Listing found in saved: " + listing_id);
-        return true;
+  isSaved(listing_id : string){
+    if(this.profile){
+      if(this.profile.savedListings){
+        if(this.profile.savedListings.includes(listing_id)){
+          console.log("Listing found in saved: " + listing_id);
+          return true;
+        }
       }
     }
+
+    return false;
   }
-  else{
-    console.log("Profile not found");
-  }
 
-  console.log("Not found");
-  return false;
-}
-
-saveListing() {
-
+  saveListing() {
     if(!this.isSaved(this.listingId)){
       if(this.profile){
         if(this.profile.savedListings){
@@ -373,23 +366,37 @@ saveListing() {
         }
 
         this.profileServices.updateUserProfile(this.profile);
-    }
-    }
-
-  
-}
-
-unsaveListing(){
-
-  if(this.isSaved(this.listingId)){
-    if(this.profile){
-      if(this.profile.savedListings){
-        this.profile.savedListings.splice(this.profile.savedListings.indexOf(this.listingId), 1);
       }
-
-      this.profileServices.updateUserProfile(this.profile);
+    }
   }
-  }
-  } 
 
+  unsaveListing(){
+    if(this.isSaved(this.listingId)){
+        if(this.profile){
+          if(this.profile.savedListings){
+            this.profile.savedListings.splice(this.profile.savedListings.indexOf(this.listingId), 1);
+          }
+          this.profileServices.updateUserProfile(this.profile);
+      }
+    }
+  }
+
+  isModalOpen = false;
+
+  setOpen(isOpen: boolean) {
+    this.isModalOpen = isOpen;
+  }
+
+  scrollToBottom() {
+    if(this.content && document.getElementById('calculator')) {
+      console.log(document.getElementById('calculator')?.getBoundingClientRect().top);
+      const calculatorRow =  document.getElementById('calculator')?.getBoundingClientRect().top;
+      this.content.scrollToPoint(0, ((calculatorRow ?? 100) - 100), 500);
+    }
+  }
+
+  //editing listing
+  editListing(){
+    this.router.navigate(['/create-listing', {listingId : this.listingId}]);
+  }
 }

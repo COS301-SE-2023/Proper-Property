@@ -3,7 +3,7 @@ import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { Listing } from '@properproperty/api/listings/util';
 // import { profile } from '@properproperty/api/profile/util';
 import { ListingsService } from '@properproperty/app/listing/data-access';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OpenAIService } from '@properproperty/app/open-ai/data-access';
 import { Select} from '@ngxs/store';
 import { AuthState } from '@properproperty/app/auth/data-access';
@@ -23,7 +23,6 @@ export class CreateListingPage implements OnInit {
 
   @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
 
-
   @Select(AuthState.user) user$!: Observable<User | null>;
   autocomplete: any;
   defaultBounds: google.maps.LatLngBounds;
@@ -32,12 +31,16 @@ export class CreateListingPage implements OnInit {
   currentUser: User | null = null;
   description = "";
   heading = "";
+  ownerViewing : boolean = false;
+  listingEditee : Listing | null = null;
+
   constructor(
     private readonly router: Router, 
     private readonly userService: UserProfileService, 
     private readonly listingService: ListingsService, 
     private readonly openAIService: OpenAIService,public gmapsService: GmapsService,
-    private readonly store: Store
+    private readonly store: Store,
+    private route: ActivatedRoute,
   ) {
     this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
     this.predictions = [];
@@ -60,13 +63,42 @@ export class CreateListingPage implements OnInit {
     this.user$.subscribe((user: User | null) => {
       this.currentUser =  user;
     });
+
+    this.route.params.subscribe((params) => {
+      let editListingId = params['listingId'] ?? 'XX'
+      if(editListingId != 'XX'){
+        this.listingService.getListing(editListingId).then((listing) => {
+          this.listingEditee = listing;
+          if(listing != undefined){
+            this.ownerViewing = true;
+            this.address = listing.address;
+            this.price = listing.price;
+            this.floor_size = listing.floor_size;
+            this.erf_size = listing.property_size;
+            this.bathrooms = listing.bath;
+            this.bedrooms = listing.bed;
+            this.parking = listing.parking;
+            this.pos_type = listing.pos_type;
+            this.env_type = listing.env_type;
+            this.prop_type = listing.prop_type;
+            this.furnish_type = listing.furnish_type;
+            this.orientation = listing.orientation;
+            this.description = listing.desc;
+            this.heading = listing.heading;
+            this.features = listing.features;
+            this.photos = listing.photos;
+            this.listingType = listing.let_sell;
+          }
+        });
+      }
+    });
   }
 
   features: string[] = [];
   selectedValue = true;
   listingType = "";
 
-  ngOnInit() {
+  async ngOnInit() {
     this.listingType = "Sell";
     // this.currentUser = this.userService.getCurrentUser();
     const inputElementId = 'address';
@@ -348,6 +380,42 @@ handleAddressChange(address: string): void {
     else{
       console.log("Error in create-lisitng.page.ts");
     }
+  }
+
+  async editListing(){
+    if(this.currentUser != null && this.listingEditee != null){
+      const list : Listing = {
+        listing_id: this.listingEditee.listing_id,
+        statusChanges: this.listingEditee.statusChanges,
+        quality_rating: this.listingEditee.quality_rating,
+        user_id: this.currentUser.uid,
+        address: this.address,
+        price: this.price,
+        pos_type: this.pos_type,
+        env_type: this.env_type,
+        prop_type: this.prop_type,
+        furnish_type: this.furnish_type,
+        orientation: this.orientation,
+        floor_size: this.floor_size,
+        property_size: this.erf_size,
+        bath: this.bathrooms,
+        bed: this.bedrooms,
+        parking: this.parking,
+        features: this.features,
+        photos: this.photos,
+        desc: this.description,
+        heading: this.heading,
+        let_sell: this.listingType,
+        approved: false,
+        listingDate: "" + new Date()
+      }
+
+      let resp = await this.listingService.editListing(list);
+      if(resp){
+        this.router.navigate(['/listing', {list : this.listingEditee.listing_id}]);
+      }
+    }
+    return false
   }
 
 }

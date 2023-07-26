@@ -68,6 +68,12 @@
   height: 250px;
   left: 1%;
 }
+  #heart-button{
+    color: #969696;
+    border-radius: 10px;
+    width: 20%;
+    margin-top: 10px;
+  }
 
 .half-green-container {
   border-radius: 25px;
@@ -235,3 +241,20 @@ ion-item {
   font-size: 12px;
   text-align: center;
 }
+  .red {
+    color: green;
+  }
+  
+  .grey {
+    color: grey;
+  }
+
+  // .contactDetails{
+  //   background-color: rgba(13, 175, 81, 0.5);
+  // }
+
+  ion-modal.contactDetails {
+    ion-content {
+      --ion-background-color: rgba(13, 175, 81, 0.5); /* Replace with your desired background color */
+    }
+  }
