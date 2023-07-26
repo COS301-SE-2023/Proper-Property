@@ -301,9 +301,12 @@
   
         </ion-card>
       </ion-row>
-      <ion-row *ngIf="(showAnalyticsData$ | async)">
-        <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
-        <canvas id="lineGraph"></canvas>
+      <ion-row *ngIf="(ownerViewing$ | async)">
+          <div style="display: flex; align-content: space-evenly;">
+            <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
+            <ion-button (click)="editListing()">Edit Listing</ion-button>
+          </div>
+          <canvas id="lineGraph"></canvas>
       </ion-row>
     </ion-grid>
   </ion-content>

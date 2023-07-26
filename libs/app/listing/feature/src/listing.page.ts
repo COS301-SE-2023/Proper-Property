@@ -38,7 +38,7 @@ export class ListingPage{
   pointsOfInterest: { photo: string | undefined, name: string }[] = [];
   admin = false;
   adminId = "";
-  public showAnalyticsData$ : Observable<boolean> = of(false);
+  public ownerViewing$ : Observable<boolean> = of(false);
   lister : UserProfile | null = null;
 
   price_per_sm = 0;
@@ -99,7 +99,7 @@ export class ListingPage{
         this.user$.subscribe((user) => {
           this.user = user;
           if(user && this.list && this.user?.uid == this.list?.user_id){
-            this.showAnalyticsData$ = of(true);
+            this.ownerViewing$ = of(true);
           }
 
           if(this.user){
@@ -391,5 +391,10 @@ export class ListingPage{
       const calculatorRow =  document.getElementById('calculator')?.getBoundingClientRect().top;
       this.content.scrollToPoint(0, ((calculatorRow ?? 100) - 100), 500);
     }
+  }
+
+  //editing listing
+  editListing(){
+    this.router.navigate(['/create-listing', {listingId : this.listingId}]);
   }
 }

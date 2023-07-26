@@ -294,10 +294,11 @@
     </ion-row>
 
     <ion-row>
-      <ion-button (click)="addListing()" [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">ADD LISTING</ion-button>
+      <ion-button *ngIf="!ownerViewing; else ownerView" (click)="addListing()" [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">ADD LISTING</ion-button>
+      <ng-template  #ownerView>
+        <ion-button (click)="editListing()" [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">Edit Listing</ion-button>
+      </ng-template>
     </ion-row>
-
-
   </ion-grid>
 
 
