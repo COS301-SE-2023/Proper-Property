@@ -266,6 +266,7 @@ handleAddressChange(address: string): void {
     const pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
     const env_type_in = document.getElementById('env-type') as HTMLInputElement;
     const prop_type_in = document.getElementById('prop-type') as HTMLInputElement;
+   
     const furnish_type_in = document.getElementById('furnish-type') as HTMLInputElement;
     const orientation_in = document.getElementById('orientation') as HTMLInputElement;
     const floor_size_in = document.getElementById('floor-size') as HTMLInputElement;
@@ -278,6 +279,7 @@ handleAddressChange(address: string): void {
     for(let i = 0; i < this.features.length; i++){
       feats += this.features[i] + ", ";
     }
+    
 
     if(add_in && price_in && pos_type_in && env_type_in && prop_type_in && furnish_type_in && orientation_in && floor_size_in && property_size_in && bath_in && bed_in && parking_in){
       const info = "Address: " + add_in.value + "\n" 

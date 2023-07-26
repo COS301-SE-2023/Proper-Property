@@ -1,7 +1,12 @@
-import { Component, inject, OnInit,ViewChild,ElementRef } from '@angular/core';
+import { Component, Inject, OnInit,ViewChild,ElementRef ,HostListener, inject} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import Swiper from 'swiper';
+
+import { DOCUMENT } from '@angular/common';
+import { NavigationEnd, Router } from '@angular/router';
+
+declare const gtag: Function;
 // import { Storage, ref } from '@angular/fire/storage';
 // import { uploadBytes } from 'firebase/storage';
 
@@ -12,6 +17,7 @@ import Swiper from 'swiper';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  isMobile: boolean;
   @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
 
   autocomplete: any;
@@ -32,9 +38,27 @@ export class HomePage implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
  
   constructor(
- 
-    public gmapsService: GmapsService) {
 
+    public router: Router,
+    public gmapsService: GmapsService,
+    @Inject(DOCUMENT) private document: Document) {
+      this.isMobile = window.innerWidth <= 576;
+      this.router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          gtag('event', 'page_view', {
+            'page_path': event.urlAfterRedirects,
+            'page_location': this.document.location.href,
+            'is_mobile': this.isMobile ? 'yes' : 'no',
+          });
+        }
+      });
+      console.log("indeed ",this.isMobile);
+
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.isMobile = window.innerWidth <= 576;
   }
 
    ngOnInit() {
