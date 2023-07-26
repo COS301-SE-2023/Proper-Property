@@ -8,6 +8,14 @@
 ![Monitoring](https://img.shields.io/uptimerobot/status/m794412596-b37953dcaaa4df17641a8a80?style=plastic)
 [![Testing...](https://github.com/COS301-SE-2023/Proper-Property/actions/workflows/tester.yml/badge.svg)](https://github.com/COS301-SE-2023/Proper-Property/actions/workflows/tester.yml)
 
+---
+<strong><h3 style="font-family: Jetbrains Mono">PROJECT BOARD:</h3></strong>
+
+<strong><h3 style="font-family: Jetbrains Mono">DEMO 3:</h3></strong>
+
+<strong><h3 style="font-family: Jetbrains Mono">DEMO 2:</h3></strong>
+
+<strong><h3 style="font-family: Jetbrains Mono">DEMO 1:</h3></strong>
 
 ---
 
