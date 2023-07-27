@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
 import Swiper from 'swiper';
+import { GmapsService } from '@properproperty/app/google-maps/data-access';
+
 // import { Storage, ref } from '@angular/fire/storage';
 // import { uploadBytes } from 'firebase/storage';
 
@@ -15,9 +17,9 @@ import Swiper from 'swiper';
 export class HomePage implements OnInit {
   @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
 
-  autocomplete: any;
+  public autocomplete: any;
 
-  predictions: google.maps.places.AutocompletePrediction[] = [];
+  public predictions: google.maps.places.AutocompletePrediction[] = [];
 
 
   @ViewChild('swiper')
@@ -32,7 +34,7 @@ export class HomePage implements OnInit {
   public home!: string;
   private activatedRoute = inject(ActivatedRoute);
   currentUser: UserProfile | null = null;
-  constructor(public userService : UserProfileService) {
+  constructor(public userService : UserProfileService, public gmapsService: GmapsService) {
     this.currentUser = this.userService.getCurrentUser();
   }
 

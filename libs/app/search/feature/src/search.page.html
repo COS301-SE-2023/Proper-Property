@@ -143,7 +143,6 @@
 
   <div id="listings-and-map">
 
-    <ion-content [fullscreen]="true">
       <div>
         <ion-card *ngFor="let listing of listings">
           <div (click)="redirectToPage(listing)">
@@ -187,7 +186,6 @@
         </ion-card>
       </div>
       <div slot="fixed" class="map" #map></div>
-    </ion-content>
 
 
 
