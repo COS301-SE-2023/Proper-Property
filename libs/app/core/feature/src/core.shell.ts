@@ -8,7 +8,7 @@ import { Unsubscribe, User } from 'firebase/auth';
 // import { SubscribeToUserProfile, UnsubscribeFromUserProfile } from '@properproperty/app/user/util';
 import { UserProfileState } from '@properproperty/app/profile/data-access';
 import { HostListener } from '@angular/core';
-import { httpsCallable, Functions } from '@angular/fire/functions';
+import { Functions } from '@angular/fire/functions';
 import { Router } from '@angular/router';
 import { isDevMode } from '@angular/core';
 import { NotificationsService } from 'libs/app/notifications/data-access/src/notifications.service';
@@ -24,7 +24,7 @@ export class CoreShellComponent implements OnInit, OnDestroy{
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
   public loggedIn = false;
   private user: User | null = null;
-  dev: boolean;
+  public dev: boolean;
   private userProfileListener: Unsubscribe | null = null;
   private NotificationToken = 'whups';
   constructor(
@@ -68,6 +68,7 @@ export class CoreShellComponent implements OnInit, OnDestroy{
     if (isDevMode()) {
     alert ("OI");
     console.log(this.NotificationToken);
+    this.notificationsService.sendNotification(this.NotificationToken, "this is a title", "this is a body");
     // const test : any = (await httpsCallable(this.functions, 'getAnalyticsData')()).data;
     // let dates : Date[] = [];
     // let pageViews : number[] = [];

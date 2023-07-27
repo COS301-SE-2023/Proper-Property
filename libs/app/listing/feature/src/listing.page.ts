@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import { Component, ElementRef, ViewChild} from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { Listing } from '@properproperty/api/listings/util';
 import Swiper from 'swiper';

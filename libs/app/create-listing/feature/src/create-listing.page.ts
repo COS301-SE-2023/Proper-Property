@@ -274,14 +274,14 @@ handleAddressChange(address: string): void {
   async addListing(){
     this.address = (document.getElementById("address") as HTMLInputElement).value;
     
-    const pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
-    const env_type_in = document.getElementById('env-type') as HTMLInputElement;
-    const prop_type_in = document.getElementById('prop-type') as HTMLInputElement;
-    const furnish_type_in = document.getElementById('furnish-type') as HTMLInputElement;
-    const orientation_in = document.getElementById('orientation') as HTMLInputElement;
-    const desc_in = document.getElementById('desc') as HTMLInputElement;
+    // const pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
+    // const env_type_in = document.getElementById('env-type') as HTMLInputElement;
+    // const prop_type_in = document.getElementById('prop-type') as HTMLInputElement;
+    // const furnish_type_in = document.getElementById('furnish-type') as HTMLInputElement;
+    // const orientation_in = document.getElementById('orientation') as HTMLInputElement;
+    // const desc_in = document.getElementById('desc') as HTMLInputElement;
 
-    console.log(prop_type_in.value);
+    // console.log(prop_type_in.value);
     if(this.currentUser != null){
       const list : Listing = {
         user_id: this.currentUser.uid,

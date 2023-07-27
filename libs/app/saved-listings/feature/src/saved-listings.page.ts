@@ -37,7 +37,7 @@ export class SavedListingsPage implements OnInit {
           this.profile = profile;
           //Todo - Change this to send an array of IDs
           if(this.profile && this.profile.savedListings){
-            for(let listing of this.profile.savedListings){
+            for(const listing of this.profile.savedListings){
               this.listingServices.getListing(listing).then((listing) => {
                 if(listing){
                   this.savedListings.push(listing);
@@ -81,9 +81,9 @@ export class SavedListingsPage implements OnInit {
     return false;
   }
 
-  saveListing($event : any, listing_id : string) {
+  saveListing($event : Event, listing_id : string) {
     if(listing_id != ''){
-      let heartBut = $event.target as HTMLButtonElement;
+      const heartBut = $event.target as HTMLButtonElement;
       heartBut.style.color = "red";
       
       if(this.profile){
@@ -99,9 +99,9 @@ export class SavedListingsPage implements OnInit {
     } 
   }
 
-  unsaveListing($event : any, listing_id : string){
+  unsaveListing($event : Event, listing_id : string){
     if(listing_id != ''){
-      let heartBut = $event.target as HTMLButtonElement;
+      const heartBut = $event.target as HTMLButtonElement;
       heartBut.style.color = "red";
       
       if(this.profile){
