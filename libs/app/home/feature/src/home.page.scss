@@ -43,7 +43,7 @@
     /* 43.38px */
   }
 
-  .search-container {
+  .-container {
     margin-top: 10%;
     width: 70%;
     height: 50px;
@@ -55,6 +55,8 @@
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     // padding-left: 2%;
   }
+  
+
 
   #address {
     border: 0;
@@ -64,7 +66,7 @@
     padding-left: 4%;
   }
 
-  #search-button {
+  #-button {
     height: 100%;
     --border-radius: 30px;
     width: 32%;
@@ -72,7 +74,7 @@
     --margin: 0;
   }
 
-  #search-button-text {
+  #-button-text {
     font-size: 26px;
     font-style: normal;
     font-weight: 500;
@@ -260,6 +262,66 @@
   }
 
 }
+
+
+.-button {
+  width: 90%;
+  height: 70%;
+  margin-right: 10%;
+  color: white;
+  border: none;
+  --border-radius: 30px;
+  cursor: pointer;
+  margin-top: 1%;
+}
+#address {
+  border-radius: 10px;
+  border: 1.5px solid #000;
+  background: #FFF;
+  height: 40px;
+  width: 92%;
+  margin-left: 4%;
+  margin-bottom: 1%;
+  padding-left: 18px;
+  height: 50px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+}
+.dropdown-container {
+  position: relative;
+}
+
+.arrow-icon {
+  color: #FFF;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none; /* This prevents the icon from interfering with the select */
+}
+
+.prop_type{
+  width: 100%;
+  min-height: 34px;
+  height: 34px;
+  border-radius: 2px;
+  background-color:#0DAE4F;
+  border: none;
+  outline: none;
+  text-align: left;
+  color: #FFF;
+  padding: 5px 15px;
+  font-weight: 400;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+
+}
+.white-text {
+  color: #FFF;
+}
+
 
 ion-footer ion-col{
   color: white;

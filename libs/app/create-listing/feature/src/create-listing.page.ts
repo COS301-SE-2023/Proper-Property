@@ -371,10 +371,11 @@ handleAddressChange(address: string): void {
         let_sell: this.listingType,
         approved: false,
         quality_rating: score,
+        
         listingDate: "" + new Date()
       }
 
-      console.log(list);
+      console.log("lisss ",list);
       await this.listingService.createListing(list);
       this.router.navigate(['/home']);
     }
