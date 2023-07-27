@@ -7,7 +7,8 @@ import {
   UpdateEmail, 
   // UpdateFirstName, 
   // UpdateLastName, 
-  UpdateUserProfile 
+  UpdateUserProfile,
+  RemoveCurrentUser
 } from "@properproperty/app/profile/util";
 import { Firestore, doc, onSnapshot, Unsubscribe, getDoc } from "@angular/fire/firestore";
 
@@ -117,6 +118,17 @@ export class UserProfileState {
       // Update state
       // ctx.patchState({ userProfile: updatedUser });
       this.userProfileService.updateUserProfile(updatedUser);
+    }
+  }
+
+  @Action(RemoveCurrentUser)
+  async removeCurrentUser(ctx: StateContext<UserProfileStateModel>) {
+    // Get current user
+    const user: UserProfile | null = ctx.getState().userProfile;
+    // If user exists, update data
+    if (user) {
+      // Update state
+      ctx.patchState({ userProfile: null });
     }
   }
 }

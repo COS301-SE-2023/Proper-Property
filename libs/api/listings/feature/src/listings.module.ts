@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ListingsService } from './listings.service';
-import { CreateListingHandler } from './commands';
-import { ChangeStatusHandler } from './commands';
+import { CreateListingHandler, ChangeStatusHandler, EditListingHandler } from './commands';
 import { ListingsModule as ListingsDataAccessModule } from '@properproperty/api/listings/data-access';
-const CommandHandlers = [CreateListingHandler, ChangeStatusHandler];
+import { ListingEditedHandler } from './events';
+
+const CommandHandlers = [CreateListingHandler, ChangeStatusHandler, EditListingHandler];
 import { GetListingsHandler, GetApprovedListingsHandler } from './queries';
 const QueryHandlers = [GetListingsHandler, GetApprovedListingsHandler];
+const EventHandlers = [ListingEditedHandler];
 @Module({
   imports: [
     CqrsModule, 
@@ -15,6 +17,7 @@ const QueryHandlers = [GetListingsHandler, GetApprovedListingsHandler];
   providers: [
     ListingsService,
     ...CommandHandlers,
+    ...EventHandlers,
     ...QueryHandlers
   ],
   exports: [ListingsService]

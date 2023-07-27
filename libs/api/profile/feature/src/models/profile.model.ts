@@ -10,6 +10,8 @@ export class UserProfileModel extends AggregateRoot implements UserProfile {
     public email?: string,
     public listings?: string[],
     public savedListings?: string[],
+    public admin?: boolean,
+    public phoneNumber?: string
   ) {
     super();
   }
@@ -42,8 +44,11 @@ export class UserProfileModel extends AggregateRoot implements UserProfile {
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,
+      phoneNumber: this.phoneNumber,
       listings: this.listings,
-      interests: this.interests
+      interests: this.interests,
+      admin: this.admin,
+      savedListings: this.savedListings
     };
   }
 }

@@ -402,14 +402,12 @@
         </ion-col>
       </ion-row>
 
-      <ion-row style="width: 100%">
-        <ion-button (click)="addListing()"
-          [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">ADD
-          LISTING</ion-button>
-      </ion-row>
->>>>>>> origin/Murray-UI
+    <ion-row style="width:100">
+      <ion-button *ngIf="!ownerViewing; else ownerView" (click)="addListing()" [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">ADD LISTING</ion-button>
+      <ng-template  #ownerView>
+        <ion-button (click)="editListing()" [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">Edit Listing</ion-button>
+      </ng-template>
     </ion-row>
-    <br><br><br><br><br><br><br>
   </ion-grid>
   <properproperty-footer></properproperty-footer>
 
