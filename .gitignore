@@ -86,6 +86,7 @@ emulators
 .env
 .env.prod
 .vscode/*
+victorias-secret-google-credentials
 
 src/environments/environment.prod.ts
 src/environments/environment.ts
