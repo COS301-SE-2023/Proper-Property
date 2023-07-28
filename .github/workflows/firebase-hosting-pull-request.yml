@@ -12,6 +12,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      env:
+          NX_FIREBASE_KEY: ${{ secrets.NX_FIREBASE_KEY }}
+          NX_FIREBASE_AUTH_DOMAIN: ${{ secrets.NX_FIREBASE_AUTH_DOMAIN }}
+          NX_FIREBASE_DATABASE_URL: ${{ secrets.NX_FIREBASE_DATABASE_URL }}
+          NX_FIREBASE_PROJECT_ID: ${{ secrets.NX_FIREBASE_PROJECT_ID }}
+          NX_FIREBASE_STORAGE_BUCKET: ${{ secrets.NX_FIREBASE_STORAGE_BUCKET }}
+          NX_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NX_FIREBASE_MESSAGING_SENDER_ID }}
+          NX_FIREBASE_APP_ID: ${{ secrets.NX_FIREBASE_APP_ID }}
+          NX_FIREBASE_MEASUREMENT_ID: ${{ secrets.NX_FIREBASE_MEASUREMENT_ID }}
+          NX_GOOGLE_MAPS_KEY: ${{ secrets.NX_GOOGLE_MAPS_KEY }}
+      - run: |
+          cat <<EOF > .env.prod
+          NX_ENVIRONMENT=production
+          NX_USE_EMULATORS=false
+          NX_FIREBASE_KEY="$NX_FIREBASE_KEY"
+          NX_FIREBASE_AUTH_DOMAIN="$NX_FIREBASE_AUTH_DOMAIN"
+          NX_FIREBASE_DATABASE_URL="$NX_FIREBASE_DATABASE_URL"
+          NX_FIREBASE_PROJECT_ID="$NX_FIREBASE_PROJECT_ID"
+          NX_FIREBASE_STORAGE_BUCKET="$NX_FIREBASE_STORAGE_BUCKET"
+          NX_FIREBASE_MESSAGING_SENDER_ID="$NX_FIREBASE_MESSAGING_SENDER_ID"
+          NX_FIREBASE_APP_ID="$NX_FIREBASE_APP_ID"
+          NX_FIREBASE_MEASUREMENT_ID="$NX_FIREBASE_MEASUREMENT_ID"
+          NX_GOOGLE_MAPS_KEY="$NX_GOOGLE_MAPS_KEY"
+          EOF
+          echo "cat .env.prod"
       - run: 'npm run build:app:dev && npm run build:api:dev'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
