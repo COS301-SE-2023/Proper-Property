@@ -17,19 +17,11 @@ jobs:
       - name: Create environment file
         env:
           NX_FIREBASE_KEY: ${{ secrets.NX_FIREBASE_KEY }}
-<<<<<<< HEAD
           NX_FIREBASE_AUTH_DOMAIN: ${{ secrets.NX_FIREBASE_AUTH_DOMAIN }}
           NX_FIREBASE_DATABASE_URL: ${{ secrets.NX_FIREBASE_DATABASE_URL }}
           NX_FIREBASE_PROJECT_ID: ${{ secrets.NX_FIREBASE_PROJECT_ID }}
           NX_FIREBASE_STORAGE_BUCKET: ${{ secrets.NX_FIREBASE_STORAGE_BUCKET }}
           NX_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NX_FIREBASE_MESSAGING_SENDER_ID }}
-=======
-          NX_FIREBASE_AUTH_DOMAIN: ${{ secrets.NX_FIREBASE_AUTH_DOMAIN }}}
-          NX_FIREBASE_DATABASE_URL: ${{ secrets.NX_FIREBASE_DATABASE_URL }}
-          NX_FIREBASE_PROJECT_ID: ${{ secrets.NX_FIREBASE_PROJECT_ID }}}
-          NX_FIREBASE_STORAGE_BUCKET: ${{ secrets.NX_FIREBASE_STORAGE_BUCKET }}
-          NX_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NX_FIREBASE_MESSAGING_SENDER_ID }}}
->>>>>>> origin/Murray-UI
           NX_FIREBASE_APP_ID: ${{ secrets.NX_FIREBASE_APP_ID }}
           NX_FIREBASE_MEASUREMENT_ID: ${{ secrets.NX_FIREBASE_MEASUREMENT_ID }}
           NX_GOOGLE_MAPS_KEY: ${{ secrets.NX_GOOGLE_MAPS_KEY }}
@@ -49,8 +41,4 @@ jobs:
           EOF
           echo "cat .env.prod"
       - name: Build App
-<<<<<<< HEAD
         run: npm run build:app:prod
-=======
-        run: npm run build:app:prod
->>>>>>> origin/Murray-UI
