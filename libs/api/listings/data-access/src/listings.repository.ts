@@ -9,7 +9,6 @@ import { GetListingsRequest,
   GetApprovedListingsResponse,
   EditListingResponse
 } from '@properproperty/api/listings/util';
-import { updateDoc } from 'firebase/firestore';
 // import { FieldValue, FieldPath } from 'firebase-admin/firestore';
 @Injectable()
 export class ListingsRepository {

@@ -11,21 +11,6 @@ import { UserProfile } from '@properproperty/api/profile/util';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 
-
-interface Property {
-  title: string;
-  type: string;
-  price: number;
-  bedrooms: number;
-}
-// const property = {
-//   id: 1,
-//   image: 'path/to/image.jpg',
-//   price: 100000,
-//   bedrooms: 3,
-//   bathrooms: 2
-// };
-
 @Component({
   selector: 'app-search',
   templateUrl: './search.page.html',
@@ -760,7 +745,7 @@ isSaved(listing_id : string){
 
 saveListing($event : any, listing_id : string) {
   if(listing_id != ''){
-    let heartBut = $event.target as HTMLButtonElement;
+    const heartBut = $event.target as HTMLButtonElement;
     heartBut.style.color = "red";
     
     if(this.profile){
@@ -778,7 +763,7 @@ saveListing($event : any, listing_id : string) {
 
 unsaveListing($event : any, listing_id : string){
   if(listing_id != ''){
-    let heartBut = $event.target as HTMLButtonElement;
+    const heartBut = $event.target as HTMLButtonElement;
     heartBut.style.color = "red";
     
     if(this.profile){

@@ -56,20 +56,20 @@ export class CoreShellComponent implements OnInit, OnDestroy{
     if (isDevMode()) {
     alert ("OI");
     const test : any = (await httpsCallable(this.functions, 'getAnalyticsData')()).data;
-    let dates : Date[] = [];
-    let pageViews : number[] = [];
+    const dates : Date[] = [];
+    const pageViews : number[] = [];
 
-    let rows: any = test.rows ?? [];
+    const rows: any = test.rows ?? [];
     for(let i = 0; rows && i < rows.length; i++){
       if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
-        let dimensionValue = rows[i].dimensionValues[1].value;
-        let year : number = Number(dimensionValue.substring(0,4));
-        let month : number = Number(dimensionValue.substring(4,6));
-        let day : number = Number(dimensionValue.substring(6,8));
+        const dimensionValue = rows[i].dimensionValues[1].value;
+        const year = Number(dimensionValue.substring(0,4));
+        const month = Number(dimensionValue.substring(4,6));
+        const day = Number(dimensionValue.substring(6,8));
 
         dates[i] = new Date(year, month, day);
 
-        let metricValue = rows[i].metricValues[0].value;
+        const metricValue = rows[i].metricValues[0].value;
         pageViews[i] = Number(metricValue);
       }
     }
