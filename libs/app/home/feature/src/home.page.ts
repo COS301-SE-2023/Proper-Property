@@ -13,6 +13,13 @@ import { Observable } from 'rxjs'
 import { DOCUMENT } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 
+import { UserProfile } from '@properproperty/api/profile/util';
+
+import { AuthState } from '@properproperty/app/auth/data-access';
+import { Unsubscribe, User } from '@angular/fire/auth';
+import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
+
+
 
 interface Property {
   title: string;
@@ -52,14 +59,21 @@ export class HomePage implements OnInit {
 
   public home!: string;
   private activatedRoute = inject(ActivatedRoute);
+
+  @Select(AuthState.user) user$!: Observable<User | null>;
+  @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
+  private user: User | null = null;
+  private profile : UserProfile | null = null;
+  private userProfileListener: Unsubscribe | null = null;
+
  
   constructor(
-
+    private profileServices : UserProfileService,
+    private listingServices : ListingsService,
     private gmaps: GmapsService,
     private renderer: Renderer2,
     private actionSheetCtrl: ActionSheetController,
     private router: Router,
-    private listingServices : ListingsService,
     public gmapsService: GmapsService,
     @Inject(DOCUMENT) private document: Document) {
       this.isMobile = window.innerWidth <= 576;
@@ -79,6 +93,22 @@ export class HomePage implements OnInit {
       console.log("indeed ",this.isMobile);
 
       this.predictions = [];
+
+      
+      this.user$.subscribe((user) => {
+        this.user = user;
+        if(this.user){
+          this.profileServices.getUser(this.user.uid).then((profile) =>{
+            this.profile = profile;
+          });
+        }
+      });
+      // Update listener whenever is changes such that it can be unsubscribed from
+      // when the window is unloaded
+      this.userProfileListener$.subscribe((listener) => {
+        this.userProfileListener = listener;
+      });
+
   }
 
   @HostListener('window:resize', ['$event'])
@@ -105,8 +135,6 @@ export class HomePage implements OnInit {
     
     
     this.gmapsService.setupRegionSearchBox(inputElementId);
-  
-  
   }
 
   searchQuery = '';
@@ -354,6 +382,15 @@ get filteredRentingProperties(): Listing[] {
   return this.listings;
 }
 
+buyingFilters() {
+  this.activeTab = 'buying';
+  this.listings =  this.filteredBuyingProperties;
+}
+rentingFilters() {
+  this.activeTab = 'renting';
+  this.listings =  this.filteredRentingProperties;
+}
+
 filterProperties(): void {
 
   // Update the filtered properties based on the selected filters and search query
@@ -417,5 +454,54 @@ toggleSelection(amenity: string): void {
 }
 
 
+isSaved(listing_id : string){
+  if(this.profile){
+    if(this.profile.savedListings){
+      if(this.profile.savedListings.includes(listing_id)){
+        console.log("Listing found in saved: " + listing_id);
+        return true;
+      }
+    }
+  }
+  else{
+    console.log("Profile not found");
+  }
+
+  console.log("Not found");
+  return false;
+}
+
+saveListing($event : any, listing_id : string) {
+  if(listing_id != ''){
+    let heartBut = $event.target as HTMLButtonElement;
+    heartBut.style.color = "red";
+    
+    if(this.profile){
+        if(this.profile.savedListings){
+          this.profile.savedListings.push(listing_id);
+        }
+        else{
+          this.profile.savedListings = [listing_id];
+        }
+
+        this.profileServices.updateUserProfile(this.profile);
+    }
+  } 
+}
+
+unsaveListing($event : any, listing_id : string){
+  if(listing_id != ''){
+    let heartBut = $event.target as HTMLButtonElement;
+    heartBut.style.color = "red";
+    
+    if(this.profile){
+        if(this.profile.savedListings){
+          this.profile.savedListings.splice(this.profile.savedListings.indexOf(listing_id), 1);
+        }
+
+        this.profileServices.updateUserProfile(this.profile);
+    }
+  } 
+} 
 
 }

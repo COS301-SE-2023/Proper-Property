@@ -123,7 +123,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
     const inputElementId = 'address';
 
-    
+    console.log("hi ");
     
     this.gmapsService.setupRegionSearchBox(inputElementId);
     

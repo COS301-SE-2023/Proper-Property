@@ -48,8 +48,8 @@
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
-      <ion-title>
-        <ion-col size="0.5"><img class="logo" src="assets/Logo_v1.png" width="20%"></ion-col>
+      <ion-title class="title-container">
+        <img class="logo" src="assets/Logo_v1.png" width="10%">
       </ion-title>
     </ion-toolbar>
   </ion-header>
@@ -81,9 +81,7 @@
         <ion-button *ngIf="this.loggedIn" fill="clear" routerLink="/profile" routerDirection="root" routerLinkActive="active" class="link" style="display: block;">
           Profile
         </ion-button>
-        <ion-button *ngIf="dev" fill="clear" (click)="test()" class="link" style="display: block;">
-          don't click &gt;:0
-        </ion-button>
+        
       </div>
     </ion-content>
   </ion-menu>

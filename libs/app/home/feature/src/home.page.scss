@@ -43,7 +43,7 @@
     /* 43.38px */
   }
 
-  .-container {
+  .search-container {
     margin-top: 10%;
     width: 70%;
     height: 50px;
@@ -55,8 +55,6 @@
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     // padding-left: 2%;
   }
-  
-
 
   #address {
     border: 0;
@@ -66,7 +64,7 @@
     padding-left: 4%;
   }
 
-  #-button {
+  #search-button {
     height: 100%;
     --border-radius: 30px;
     width: 32%;
@@ -74,7 +72,7 @@
     --margin: 0;
   }
 
-  #-button-text {
+  #search-button-text {
     font-size: 26px;
     font-style: normal;
     font-weight: 500;
@@ -263,31 +261,10 @@
 
 }
 
-
-.-button {
-  width: 90%;
-  height: 70%;
-  margin-right: 10%;
+ion-footer ion-col{
   color: white;
-  border: none;
-  --border-radius: 30px;
-  cursor: pointer;
-  margin-top: 1%;
 }
-#address {
-  border-radius: 10px;
-  border: 1.5px solid #000;
-  background: #FFF;
-  height: 40px;
-  width: 92%;
-  margin-left: 4%;
-  margin-bottom: 1%;
-  padding-left: 18px;
-  height: 50px;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-}
+
 .dropdown-container {
   position: relative;
 }
@@ -300,6 +277,7 @@
   transform: translateY(-50%);
   pointer-events: none; /* This prevents the icon from interfering with the select */
 }
+
 
 .prop_type{
   width: 100%;
@@ -326,3 +304,75 @@
 ion-footer ion-col{
   color: white;
 }
+
+.green-tab {
+  --color: green;
+}#house_details img {
+  width: 10px; /* Adjust the size as desired */
+  height: 10px; /* Adjust the size as desired */
+  border-radius: 10px;
+}
+
+
+ion-card {
+  top: -50px;
+  width: 400px; /* Adjust the width as desired */
+  height: 450px;
+  margin: 0 auto; /* Center the card horizontally */
+  margin-top: 50px;
+
+  border-radius: 20px;
+}
+
+.like-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  //move it to right hand corner
+  margin-left: 90%;
+
+  margin-top: -30px;
+}
+
+// .heart-icon {
+//   color: red;
+//   font-size: 24px;
+// }
+
+.red {
+  color: red;
+}
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Optional: Centers the content horizontally */
+  margin-top: 10%; /* Adjust the value as needed to create the desired space */
+}
+/* Component CSS file or global stylesheet */
+#buySell ion-button.active {
+  background-color: green;
+  color: black;
+  border: none; /* Remove borders to make it appear as a plain button */
+}
+
+#buySell ion-button:not(.active) {
+  border-radius: 10px;
+  --background: transparent;
+  --color: black;
+
+}
+
+.mobile-address {
+  border: 10;
+  width: 68%;
+  height: 100%;
+  border-radius: 30px;
+  padding-left: 4%;
+}
+
