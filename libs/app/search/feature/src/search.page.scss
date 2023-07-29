@@ -11,7 +11,7 @@
 #filter-container {
   border-radius: 30px;
   border: 1px solid #000;
-  background: rgba(13, 174, 79, 0.40);
+  background: rgba(13, 174, 79, 0.4);
   width: 92%;
   margin-left: 4%;
   height: auto;
@@ -29,17 +29,17 @@
   margin-left: 6%;
   height: auto;
   border-radius: 0px 0px 30px 30px;
-  border-right: 2px solid #0DAE4F;
-  border-bottom: 2px solid #0DAE4F;
-  border-left: 2px solid #0DAE4F;
-  background: #FFF;
+  border-right: 2px solid #0dae4f;
+  border-bottom: 2px solid #0dae4f;
+  border-left: 2px solid #0dae4f;
+  background: #fff;
   padding: 10px;
 }
 
 #address {
   border-radius: 30px;
   border: 1.5px solid #000;
-  background: #FFF;
+  background: #fff;
   height: 40px;
   width: 92%;
   margin-left: 4%;
@@ -90,7 +90,6 @@
 ion-toolbar {
   --background: rgb(255, 255, 255);
 }
-
 
 //make the img in ion-card-header smaller
 ion-card-header img {
@@ -188,12 +187,12 @@ ion-card {
 // }
 
 #back-arrow {
-  color: #0DAE4F;
+  color: #0dae4f;
 }
 
 #listings-and-map {
   transition: transform 0.3s ease-in-out;
-  margin-top:3%;
+  margin-top: 3%;
 }
 
 .more-filters-visible #listings-and-map {
@@ -222,7 +221,7 @@ body {
 
 ::selection {
   color: #fff;
-  background: #664AFF;
+  background: #664aff;
 }
 
 .container {
@@ -239,9 +238,6 @@ body {
 }
 
 /* Add the following CSS to your existing styles */
-
-
-
 
 .searchInput .resultBox {
   padding: 0;
@@ -286,5 +282,3 @@ body {
   color: #644bff;
   cursor: pointer;
 }
-
-

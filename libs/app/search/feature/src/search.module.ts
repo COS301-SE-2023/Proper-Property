@@ -15,8 +15,8 @@ import { FooterModule } from '@properproperty/app/footer/feature';
     FormsModule,
     IonicModule,
     SearchPageRoutingModule,
-    FooterModule
+    FooterModule,
   ],
-  declarations: [SearchPage]
+  declarations: [SearchPage],
 })
 export class SearchPageModule {}
