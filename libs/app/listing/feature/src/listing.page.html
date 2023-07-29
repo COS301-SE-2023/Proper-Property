@@ -32,16 +32,16 @@
         </ion-button>
       </ion-buttons>
       <swiper-container id="swiper-container" #swiper (afterinit)="swiperReady()"
-        (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true">
+        (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true" slides-per-view="1">
         <!-- Slides content goes here -->
         <swiper-slide *ngFor="let picture of list.photos">
           <img src="{{picture}}">
         </swiper-slide>
         <!-- <swiper-slide>
-          <img src="{{list.photos[0]}}">
+          <img src="assets/house5.jpg">
         </swiper-slide>
         <swiper-slide>
-          <img src="{{list.photos[1]}}">
+          <img src="assets/house4.jpg">
         </swiper-slide> -->
       </swiper-container>
       <ion-buttons slot="end" class="swiper-button2" #two>

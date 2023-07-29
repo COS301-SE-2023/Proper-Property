@@ -15,7 +15,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     FormsModule,
     IonicModule,
     ListingPageRoutingModule,
-    ListingDataAccessModule
+    ListingDataAccessModule,
   ],
   declarations: [ListingPage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
