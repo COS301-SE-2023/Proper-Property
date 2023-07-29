@@ -444,12 +444,12 @@ toggleColor() {
 
     for(let k = 0; k<this.listings.length; k++) {
       
-      this.listings[k].price = this.listings[k].price.replace(/,/g, '');
+      // this.listings[k].price = this.listings[k].price.replace(/,/g, '');
       
     }
   
-    for (let i = 0; i < this.listings.length; i++) {
-      if (this.searchQuery !== '') {
+    if (this.searchQuery !== '') {
+      for (let i = 0; i < this.listings.length; i++) {
         try {
           const isInArea = await this.gmaps.checkAddressInArea(this.searchQuery, this.listings[i].address);
           if (!isInArea) {
@@ -477,21 +477,21 @@ toggleColor() {
       
       if(this.selectedBedrooms!=0){
   
-        if(parseInt(this.listings[i].bed)!=this.selectedBedrooms){
+        if(this.listings[i].bed!=this.selectedBedrooms){
           this.listings.splice(i,1);
         }
       }
       
       if(this.selectedBathrooms!=0){
     
-        if(parseInt(this.listings[i].bath)!=this.selectedBathrooms){
+        if(this.listings[i].bath!=this.selectedBathrooms){
           this.listings.splice(i,1);
         }
       }
   
       if(this.selectedMinPrice!=0){
   
-        if (parseInt(this.listings[i].price) < this.selectedMinPrice){
+        if (this.listings[i].price < this.selectedMinPrice){
           this.listings.splice(i,1);
         }
       }
@@ -499,17 +499,17 @@ toggleColor() {
   
       if(this.selectedMaxPrice!=0){
   
-        if (parseInt(this.listings[i].price) > this.selectedMaxPrice){
+        if (this.listings[i].price > this.selectedMaxPrice){
           this.listings.splice(i,1);
         }
       }
   
       if(this.selectedParking!=0){
           
-          if((parseInt(this.listings[i].parking)!=this.selectedParking) && (parseInt(this.listings[i].parking)<5)){
+          if((this.listings[i].parking!=this.selectedParking) && (this.listings[i].parking<5)){
             this.listings.splice(i,1);
           }
-          else if ((parseInt(this.listings[i].parking)>=5) && (this.selectedParking != 5)) {
+          else if ((this.listings[i].parking>=5) && (this.selectedParking != 5)) {
             this.listings.splice(i,1);
           }
       }
@@ -529,10 +529,10 @@ toggleColor() {
     //   console.error('Error:', error);
     // });
       
-    this.listings[i].price = this.listings[i].price.replace(/,/g, '');
+    // this.listings[i].price = this.listings[i].price.replace(/,/g, '');
     
     // Format the price with commas
-    this.listings[i].price = this.listings[i].price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    // this.listings[i].price = this.listings[i].price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   
   
     }

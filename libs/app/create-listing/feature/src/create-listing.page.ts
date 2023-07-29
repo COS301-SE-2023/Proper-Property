@@ -34,6 +34,20 @@ export class CreateListingPage implements OnInit {
   ownerViewing = false;
   listingEditee : Listing | null = null;
 
+  photos: string[] = [];
+  address = "";
+  price = 0;
+  bathrooms = 0;
+  bedrooms = 0;
+  parking = 0;
+  floor_size = 0;
+  erf_size  = 0;
+  pos_type = "";
+  env_type = "";
+  prop_type = "";
+  furnish_type = "";
+  orientation = "";
+  count = 0;
   constructor(
     private readonly router: Router, 
     private readonly userService: UserProfileService, 
@@ -42,17 +56,18 @@ export class CreateListingPage implements OnInit {
     private readonly store: Store,
     private route: ActivatedRoute,
   ) {
-    this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
+    this.address="";
+    this.floor_size=this.price=this.erf_size=this.bathrooms=this.bedrooms=this.parking=0;
     this.predictions = [];
     this.defaultBounds = new google.maps.LatLngBounds();
     if (isDevMode()) {
       this.address = "123 Fake Street";
-      this.price = "1000000";
-      this.floor_size = "100";
-      this.erf_size = "100";
-      this.bathrooms = "2";
-      this.bedrooms = "3";
-      this.parking = "1";
+      this.price = 1000000;
+      this.floor_size = 100;
+      this.erf_size = 100;
+      this.bathrooms = 2;
+      this.bedrooms = 3;
+      this.parking = 1;
       this.pos_type = "Leasehold";
       this.env_type = "Urban";
       this.prop_type = "House";
@@ -151,20 +166,6 @@ handleAddressChange(address: string): void {
   this.address = address;
 }
 
-  photos: string[] = [];
-  address = "";
-  price = "";
-  bathrooms = "";
-  bedrooms = "";
-  parking = "";
-  floor_size = "";
-  erf_size  = "";
-  pos_type = "";
-  env_type = "";
-  prop_type = "";
-  furnish_type = "";
-  orientation = "";
-  count = 0;
 
   handleFileInput(event: Event) {
     if (!event.currentTarget) {
@@ -221,10 +222,10 @@ handleAddressChange(address: string): void {
     this.address = (document.getElementById("address") as HTMLInputElement).value;
     // console.log("eyy cousinn...",this.address);
     // Remove existing commas from the price
-    this.price = this.price.replace(/,/g, '');
+    // this.price = this.price.replace(/,/g, '');
   
     // Format the price with commas
-    this.price = this.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    // this.price = this.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
   async generateDesc(){
