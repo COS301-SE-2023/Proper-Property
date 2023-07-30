@@ -78,13 +78,13 @@
               <ng-template [ngIf]="list.let_sell === 'Sell'">
                 <ion-row >
                   <ion-card-title class="house-titles" style="margin-top:8px;">R {{list.price}}</ion-card-title>
-                  <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/sq.m</ion-card-subtitle>
+                  <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/ m<sup>2</sup></ion-card-subtitle>
                 </ion-row>
               </ng-template>
               <ng-template [ngIf]="list.let_sell === 'Rent'">
                 <ion-row>
                   <ion-card-title class="house-titles" style="margin-top:8px;">R {{list.price}}/pm</ion-card-title>
-                  <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/sq.m</ion-card-subtitle>
+                  <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/ m<sup>2</sup></ion-card-subtitle>
                 </ion-row>
               </ng-template>
               <ion-row style="margin-top: 10px;">
