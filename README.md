@@ -14,11 +14,15 @@
 <strong><h3 style="font-family: Jetbrains Mono">DEMO 3:</h3></strong>
 - [System Requirement Specifications V3](https://drive.google.com/file/d/1gNDCB_RqPpo3Ova7XqVRzJDxda2xBy9A/view?usp=drive_link)
 - [Testing Policy V1](https://drive.google.com/file/d/1MIdRFCY9PuQo60ze5-LXeKud1Aqro8Ev/view?usp=sharing)
+  
 <strong><h3 style="font-family: Jetbrains Mono">DEMO 2:</h3></strong>
 - [System Requirement Specifications V2](https://drive.google.com/file/d/1cU503qaPC5qviA-x2P3raSAUhXTepZ71/view?usp=sharing)
+
 <strong><h3 style="font-family: Jetbrains Mono">DEMO 1:</h3></strong>
+
 - [System Requirement Specifications V1](https://drive.google.com/file/d/1eoLRuLgia6hrA_IaG4-cKxAtNYMfo3J4/view?usp=drive_link)
 - [Wireframes-Figma](https://www.figma.com/file/cM0eqPHOEl3oFjZhK0mE5q/Wireframes?type=design&node-id=0%3A1&mode=design&t=sgLrlIc4JPYCTLRD-1)
+- [Mockups-Figma](https://www.figma.com/file/CHhxn1UBgTOXumjDCXijDR/Proper-Property-MockUps-v1?type=design&mode=design&t=sgLrlIc4JPYCTLRD-1)
 ---
 
 # Team Members
