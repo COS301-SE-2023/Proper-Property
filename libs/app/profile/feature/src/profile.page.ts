@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { UserProfileState, UserProfileService } from '@properproperty/app/profile/data-access';
 import {AuthService} from '@properproperty/app/auth/data-access';
@@ -184,8 +185,9 @@ export class ProfilePage implements OnInit {
   }
 
   discardName() {
-    this.newEmail = '';
-    this.isEditingEmail = false;
+    this.newFirstName = '';
+    this.newLastName = '';
+    this.isEditingName = false;
   }
 
   editPhoneNumber(){
