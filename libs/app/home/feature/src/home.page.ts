@@ -4,6 +4,7 @@ import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
 import Swiper from 'swiper';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
+import { Router } from '@angular/router';
 
 // import { Storage, ref } from '@angular/fire/storage';
 // import { uploadBytes } from 'firebase/storage';
@@ -34,7 +35,7 @@ export class HomePage implements OnInit {
   public home!: string;
   private activatedRoute = inject(ActivatedRoute);
   currentUser: UserProfile | null = null;
-  constructor(public userService : UserProfileService, public gmapsService: GmapsService) {
+  constructor(public userService : UserProfileService, public gmapsService: GmapsService,private router: Router) {
     this.currentUser = this.userService.getCurrentUser();
   }
 
@@ -67,7 +68,11 @@ export class HomePage implements OnInit {
   searchQuery = '';
   //to be implemented
   searchProperties() {
+    // Get the search query from the input field
     this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
+
+    // Redirect to the search page with the search query as a parameter
+    this.router.navigate(['/search'], { queryParams: { q: this.searchQuery } });
   }
   // swiperReady() {
   //   this.swiper = this.swiperRef?.nativeElement.swiper;

@@ -10,6 +10,7 @@ import { Unsubscribe, User } from '@angular/fire/auth';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
+import { ActivatedRoute } from '@angular/router';
 
 
 interface Property {
@@ -81,6 +82,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
   }
   constructor(
+    private route: ActivatedRoute,
     private gmaps: GmapsService,
     private renderer: Renderer2,
     private actionSheetCtrl: ActionSheetController,
@@ -126,6 +128,17 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     
     
     this.gmapsService.setupRegionSearchBox(inputElementId);
+
+    const queryParams = this.route.snapshot.queryParams;
+    this.searchQuery = queryParams['q'] || ''; // If 'q' parameter is not available, default to an empty string.
+
+    const addressInput = document.getElementById("address") as HTMLInputElement;
+    if (this.searchQuery!='') {
+      addressInput.value = this.searchQuery;
+    }
+
+    this.searchProperties();
+
     
   }
 
