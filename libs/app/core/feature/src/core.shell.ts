@@ -12,7 +12,10 @@ import { httpsCallable, Functions } from '@angular/fire/functions';
 import { Router } from '@angular/router';
 import { isDevMode } from '@angular/core';
 // import { GetUserProfileRequest, GetUserProfileResponse, UpdateUserProfileRequest, UpdateUserProfileResponse, profile } from '@properproperty/api/profile/util';
-
+import { 
+  SearchListingsRequest,
+  SearchListingsResponse, 
+} from '@properproperty/api/search/util';
 @Component({
   selector: 'proper-property-app',
   templateUrl: './core.shell.html',
@@ -54,50 +57,58 @@ export class CoreShellComponent implements OnInit, OnDestroy{
   async test() {// very duct tape, much jank. 10/10
 
     if (isDevMode()) {
-    alert ("OI");
-    const test : any = (await httpsCallable(this.functions, 'getAnalyticsData')()).data;
-    const dates : Date[] = [];
-    const pageViews : number[] = [];
+      alert ("OI");
+      const res = await httpsCallable<
+        SearchListingsRequest, 
+        SearchListingsResponse
+      >(
+        this.functions, 
+        'searchListings'
+      )({query: '36 Brooks Street'});
+      console.log(res);
+      // const test : any = (await httpsCallable(this.functions, 'getAnalyticsData')()).data;
+      // const dates : Date[] = [];
+      // const pageViews : number[] = [];
 
-    const rows: any = test.rows ?? [];
-    for(let i = 0; rows && i < rows.length; i++){
-      if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
-        const dimensionValue = rows[i].dimensionValues[1].value;
-        const year = Number(dimensionValue.substring(0,4));
-        const month = Number(dimensionValue.substring(4,6));
-        const day = Number(dimensionValue.substring(6,8));
+      // const rows: any = test.rows ?? [];
+      // for(let i = 0; rows && i < rows.length; i++){
+      //   if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
+      //     const dimensionValue = rows[i].dimensionValues[1].value;
+      //     const year = Number(dimensionValue.substring(0,4));
+      //     const month = Number(dimensionValue.substring(4,6));
+      //     const day = Number(dimensionValue.substring(6,8));
 
-        dates[i] = new Date(year, month, day);
+      //     dates[i] = new Date(year, month, day);
 
-        const metricValue = rows[i].metricValues[0].value;
-        pageViews[i] = Number(metricValue);
-      }
-    }
+      //     const metricValue = rows[i].metricValues[0].value;
+      //     pageViews[i] = Number(metricValue);
+      //   }
+      // }
 
-    console.log({pageViews, dates});
-    // const getUserProfile = httpsCallable<
-    //   GetUserProfileRequest,
-    //   GetUserProfileResponse
-    // >(this.functions, 'getUserProfile');
+      // console.log({pageViews, dates});
+      // const getUserProfile = httpsCallable<
+      //   GetUserProfileRequest,
+      //   GetUserProfileResponse
+      // >(this.functions, 'getUserProfile');
 
-    // const updateUserProfile = httpsCallable<
-    //   UpdateUserProfileRequest,
-    //   UpdateUserProfileResponse
-    // >(this.functions, 'updateUserProfile');
-    // let getresponse: GetUserProfileResponse;
-    // let profile: profile | null = null;
-    // if (this.user){
-    //   getresponse = (await getUserProfile({userId: this.user.uid})).data;
-    //   profile = getresponse.user;
-    //   console.warn(profile);
-    // }
-    // let updateResponse: UpdateUserProfileResponse;
-    // if (profile) {
-    //   profile.email = 'test@mail.com';
-    //   console.log(profile);
-    //   updateResponse = (await updateUserProfile({user: profile})).data;
-    //   console.warn(updateResponse);
-    // }
+      // const updateUserProfile = httpsCallable<
+      //   UpdateUserProfileRequest,
+      //   UpdateUserProfileResponse
+      // >(this.functions, 'updateUserProfile');
+      // let getresponse: GetUserProfileResponse;
+      // let profile: profile | null = null;
+      // if (this.user){
+      //   getresponse = (await getUserProfile({userId: this.user.uid})).data;
+      //   profile = getresponse.user;
+      //   console.warn(profile);
+      // }
+      // let updateResponse: UpdateUserProfileResponse;
+      // if (profile) {
+      //   profile.email = 'test@mail.com';
+      //   console.log(profile);
+      //   updateResponse = (await updateUserProfile({user: profile})).data;
+      //   console.warn(updateResponse);
+      // }
     }
   }
 }
