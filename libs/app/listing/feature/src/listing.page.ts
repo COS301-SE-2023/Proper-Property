@@ -14,7 +14,7 @@ import { Chart, registerables } from 'chart.js';
 import { GetAnalyticsDataRequest } from '@properproperty/api/core/feature';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { Unsubscribe, User } from 'firebase/auth';
-import { IonContent } from '@ionic/angular';
+import { IonContent, IonText } from '@ionic/angular';
 
 @Component({
   selector: 'app-listing',
@@ -23,6 +23,7 @@ import { IonContent } from '@ionic/angular';
 })
 export class ListingPage{
   @ViewChild(IonContent) content: IonContent | undefined;
+  // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
 
   @Select(AuthState.user) user$!: Observable<User | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
@@ -43,6 +44,7 @@ export class ListingPage{
 
   price_per_sm = 0;
   lister_name = "";
+  avgEnagement = "";
   includes = false;
   Months = [
     "January",
@@ -60,6 +62,7 @@ export class ListingPage{
   ];
 
   isRed = false;
+  showData = false;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -135,12 +138,17 @@ export class ListingPage{
   }
 
   async showAnalytics(){
+    this.showData = true;
     const request : GetAnalyticsDataRequest = {listingId : this.list?.listing_id ?? ""};
     const analyticsData : any = (await httpsCallable<GetAnalyticsDataRequest>(this.functions, 'getAnalyticsData')(request)).data;
     if(analyticsData == null){
       return;
     }
 
+    let totUsers = 0;
+    let totEngagement = 0;
+
+    console.log(analyticsData);
     let dates : string[] = [];
     let pageViews : number[] = [];
 
@@ -159,6 +167,9 @@ export class ListingPage{
 
         const metricValue = rows[i].metricValues[0].value;
         pageViews[i] = Number(metricValue);
+
+        totEngagement += Number(rows[i].metricValues[1].value);
+        totUsers += Number(rows[i].metricValues[2].value);
       }
     }
 
@@ -194,6 +205,12 @@ export class ListingPage{
       });
     }
 
+    const avgPerUser = totEngagement / totUsers;
+    const minutes = Math.floor(avgPerUser / 60);
+    const seconds = (avgPerUser - minutes * 60).toPrecision(2);
+
+    this.avgEnagement = minutes + " min " + seconds + " sec";
+    
     return;
   }
 

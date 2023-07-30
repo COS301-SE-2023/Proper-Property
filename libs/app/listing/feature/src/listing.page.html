@@ -57,7 +57,7 @@
           <ion-card class="half-green-container">
             <ion-grid style="padding-top: 20px; padding-left:20px;">
               <ion-row>
-                <ion-card-title class="house-titles">{{list.desc}}</ion-card-title>
+                <ion-card-title class="house-titles">House</ion-card-title>
                 <ion-button class="save-button" (click)="saveListing()" [ngClass]="{'red': isRed}" (click)="toggleColor()" ion-tooltip="Save Listing">
                   <ion-icon name="save" ion-tooltip="Save Listing"></ion-icon>
                 </ion-button>
@@ -308,6 +308,10 @@
             <ion-button (click)="editListing()">Edit Listing</ion-button>
           </div>
           <canvas id="lineGraph"></canvas>
+          <div *ngIf="showData">
+            <h3>Average engagement per user: </h3>
+            <ion-input type="string" [(ngModel)]="avgEnagement"></ion-input>
+          </div>
       </ion-row>
     </ion-grid>
   </ion-content>
