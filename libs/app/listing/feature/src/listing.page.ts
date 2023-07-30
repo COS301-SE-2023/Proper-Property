@@ -15,6 +15,7 @@ import { GetAnalyticsDataRequest } from '@properproperty/api/core/feature';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { Unsubscribe, User } from 'firebase/auth';
 import { IonContent } from '@ionic/angular';
+import { register } from 'swiper/element/bundle';
 
 @Component({
   selector: 'app-listing',
@@ -276,14 +277,20 @@ export class ListingPage{
 
     console.log("Accepted: " + this.pointsOfInterest);
   }
+  
+  // swiperElement = this.swiperRef?.nativeElement as any;
+  // swiperInstance = this.swiperElement.swiper;
 
   swiperReady() {
+    register();
+    console.log(this.swiper);
     console.log(this.swiperRef?.nativeElement.swiper);
     this.swiper = this.swiperRef?.nativeElement.swiper;
   }
 
   goNext() {
     this.swiper?.slideNext();
+    // this.swiperInstance.slideNext();
   }
   goPrev() {
     this.swiper?.slidePrev();

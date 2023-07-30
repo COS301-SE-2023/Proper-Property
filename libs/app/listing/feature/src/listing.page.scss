@@ -287,3 +287,28 @@ ion-item {
   width: 20%;
   margin-top: 10px;
 }
+
+#lineGraph {
+  // border-radius: 30px;
+  // border: 5px solid #0DAE4F;
+  // padding: 10px;
+}
+
+.image-gallery {
+  display: flex;
+  overflow-x: scroll; /* Enable horizontal scrolling if needed */
+  position: relative;
+  width: 65%;
+  margin: 0 auto;
+  margin-top: 10px;
+  border-radius: 20px;
+}
+
+.image-gallery img {
+  flex: 0 0 auto;
+  margin-right: 10px; /* Add margin between images */
+}
+
+.amenities{
+  --background: transparent;
+}
