@@ -11,6 +11,8 @@
 ---
 <strong><h3 style="font-family: Jetbrains Mono">PROJECT BOARD:</h3></strong>
 
+-[Project Board View 1](https://github.com/orgs/COS301-SE-2023/projects/21/views/1)
+
 <strong><h3 style="font-family: Jetbrains Mono">DEMO 3:</h3></strong>
 - [System Requirement Specifications V3](https://drive.google.com/file/d/1gNDCB_RqPpo3Ova7XqVRzJDxda2xBy9A/view?usp=drive_link)
 - [Testing Policy V1](https://drive.google.com/file/d/1MIdRFCY9PuQo60ze5-LXeKud1Aqro8Ev/view?usp=sharing)
