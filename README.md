@@ -18,6 +18,7 @@
 - [System Requirement Specifications V2](https://drive.google.com/file/d/1cU503qaPC5qviA-x2P3raSAUhXTepZ71/view?usp=sharing)
 <strong><h3 style="font-family: Jetbrains Mono">DEMO 1:</h3></strong>
 - [System Requirement Specifications V1](https://drive.google.com/file/d/1eoLRuLgia6hrA_IaG4-cKxAtNYMfo3J4/view?usp=drive_link)
+- [Wireframes-Figma](https://www.figma.com/file/cM0eqPHOEl3oFjZhK0mE5q/Wireframes?type=design&node-id=0%3A1&mode=design&t=sgLrlIc4JPYCTLRD-1)
 ---
 
 # Team Members
