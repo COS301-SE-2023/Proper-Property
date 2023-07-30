@@ -163,7 +163,7 @@ export class CreateListingPage implements OnInit {
   }
 
 handleAddressChange(address: string): void {
-  this.address = address;
+   this.address = address;
 }
 
 

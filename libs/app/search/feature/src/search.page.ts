@@ -29,25 +29,36 @@ import {
 })
 export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   @ViewChild('address', { static: true })
-  addressInput!: ElementRef<HTMLInputElement>;
+  private addressInput!: ElementRef<HTMLInputElement>;
 
-  autocomplete: any;
-  defaultBounds: google.maps.LatLngBounds;
-  predictions: google.maps.places.AutocompletePrediction[] = [];
+  private autocomplete: any;
+  private defaultBounds: google.maps.LatLngBounds;
+  private predictions: google.maps.places.AutocompletePrediction[] = [];
 
   @ViewChild('map', { static: true }) mapElementRef!: ElementRef;
-  googleMaps: any;
+  private googleMaps: any;
   // center = { lat: -25.7477, lng: 28.2433 };
-  center = { lat: 0, lng: 0 };
-  map: any;
-  mapClickListener: any;
-  markerClickListener: any;
-  markers: any[] = [];
-  listings: Listing[] = [];
+  private center = { lat: 0, lng: 0 };
+  private map: any;
+  private mapClickListener: any;
+  private markerClickListener: any;
+  private markers: any[] = [];
+  public listings: Listing[] = [];
+  
+  public activeTab = 'buying';
+  public searchQuery = '';
+  public selectedPropertyType = '';
+  public selectedMinPrice = 0;
+  public selectedMaxPrice = 0;
+  public selectedBedrooms = 0;
+  public showAdditionalFilters = false;
+  public selectedBathrooms = 0;
+  public selectedParking = 0;
+  public selectedAmenities: string[] = [];
 
   @Select(AuthState.user) user$!: Observable<User | null>;
   @Select(UserProfileState.userProfileListener)
-  userProfileListener$!: Observable<Unsubscribe | null>;
+  private userProfileListener$!: Observable<Unsubscribe | null>;
   private user: User | null = null;
   private profile: UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
@@ -288,7 +299,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       const infoWindowElement = document.querySelector('.gm-style-iw');
       if (infoWindowElement) {
         infoWindowElement.addEventListener('click', () => {
-          this.navigateToPropertyListingPage(marker.listing); // Call the navigateToPropertyListingPage function with the marker's listing object
+          this.redirectToPage(marker.listing); // Call the navigateToPropertyListingPage function with the marker's listing object
         });
       }
     });
@@ -321,11 +332,6 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       </ion-card-content>
     </ion-card>
   `;
-  }
-
-  navigateToPropertyListingPage(listing: Listing) {
-    console.log(listing.listing_id);
-    this.router.navigate(['/listing', { list: listing.listing_id }]);
   }
 
   checkAndRemoveMarker(marker: {
@@ -539,7 +545,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       const infoWindowElement = document.querySelector('.gm-style-iw');
       if (infoWindowElement) {
         infoWindowElement.addEventListener('click', () => {
-          this.navigateToPropertyListingPage(listing); // Call the navigateToPropertyListingPage function with the marker's listing object
+          this.redirectToPage(listing); // Call the navigateToPropertyListingPage function with the marker's listing object
         });
       }
     });
@@ -559,16 +565,6 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     this.selectedAmenities = [];
   }
 
-  activeTab = 'buying';
-  searchQuery = '';
-  selectedPropertyType = '';
-  selectedMinPrice = 0;
-  selectedMaxPrice = 0;
-  selectedBedrooms = 0;
-  showAdditionalFilters = false;
-  selectedBathrooms = 0;
-  selectedParking = 0;
-  selectedAmenities: string[] = [];
 
   // properties: Property[] = [
   //   { title: 'House 1', type: 'house', price: 100000, bedrooms: 3 },
