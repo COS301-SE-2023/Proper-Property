@@ -479,7 +479,7 @@ if (!ctx) {
 throw new Error("Canvas context is not available.");
 }
 ctx.drawImage(img, 0, 0);
-URL.revokeObjectURL(blobUrl); // Revoke the blob URL
+// URL.revokeObjectURL(blobUrl); // Revoke the blob URL
 return canvas.toDataURL(); // Convert to a regular data URL
 }
 

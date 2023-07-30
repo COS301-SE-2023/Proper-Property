@@ -42,7 +42,7 @@ export class ListingsService {
   async uploadImages(listingID : string, input: string[]) {
     const photoURLs : string[] = [];
     for(let i = 0; i < input.length; i++){
-      const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingID + "/image" + i);
+      const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + "/" + listingID + "/image" + i);
       await fetch("" + input[i]).then(res => res.blob())
       .then(async (blob : Blob) => {
         photoURLs.push(await getDownloadURL((await uploadBytes(storageRef, blob)).ref));
