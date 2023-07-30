@@ -277,6 +277,7 @@
           <ion-item class="ion-container" *ngFor="let feat of features,; let i = index">
             <ion-label>
               <ion-chip>
+                &nbsp;
                 {{feat}}
                 &nbsp;
                 <ion-icon name="close-circle" (click)="removeFeature(i)"></ion-icon>
