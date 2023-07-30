@@ -292,7 +292,7 @@
         </ion-col>
       </ion-row>
 
-      <ion-row style="width:100">
+      <ion-row style="width:100%">
         <ion-button *ngIf="!ownerViewing; else ownerView" (click)="addListing()"
           [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">ADD
           LISTING</ion-button>
@@ -302,8 +302,8 @@
             Listing</ion-button>
         </ng-template>
       </ion-row>
-      <br><br><br><br><br><br><br>
     </ion-row>
+    <br><br><br><br><br><br><br><br><br><br><br><br>
   </ion-grid>
   <properproperty-footer></properproperty-footer>
 
