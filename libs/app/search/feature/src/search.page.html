@@ -144,7 +144,7 @@
   <div id="listings-and-map">
     <ion-grid>
       <ion-row>
-        <ion-col>
+        <ion-col size="6">
           <ion-card *ngFor="let listing of listings">
             <div (click)="redirectToPage(listing)">
               <ion-card-header>
@@ -186,7 +186,7 @@
             </ng-template>
           </ion-card>
       </ion-col>
-      <ion-col>
+      <ion-col size="6">
         <div class="map" #map></div>
       </ion-col>
     </ion-row>
