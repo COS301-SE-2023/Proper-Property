@@ -31,25 +31,28 @@
           <img src="assets/icon/arrow1.svg" #back>
         </ion-button>
       </ion-buttons>
-      <swiper-container id="swiper-container" #swiper (afterinit)="swiperReady()"
-        (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true">
-        <!-- Slides content goes here -->
+      <swiper-container #swiper (afterinit)="swiperReady()"
+        (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true" slides-per-view="1" class="swiper-container">
         <swiper-slide *ngFor="let picture of list.photos">
-          <img src="{{picture}}">
+          <img src="{{picture}}" />
         </swiper-slide>
         <!-- <swiper-slide>
-          <img src="{{list.photos[0]}}">
+          <img src="assets/house5.jpg">
         </swiper-slide>
         <swiper-slide>
-          <img src="{{list.photos[1]}}">
+          <img src="assets/house4.jpg">
         </swiper-slide> -->
       </swiper-container>
       <ion-buttons slot="end" class="swiper-button2" #two>
-        <ion-button style="height:100px;" (click)="goNext()" #two>
+        <ion-button id="next-button" style="height:100px;" (click)="goNext()" #two>
           <img src="assets/icon/arrow.svg" #forward>
         </ion-button>
       </ion-buttons>
     </div>
+    <!-- <div class="image-gallery">
+      <img *ngFor="let picture of list.photos" [src]="picture">
+    </div> -->
+    
   
     <ion-grid style="width:80%;">
       <ion-row style="height:550px">
@@ -212,7 +215,7 @@
                         Amenities:
                       </ion-label>
                     </ion-list-header>
-                    <ion-item *ngFor="let feature of list.features">
+                    <ion-item class="amenities" *ngFor="let feature of list.features">
                       <ion-label>{{feature}}</ion-label>
                     </ion-item>
                   </ion-list>
@@ -303,7 +306,7 @@
         </ion-card>
       </ion-row>
       <ion-row *ngIf="(ownerViewing$ | async)">
-          <div style="display: flex; align-content: space-evenly;">
+          <div style="align-content: space-evenly; margin-top:1%;">
             <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
             <ion-button (click)="editListing()">Edit Listing</ion-button>
           </div>

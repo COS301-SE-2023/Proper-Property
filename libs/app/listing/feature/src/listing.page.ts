@@ -15,6 +15,8 @@ import { GetAnalyticsDataRequest } from '@properproperty/api/core/feature';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { Unsubscribe, User } from 'firebase/auth';
 import { IonContent, IonText } from '@ionic/angular';
+import { register } from 'swiper/element/bundle';
+register();
 
 @Component({
   selector: 'app-listing',
@@ -31,7 +33,8 @@ export class ListingPage{
   private profile : UserProfile | null = null;
   private userProfile : UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
-  @ViewChild('swiper') swiperRef?: ElementRef;
+  @ViewChild('swiper')
+  swiperRef: ElementRef | undefined;
   swiper?: Swiper;
   list : Listing | null = null;
   listerId  = "";
@@ -295,12 +298,14 @@ export class ListingPage{
   }
 
   swiperReady() {
-    console.log(this.swiperRef?.nativeElement.swiper);
     this.swiper = this.swiperRef?.nativeElement.swiper;
+    console.log(this.swiperRef?.nativeElement.swiper);
   }
 
   goNext() {
     this.swiper?.slideNext();
+    console.log(this.swiper?.slideNext());
+    // this.swiperInstance.slideNext();
   }
   goPrev() {
     this.swiper?.slidePrev();
