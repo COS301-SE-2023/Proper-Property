@@ -34,7 +34,7 @@
       <swiper-container #swiper (afterinit)="swiperReady()"
         (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true" slides-per-view="1" class="swiper-container">
         <swiper-slide *ngFor="let picture of list.photos">
-          <img src="{{picture}}" />
+          <img alt="img" src="{{picture}}" />
         </swiper-slide>
         <!-- <swiper-slide>
           <img src="assets/house5.jpg">
@@ -237,7 +237,7 @@
                           <ion-row style="border: 1px solid black">
                             <ion-col style="border: 1px solid black">
                               <ion-avatar>
-                                <img [src]="">
+                                <img alt="profilePic" [src]="">
                               </ion-avatar>
                               <p>{{lister_name}}</p>
                             </ion-col>
