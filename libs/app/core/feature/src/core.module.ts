@@ -1,8 +1,3 @@
-// import function to register Swiper custom elements
-import { register } from 'swiper/element/bundle';
-// register Swiper custom elements
-register();
-
 import { NgModule } from '@angular/core';
 // import { CommonModule } from '@angular/common';
 // Http requests in lieu of firebase Cloud Functions

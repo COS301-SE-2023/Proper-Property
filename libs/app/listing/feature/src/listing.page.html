@@ -25,33 +25,33 @@
         </ion-row>
       </ion-grid>
     </div>
-    <!-- <div class="swiper-container-wrapper">
+    <div class="swiper-container-wrapper">
       <ion-buttons slot="start" class="swiper-button1" #one>
         <ion-button style="height:100px;" (click)="goPrev()" #one>
           <img src="assets/icon/arrow1.svg" #back>
         </ion-button>
       </ion-buttons>
-      <swiper-container id="swiper-container" #swiper (afterinit)="swiperReady()"
-        (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true" slides-per-view="1">
+      <swiper-container #swiper (afterinit)="swiperReady()"
+        (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true" slides-per-view="1" class="swiper-container">
         <swiper-slide *ngFor="let picture of list.photos">
-          <img src="{{picture}}">
+          <img src="{{picture}}" />
         </swiper-slide>
-        <swiper-slide>
+        <!-- <swiper-slide>
           <img src="assets/house5.jpg">
         </swiper-slide>
         <swiper-slide>
           <img src="assets/house4.jpg">
-        </swiper-slide>
+        </swiper-slide> -->
       </swiper-container>
       <ion-buttons slot="end" class="swiper-button2" #two>
         <ion-button id="next-button" style="height:100px;" (click)="goNext()" #two>
           <img src="assets/icon/arrow.svg" #forward>
         </ion-button>
       </ion-buttons>
-    </div> -->
-    <div class="image-gallery">
-      <img *ngFor="let picture of list.photos" [src]="picture">
     </div>
+    <!-- <div class="image-gallery">
+      <img *ngFor="let picture of list.photos" [src]="picture">
+    </div> -->
     
   
     <ion-grid style="width:80%;">
