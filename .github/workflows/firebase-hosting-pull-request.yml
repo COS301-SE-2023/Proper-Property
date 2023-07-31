@@ -39,7 +39,7 @@ jobs:
           NX_GOOGLE_MAPS_KEY="$NX_GOOGLE_MAPS_KEY"
           EOF
           echo "cat .env.prod"
-      # - run: 'npm run build:app:dev && npm run build:api:dev'
+      - run: 'npm run build:app:prod && npm run build:api:prod'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
