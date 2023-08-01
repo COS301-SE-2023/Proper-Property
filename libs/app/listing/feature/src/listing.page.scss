@@ -1,12 +1,3 @@
-#top-half {
-  background-image: url('../../../assets/top-half.jpg');
-  background-size: cover;
-  background-repeat: repeat;
-  height: 300px;
-  width: 100%;
-  margin-bottom: 5%;
-}
-
 .swiper-container {
   position: relative;
   width: 65%;
@@ -19,11 +10,65 @@
   justify-content: center;
 }
 
+#approvalCol ion-button::part(native) {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  border-radius: 30px;
+  border: 3px solid #000;
+  background: #0DAE4F;
+  margin: auto;
+  margin-top: 0.5%;
+  align-items: center;
+  padding: 5%;
+}
+
+.approveBut {
+  width: 35%;
+  margin-left:50%;
+  // height: auto;
+  // text-align: center;
+  // border-radius: 30px;
+  // border: 3px solid #000;
+  // background: #DE1313;
+  // margin: auto;
+  // margin-top: 0.5%;
+  // align-items: center;
+  // padding: 1%;
+}
+
+#rejectionCol ion-button::part(native) {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  border-radius: 30px;
+  border: 3px solid #000;
+  background: #DE1313;
+  margin: auto;
+  margin-top: 0.5%;
+  align-items: center;
+  padding: 5%;
+}
+
+.rejectBut {
+  width: 35%;
+  margin-right: 50%;
+  // height: auto;
+  // text-align: center;
+  // border-radius: 30px;
+  // border: 3px solid #000;
+  // background: #DE1313;
+  // margin: auto;
+  // margin-top: 0.5%;
+  // align-items: center;
+  // padding: 1%;
+}
+
 swiper-slide img {
   width: 100%;
   height: auto;
   border-radius: 20px;
-  margin:auto;
+  margin: auto;
 }
 
 .swiper-container-wrapper {
@@ -98,18 +143,13 @@ swiper-slide img {
   text-align: center;
 }
 
-#approvalBox {
-  width: 100%;
-  outline: 1px solid red;
-}
-
 #approvalCol {
-  outline: 1px solid red;
+  // outline: 1px solid red;
   text-align: center;
 }
 
 #rejectionCol {
-  outline: 1px solid red;
+  // outline: 1px solid red;
   text-align: center;
 }
 
@@ -301,7 +341,8 @@ ion-item {
 
 .image-gallery {
   display: flex;
-  overflow-x: scroll; /* Enable horizontal scrolling if needed */
+  overflow-x: scroll;
+  /* Enable horizontal scrolling if needed */
   position: relative;
   width: 65%;
   margin: 0 auto;
@@ -311,9 +352,10 @@ ion-item {
 
 .image-gallery img {
   flex: 0 0 auto;
-  margin-right: 10px; /* Add margin between images */
+  margin-right: 10px;
+  /* Add margin between images */
 }
 
-.amenities{
+.amenities {
   --background: transparent;
 }
