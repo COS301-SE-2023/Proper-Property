@@ -236,8 +236,7 @@ export class ListingPage{
             coordinates.longitude
           );
           
-          this.processPointsOfInterestResults(results);
-
+          this.processPointsOfInterestResults(results,coordinates.latitude, coordinates.longitude);
           // const testing = await this.gmapsService.getLatLongFromAddress("Durban, South Africa");
 
           // await this.gmapsService.calculateDistanceInMeters(coordinates.latitude,coordinates.longitude,testing.latitude,testing.longitude).then((distanceInMeters) => {
@@ -252,7 +251,7 @@ export class ListingPage{
   }
 
   
-  processPointsOfInterestResults(results: google.maps.places.PlaceResult[]) {
+  async processPointsOfInterestResults(results: google.maps.places.PlaceResult[], address_lat:number, address_lng:number) {
     console.log(results);
     // Clear the existing points of interest
     this.pointsOfInterest = [];
@@ -287,7 +286,25 @@ export class ListingPage{
       if(result.photos && result.photos.length > 0 && result.name && result.types){
         for(const type of result.types){
           if(wantedTypes.includes(type)){
-            this.pointsOfInterest.push({ photo : result.photos[0].getUrl(), name : result.name });
+            let dist = 0;
+
+            await this.gmapsService.getLatLongFromAddress(result.vicinity+"").then((coord)=> {
+              console.log("these are the coords ",coord);
+  
+  
+                this.gmapsService.calculateDistanceInMeters(
+                  address_lat,
+                  address_lng,
+                  coord.latitude,
+                  coord.longitude
+                ).then((distanceInMeters) => {
+                console.log('Distance between the two coordinates:', distanceInMeters, 'meters');
+                dist = distanceInMeters;
+              });
+            });
+
+            const naam = result.name + " ("+ (dist / 1000).toFixed(2)+"km)";
+            this.pointsOfInterest.push({ photo : result.photos[0].getUrl(), name : naam });
             break;
           }
         }
