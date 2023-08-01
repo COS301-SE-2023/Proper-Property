@@ -381,7 +381,7 @@ handleAddressChange(address: string): void {
 }
 
 
-async function calculateQualityScore(photos: string[],address:string,price:string,bedrooms:string,bathrooms:string,parking:string,floor_size:string,erf_size:string,pos_type:string,env_type:string,prop_type:string,furnish_type:string,orientation:string,gmapsService: GmapsService): Promise<number>{
+async function calculateQualityScore(photos: string[],address:string,price:number,bedrooms:number,bathrooms:number,parking:number,floor_size:number,erf_size:number,pos_type:string,env_type:string,prop_type:string,furnish_type:string,orientation:string,gmapsService: GmapsService): Promise<number>{
             
   let score = 0;
 
@@ -389,27 +389,27 @@ async function calculateQualityScore(photos: string[],address:string,price:strin
       score+= calculatePhotoScore(photos[i]);
   }
 
-  if(isNumericInput(price)){
+  if(price){
       score+= 5;
   } else score-=20;
 
-  if(isNumericInput(bedrooms)){
+  if(bedrooms){
       score+= 5;
   } else score-=20;
 
-  if(isNumericInput(bathrooms)){
+  if(bathrooms){
       score+= 5;
   } else score-=20;
 
-  if(isNumericInput(parking)){
+  if(parking){
       score+= 5;
   } else score-=20;
 
-  if(isNonEmptyStringInput(floor_size)){
+  if(floor_size && floor_size > 0){
       score+= 5;
   } else score-=15;
 
-  if(isNonEmptyStringInput(erf_size)){
+  if(erf_size && erf_size > 0){
       score+= 5;
   } else score-=15;
 
