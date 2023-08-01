@@ -202,7 +202,7 @@ export class ListingPage{
     const canvas = document.getElementById('lineGraph');
 
     if(canvas){
-      new Chart(canvas as HTMLCanvasElement, {
+      let chart = new Chart(canvas as HTMLCanvasElement, {
         type: 'line',
         data: data,
       });
