@@ -19,6 +19,7 @@
 - [Testing Policy V1](https://drive.google.com/file/d/1MIdRFCY9PuQo60ze5-LXeKud1Aqro8Ev/view?usp=sharing)
 - [Coding Standards V2](https://drive.google.com/file/d/15m9egiRO__sVOkkSOaT2x_oGlpRvkMzj/view?usp=sharing)
 - [User Manual V1](https://docs.google.com/document/d/1yYYSZdgxA5y-RiIumVolmqyooNhVF3HK/edit?usp=sharing&ouid=101448459048809858203&rtpof=true&sd=true)
+- [Technical Installation V1](https://drive.google.com/file/d/17q184yZ9bTxEl1Ha1AW9Kf7_VGGi9JGD/view?usp=sharing)
   
 <strong><h3 style="font-family: Jetbrains Mono">DEMO 2:</h3></strong>
 - [System Requirement Specifications V2](https://drive.google.com/file/d/1cU503qaPC5qviA-x2P3raSAUhXTepZ71/view?usp=sharing)
