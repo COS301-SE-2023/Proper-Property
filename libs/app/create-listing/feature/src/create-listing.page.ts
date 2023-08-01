@@ -428,7 +428,8 @@ handleAddressChange(address: string): void {
             let score = 0;
 
             for(let i = 0; i < min(8, photos.length); i++){
-                score+= calculatePhotoScore(photos[i]);
+              const temp = photos[i];
+                score+= calculatePhotoScore(temp);
             }
 
             if(isNumericInput(price)){
@@ -489,9 +490,9 @@ handleAddressChange(address: string): void {
 
         let rating = 0;
 
-        const temp = photo; 
+        const temp = photo;
 
-        getImageDimensions(convertBlobUrlToNormalUrl(temp))
+        getImageDimensions(convertBlobUrlToNormalUrl(photo))
         .then(({ width, height }) => {
             rating = 5 * (min(width, height) / max(width, height));
             return rating;
@@ -524,7 +525,6 @@ handleAddressChange(address: string): void {
           throw new Error("Canvas context is not available.");
         }
         ctx.drawImage(img, 0, 0);
-        URL.revokeObjectURL(blobUrl); // Revoke the blob URL
         return canvas.toDataURL(); // Convert to a regular data URL
       }
       
