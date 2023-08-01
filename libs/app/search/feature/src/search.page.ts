@@ -89,7 +89,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   ) {
     this.predictions = [];
     this.defaultBounds = new google.maps.LatLngBounds();
-
+    // TODO unscuff this.
     this.user$.subscribe((user) => {
       this.user = user;
       if (this.user) {
