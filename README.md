@@ -3,6 +3,7 @@
 </p>
 <h1 align="center">Proper Property</h1>
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=COS301-SE-2023_Proper-Property&metric=alert_status)]
 ![Github issues](https://img.shields.io/github/issues/COS301-SE-2023/Proper-Property.svg)
 ![Github issues](https://img.shields.io/github/issues-closed/COS301-SE-2023/Proper-Property.svg)
 ![Monitoring](https://img.shields.io/uptimerobot/status/m794412596-b37953dcaaa4df17641a8a80?style=plastic)
