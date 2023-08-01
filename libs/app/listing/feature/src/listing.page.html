@@ -12,15 +12,14 @@
   
   
   <ion-content [fullscreen]="true">
-    <!-- <div id="top-half"></div> -->
     <div *ngIf="admin" id="approvalBox">
       <ion-grid>
         <ion-row>
           <ion-col id="approvalCol">
-            <ion-button id="approveBut" [attr.disabled]="this.list.approved ? '' : null" (click)="changeStatus()">Approve</ion-button>
+            <ion-button class="approveBut" [attr.disabled]="this.list.approved ? '' : null" (click)="changeStatus()">Approve</ion-button>
           </ion-col>
           <ion-col id="rejectionCol">
-            <ion-button color="danger" [attr.disabled]="!this.list.approved ? '' : null" id="rejectBut" (click)="changeStatus()">Reject</ion-button>
+            <ion-button [attr.disabled]="!this.list.approved ? '' : null" class="rejectBut" (click)="changeStatus()">Reject</ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>

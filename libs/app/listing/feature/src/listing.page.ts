@@ -207,7 +207,6 @@ export class ListingPage{
         data: data,
       });
     }
-
     const avgPerUser = totEngagement / totUsers;
     const minutes = Math.floor(avgPerUser / 60);
     const seconds = (avgPerUser - minutes * 60).toPrecision(2);
@@ -321,8 +320,6 @@ export class ListingPage{
 
   goNext() {
     this.swiper?.slideNext();
-    console.log(this.swiper?.slideNext());
-    // this.swiperInstance.slideNext();
   }
   goPrev() {
     this.swiper?.slidePrev();
