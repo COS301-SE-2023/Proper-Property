@@ -51,7 +51,7 @@ export class AdminPage{
     this.listingServices.getListings().then((response) => {
       listings = response;
 
-      for(let listing of listings){
+      for(const listing of listings){
         if(listing.approved){
           this.appListings.push(listing);
         }
@@ -62,11 +62,11 @@ export class AdminPage{
 
       //sorting listings by date created
       this.appListings = this.appListings.sort((a, b) => {
-        let tempA2 = a.statusChanges?.[a.statusChanges.length - 1].date ?? "";
-        let tempB2 = b.statusChanges?.[b.statusChanges.length - 1].date ?? "";
+        const tempA2 = a.statusChanges?.[a.statusChanges.length - 1].date ?? "";
+        const tempB2 = b.statusChanges?.[b.statusChanges.length - 1].date ?? "";
 
-        let tempA = new Date(tempA2);
-        let tempB = new Date(tempB2);
+        const tempA = new Date(tempA2);
+        const tempB = new Date(tempB2);
         if(tempA > tempB){
           return -1
         }
@@ -79,8 +79,8 @@ export class AdminPage{
       })
 
       this.nonAppListings = this.nonAppListings.sort((a, b) => {
-        let tempA = new Date(a.listingDate);
-        let tempB = new Date(b.listingDate);
+        const tempA = new Date(a.listingDate);
+        const tempB = new Date(b.listingDate);
         if(tempA > tempB){
           return -1
         }
@@ -95,7 +95,7 @@ export class AdminPage{
     
 
     route.params.subscribe((params) => {
-      let statusChange : StatusChange = params['statusChange'];
+      const statusChange : StatusChange = params['statusChange'];
       if(statusChange && statusChange.adminId){
         router.navigate(['/admin']);
       }

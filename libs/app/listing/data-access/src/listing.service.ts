@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Listing, CreateListingRequest, CreateListingResponse, GetListingsRequest, GetListingsResponse, ChangeStatusResponse, ChangeStatusRequest, GetApprovedListingsResponse, EditListingRequest, EditListingResponse } from '@properproperty/api/listings/util';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
-import { Storage, StorageReference, deleteObject, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
+import { Storage, deleteObject, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { Observable } from 'rxjs';
@@ -119,7 +119,7 @@ export class ListingsService {
     >(
       this.functions,
       'editListing'
-    )({listing: listing})).data;
+    )(request)).data;
 
     if(response.listingId != 'FAILURE'){
       this.updateImages(response.listingId, listing.photos);

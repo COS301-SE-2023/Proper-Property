@@ -18,7 +18,7 @@ import { isDevMode } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 
-declare const gtag: Function;
+declare const gtag: any;
 
 @Component({
   selector: 'proper-property-app',
@@ -92,6 +92,7 @@ export class CoreShellComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
+    console.log(event);
     this.isMobile = window.innerWidth <= 576;
   }
 
@@ -99,11 +100,11 @@ export class CoreShellComponent implements OnInit, OnDestroy {
 
     if (isDevMode()) {
     alert ("OI");
-    const test : any = (await httpsCallable(this.functions, 'getAnalyticsData')()).data;
+    const test = JSON.parse((await httpsCallable(this.functions, 'getAnalyticsData')()).data as string);
     const dates : Date[] = [];
     const pageViews : number[] = [];
 
-    const rows: any = test.rows ?? [];
+    const rows = test.rows ?? [];
     for(let i = 0; rows && i < rows.length; i++){
       if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
         const dimensionValue = rows[i].dimensionValues[1].value;

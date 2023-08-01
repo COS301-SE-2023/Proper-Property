@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 
-declare const gtag: Function;
+declare const gtag: any;
 
 @Component({
   selector: 'properproperty-root',
