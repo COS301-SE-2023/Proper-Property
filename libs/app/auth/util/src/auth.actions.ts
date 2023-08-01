@@ -10,8 +10,8 @@ export class Register {
   constructor(public readonly email: string, public readonly password: string) {}
 }
 
-export class SetUser {
-  static readonly type = '[Auth] SetUser';
+export class SetAuthUser {
+  static readonly type = '[Auth] SetAuthUser';
   constructor(public readonly user: User | null) {}
 }
 

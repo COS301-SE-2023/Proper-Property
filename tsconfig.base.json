@@ -15,6 +15,34 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@properproperty/api/core/feature": [
+        "libs/api/core/feature/src/index.ts"
+      ],
+      "@properproperty/api/listings/data-access": [
+        "libs/api/listings/data-access/src/index.ts"
+      ],
+      "@properproperty/api/listings/feature": [
+        "libs/api/listings/feature/src/index.ts"
+      ],
+      "@properproperty/api/listings/util": [
+        "libs/api/listings/util/src/index.ts"
+      ],
+      "@properproperty/api/profile/data-access": [
+        "libs/api/profile/data-access/src/index.ts"
+      ],
+      "@properproperty/api/profile/feature": [
+        "libs/api/profile/feature/src/index.ts"
+      ],
+      "@properproperty/api/profile/util": [
+        "libs/api/profile/util/src/index.ts"
+      ],
+      "@properproperty/app/admin/data-access": [
+        "libs/app/admin/data-access/src/index.ts"
+      ],
+      "@properproperty/app/admin/feature": [
+        "libs/app/admin/feature/src/index.ts"
+      ],
+      "@properproperty/app/admin/util": ["libs/app/admin/util/src/index.ts"],
       "@properproperty/app/auth/data-access": [
         "libs/app/auth/data-access/src/index.ts"
       ],
@@ -27,6 +55,9 @@
       ],
       "@properproperty/app/create-listing/feature": [
         "libs/app/create-listing/feature/src/index.ts"
+      ],
+      "@properproperty/app/footer/feature": [
+        "libs/app/footer/feature/src/index.ts"
       ],
       "@properproperty/app/google-maps/data-access": [
         "libs/app/google-maps/data-access/src/index.ts"
@@ -46,9 +77,6 @@
       "@properproperty/app/listing/util": [
         "libs/app/listing/util/src/index.ts"
       ],
-      "@properproperty/app/listings/feature": [
-        "libs/app/listings/feature/src/index.ts"
-      ],
       "@properproperty/app/loading/feature": [
         "libs/app/loading/feature/src/index.ts"
       ],
@@ -61,11 +89,20 @@
       "@properproperty/app/open-ai/data-access": [
         "libs/app/open-ai/data-access/src/index.ts"
       ],
+      "@properproperty/app/profile/data-access": [
+        "libs/app/profile/data-access/src/index.ts"
+      ],
       "@properproperty/app/profile/feature": [
         "libs/app/profile/feature/src/index.ts"
       ],
       "@properproperty/app/profile/util": [
         "libs/app/profile/util/src/index.ts"
+      ],
+      "@properproperty/app/quality-scoring/data-access": [
+        "libs/app/quality-scoring/data-access/src/index.ts"
+      ],
+      "@properproperty/app/quality-scoring/util": [
+        "libs/app/quality-scoring/util/src/index.ts"
       ],
       "@properproperty/app/register/feature": [
         "libs/app/register/feature/src/index.ts"
@@ -78,9 +115,6 @@
       ],
       "@properproperty/app/settings/feature": [
         "libs/app/settings/feature/src/index.ts"
-      ],
-      "@properproperty/app/user/data-access": [
-        "libs/app/user/data-access/src/index.ts"
       ],
       "@properproperty/app/version/feature": [
         "libs/app/version/feature/src/index.ts"

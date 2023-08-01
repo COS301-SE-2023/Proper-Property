@@ -1,0 +1,26 @@
+{
+  "name": "api-listings-util",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/listings/util/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/api/listings/util",
+        "main": "libs/api/listings/util/src/index.ts",
+        "tsConfig": "libs/api/listings/util/tsconfig.lib.json",
+        "assets": ["libs/api/listings/util/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/api/listings/util/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

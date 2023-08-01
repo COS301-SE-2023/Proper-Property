@@ -1,90 +1,151 @@
 import { Injectable } from '@angular/core';
-import { listing } from '@properproperty/app/listing/util';
-import { Firestore, collection, doc, docData, addDoc, updateDoc, getDocs, getDoc } from '@angular/fire/firestore';
-import { Storage, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
-import { UserService } from '@properproperty/app/user/data-access';
-import { profile } from '@properproperty/app/profile/util';
+import { Listing, CreateListingRequest, CreateListingResponse, GetListingsRequest, GetListingsResponse, ChangeStatusResponse, ChangeStatusRequest, GetApprovedListingsResponse, EditListingRequest, EditListingResponse } from '@properproperty/api/listings/util';
+import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
+import { Storage, deleteObject, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
+import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
+import { UserProfile } from '@properproperty/api/profile/util';
 import { Observable } from 'rxjs';
-
+import { Select, Store } from '@ngxs/store';
+import { Functions, httpsCallable } from '@angular/fire/functions';
 @Injectable({
   providedIn: 'root'
 })
 export class ListingsService {
-  currentUser: profile | null = null;
+  currentUser: UserProfile | null = null;
+  @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
 
-  constructor(private firestore: Firestore, public userServices: UserService, private storage : Storage) {
-    this.currentUser = this.userServices.getCurrentUser();
+  constructor(
+    private readonly firestore: Firestore, 
+    private readonly userServices: UserProfileService, 
+    private storage : Storage, 
+    private readonly store: Store,
+    private readonly functions: Functions
+  ) {
+    this.userProfile$.subscribe((user) => {
+      this.currentUser = user;
+    });
   }
 
-  onInit(){
-    this.currentUser = this.userServices.getCurrentUser();
-  }
+  async createListing(list : Listing){
+    const request: CreateListingRequest = {listing: list};
+    const response: CreateListingResponse = (await httpsCallable<
+      CreateListingRequest,
+      CreateListingResponse
+    >(this.functions, 'createListing')(request)).data;
 
-  async createListing(list : listing){
-    const listingsRef = collection(this.firestore, 'listings');
-    const listingRef = addDoc(listingsRef, list);
-    await this.uploadImages((await listingRef).id, list.photos);
-    console.log("Added to listings collection")
-    await this.updateUserLisitings((await listingRef).id);
+    console.warn(response);
+    if (response.status) {
+      this.uploadImages(response.message, list.photos);
+    }
   }
 
   async uploadImages(listingID : string, input: string[]) {
     const photoURLs : string[] = [];
     for(let i = 0; i < input.length; i++){
-      const storageRef = ref(this.storage, "gs://demo-project.appspot.com/" + listingID + "/image" + i);
+      const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + "/" + listingID + "/image" + i);
       await fetch("" + input[i]).then(res => res.blob())
       .then(async (blob : Blob) => {
         photoURLs.push(await getDownloadURL((await uploadBytes(storageRef, blob)).ref));
       })
     }
 
+    // TODO Add this via CQRS
     const listingRef = doc(this.firestore, `listings/${listingID}`);
       await updateDoc(listingRef, {photos: photoURLs});
   }
 
-  async updateUserLisitings(listing_id : string) {
-    if(this.currentUser){
-      let oldListings : string[] = [];
-      const userRef = doc(this.firestore, `users/${this.currentUser.user_id}`);
-      (docData(userRef) as Observable<profile>).subscribe((user: profile) => {
-        oldListings = user.listings;
-        }
-      );
-
-      await updateDoc(userRef, {});
-      oldListings.push(listing_id);
-      await updateDoc(userRef, {listings: oldListings});
-      console.log("Added to users listings array");
-      return;
-    }
-    else{
-      console.log("Error in listing services: currentUser is null")
-      return;
-    }
-  }
-
   async getListings(){
-    const listingsRef = collection(this.firestore, 'listings');
-    const listings$ = ((await getDocs(listingsRef)).docs.map(doc => doc.data()) as listing[]);
-    const listings : listing[] = [];
-
-    for(let i = 0; i < listings$.length; i++){
-      const temp : listing = listings$[i];
-      temp.listing_id = ((await getDocs(listingsRef)).docs[i].id);
-      console.log(temp.listing_id);
-      listings.push(temp);
+    const response = (await httpsCallable<
+      GetListingsRequest,
+      GetListingsResponse
+    >(
+      this.functions, 
+      'getListings'
+    )({})).data;
+    if (response.listings.length > 0){
+      return response.listings;
     }
-    return listings;
+    return [];
    
   }
 
-  async getListing(listing_id : string){
-    let listing : listing | null = null;
-    const listingRef = doc(this.firestore, 'listings/' + listing_id);
-    await getDoc(listingRef).then((doc) => {
-      listing = doc.data() as listing;
-    });
+  async getApprovedListings(){
+    const response = (await httpsCallable<
+      null,
+      GetApprovedListingsResponse
+    >(
+      this.functions, 
+      'getApprovedListings'
+    )()).data;
 
-    return listing;
+    if(response.approvedListings.length > 0){
+      return response.approvedListings;
+    }
+
+    return [];
+  }
+
+  async getListing(listing_id : string){
+    const response: GetListingsResponse = (await httpsCallable<
+      GetListingsRequest,
+      GetListingsResponse
+    >(
+      this.functions, 
+      'getListings'
+    )({listingId: listing_id})).data;
+    if (response.listings.length > 0){
+      return response.listings[0];
+    }
+    return null;
+  }
+
+  async changeStatus(listingId : string, admin : string){
+    const response: ChangeStatusResponse = (await httpsCallable<
+      ChangeStatusRequest,
+      ChangeStatusResponse
+    >(
+      this.functions,
+      'changeStatus'
+    )({listingId : listingId, adminId : admin})).data;
+
+    return response;
+  }
+
+  async editListing(listing : Listing){
+    const request : EditListingRequest = {listing: listing};
+    const response: EditListingResponse = (await httpsCallable<
+      EditListingRequest,
+      EditListingResponse
+    >(
+      this.functions,
+      'editListing'
+    )(request)).data;
+
+    if(response.listingId != 'FAILURE'){
+      this.updateImages(response.listingId, listing.photos);
+      return true;
+    }
+
+    else {
+      return false;
+    }
+  }
+
+  async updateImages(listingId : string, images : string[]){
+    const photoURLs : string[] = [];
+    const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId);
+    deleteObject(storageRef);
+
+    for(let i = 0; i < images.length; i++){
+      const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId + "/image" + i);
+      await fetch("" + images[i]).then(res => res.blob())
+      .then(async (blob : Blob) => {
+        photoURLs.push(await getDownloadURL((await uploadBytes(storageRef, blob)).ref));
+      })
+    }
+
+    // TODO Add this via CQRS
+    const listingRef = doc(this.firestore, `listings/${listingId}`);
+      await updateDoc(listingRef, {photos: photoURLs});
   }
 }

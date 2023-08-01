@@ -1,17 +1,15 @@
+
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '@properproperty/app/user/data-access';
+import { UserProfileState, UserProfileService } from '@properproperty/app/profile/data-access';
 import {AuthService} from '@properproperty/app/auth/data-access';
+import { Logout } from '@properproperty/app/auth/util';
 import { AlertController } from '@ionic/angular';
 
-interface Interests {
-  garden: number;
-  mansion: number;
-  accessible: number;
-  openConcept: number;
-  ecoWarrior: number;
-}
-
 import { Router } from '@angular/router';
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { UserProfile, Interests } from '@properproperty/api/profile/util';
+import { UpdateUserProfile, RemoveCurrentUser } from '@properproperty/app/profile/util';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -19,10 +17,16 @@ import { Router } from '@angular/router';
 })
 export class ProfilePage implements OnInit {
 
-  
-  user: { name: string, surname: string, email: string, interests: Interests };
+  @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
+  user: UserProfile | null = null;
+  interests: Interests; // Needs to not be nullable cus ngModel no like
   isEditingEmail: boolean;
+  isEditingName: boolean;
+  isEditingPhoneNumber: boolean;
   newEmail: string;
+  newFirstName: string;
+  newLastName: string;
+  newPhoneNumber: string;
   // appPages = [
   //   { title: 'Saved Listings', url: '/saved-listings', icon: 'bookmark' },
   //   { title: 'My Listings', url: '/my-listings', icon: 'list' },
@@ -36,42 +40,85 @@ export class ProfilePage implements OnInit {
 
   
   editEmail() {
+    if (!this.user) {
+      return;
+    }
     this.isEditingEmail = true;
-    this.newEmail = this.user.email;
+    this.newEmail = this.user.email ?? '';
   }
 
   saveEmail() {
-    // Perform validation or additional logic here if needed
+    this.isEditingEmail = false;
+    if (!this.user) {
+      return;
+    }
     this.user.email = this.newEmail;
-    this.userServices.updateUserEmail(this.newEmail);
-    this.authServices.editEmail(this.newEmail);
+    // this.userProfileService.updateUserEmail(this.newEmail);
+    // this.authServices.editEmail(this.newEmail);
+    this.store.dispatch(new UpdateUserProfile({email: this.newEmail}));
+    this.newEmail = '';
+  }
+
+  discardEmail() {
+    this.newEmail = '';
     this.isEditingEmail = false;
   }
 
-  constructor( private userServices: UserService, private authServices:AuthService, private alertController: AlertController, private router: Router) {
+  constructor( 
+      private readonly userProfileService: UserProfileService, 
+      private readonly authServices:AuthService, 
+      private readonly alertController: AlertController, 
+      private readonly router: Router,
+      private readonly store: Store
+    ) {
 
-    
-    this.user = {
-      email:"john@example.com",
-      name: 'John',
-      surname: 'Doe',
-      interests: {
-        garden: 50,
-        mansion: 75,
-        accessible: 25,
-        openConcept: 90,
-        ecoWarrior: 60,
-      },
+    // default value cus ngModel cries when the user is null
+    this.interests = {
+      garden: 0,
+      mansion: 0,
+      accessible: 0,
+      openConcept: 0,
+      ecoWarrior: 0,
     };
 
-    this.user.name = this.userServices.currentUser?.first_name ?? '';
-    this.user.surname = this.userServices.currentUser?.last_name ?? '';
-    this.user.email = this.userServices.currentUser?.email ?? '';
+    this.userProfile$.subscribe((profile) => {
+      this.user = profile;
+      if (profile) {
+        if(profile.interests !== undefined){
+          this.interests = profile.interests;
+        }
+      }
+      else {
+        this.interests = {
+          garden: 50,
+          mansion: 20,
+          accessible: 60,
+          openConcept: 90,
+          ecoWarrior: 75,
+        };
+      }
+    });
+
+    // this.user = {
+    //   email:"john@example.com",
+    //   name: 'John',
+    //   surname: 'Doe',
+    //   interests: {
+    //     garden: 50,
+    //     mansion: 75,
+    //     accessible: 25,
+    //     openConcept: 90,
+    //     ecoWarrior: 60,
+    //   },
+    // };
     
     this.isEditingEmail = false;
+    this.isEditingName = false;
+    this.isEditingPhoneNumber = false;
     this.newEmail = '';
-
-  
+    this.newFirstName = '';
+    this.newLastName = '';
+    this.newPhoneNumber = '';
    }
 
   ngOnInit() {
@@ -105,10 +152,64 @@ export class ProfilePage implements OnInit {
 
   deleteAccount() {
     // Perform validation or additional logic here if needed
-    this.userServices.deleteUser(this.userServices.currentUser?.user_id ?? '');
+    this.userProfileService.deleteUser(this.userProfileService.currentUser?.userId ?? '');
     this.authServices.deleteCurrentUser();
     //redirect to login
     this.router.navigate(['/register']);
   }
 
+  logout(){
+    this.store.dispatch(new RemoveCurrentUser());
+    this.store.dispatch(new Logout());
+    this.router.navigate(['/login']);
+  }
+
+  editName(){
+    if (!this.user) {
+      return;
+    }
+    this.isEditingName = true;
+    this.newFirstName = this.user.firstName ?? '';
+    this.newLastName = this.user.lastName ?? '';
+  }
+
+  saveName() {
+    this.isEditingName = false;
+    if (!this.user) {
+      return;
+    }
+    this.user.firstName = this.newFirstName;
+    this.user.lastName = this.newLastName;
+    this.store.dispatch(new UpdateUserProfile({firstName: this.newFirstName, lastName: this.newLastName}));
+    this.newEmail = '';
+  }
+
+  discardName() {
+    this.newFirstName = '';
+    this.newLastName = '';
+    this.isEditingName = false;
+  }
+
+  editPhoneNumber(){
+    if (!this.user) {
+      return;
+    }
+    this.isEditingPhoneNumber = true;
+    this.newPhoneNumber = this.user.phoneNumber ?? '';
+  }
+
+  savePhoneNumber() {
+    this.isEditingPhoneNumber = false;
+    if (!this.user) {
+      return;
+    }
+    this.user.phoneNumber = this.newPhoneNumber;
+    this.store.dispatch(new UpdateUserProfile({phoneNumber: this.newPhoneNumber}));
+    this.newPhoneNumber = '';
+  }
+
+  discardPhoneNumber() {
+    this.newPhoneNumber = '';
+    this.isEditingPhoneNumber = false;
+  }
 }
