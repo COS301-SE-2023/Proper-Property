@@ -489,7 +489,9 @@ handleAddressChange(address: string): void {
 
         let rating = 0;
 
-        getImageDimensions(convertBlobUrlToNormalUrl(photo))
+        const temp = photo; 
+
+        getImageDimensions(convertBlobUrlToNormalUrl(temp))
         .then(({ width, height }) => {
             rating = 5 * (min(width, height) / max(width, height));
             return rating;
