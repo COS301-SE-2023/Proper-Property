@@ -15,6 +15,8 @@ import { GetAnalyticsDataRequest } from '@properproperty/api/core/feature';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { Unsubscribe, User } from 'firebase/auth';
 import { IonContent } from '@ionic/angular';
+import { register } from 'swiper/element/bundle';
+register();
 
 @Component({
   selector: 'app-listing',
@@ -23,6 +25,7 @@ import { IonContent } from '@ionic/angular';
 })
 export class ListingPage{
   @ViewChild(IonContent) content: IonContent | undefined;
+  // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
 
   @Select(AuthState.user) user$!: Observable<User | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
@@ -30,7 +33,8 @@ export class ListingPage{
   private profile : UserProfile | null = null;
   private userProfile : UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
-  @ViewChild('swiper') swiperRef?: ElementRef;
+  @ViewChild('swiper')
+  swiperRef: ElementRef | undefined;
   swiper?: Swiper;
   list : Listing | null = null;
   listerId  = "";
@@ -43,6 +47,7 @@ export class ListingPage{
 
   price_per_sm = 0;
   lister_name = "";
+  avgEnagement = "";
   includes = false;
   Months = [
     "January",
@@ -60,6 +65,7 @@ export class ListingPage{
   ];
 
   isRed = false;
+  showData = false;
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -135,16 +141,21 @@ export class ListingPage{
   }
 
   async showAnalytics(){
+    this.showData = true;
     const request : GetAnalyticsDataRequest = {listingId : this.list?.listing_id ?? ""};
-    const analyticsData : any = (await httpsCallable<GetAnalyticsDataRequest>(this.functions, 'getAnalyticsData')(request)).data;
+    const analyticsData = JSON.parse((await httpsCallable(this.functions, 'getAnalyticsData')(request)).data as string);
     if(analyticsData == null){
       return;
     }
 
+    let totUsers = 0;
+    let totEngagement = 0;
+
+    console.log(analyticsData);
     let dates : string[] = [];
     let pageViews : number[] = [];
 
-    const rows: any = analyticsData.rows ?? [];
+    const rows = analyticsData.rows ?? [];
     for(let i = 0; rows && i < rows.length; i++){
       if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
         const dimensionValue = rows[i].dimensionValues[1].value;
@@ -159,6 +170,9 @@ export class ListingPage{
 
         const metricValue = rows[i].metricValues[0].value;
         pageViews[i] = Number(metricValue);
+
+        totEngagement += Number(rows[i].metricValues[1].value);
+        totUsers += Number(rows[i].metricValues[2].value);
       }
     }
 
@@ -188,12 +202,21 @@ export class ListingPage{
     const canvas = document.getElementById('lineGraph');
 
     if(canvas){
-      new Chart(canvas as HTMLCanvasElement, {
+      const chart = new Chart(canvas as HTMLCanvasElement, {
         type: 'line',
         data: data,
       });
-    }
 
+      if(chart){
+        console.log("Chart created")
+      }
+    }
+    const avgPerUser = totEngagement / totUsers;
+    const minutes = Math.floor(avgPerUser / 60);
+    const seconds = (avgPerUser - minutes * 60).toPrecision(2);
+
+    this.avgEnagement = minutes + " min " + seconds + " sec";
+    
     return;
   }
 
@@ -216,8 +239,7 @@ export class ListingPage{
             coordinates.longitude
           );
           
-          this.processPointsOfInterestResults(results);
-
+          this.processPointsOfInterestResults(results,coordinates.latitude, coordinates.longitude);
           // const testing = await this.gmapsService.getLatLongFromAddress("Durban, South Africa");
 
           // await this.gmapsService.calculateDistanceInMeters(coordinates.latitude,coordinates.longitude,testing.latitude,testing.longitude).then((distanceInMeters) => {
@@ -232,7 +254,7 @@ export class ListingPage{
   }
 
   
-  processPointsOfInterestResults(results: google.maps.places.PlaceResult[]) {
+  async processPointsOfInterestResults(results: google.maps.places.PlaceResult[], address_lat:number, address_lng:number) {
     console.log(results);
     // Clear the existing points of interest
     this.pointsOfInterest = [];
@@ -267,7 +289,25 @@ export class ListingPage{
       if(result.photos && result.photos.length > 0 && result.name && result.types){
         for(const type of result.types){
           if(wantedTypes.includes(type)){
-            this.pointsOfInterest.push({ photo : result.photos[0].getUrl(), name : result.name });
+            let dist = 0;
+
+            await this.gmapsService.getLatLongFromAddress(result.vicinity+"").then((coord)=> {
+              console.log("these are the coords ",coord);
+  
+  
+                this.gmapsService.calculateDistanceInMeters(
+                  address_lat,
+                  address_lng,
+                  coord.latitude,
+                  coord.longitude
+                ).then((distanceInMeters) => {
+                console.log('Distance between the two coordinates:', distanceInMeters, 'meters');
+                dist = distanceInMeters;
+              });
+            });
+
+            const naam = result.name + " ("+ (dist / 1000).toFixed(2)+"km)";
+            this.pointsOfInterest.push({ photo : result.photos[0].getUrl(), name : naam });
             break;
           }
         }
@@ -278,8 +318,8 @@ export class ListingPage{
   }
 
   swiperReady() {
-    console.log(this.swiperRef?.nativeElement.swiper);
     this.swiper = this.swiperRef?.nativeElement.swiper;
+    console.log(this.swiperRef?.nativeElement.swiper);
   }
 
   goNext() {

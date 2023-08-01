@@ -145,10 +145,12 @@
     text-align: center;
     border: 5px solid #0DAE4F;
     transition: .5s ease;
-    height: 550px;
-    width: 30%;
-    margin-left: 1%;
-    margin-right: 1%;
+    height: 50%;
+    width: 25%;
+    margin-left: 2%;
+    margin-right: 2%;
+    padding-top: 2%;
+    padding-bottom: 3%;
   }
 
   .serv-container .serv-box:hover {
@@ -227,9 +229,9 @@
     overflow: hidden;
     display: flex;
     margin-top: 17%;
-    margin: auto;
+    // margin: auto;
     padding: 5%;
-    border-radius: 30px;
+    // border-radius: 30px;
     transition: background-color 0.5s ease;
   }
 

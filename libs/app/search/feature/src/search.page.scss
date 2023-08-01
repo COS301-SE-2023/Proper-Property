@@ -39,8 +39,7 @@
 #address {
   border-radius: 30px;
   border: 1.5px solid #000;
-  background: #fff;
-  height: 40px;
+  background: #FFF;
   width: 92%;
   margin-left: 4%;
   margin-bottom: 1%;
@@ -116,7 +115,7 @@ ion-card ion-card-content {
 
 //make the ion-card take only half of the page
 ion-card {
-  width: 50%;
+  // width: 45%;
   margin-left: 2%;
   margin-top: 10px;
   border-radius: 10px;
@@ -159,10 +158,12 @@ ion-card {
 
 .map {
   // margin-left: 50%;
-  width: 40%;
-  margin-left: 55%;
+  // width: 40%;
+  // margin-left: 55%;
   margin-top: -10px;
-
+  width: 95%;
+  margin-left: 2%;
+  margin-right: 3%;
   height: 600px;
   border-radius: 10px;
   background-color: transparent;
@@ -192,7 +193,12 @@ ion-card {
 
 #listings-and-map {
   transition: transform 0.3s ease-in-out;
-  margin-top: 3%;
+  margin-top:3%;
+  margin-bottom: 25%;
+}
+
+#listings-and-map ion-card{
+  // width: 100%;
 }
 
 .more-filters-visible #listings-and-map {

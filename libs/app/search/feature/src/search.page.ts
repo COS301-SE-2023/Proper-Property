@@ -17,10 +17,8 @@ import { Observable } from 'rxjs';
 import { Unsubscribe, User } from '@angular/fire/auth';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { AuthState } from '@properproperty/app/auth/data-access';
-import {
-  UserProfileService,
-  UserProfileState,
-} from '@properproperty/app/profile/data-access';
+import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -80,6 +78,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     await this.addMarkersToMap();
   }
   constructor(
+    private route: ActivatedRoute,
     private gmaps: GmapsService,
     private renderer: Renderer2,
     private actionSheetCtrl: ActionSheetController,
@@ -122,6 +121,10 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     const inputElementId = 'address';
 
     this.gmapsService.setupRegionSearchBox(inputElementId);
+
+    
+    this.gmapsService.setupRegionSearchBox(inputElementId);
+    
   }
 
   handleInputChange(event: Event): void {
@@ -517,17 +520,18 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     }
   }
 
-  addMMarker(coordinates: google.maps.GeocoderResult, listing: any) {
-    const googleMaps: any = this.googleMaps;
-    const icon = {
-      url: 'assets/icon/locationpin.png',
-      scaledSize: new googleMaps.Size(40, 40), // Adjust the size of the marker icon as desired
-    };
-    const marker = new google.maps.Marker({
-      position: coordinates.geometry.location,
-      map: this.map,
-      title: listing.title,
-    });
+addMMarker(coordinates: google.maps.GeocoderResult, listing: any) {
+
+  const googleMaps: any = this.googleMaps;
+  // const icon = {
+  //   url: 'assets/icon/locationpin.png',
+  //   scaledSize: new googleMaps.Size(40, 40), // Adjust the size of the marker icon as desired
+  // };
+  const marker = new google.maps.Marker({
+    position: coordinates.geometry.location,
+    map: this.map,
+    title: listing.title,
+  });
 
     // Create an info window for the marker
     const infoWindow = new googleMaps.InfoWindow({

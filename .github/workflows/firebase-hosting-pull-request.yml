@@ -10,6 +10,7 @@ jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -39,7 +40,8 @@ jobs:
           NX_GOOGLE_MAPS_KEY="$NX_GOOGLE_MAPS_KEY"
           EOF
           echo "cat .env.prod"
-      # - run: 'npm run build:app:dev && npm run build:api:dev'
+          npm install --no-package-lock
+      - run: 'npm run build:app:prod && npm run build:api:prod'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
