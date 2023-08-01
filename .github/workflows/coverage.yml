@@ -1,17 +1,18 @@
-name: Code Coverage
+name: Continuous integration
+
 on:
-  push:
+ push:
+ pull_request:
+ 
 jobs:
-  build-and-test:
-    name: Run Unit Tests
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - uses: codecov/codecov-action@v3
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        files: ./coverage1.xml,./coverage2.xml # optional
-        flags: unittests # optional
-        name: codecov-umbrella # optional
-        fail_ci_if_error: true # optional (default = false)
-        verbose: true # optional (default = false)
+ Analysis:
+   runs-on: ubuntu-latest
+
+   steps:
+          
+     - name: Upload coverage reports to Codecov
+       uses: codecov/codecov-action@v3
+       with:
+         token: ${{ secrets.CODECOV_TOKEN }}
+         fail_ci_if_error: true
+         files: ./coverage.opencover.xml
