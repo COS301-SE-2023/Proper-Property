@@ -14,7 +14,7 @@ import { Chart, registerables } from 'chart.js';
 import { GetAnalyticsDataRequest } from '@properproperty/api/core/feature';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { Unsubscribe, User } from 'firebase/auth';
-import { IonContent, IonText } from '@ionic/angular';
+import { IonContent } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
 register();
 
@@ -143,7 +143,7 @@ export class ListingPage{
   async showAnalytics(){
     this.showData = true;
     const request : GetAnalyticsDataRequest = {listingId : this.list?.listing_id ?? ""};
-    const analyticsData : any = (await httpsCallable<GetAnalyticsDataRequest>(this.functions, 'getAnalyticsData')(request)).data;
+    const analyticsData = JSON.parse((await httpsCallable(this.functions, 'getAnalyticsData')(request)).data as string);
     if(analyticsData == null){
       return;
     }
@@ -155,7 +155,7 @@ export class ListingPage{
     let dates : string[] = [];
     let pageViews : number[] = [];
 
-    const rows: any = analyticsData.rows ?? [];
+    const rows = analyticsData.rows ?? [];
     for(let i = 0; rows && i < rows.length; i++){
       if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
         const dimensionValue = rows[i].dimensionValues[1].value;
@@ -202,10 +202,14 @@ export class ListingPage{
     const canvas = document.getElementById('lineGraph');
 
     if(canvas){
-      let chart = new Chart(canvas as HTMLCanvasElement, {
+      const chart = new Chart(canvas as HTMLCanvasElement, {
         type: 'line',
         data: data,
       });
+
+      if(chart){
+        console.log("Chart created")
+      }
     }
     const avgPerUser = totEngagement / totUsers;
     const minutes = Math.floor(avgPerUser / 60);

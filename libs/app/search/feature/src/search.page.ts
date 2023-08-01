@@ -575,10 +575,10 @@ async addMarkersToMap() {
 addMMarker(coordinates: google.maps.GeocoderResult, listing: any) {
 
   const googleMaps: any = this.googleMaps;
-  const icon = {
-    url: 'assets/icon/locationpin.png',
-    scaledSize: new googleMaps.Size(40, 40), // Adjust the size of the marker icon as desired
-  };
+  // const icon = {
+  //   url: 'assets/icon/locationpin.png',
+  //   scaledSize: new googleMaps.Size(40, 40), // Adjust the size of the marker icon as desired
+  // };
   const marker = new google.maps.Marker({
     position: coordinates.geometry.location,
     map: this.map,

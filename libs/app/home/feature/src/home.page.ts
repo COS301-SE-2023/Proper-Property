@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 export class HomePage implements OnInit {
   @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
 
-  public autocomplete: any;
+  // public autocomplete: any;
 
   public predictions: google.maps.places.AutocompletePrediction[] = [];
 
