@@ -5,13 +5,13 @@ import {
   FindPlaceFromTextRequest,
   FindPlaceFromTextResponse,
 } from '@googlemaps/google-maps-services-js/dist/places/findplacefromtext';
-// Reading Google Documentation makes me want to kill myself :D
+
 import { Client } from '@googlemaps/google-maps-services-js';
 import { PlaceInputType } from '@googlemaps/google-maps-services-js/dist/common';
 import { Listing } from '@properproperty/api/listings/util';
 export class SearchRepository {
   async searchListings(req: SearchListingsRequest): Promise<SearchListingsResponse>{
-
+    console.log(process.env);
     let searchResults: SearchListingsResponse = {
       listings: []
     };
@@ -44,7 +44,7 @@ export class SearchRepository {
     // If no query is passed, then return all valid listings
     if (!req.query) {
       let querySnapshot = await query.get();
-      querySnapshot.forEach((doc) => {
+      querySnapshot.forEach((doc: any) => {
         searchResults.listings.push(doc.data() as Listing);
       });
       return searchResults;
@@ -54,7 +54,7 @@ export class SearchRepository {
     // and return the listings that match the data
     console.log(req);
     const apiClient = new Client({});
-    const apiKey = process.env['NX_GOOGLE_MAPS_KEY'] ?? 'oopsie whoopsie someone made a fucky wucky';
+    const apiKey = process.env['NX_GOOGLE_MAPS_KEY'] ?? 'oopsie whoopsie';
     const apiRequest: FindPlaceFromTextRequest = {
         params: {
           input: req.query,
@@ -67,8 +67,13 @@ export class SearchRepository {
           key: apiKey,
         }
     };
-    const apiResponse = await apiClient.findPlaceFromText(apiRequest);
-    console.log(apiResponse);
-    return {listings: [], apiRes: apiResponse};
+    let apiResponse: FindPlaceFromTextResponse;
+    try {
+      apiResponse = await apiClient.findPlaceFromText(apiRequest);
+      console.log(apiResponse);
+    } catch (e) {
+      console.log(e);
+    }
+    return {listings: []};
   }
 }
