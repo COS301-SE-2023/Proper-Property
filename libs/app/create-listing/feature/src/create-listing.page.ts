@@ -3,7 +3,7 @@ import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { Listing } from '@properproperty/api/listings/util';
 // import { profile } from '@properproperty/api/profile/util';
 import { ListingsService } from '@properproperty/app/listing/data-access';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OpenAIService } from '@properproperty/app/open-ai/data-access';
 import { Select} from '@ngxs/store';
 import { AuthState } from '@properproperty/app/auth/data-access';
@@ -23,21 +23,24 @@ export class CreateListingPage implements OnInit {
 
   @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
 
-
   @Select(AuthState.user) user$!: Observable<User | null>;
-  autocomplete: any;
+  // autocomplete: any;
   defaultBounds: google.maps.LatLngBounds;
   predictions: google.maps.places.AutocompletePrediction[] = [];
 
   currentUser: User | null = null;
   description = "";
   heading = "";
+  ownerViewing = false;
+  listingEditee : Listing | null = null;
+
   constructor(
     private readonly router: Router, 
     private readonly userService: UserProfileService, 
     private readonly listingService: ListingsService, 
     private readonly openAIService: OpenAIService,public gmapsService: GmapsService,
-    private readonly store: Store
+    private readonly store: Store,
+    private route: ActivatedRoute,
   ) {
     this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
     this.predictions = [];
@@ -60,13 +63,42 @@ export class CreateListingPage implements OnInit {
     this.user$.subscribe((user: User | null) => {
       this.currentUser =  user;
     });
+
+    this.route.params.subscribe((params) => {
+      const editListingId = params['listingId'] ?? 'XX'
+      if(editListingId != 'XX'){
+        this.listingService.getListing(editListingId).then((listing) => {
+          this.listingEditee = listing;
+          if(listing != undefined){
+            this.ownerViewing = true;
+            this.address = listing.address;
+            this.price = listing.price;
+            this.floor_size = listing.floor_size;
+            this.erf_size = listing.property_size;
+            this.bathrooms = listing.bath;
+            this.bedrooms = listing.bed;
+            this.parking = listing.parking;
+            this.pos_type = listing.pos_type;
+            this.env_type = listing.env_type;
+            this.prop_type = listing.prop_type;
+            this.furnish_type = listing.furnish_type;
+            this.orientation = listing.orientation;
+            this.description = listing.desc;
+            this.heading = listing.heading;
+            this.features = listing.features;
+            this.photos = listing.photos;
+            this.listingType = listing.let_sell;
+          }
+        });
+      }
+    });
   }
 
   features: string[] = [];
   selectedValue = true;
   listingType = "";
 
-  ngOnInit() {
+  async ngOnInit() {
     this.listingType = "Sell";
     // this.currentUser = this.userService.getCurrentUser();
     const inputElementId = 'address';
@@ -273,17 +305,48 @@ handleAddressChange(address: string): void {
 
   async addListing(){
     this.address = (document.getElementById("address") as HTMLInputElement).value;
-    
-    // const pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
-    // const env_type_in = document.getElementById('env-type') as HTMLInputElement;
-    // const prop_type_in = document.getElementById('prop-type') as HTMLInputElement;
-    // const furnish_type_in = document.getElementById('furnish-type') as HTMLInputElement;
-    // const orientation_in = document.getElementById('orientation') as HTMLInputElement;
-    // const desc_in = document.getElementById('desc') as HTMLInputElement;
-
-    // console.log(prop_type_in.value);
+    const score = await calculateQualityScore(this.photos,this.address,this.price,this.bedrooms,this.bathrooms,this.parking,this.floor_size,this.erf_size,this.pos_type,this.env_type,this.prop_type,this.furnish_type,this.orientation,this.gmapsService);
+  
     if(this.currentUser != null){
       const list : Listing = {
+        user_id: this.currentUser.uid,
+        address: this.address,
+        price: this.price,
+        pos_type: this.pos_type,
+        env_type: this.env_type,
+        prop_type: this.prop_type,
+        furnish_type: this.furnish_type,
+        orientation: this.orientation,
+        floor_size: this.floor_size,
+        property_size: this.erf_size,
+        bath: this.bathrooms,
+        bed: this.bedrooms,
+        parking: this.parking,
+        features: this.features,
+        photos: this.photos,
+        desc: this.description,
+        heading: this.heading,
+        let_sell: this.listingType,
+        approved: false,
+        quality_rating: score,
+        listingDate: "" + new Date()
+      }
+
+      console.log(list);
+      await this.listingService.createListing(list);
+      this.router.navigate(['/home']);
+    }
+    else{
+      console.log("Error in create-lisitng.page.ts");
+    }
+  }
+
+  async editListing(){
+    if(this.currentUser != null && this.listingEditee != null){
+      const list : Listing = {
+        listing_id: this.listingEditee.listing_id,
+        statusChanges: this.listingEditee.statusChanges,
+        quality_rating: this.listingEditee.quality_rating,
         user_id: this.currentUser.uid,
         address: this.address,
         price: this.price,
@@ -306,13 +369,171 @@ handleAddressChange(address: string): void {
         listingDate: "" + new Date()
       }
 
-      console.log(list);
-      await this.listingService.createListing(list);
-      this.router.navigate(['/home']);
+      const resp = await this.listingService.editListing(list);
+      if(resp){
+        this.router.navigate(['/listing', {list : this.listingEditee.listing_id}]);
+      }
     }
-    else{
-      console.log("Error in create-lisitng.page.ts");
-    }
+    return false
   }
 
 }
+
+
+async function calculateQualityScore(photos: string[],address:string,price:string,bedrooms:string,bathrooms:string,parking:string,floor_size:string,erf_size:string,pos_type:string,env_type:string,prop_type:string,furnish_type:string,orientation:string,gmapsService: GmapsService): Promise<number>{
+            
+  let score = 0;
+
+  for(let i = 0; i < min(8, photos.length); i++){
+      score+= calculatePhotoScore(photos[i]);
+  }
+
+  if(isNumericInput(price)){
+      score+= 5;
+  } else score-=20;
+
+  if(isNumericInput(bedrooms)){
+      score+= 5;
+  } else score-=20;
+
+  if(isNumericInput(bathrooms)){
+      score+= 5;
+  } else score-=20;
+
+  if(isNumericInput(parking)){
+      score+= 5;
+  } else score-=20;
+
+  if(isNonEmptyStringInput(floor_size)){
+      score+= 5;
+  } else score-=15;
+
+  if(isNonEmptyStringInput(erf_size)){
+      score+= 5;
+  } else score-=15;
+
+  if(isNonEmptyStringInput(pos_type)){
+      score+= 5;
+  } else score-=15;
+
+  if(isNonEmptyStringInput(env_type)){
+      score+= 5;
+  } else score-=15;
+
+  if(isNonEmptyStringInput(prop_type)){
+      score+= 5;
+  } else score-=15;
+
+  if(isNonEmptyStringInput(furnish_type)){
+      score+= 5;
+  } else score-=15;
+
+  if(isNonEmptyStringInput(orientation)){
+      score+= 5;
+  } else score-=15;
+
+
+  const isGeocodable = await checkGeocodableAddress(gmapsService,address);
+
+  if (!isGeocodable) {
+    return 0;
+  }
+
+  return score;
+}
+
+function calculatePhotoScore(photo:string):number{
+
+let rating = 0;
+
+getImageDimensions(convertBlobUrlToNormalUrl(photo))
+.then(({ width, height }) => {
+  rating = 5 * (min(width, height) / max(width, height));
+  return rating;
+})
+.catch((error) => {
+  console.error(error.message);
+});
+
+// getImageDimensions( this.convertBlobUrlToNormalUrl(photo));  
+
+return -1;
+}
+
+function min(first:number,second:number):number{
+
+const ret = first < second ? first : second;
+return ret;
+}
+
+function max(first:number,second:number){
+return first > second ? first : second;
+}
+
+function convertBlobUrlToNormalUrl(blobUrl: string): string {
+const img = new Image();
+img.src = blobUrl;
+const canvas = document.createElement("canvas");
+const ctx = canvas.getContext("2d");
+if (!ctx) {
+throw new Error("Canvas context is not available.");
+}
+ctx.drawImage(img, 0, 0);
+// URL.revokeObjectURL(blobUrl); // Revoke the blob URL
+return canvas.toDataURL(); // Convert to a regular data URL
+}
+
+//   getImageDimensions(imageUrl: string): void {
+//     const image = new Image();
+//     image.src = imageUrl;
+
+//     image.onload = () => {
+//       const width = image.naturalWidth;
+//       const height = image.naturalHeight;
+
+//       console.log(`Image dimensions: ${width} x ${height} pixels`);
+//     };
+//   }
+
+async function checkGeocodableAddress(gmapsService: GmapsService,address: string): Promise<boolean> {
+
+try {
+
+const geocoderResult = await gmapsService.geocodeAddress(address);
+// If the address is geocodable, the geocoderResult will not be null
+return geocoderResult !== null;
+} catch (error) {
+console.error(error);
+return false;
+}
+}
+
+
+function getImageDimensions(imageUrl: string): Promise<{ width: number; height: number }> {
+return new Promise((resolve, reject) => {
+const image = new Image();
+image.src = imageUrl;
+
+image.onload = () => {
+const width = image.naturalWidth;
+const height = image.naturalHeight;
+
+resolve({ width, height });
+};
+
+image.onerror = () => {
+reject(new Error("Failed to load the image."));
+};
+});
+}
+
+function isNumericInput(input: string): boolean {
+// Regular expression to check if the input contains only numeric characters
+const numericRegex = /^[0-9,]+$/;
+return numericRegex.test(input);
+}
+
+function isNonEmptyStringInput(input: string): boolean {
+return input.trim() !== "";
+}
+

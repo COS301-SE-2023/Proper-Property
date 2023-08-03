@@ -16,10 +16,10 @@
       <ion-grid>
         <ion-row>
           <ion-col id="approvalCol">
-            <ion-button id="approveBut" [attr.disabled]="this.list.approved ? '' : null" (click)="changeStatus()">Approve</ion-button>
+            <ion-button class="approveBut" [attr.disabled]="this.list.approved ? '' : null" (click)="changeStatus()">Approve</ion-button>
           </ion-col>
           <ion-col id="rejectionCol">
-            <ion-button color="danger" [attr.disabled]="!this.list.approved ? '' : null" id="rejectBut" (click)="changeStatus()">Reject</ion-button>
+            <ion-button [attr.disabled]="!this.list.approved ? '' : null" class="rejectBut" (click)="changeStatus()">Reject</ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -30,25 +30,28 @@
           <img src="assets/icon/arrow1.svg" #back>
         </ion-button>
       </ion-buttons>
-      <swiper-container id="swiper-container" #swiper (afterinit)="swiperReady()"
-        (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true">
-        <!-- Slides content goes here -->
+      <swiper-container #swiper (afterinit)="swiperReady()"
+        (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true" slides-per-view="1" class="swiper-container">
         <swiper-slide *ngFor="let picture of list.photos">
-          <img src="{{picture}}">
+          <img alt="img" src="{{picture}}" />
         </swiper-slide>
         <!-- <swiper-slide>
-          <img src="{{list.photos[0]}}">
+          <img src="assets/house5.jpg">
         </swiper-slide>
         <swiper-slide>
-          <img src="{{list.photos[1]}}">
+          <img src="assets/house4.jpg">
         </swiper-slide> -->
       </swiper-container>
       <ion-buttons slot="end" class="swiper-button2" #two>
-        <ion-button style="height:100px;" (click)="goNext()" #two>
+        <ion-button id="next-button" style="height:100px;" (click)="goNext()" #two>
           <img src="assets/icon/arrow.svg" #forward>
         </ion-button>
       </ion-buttons>
     </div>
+    <!-- <div class="image-gallery">
+      <img *ngFor="let picture of list.photos" [src]="picture">
+    </div> -->
+    
   
     <ion-grid style="width:80%;">
       <ion-row style="height:550px">
@@ -56,7 +59,7 @@
           <ion-card class="half-green-container">
             <ion-grid style="padding-top: 20px; padding-left:20px;">
               <ion-row>
-                <ion-card-title class="house-titles">{{list.desc}}</ion-card-title>
+                <ion-card-title class="house-titles">House</ion-card-title>
                 <ion-button class="save-button" (click)="saveListing()" [ngClass]="{'red': isRed}" (click)="toggleColor()" ion-tooltip="Save Listing">
                   <ion-icon name="save" ion-tooltip="Save Listing"></ion-icon>
                 </ion-button>
@@ -77,22 +80,20 @@
               <ng-template [ngIf]="list.let_sell === 'Sell'">
                 <ion-row >
                   <ion-card-title class="house-titles" style="margin-top:8px;">R {{list.price}}</ion-card-title>
-                  <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/sq.m</ion-card-subtitle>
+                  <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/ m<sup>2</sup></ion-card-subtitle>
                 </ion-row>
               </ng-template>
               <ng-template [ngIf]="list.let_sell === 'Rent'">
                 <ion-row>
                   <ion-card-title class="house-titles" style="margin-top:8px;">R {{list.price}}/pm</ion-card-title>
-                  <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/sq.m</ion-card-subtitle>
+                  <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/ m<sup>2</sup></ion-card-subtitle>
                 </ion-row>
               </ng-template>
               <ion-row style="margin-top: 10px;">
-                <ion-col size="7">
-                  <ion-card-subtitle style="margin-top:15px;"><button id="calculate-hyperlink">Calculate</button> your monthly payments below!</ion-card-subtitle>
-                </ion-col>
-                <ion-col size="5">
-                  <ion-button style="color-scheme:#0DAE4F;">Contact</ion-button>
-                  <!-- <ion-button style="color: #969696" id="heart-button"><img style="height:40px; width:40px;" src="assets/icon/heart.svg"></ion-button> -->
+                <ion-col>
+                  <div style="margin:15px;">
+                    <button style="color:#0DAE4F">Calculate</button> your monthly payments below!
+                  </div>
                 </ion-col>
               </ion-row>
             </ion-grid>
@@ -204,22 +205,69 @@
             <p>
               {{list.desc}}
             </p>
-  
-            <ion-list style="background: var(--light-grey, #EDEDED);">
-  
-              <ion-list-header>
-                <ion-label>
-                  Amenities:
-                </ion-label>
-              </ion-list-header>
-              <ion-item *ngFor="let feature of list.features">
-                <ion-label>{{feature}}</ion-label>
-              </ion-item>
-            </ion-list>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-list style="background: var(--light-grey, #EDEDED);">
+                    <ion-list-header>
+                      <ion-label>
+                        Amenities:
+                      </ion-label>
+                    </ion-list-header>
+                    <ion-item class="amenities" *ngFor="let feature of list.features">
+                      <ion-label>{{feature}}</ion-label>
+                    </ion-item>
+                  </ion-list>
+                </ion-col>
+                <ion-col>
+                  <ion-button style="color-scheme:#0DAE4F;" (click)="setOpen(true)">Lister Contact Details</ion-button>
+                  <ion-modal class="contactDetails" [isOpen]="isModalOpen">
+                    <ng-template>
+                      <ion-header>
+                        <ion-toolbar>
+                          <ion-title>Lister's Contact Details</ion-title>
+                          <ion-buttons slot="end">
+                            <ion-button (click)="setOpen(false)">Close</ion-button>
+                          </ion-buttons>
+                        </ion-toolbar>
+                      </ion-header>
+                      <ion-content class="ion-padding">
+                        <ion-grid style="border: 1px solid black"> 
+                          <ion-row style="border: 1px solid black">
+                            <ion-col style="border: 1px solid black">
+                              <ion-avatar>
+                                <img alt="profilePic" [src]="">
+                              </ion-avatar>
+                              <p>{{lister_name}}</p>
+                            </ion-col>
+                          </ion-row>
+                          <ion-row style="border: 1px solid black">
+                            <ion-col style="border: 1px solid black">
+                                Email
+                            </ion-col>
+                            <ion-col style="border: 1px solid black">
+                              {{lister?.email}}
+                            </ion-col>
+                          </ion-row>
+                          <ion-row style="border: 1px solid black">
+                            <ion-col style="border: 1px solid black">
+                                Phone
+                            </ion-col>
+                            <ion-col style="border: 1px solid black">
+                              {{lister?.phoneNumber}}
+                            </ion-col>
+                          </ion-row>
+                        </ion-grid>
+                      </ion-content>
+                    </ng-template>
+                  </ion-modal>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-card-content>
         </ion-card>
       </ion-row>
-      <ion-row style="margin-top: 1%">
+      <ion-row id="calculator" style="margin-top: 1%">
         <ion-card class="full-container">
           <ion-item>
             <ion-label position="floating" style="color: #0DAE4F;">Loan Amount (R)</ion-label>
@@ -256,9 +304,16 @@
   
         </ion-card>
       </ion-row>
-      <ion-row *ngIf="(showAnalyticsData$ | async)">
-        <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
-        <canvas id="lineGraph"></canvas>
+      <ion-row *ngIf="(ownerViewing$ | async)">
+          <div style="align-content: space-evenly; margin-top:1%;">
+            <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
+            <ion-button (click)="editListing()">Edit Listing</ion-button>
+          </div>
+          <canvas id="lineGraph"></canvas>
+          <div *ngIf="showData">
+            <h3>Average engagement per user: </h3>
+            <ion-input type="string" [(ngModel)]="avgEnagement"></ion-input>
+          </div>
       </ion-row>
     </ion-grid>
   </ion-content>

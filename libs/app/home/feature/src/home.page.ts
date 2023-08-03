@@ -3,6 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
 import Swiper from 'swiper';
+import { GmapsService } from '@properproperty/app/google-maps/data-access';
+import { Router } from '@angular/router';
+
 // import { Storage, ref } from '@angular/fire/storage';
 // import { uploadBytes } from 'firebase/storage';
 
@@ -13,6 +16,13 @@ import Swiper from 'swiper';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
+
+  // public autocomplete: any;
+
+  public predictions: google.maps.places.AutocompletePrediction[] = [];
+
+
   @ViewChild('swiper')
   swiperRef: ElementRef | undefined;
   swiper?: Swiper;
@@ -20,11 +30,12 @@ export class HomePage implements OnInit {
   swiperSlideChanged(e:Event) {
     console.log('changed', e)
   }
+
   
   public home!: string;
   private activatedRoute = inject(ActivatedRoute);
   currentUser: UserProfile | null = null;
-  constructor(public userService : UserProfileService) {
+  constructor(public userService : UserProfileService, public gmapsService: GmapsService,private router: Router) {
     this.currentUser = this.userService.getCurrentUser();
   }
 
@@ -46,8 +57,23 @@ export class HomePage implements OnInit {
         signupBut.style.visibility = 'hidden';
       }
     }
+    
+    const inputElementId = 'address';
+
+    
+    
+    this.gmapsService.setupRegionSearchBox(inputElementId);
   }
 
+  searchQuery = '';
+  //to be implemented
+  searchProperties() {
+    // Get the search query from the input field
+    this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
+
+    // Redirect to the search page with the search query as a parameter
+    this.router.navigate(['/search'], { queryParams: { q: this.searchQuery } });
+  }
   // swiperReady() {
   //   this.swiper = this.swiperRef?.nativeElement.swiper;
   // }

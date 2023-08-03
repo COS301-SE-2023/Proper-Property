@@ -27,3 +27,7 @@ export class UpdateUserProfile {
   static readonly type = '[UserProfile] UpdateUserProfile';
   constructor(public readonly userProfile: Partial<UserProfile>){}
 }
+
+export class RemoveCurrentUser{
+  static readonly type = '[UserProfile] RemoveCurrentUser'
+}

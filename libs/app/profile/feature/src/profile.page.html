@@ -1,122 +1,158 @@
-<ion-header [translucent]="true">
-  
-  <ion-toolbar class="first-toolbar">
-
-  
-    <ion-buttons slot="end">
-      <ion-button routerLink="/home" routerDirection="root">
-        <ion-icon slot="icon-only" name="home"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/listings" routerDirection="root">
-        <ion-icon slot="icon-only" name="list"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/search" routerDirection="root">
-        <ion-icon slot="icon-only" name="search"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/profile" routerDirection="root">
-        <ion-icon slot="icon-only" name="person"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-
-    <ion-buttons id="login-button" slot="end">
-      <ion-button routerLink="/login" routerDirection="root">
-       Login
-      </ion-button>
-
-    </ion-buttons>
-    
-  </ion-toolbar>
-
-  <ion-toolbar class = "profile-nav" >
-
-      <ion-tabs>
-        <ion-tab-bar slot="end">
-          <ion-tab-button tab="profile" routerLink="/profile" routerDirection="root" class="green-tab">
-            <ion-icon name="person-circle-outline"></ion-icon>
-            <ion-label>Profile</ion-label>
-          </ion-tab-button>
-    
-          <ion-tab-button tab="create-listing" routerLink="/create-listing" routerDirection="root">
-            <ion-icon name="add-circle-outline"></ion-icon>
-            <ion-label>Create Listing</ion-label>
-          </ion-tab-button>
-    
-          <ion-tab-button tab="saved-listings" routerLink="/saved-listings" routerDirection="root">
-            <ion-icon name="heart-outline"></ion-icon>
-            <ion-label>Saved Listings</ion-label>
-          </ion-tab-button>
-    
-          <ion-tab-button tab="my-listings" routerLink="/my-listings" routerDirection="root">
-            <ion-icon name="list-outline"></ion-icon>
-            <ion-label>My Listings</ion-label>
-          </ion-tab-button>
-        </ion-tab-bar>
-      </ion-tabs>
-
-  </ion-toolbar>
-</ion-header>
-
-
-
 <ion-content>
-<ion-header [translucent]="true">
+  <div class="profileCard">
+
+    <ion-grid>
+      <ion-row class="profilePic">
+        <ion-col>
+          <ion-icon name="person-outline"></ion-icon>
+          <h1>{{ user?.firstName }} {{ user?.lastName }}</h1>
+      
+            <ion-grid class="Userlabels">
+              <ion-row class="row1">
+                  <ion-item>
+                    <ion-label position="stacked">Garden Lover</ion-label>
+                    <ion-range [(ngModel)]="interests.garden" ></ion-range>
+                  </ion-item>
+  
+                  <ion-item>
+                    <ion-label position="stacked">Mansion Passion</ion-label>
+                    <ion-range [(ngModel)]="interests.mansion" ></ion-range>
+                  </ion-item>  
+
+                  <ion-item>
+                    <ion-label position="stacked">Make it Accessible</ion-label>
+                    <ion-range [(ngModel)]="interests.accessible" ></ion-range>
+                  </ion-item>
+              </ion-row>
+              <ion-row class="row1">
+                <ion-item>
+                  <ion-label position="stacked">Open Concept Trend</ion-label>
+                  <ion-range [(ngModel)]="interests.openConcept"></ion-range>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="stacked">Eco-Warrior</ion-label>
+                  <ion-range [(ngModel)]="interests.ecoWarrior"></ion-range>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="stacked">Party Animal</ion-label>
+                  <ion-range [(ngModel)]="interests.ecoWarrior"></ion-range>
+                </ion-item>
+              </ion-row>
+            </ion-grid>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="utils">
+        <ion-col class="navbut">
+          <ion-row class="toListings">
+            <ion-col>
+              <ion-button class="but1" routerLink="/saved-listings" routerDirection="root">
+                <ion-icon name="heart-outline" size="large"></ion-icon>
+                <ion-label>Saved Listings</ion-label>
+              </ion-button>             
+            </ion-col>
+            <ion-col>
+              <ion-button class="but1" routerLink="/my-listings" routerDirection="root">
+                <ion-icon name="list-outline" size="large"></ion-icon>
+                <ion-label>My Listings</ion-label>
+              </ion-button>              
+            </ion-col>
+
+          </ion-row>
+          <ion-row class="upGrade">
+            <ion-col>
+              <ion-button class="but1">
+                <ion-label>Upgrade Preferences</ion-label>
+              </ion-button>              
+            </ion-col>
+          </ion-row>
+          <ion-row class="upGrade">
+            <ion-col>
+              <ion-button class="but1">
+                <ion-label>Another wow button</ion-label>
+              </ion-button>              
+            </ion-col>
+          </ion-row>
+          <ion-row class="logOut">
+            <ion-col>
+              <ion-button class="logout-button" expand="full"  (click)="logout()">
+                <ion-label>Log Out</ion-label>
+              </ion-button>
+            </ion-col>
+          </ion-row>            
+        </ion-col>
+
+        <ion-col class="settings">
+          <ion-row>
+            <h2>User Details</h2>
+          </ion-row>
+          <ion-row>
+            <ion-col size="8">
+            <h3>Name: {{ user?.firstName }} {{ user?.lastName }} </h3>
+            </ion-col>
+            <ion-col>
+              <ion-button  (click)="editName()" class="but2">
+                <ion-icon name="create-outline" class="edit-icon" size="large"></ion-icon>
+              </ion-button>           
+            </ion-col>
+
+            <div class="edits" *ngIf="isEditingName">
+              <ion-input type="text" [(ngModel)]="newFirstName" placeholder="Enter a new first name" clearInput></ion-input>
+              <ion-input type="text" [(ngModel)]="newLastName" placeholder="Enter a new last name" clearInput></ion-input>
+              <ion-button expand="full" color="primary" (click)="saveName()">Save</ion-button>
+              <ion-button expand="full" color="danger" (click)="discardName()">Cancel</ion-button>
+            </div>
+          </ion-row>
+
+          <ion-row>
+
+            <ion-col size="8">
+              <h3>Edit Email {{ user?.email }}</h3>
+            </ion-col>
+            <ion-col>
+              <ion-button class="but2" (click)="editEmail()">
+                <ion-icon name="create-outline" class="edit-icon" size="large"></ion-icon>
+              </ion-button>
+            </ion-col>
 
 
-    <div class="profile-header">
-      <ion-icon slot="icon-only" name="person"></ion-icon>
-      <div class="profile-details">
-        <h1>{{ user?.firstName }} {{ user?.lastName }}</h1>
-        <div class="edit-icons">
-          <h2>
-            <span class="email-text">{{ user?.email }}</span>
-            <ion-icon name="create-outline" class="edit-icon" (click)="editEmail()"></ion-icon>
-          </h2>
-          <div class="email-input-container" *ngIf="isEditingEmail">
-            <ion-input type="text" [(ngModel)]="newEmail" placeholder="Enter a new email" clearInput></ion-input>
-            <ion-button expand="full" color="primary" (click)="saveEmail()">Save</ion-button>
-            <ion-button expand="full" color="danger" (click)="discardEmail()">Cancel</ion-button>
-          </div>
-        </div>
-        <br>
-        <ion-item>
-          <ion-label position="stacked">Garden Lover</ion-label>
-          <ion-range [(ngModel)]="interests.garden" ></ion-range>
-        </ion-item>
-        <ion-item>
-          <ion-label position="stacked">Mansion Passion</ion-label>
-          <ion-range [(ngModel)]="interests.mansion" ></ion-range>
-        </ion-item>
-        <ion-item>
-          <ion-label position="stacked">Make it Accessible</ion-label>
-          <ion-range [(ngModel)]="interests.accessible" ></ion-range>
-        </ion-item>
-        <ion-item>
-          <ion-label position="stacked">Open Concept Trend</ion-label>
-          <ion-range [(ngModel)]="interests.openConcept"></ion-range>
-        </ion-item>
-        <ion-item>
-          <ion-label position="stacked">Eco-Warrior</ion-label>
-          <ion-range [(ngModel)]="interests.ecoWarrior"></ion-range>
-        </ion-item>
-      </div>
-    </div>
-    <div class="delete-account-container">
-      <ion-button class="delete-account-button" expand="full" color="danger" (click)="confirmDeleteAccount()">
-        Delete Account
-      </ion-button>
-    </div>
-    
-    
+            <div class="edits" *ngIf="isEditingEmail">
+              <ion-input type="text" [(ngModel)]="newEmail" placeholder="Enter a new email" clearInput></ion-input>
+              <ion-button expand="full" color="primary" (click)="saveEmail()">Save</ion-button>
+              <ion-button expand="full" color="danger" (click)="discardEmail()">Cancel</ion-button>
+            </div>
 
-</ion-header>
+          </ion-row>
+
+          <ion-row>
+
+            <ion-col size="8">
+              <h3>Edit Phone Number {{ user?.phoneNumber }}</h3>
+            </ion-col>
+
+            <ion-col>
+              <ion-button class="but2" (click)="editPhoneNumber()">
+                <ion-icon name="create-outline" class="edit-icon" size="large"></ion-icon>
+              </ion-button>
+            </ion-col>
+
+            <div class="edits" *ngIf="isEditingPhoneNumber">
+              <ion-input type="text" [(ngModel)]="newPhoneNumber" placeholder="Enter a new phone number" clearInput></ion-input>
+              <ion-button expand="full" color="primary" (click)="savePhoneNumber()">Save</ion-button>
+              <ion-button expand="full" color="danger" (click)="discardPhoneNumber()">Cancel</ion-button>
+            </div>
+
+          </ion-row>
+
+          <ion-row>
+              <ion-button class="delete-account-button" expand="full" color="danger" (click)="confirmDeleteAccount()">
+                Delete Account
+              </ion-button>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </div>
 </ion-content>
-
-
-
-

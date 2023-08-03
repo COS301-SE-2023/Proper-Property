@@ -6,9 +6,9 @@ import { GetListingsRequest,
   GetListingsResponse, 
   ChangeStatusRequest, 
   ChangeStatusResponse, 
-  GetApprovedListingsResponse
+  GetApprovedListingsResponse,
+  EditListingResponse
 } from '@properproperty/api/listings/util';
-
 // import { FieldValue, FieldPath } from 'firebase-admin/firestore';
 @Injectable()
 export class ListingsRepository {
@@ -140,5 +140,19 @@ export class ListingsRepository {
     })
 
     return {approvedListings : listings};
+  }
+
+  async editListing(listing : Listing) : Promise<EditListingResponse>{
+    if(listing.listing_id){
+      await admin
+      .firestore()
+      .collection('listings')
+      .doc(listing.listing_id)
+      .set(listing, {merge: true});
+
+      return {listingId : listing.listing_id};
+    }
+
+    return {listingId : "FAILIRE"}
   }
 }

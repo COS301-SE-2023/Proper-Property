@@ -4,14 +4,13 @@ import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
 import { Listing } from '@properproperty/api/listings/util';
-
-// const property = {
-//   id: 1,
-//   image: 'path/to/image.jpg',
-//   price: 100000,
-//   bedrooms: 3,
-//   bathrooms: 2
-// };
+import { Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { Unsubscribe, User } from '@angular/fire/auth';
+import { UserProfile } from '@properproperty/api/profile/util';
+import { AuthState } from '@properproperty/app/auth/data-access';
+import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -35,7 +34,13 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   mapClickListener: any;
   markerClickListener: any;
   markers: any[] = [];
-  listings: Listing[] = []
+  listings: Listing[] = [];
+
+  @Select(AuthState.user) user$!: Observable<User | null>;
+  @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
+  private user: User | null = null;
+  private profile : UserProfile | null = null;
+  private userProfileListener: Unsubscribe | null = null;
 
 
   async setCentre(){
@@ -62,29 +67,63 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
   }
   constructor(
+    private route: ActivatedRoute,
     private gmaps: GmapsService,
     private renderer: Renderer2,
     private actionSheetCtrl: ActionSheetController,
     private router: Router,
     private listingServices : ListingsService,
-    public gmapsService: GmapsService
+    public gmapsService: GmapsService,
+    private profileServices : UserProfileService
     ) {
       this.predictions = [];
       this.defaultBounds = new google.maps.LatLngBounds();
+
+      this.user$.subscribe((user) => {
+        this.user = user;
+        if(this.user){
+          this.profileServices.getUser(this.user.uid).then((profile) =>{
+            this.profile = profile;
+          });
+        }
+      });
+      // Update listener whenever is changes such that it can be unsubscribed from
+      // when the window is unloaded
+      this.userProfileListener$.subscribe((listener) => {
+        this.userProfileListener = listener;
+      });
       
     }
 
   async ngOnInit() {
-    await this.listingServices.getListings().then((listings) => {
+    // await this.listingServices.getApprovedListings().then((listings) => {
+    //   this.listings = listings;
+    //   this.filterProperties();
+    // });
+
+    await this.listingServices.getApprovedListings().then((listings) => {
       this.listings = listings;
       this.filterProperties();
     });
+
+    console.log(this.listings);
 
     const inputElementId = 'address';
 
     
     
     this.gmapsService.setupRegionSearchBox(inputElementId);
+
+    const queryParams = this.route.snapshot.queryParams;
+    this.searchQuery = queryParams['q'] || ''; // If 'q' parameter is not available, default to an empty string.
+
+    const addressInput = document.getElementById("address") as HTMLInputElement;
+    if (this.searchQuery!='') {
+      addressInput.value = this.searchQuery;
+    }
+
+    this.searchProperties();
+
     
   }
 
@@ -396,14 +435,14 @@ toggleColor() {
 
   // this.listings = filteredListings;
 
-  // this.listingServices.getListings().then((listings) => {
+  // this.listingServices.getApprovedListings().then((listings) => {
   //   this.listings = listings;
   //   this.filterProperties();
 
     
   // });
 
-  this.listingServices.getListings().then(async (listings) => {
+  this.listingServices.getApprovedListings().then(async (listings) => {
     this.listings = listings;
     this.filterProperties();
 
@@ -573,7 +612,7 @@ addMMarker(coordinates: google.maps.GeocoderResult, listing: any) {
 
 
 resetFilters() {
-  this.listingServices.getListings().then((listings) => {
+  this.listingServices.getApprovedListings().then((listings) => {
     this.listings = listings;
   });
   this.selectedPropertyType = '';
@@ -606,7 +645,7 @@ selectedAmenities: string[] = [];
 // ];
 
 get filteredBuyingProperties(): Listing[] {
-  this.listingServices.getListings().then((listings) => {
+  this.listingServices.getApprovedListings().then((listings) => {
     this.listings = listings;
 
     for(let j = 0; j< this.listings.length;j++) {
@@ -624,7 +663,7 @@ get filteredBuyingProperties(): Listing[] {
 
 get filteredRentingProperties(): Listing[] {
 
-  this.listingServices.getListings().then((listings) => {
+  this.listingServices.getApprovedListings().then((listings) => {
     this.listings = listings;
 
     for(let j = 0; j< this.listings.length;j++) {
@@ -704,6 +743,51 @@ toggleSelection(amenity: string): void {
   }
 }
 
+//Save listing
+isSaved(listing_id : string){
+  if(this.profile){
+    if(this.profile.savedListings){
+      if(this.profile.savedListings.includes(listing_id)){
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+saveListing($event : any, listing_id : string) {
+  if(listing_id != ''){
+    const heartBut = $event.target as HTMLButtonElement;
+    heartBut.style.color = "red";
+    
+    if(this.profile){
+        if(this.profile.savedListings){
+          this.profile.savedListings.push(listing_id);
+        }
+        else{
+          this.profile.savedListings = [listing_id];
+        }
+
+        this.profileServices.updateUserProfile(this.profile);
+    }
+  } 
+}
+
+unsaveListing($event : any, listing_id : string){
+  if(listing_id != ''){
+    const heartBut = $event.target as HTMLButtonElement;
+    heartBut.style.color = "red";
+    
+    if(this.profile){
+        if(this.profile.savedListings){
+          this.profile.savedListings.splice(this.profile.savedListings.indexOf(listing_id), 1);
+        }
+
+        this.profileServices.updateUserProfile(this.profile);
+    }
+  } 
+}
 
 
 }

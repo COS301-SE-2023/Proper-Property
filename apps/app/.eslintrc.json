@@ -32,7 +32,8 @@
           }
         ],
         "@angular-eslint/no-empty-lifecycle-method": 0,
-        "@typescript-eslint/no-empty-function": 0
+        "@typescript-eslint/no-empty-function": 0,
+        "@typescript-eslint/no-explicit-any": 0
       },
       "extends": [
         "plugin:@nx/angular",

@@ -1,13 +1,15 @@
+
 import { Component, OnInit } from '@angular/core';
 import { UserProfileState, UserProfileService } from '@properproperty/app/profile/data-access';
 import {AuthService} from '@properproperty/app/auth/data-access';
+import { Logout } from '@properproperty/app/auth/util';
 import { AlertController } from '@ionic/angular';
 
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { UserProfile, Interests } from '@properproperty/api/profile/util';
-import { UpdateUserProfile } from '@properproperty/app/profile/util';
+import { UpdateUserProfile, RemoveCurrentUser } from '@properproperty/app/profile/util';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -19,7 +21,12 @@ export class ProfilePage implements OnInit {
   user: UserProfile | null = null;
   interests: Interests; // Needs to not be nullable cus ngModel no like
   isEditingEmail: boolean;
+  isEditingName: boolean;
+  isEditingPhoneNumber: boolean;
   newEmail: string;
+  newFirstName: string;
+  newLastName: string;
+  newPhoneNumber: string;
   // appPages = [
   //   { title: 'Saved Listings', url: '/saved-listings', icon: 'bookmark' },
   //   { title: 'My Listings', url: '/my-listings', icon: 'list' },
@@ -106,9 +113,12 @@ export class ProfilePage implements OnInit {
     // };
     
     this.isEditingEmail = false;
+    this.isEditingName = false;
+    this.isEditingPhoneNumber = false;
     this.newEmail = '';
-
-  
+    this.newFirstName = '';
+    this.newLastName = '';
+    this.newPhoneNumber = '';
    }
 
   ngOnInit() {
@@ -148,4 +158,58 @@ export class ProfilePage implements OnInit {
     this.router.navigate(['/register']);
   }
 
+  logout(){
+    this.store.dispatch(new RemoveCurrentUser());
+    this.store.dispatch(new Logout());
+    this.router.navigate(['/login']);
+  }
+
+  editName(){
+    if (!this.user) {
+      return;
+    }
+    this.isEditingName = true;
+    this.newFirstName = this.user.firstName ?? '';
+    this.newLastName = this.user.lastName ?? '';
+  }
+
+  saveName() {
+    this.isEditingName = false;
+    if (!this.user) {
+      return;
+    }
+    this.user.firstName = this.newFirstName;
+    this.user.lastName = this.newLastName;
+    this.store.dispatch(new UpdateUserProfile({firstName: this.newFirstName, lastName: this.newLastName}));
+    this.newEmail = '';
+  }
+
+  discardName() {
+    this.newFirstName = '';
+    this.newLastName = '';
+    this.isEditingName = false;
+  }
+
+  editPhoneNumber(){
+    if (!this.user) {
+      return;
+    }
+    this.isEditingPhoneNumber = true;
+    this.newPhoneNumber = this.user.phoneNumber ?? '';
+  }
+
+  savePhoneNumber() {
+    this.isEditingPhoneNumber = false;
+    if (!this.user) {
+      return;
+    }
+    this.user.phoneNumber = this.newPhoneNumber;
+    this.store.dispatch(new UpdateUserProfile({phoneNumber: this.newPhoneNumber}));
+    this.newPhoneNumber = '';
+  }
+
+  discardPhoneNumber() {
+    this.newPhoneNumber = '';
+    this.isEditingPhoneNumber = false;
+  }
 }
