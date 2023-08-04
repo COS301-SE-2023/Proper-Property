@@ -175,6 +175,13 @@ export class GmapsService {
   
       const searchBox = new maps.places.Autocomplete(input, options);
   
+      input.addEventListener('input', () => {
+   
+  
+          this.handleRegionInput(input, defaultBounds);
+  
+        });
+
       searchBox.addListener('places_changed', () => {
         
         const places = searchBox.getPlaces();

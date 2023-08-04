@@ -1,6 +1,6 @@
 #full-grid {
   background-image: url('../../../assets/create-listing-background.png');
-  // margin-bottom: 5%;
+  margin-bottom: -7%;
   height: auto;
   background-position: bottom;
   background-repeat: no-repeat;
@@ -26,8 +26,8 @@
 }
 
 .uploaded-image {
-  width: 200px;
-  height: 200px;
+  width: 100px;
+  height: 100px;
   display: inline-block;
   position: relative;
   margin-right: 10px;
@@ -326,6 +326,6 @@ body {
   border: none;
 }
 
-::ng-deep ion-footer{
-  margin-top: -6%;
-}
+// ::ng-deep ion-footer{
+//   margin-top: -80px; 
+// }

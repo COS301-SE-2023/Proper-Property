@@ -24,14 +24,14 @@ export class CreateListingPage implements OnInit {
   @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
 
   @Select(AuthState.user) user$!: Observable<User | null>;
-  autocomplete: any;
+  // autocomplete: any;
   defaultBounds: google.maps.LatLngBounds;
   predictions: google.maps.places.AutocompletePrediction[] = [];
 
   currentUser: User | null = null;
   description = "";
   heading = "";
-  ownerViewing : boolean = false;
+  ownerViewing = false;
   listingEditee : Listing | null = null;
 
   constructor(
@@ -65,7 +65,7 @@ export class CreateListingPage implements OnInit {
     });
 
     this.route.params.subscribe((params) => {
-      let editListingId = params['listingId'] ?? 'XX'
+      const editListingId = params['listingId'] ?? 'XX'
       if(editListingId != 'XX'){
         this.listingService.getListing(editListingId).then((listing) => {
           this.listingEditee = listing;
@@ -339,16 +339,8 @@ handleAddressChange(address: string): void {
 
   async addListing(){
     this.address = (document.getElementById("address") as HTMLInputElement).value;
-    
-    const pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
-    const env_type_in = document.getElementById('env-type') as HTMLInputElement;
-    const prop_type_in = this.prop_type;
-    const furnish_type_in = document.getElementById('furnish-type') as HTMLInputElement;
-    const orientation_in = document.getElementById('orientation') as HTMLInputElement;
-    const desc_in = document.getElementById('desc') as HTMLInputElement;
-
     const score = await calculateQualityScore(this.photos,this.address,this.price,this.bedrooms,this.bathrooms,this.parking,this.floor_size,this.erf_size,this.pos_type,this.env_type,this.prop_type,this.furnish_type,this.orientation,this.gmapsService);
-    
+  
     if(this.currentUser != null){
       const list : Listing = {
         user_id: this.currentUser.uid,
@@ -371,11 +363,10 @@ handleAddressChange(address: string): void {
         let_sell: this.listingType,
         approved: false,
         quality_rating: score,
-        
         listingDate: "" + new Date()
       }
 
-      console.log("lisss ",list);
+      console.log(list);
       await this.listingService.createListing(list);
       this.router.navigate(['/home']);
     }
@@ -412,7 +403,7 @@ handleAddressChange(address: string): void {
         listingDate: "" + new Date()
       }
 
-      let resp = await this.listingService.editListing(list);
+      const resp = await this.listingService.editListing(list);
       if(resp){
         this.router.navigate(['/listing', {list : this.listingEditee.listing_id}]);
       }

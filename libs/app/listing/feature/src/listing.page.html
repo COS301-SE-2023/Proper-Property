@@ -12,7 +12,17 @@
   
   
   <ion-content [fullscreen]="true">
-    <div id="top-half">
+    <div *ngIf="admin" id="approvalBox">
+      <ion-grid>
+        <ion-row>
+          <ion-col id="approvalCol">
+            <ion-button class="approveBut" [attr.disabled]="this.list.approved ? '' : null" (click)="changeStatus()">Approve</ion-button>
+          </ion-col>
+          <ion-col id="rejectionCol">
+            <ion-button [attr.disabled]="!this.list.approved ? '' : null" class="rejectBut" (click)="changeStatus()">Reject</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </div>
     <div class="swiper-container-wrapper">
       <ion-buttons slot="start" class="swiper-button1" #one>
@@ -20,25 +30,28 @@
           <img src="assets/icon/arrow1.svg" #back>
         </ion-button>
       </ion-buttons>
-      <swiper-container id="swiper-container" #swiper (afterinit)="swiperReady()"
-        (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true">
-        <!-- Slides content goes here -->
+      <swiper-container #swiper (afterinit)="swiperReady()"
+        (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true" slides-per-view="1" class="swiper-container">
         <swiper-slide *ngFor="let picture of list.photos">
-          <img src="{{picture}}">
+          <img alt="img" src="{{picture}}" />
         </swiper-slide>
         <!-- <swiper-slide>
-          <img src="{{list.photos[0]}}">
+          <img src="assets/house5.jpg">
         </swiper-slide>
         <swiper-slide>
-          <img src="{{list.photos[1]}}">
+          <img src="assets/house4.jpg">
         </swiper-slide> -->
       </swiper-container>
       <ion-buttons slot="end" class="swiper-button2" #two>
-        <ion-button style="height:100px;" (click)="goNext()" #two>
+        <ion-button id="next-button" style="height:100px;" (click)="goNext()" #two>
           <img src="assets/icon/arrow.svg" #forward>
         </ion-button>
       </ion-buttons>
     </div>
+    <!-- <div class="image-gallery">
+      <img *ngFor="let picture of list.photos" [src]="picture">
+    </div> -->
+    
   
     <ion-grid style="width:80%;">
       <ion-row style="height:550px">
@@ -47,9 +60,16 @@
             <ion-grid style="padding-top: 20px; padding-left:20px;">
               <ion-row>
                 <ion-card-title class="house-titles">House</ion-card-title>
+                <ion-button class="save-button" (click)="saveListing()" [ngClass]="{'red': isRed}" (click)="toggleColor()" ion-tooltip="Save Listing">
+                  <ion-icon name="save" ion-tooltip="Save Listing"></ion-icon>
+                </ion-button>
+
+
               </ion-row>
               <ion-row>
                 <ion-card-subtitle class="house-subtitles">by {{lister_name}}</ion-card-subtitle>
+              
+                
               </ion-row>
               <ion-row>
                 <ion-card-title class="house-titles" style="margin-top:8px; font-size: 25px;">{{list.bed}} Bedroom House</ion-card-title>
@@ -60,19 +80,19 @@
               <ng-template [ngIf]="list.let_sell === 'Sell'">
                 <ion-row >
                   <ion-card-title class="house-titles" style="margin-top:8px;">R {{list.price}}</ion-card-title>
-                  <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/sq.m</ion-card-subtitle>
+                  <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/ m<sup>2</sup></ion-card-subtitle>
                 </ion-row>
               </ng-template>
               <ng-template [ngIf]="list.let_sell === 'Rent'">
                 <ion-row>
                   <ion-card-title class="house-titles" style="margin-top:8px;">R {{list.price}}/pm</ion-card-title>
-                  <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/sq.m</ion-card-subtitle>
+                  <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/ m<sup>2</sup></ion-card-subtitle>
                 </ion-row>
               </ng-template>
               <ion-row style="margin-top: 10px;">
                 <ion-col>
                   <div style="margin:15px;">
-                    <ion-button (click)="scrollToBottom()">Calculate</ion-button> your monthly payments below!
+                    <button style="color:#0DAE4F">Calculate</button> your monthly payments below!
                   </div>
                 </ion-col>
               </ion-row>
@@ -109,7 +129,9 @@
                     <div class="black-text">{{list.property_size}} sq.m</div>
                     <div class="grey-text">Property Size</div>
                   </ion-col>
+
                 </ion-row>
+
               </ion-grid>
             </ion-card-content>
           </ion-card>
@@ -129,10 +151,7 @@
                     </ion-row>
                   </ion-grid>
                 </ion-card-content>
-                
-                
-                
-                
+                  
               </ion-card-header>
             </ion-card>
           </ion-row>
@@ -195,7 +214,7 @@
                         Amenities:
                       </ion-label>
                     </ion-list-header>
-                    <ion-item *ngFor="let feature of list.features">
+                    <ion-item class="amenities" *ngFor="let feature of list.features">
                       <ion-label>{{feature}}</ion-label>
                     </ion-item>
                   </ion-list>
@@ -217,7 +236,7 @@
                           <ion-row style="border: 1px solid black">
                             <ion-col style="border: 1px solid black">
                               <ion-avatar>
-                                <img [src]="">
+                                <img alt="profilePic" [src]="">
                               </ion-avatar>
                               <p>{{lister_name}}</p>
                             </ion-col>
@@ -286,12 +305,16 @@
         </ion-card>
       </ion-row>
       <ion-row *ngIf="(ownerViewing$ | async)">
-          <div style="display: flex; align-content: space-evenly;">
+          <div style="align-content: space-evenly; margin-top:1%;">
             <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
             <ion-button (click)="editListing()">Edit Listing</ion-button>
           </div>
           <canvas id="lineGraph"></canvas>
+          <div *ngIf="showData">
+            <h3>Average engagement per user: </h3>
+            <ion-input type="string" [(ngModel)]="avgEnagement"></ion-input>
+          </div>
       </ion-row>
     </ion-grid>
   </ion-content>
-  </ion-template>
+</ion-template>

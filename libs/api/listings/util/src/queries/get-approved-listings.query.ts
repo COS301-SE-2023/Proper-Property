@@ -1,3 +1,1 @@
-export class GetApprovedListingsQuery {
-  constructor() {}
-}
+export class GetApprovedListingsQuery {}

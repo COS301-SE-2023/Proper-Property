@@ -142,42 +142,56 @@
 
 
   <div id="listings-and-map">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <ion-card *ngFor="let listing of listings">
+            <div (click)="redirectToPage(listing)">
+              <ion-card-header>
+                <img src="{{listing.photos[0]}}" alt="house1">
+                <ion-card-title>House</ion-card-title>
+                <ion-card-subtitle style="color: #94d2ae;">R {{listing.price}}</ion-card-subtitle>
+              </ion-card-header>
 
-    <div>
-      <ion-card *ngFor="let listing of listings" (click)="redirectToPage(listing)">
-        <ion-card-header>
-          <img src="{{listing.photos[0]}}" alt="house1">
-          <ion-card-title>House</ion-card-title>
-          <ion-card-subtitle style="color: #0DAE4F;">R {{listing.price}}</ion-card-subtitle>
-        </ion-card-header>
-
-        <ion-card-content>
-          <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-            {{listing.desc}}
-          </p>
-          <br>
-          <br>
-          <div id="house_details">
-            <img src="assets/icon/bedrooms.png">
-            {{listing.bed}}
-            &nbsp; &nbsp;&nbsp;
-            <img src="assets/icon/bathrooms.png">
-            {{listing.bath}}
-            &nbsp; &nbsp;&nbsp;
-            <img src="assets/icon/floorplan.png">
-            {{listing.floor_size}} m<sup>2</sup>
-            &nbsp; &nbsp;&nbsp;
-            <img src="assets/icon/erf.png">
-            {{listing.property_size}} m<sup>2</sup>
-          </div>
-          <button class="heart-button" [ngClass]="{'red': isRed}" (click)="toggleColor()">
-            <ion-icon name="heart" class="heart-icon"></ion-icon>
-          </button>
-        </ion-card-content>
-      </ion-card>
-
-    </div>
-    <div slot="fixed" class="map" #map></div>
+              <ion-card-content>
+                <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+                  {{listing.desc}}
+                </p>
+                <br>
+                <br>
+                <div id="house_details">
+                  <img src="assets/icon/bedrooms.png">
+                  {{listing.bed}}
+                  &nbsp; &nbsp;&nbsp;
+                  <img src="assets/icon/bathrooms.png">
+                  {{listing.bath}}
+                  &nbsp; &nbsp;&nbsp;
+                  <img src="assets/icon/floorplan.png">
+                  {{listing.floor_size}} m<sup>2</sup>
+                  &nbsp; &nbsp;&nbsp;
+                  <img src="assets/icon/erf.png">
+                  {{listing.property_size}} m<sup>2</sup>
+                </div>
+              </ion-card-content>
+            </div>
+            <ng-template [ngIf]="isSaved(listing.listing_id ?? '')" [ngIfElse]="notSaved">
+              <button style="float: right; margin-right: 1%" (click)="unsaveListing($event, listing.listing_id ?? '')">
+                <ion-icon name="heart" class="heart-icon" style="color: red"></ion-icon>
+              </button>
+            </ng-template>
+            <ng-template #notSaved>
+              <button style="float: right; margin-right: 1%" (click)="saveListing($event, listing.listing_id ?? '')">
+                <ion-icon name="heart" class="heart-icon" style="color: black"></ion-icon>
+              </button>
+            </ng-template>
+          </ion-card>
+      </ion-col>
+      <ion-col size="6">
+        <div class="map" #map></div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   </div>
+  <properproperty-footer style="margin-top: 2%;"></properproperty-footer>
 
 </ion-content>

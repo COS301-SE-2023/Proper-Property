@@ -28,6 +28,8 @@ interface Property {
   bedrooms: number;
 }
 declare const gtag: Function;
+
+
 // import { Storage, ref } from '@angular/fire/storage';
 // import { uploadBytes } from 'firebase/storage';
 
@@ -462,6 +464,12 @@ isSaved(listing_id : string){
         return true;
       }
     }
+    
+    const inputElementId = 'address';
+
+    
+    
+    this.gmapsService.setupRegionSearchBox(inputElementId);
   }
   else{
     console.log("Profile not found");
