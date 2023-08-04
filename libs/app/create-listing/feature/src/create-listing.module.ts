@@ -20,6 +20,6 @@ import { FooterModule } from '@properproperty/app/footer/feature';
     AuthModule,
     FooterModule
   ],
-  declarations: [CreateListingPage]
+  declarations: [CreateListingPage, FooterComponent]
 })
 export class CreateListingPageModule {}
