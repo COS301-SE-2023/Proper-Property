@@ -30,5 +30,4 @@ export class UpdateUserProfile {
 
 export class RemoveCurrentUser{
   static readonly type = '[UserProfile] RemoveCurrentUser'
-  constructor(){}
 }

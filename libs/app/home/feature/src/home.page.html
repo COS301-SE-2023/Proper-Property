@@ -3,10 +3,7 @@ core.shell.html
 -------------->
 
 
-<!-- if isMobile -->
-
-<ion-content  *ngIf="!this.isMobile">
-
+<ion-content>
   <!----------------------- SlideShow and Searchbar Section--------------------------->
 
   <section class="sec1">
@@ -26,12 +23,11 @@ core.shell.html
       </div>
     </div>
 
-    <img class="homeCover" src="assets/HomeCover.png">
+    <img alt="homeCover" class="homeCover" src="assets/HomeCover.png">
   </section>
   <!------------------------------------Summarised Descriptions Section---------------------------------------------->
   <section class="sec2" id="serv">
-    <h2 class="heading">What makes it <span class="bold2">Unique </span></h2>
-    <p><span class="info">(the pics will be replaced with video examples when app is complete)</span></p>
+    <h2 class="heading">What makes us <span class="bold2">Unique </span></h2>
 
     <div class="serv-container">
 
@@ -42,7 +38,7 @@ core.shell.html
           your preferences and offer the <span class="bold2">Proper Property</span> you are looking for.</p>
       </div>
 
-      <div class="serv-box">
+      <div class="serv-box" style="margin-top: 10%;">
         <img src="../../assets/mapImg.webp">
         <h3>Proper Communities</h3>
         <p>At Proper Property, we understand the importance of the surrounding area when choosing a property. We
@@ -51,7 +47,7 @@ core.shell.html
           preferences.
       </div>
 
-      <div class="serv-box">
+      <div class="serv-box" style="margin-top: 20%;">
         <img src="../../assets/Cottage.jpg">
         <h3>Proper Properties</h3>
         <p>Properties of all types, cultures, prices, and <span class="bold2">more</span>. Renting or sharing. Stairs or
@@ -60,304 +56,102 @@ core.shell.html
     </div>
   </section>
   <!------------------------------------Use Case Section---------------------------------------------->
-  <section class="sec3">
-    <h2 class="heading">Top <span class="bold2">features</span></h2>
-
-    <div class="case-container">
-
-      <div class="case-box">
-        <img src="../../assets/treehouse.jpg">
-        <div class="case-layer">
-          <h4>View all Property Types</h4>
-          <p>Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.</p>
-        </div>
-      </div>
-
-      <div class="case-box">
-        <img src="../../assets/CT.jpg">
-        <div class="case-layer">
-          <h4>Swift Location Browsing</h4>
-          <p>Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.</p>
-        </div>
-      </div>
-
-      <div class="case-box">
-        <img src="../../assets/treehouse.jpg">
-        <div class="case-layer">
-          <h4>Accurate Scores</h4>
-          <p>Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.</p>
-        </div>
-      </div>
-
-      <div class="case-box">
-        <img src="../../assets/calculator.jpg">
-        <div class="case-layer">
-          <h4>Reliable Bond Calculator</h4>
-          <p>Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.</p>
-        </div>
-      </div>
-
-      <div class="case-box">
-        <img src="../../assets/treehouse.jpg">
-        <div class="case-layer">
-          <h4>User-Friendly Filters</h4>
-          <p>Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.</p>
-        </div>
-      </div>
-
-      <div class="case-box">
-        <img src="../../assets/sharing.jpg">
-        <div class="case-layer">
-          <h4>Even Rentals and Sharing</h4>
-          <p>Donec augue elit, rhoncus ac sodales id, porttitor vitae est. Donec laoreet rutrum libero sed pharetra.</p>
-        </div>
-      </div>
-
-    </div>
-
+  <section class="mid-section">
+    <h2 class="heading" style="margin-bottom: 0%;">Top <span class="bold2">features</span></h2>
   </section>
-  <properproperty-footer></properproperty-footer>
-
-</ion-content>
-
-
-<ion-content *ngIf="this.isMobile">
-  <div class="content-wrapper">
-
-  <ion-grid>
-
-    <ion-row>
-
-      <ion-col size = "3"></ion-col>
-      <div id="buySell">
-      
-
-      <ion-col size="3">
-        <ion-button [class.active]="activeTab === 'buying'" (click)="buyingFilters()">Buy</ion-button>
-      </ion-col>
-      <ion-col size="3">
-        <ion-button [class.active]="activeTab === 'renting'" (click)="rentingFilters()">Rent</ion-button>
-      </ion-col>
-      <ion-col size="3"></ion-col>
-      
-    </div>
-
-    </ion-row>
-
-    
-    <ion-row style="width: 100%; margin-top: 1%;">
-      <ion-row style="width: 100%;">
-        <ion-col size="10">
-          <input type="text" id="address" [(ngModel)]="searchQuery" placeholder="search">
-        </ion-col>
-        <ion-col>
-          <ion-button class="search-button"  (click)="searchProperties()">Search</ion-button>
-        </ion-col>
-      </ion-row>
-
-      <ion-row style="width: 100%;">
-        <ion-col>
-          <div id="filter-container">
-            <ion-label class="filter-text" >Property Type</ion-label>
-            <ion-item class="filter">
-              <div class="dropdown-container">
-                <select class="dropdown" [(ngModel)]="selectedPropertyType" (ionChange)="filterProperties()" class="prop_type">
-                  
-                  <option [value]="'Proper Property'" [hidden]="true">Property Type</option>
-                  <option value="House">House</option>
-                  <option value="Apartment">Apartment</option>
-                  <option value="Commercial">Commercial Property</option>
-                </select>
-                <ion-icon name="chevron-down-outline" class="arrow-icon"></ion-icon>
-              </div>
-              </ion-item>
-             
-
-            <ion-row>
-            <ion-col size="6">
-              <!-- <label class="filter-text" for="minPrice">Min Price</label>
-            <ion-item class="filter">
-              
-              <select class="dropdown" [(ngModel)]="selectedMinPrice" (ionChange)="filterProperties()"> -->
-                
-                <ion-label class="filter-text" for="minPrice">Min Price</ion-label>
-                  <ion-item class="filter">
-                    <div class="dropdown-container">
-                    
-                        <select class="dropdown" [(ngModel)]="selectedMinPrice" (ionChange)="filterProperties()" class="prop_type">
-                <option value="0">Any</option>
-                <option value="100000">R 100,000</option>
-                <option value="150000">R 150,000</option>
-                <option value="200000">R 200,000</option>
-                <option value="250000">R 250,000</option>
-                <option value="350000">R 300,350</option>
-                <option value="400000">R 400,000</option>
-                <option value="450000">R 450,000</option>
-              </select>
-              <ion-icon name="chevron-down-outline" class="arrow-icon"></ion-icon>
+  <section class="sec3">
+    <ion-grid class="case-container">
+      <ion-row style="width:100%;">
+        <ion-col size="4">
+          <ion-row style="height:50%;">
+            <div class="case-box">
+              <ion-grid>
+                <ion-row>
+                  <h4>View all Property Types</h4>
+                </ion-row>
+                <ion-row>
+                  <p>Unlock a world of possibilities with our 'View all Property Types' feature! Whether it's a cozy apartment,
+                    a charming farmhouse, or a luxurious villa, we've got it all.
+                    Explore a diverse range of properties and find the one that fits your lifestyle.
+                  </p>
+                </ion-row>
+              </ion-grid>
             </div>
-            </ion-item>
-          </ion-col>
+          </ion-row>
 
-          
-          <ion-col size="6">
-
-            <ion-label class="filter-text" for="maxPrice">Max Price</ion-label>
-            <ion-item class="filter">
-              <div class="dropdown-container">
-              
-                  <select class="dropdown" [(ngModel)]="selectedMaxPrice" (ionChange)="filterProperties()" class="prop_type">
-
-                <option value="0">Any</option>
-                <option value="100000">R 100,000</option>
-                <option value="150000">R 150,000</option>
-                <option value="200000">R 200,000</option>
-                <option value="250000">R 250,000</option>
-                <option value="350000">R 300,350</option>
-                <option value="400000">R 400,000</option>
-                <option value="450000">R 450,000</option>
-              </select>
-              <ion-icon name="chevron-down-outline" class="arrow-icon"></ion-icon>
+          <ion-row style="height:50%;">
+            <div class="case-box">
+              <ion-grid>
+                <ion-row>
+                  <h4>Swift Location Browsing</h4>
+                </ion-row>
+                <ion-row>
+                  <p>Navigate the real estate market with ease using Swift location browsing!
+                    Explore properties in your desired areas with just a few taps, making your property search efficient and stress-free.
+                    Don't waste time, find your perfect home faster than ever before!
+                  </p>
+                </ion-row>
+              </ion-grid>
             </div>
-            </ion-item>
-          </ion-col>
+          </ion-row>
+        </ion-col>
 
-        </ion-row>
+        <ion-col class="image-col" size="4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 678 834" fill="none">
+            <!-- Define a clipPath with the same path data -->
+            <clipPath id="house-clip-path">
+              <path
+                d="M0 281.998C0 266.941 6.78452 252.687 18.4695 243.193L303.839 11.3195C322.042 -3.47094 348.079 -3.62092 366.451 10.9588L659.081 243.186C671.033 252.671 678 267.094 678 282.352V770C678 797.614 655.614 820 628 820H50C22.3858 820 0 797.614 0 770V281.998Z" />
+            </clipPath>
 
-          </div>
+            <!-- Use the image element with xlink:href attribute to fill the SVG with the image -->
+            <!-- Replace 'path/to/your/image.jpg' with the path to your image file -->
+            <image xlink:href="../../assets/house5.jpg" width="100%" height="100%" preserveAspectRatio="xMinYMin slice"
+              clip-path="url(#house-clip-path)" />
+          </svg>
+
+          <!-- <svg xmlns="http://www.w3.org/2000/svg" width="678" height="820" viewBox="0 0 678 820" fill="none">
+            <path d="M0 281.998C0 266.941 6.78452 252.687 18.4695 243.193L303.839 11.3195C322.042 -3.47094 348.079 -3.62092 366.451 10.9588L659.081 243.186C671.033 252.671 678 267.094 678 282.352V770C678 797.614 655.614 820 628 820H50C22.3858 820 0 797.614 0 770V281.998Z" fill="#D9D9D9"/>
+          </svg> -->
+
+        </ion-col>
+
+        <ion-col size="4">
+          <ion-row style="height:50%;">
+            <div class="case-box">
+              <ion-grid>
+                <ion-row>
+                  <h4>User-Friendly Filters</h4>
+                </ion-row>
+                <ion-row>
+                  <p>Effortlessly find what you need with our user-friendly filters.
+                    Streamline your search and discover tailored results at your fingertips.
+                  </p>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </ion-row>
+
+          <ion-row style="height:50%">
+            <div class="case-box">
+              <ion-grid>
+                <ion-row>
+                  <h4>Even Rentals and Sharing</h4>
+                </ion-row>
+                <ion-row>
+                  <p>Discover a world of possibilities with Even Rentals and Sharing!
+                    Find your dream property or connect with like-minded individuals to share spaces and experiences.
+                    Embrace flexibility and convenience with our innovative property listing application.
+                  </p>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </ion-row>
         </ion-col>
       </ion-row>
-    </ion-row>
+    </ion-grid>
 
-    <ion-row>
-      <ion-col size="6">
+    <properproperty-footer></properproperty-footer>
+  </section>
 
-        <!-- <ion-label class="filter-text" for="maxPrice">Max Price</ion-label>
-        <ion-item class="filter">
-          <div class="dropdown-container">
-          
-              <select class="dropdown" [(ngModel)]="selectedMaxPrice" (ionChange)="filterProperties()" class="prop_type">
-                 -->
-       
-                 <ion-label class="filter-text">Bedrooms</ion-label>
-        <ion-item class="filter">
-          <div class="dropdown-container">
-          <select class="dropdown" [(ngModel)]="selectedBedrooms" (ionChange)="filterProperties()" class="prop_type">
-            <option value="0">Any</option>            
-            <option value="1">1 Bedroom</option>
-            <option value="2">2 Bedrooms</option>
-            <option value="3">3 Bedrooms</option>
-            <option value="4">4 Bedrooms</option>
-            <option value="5">5+ Bedrooms</option>
-          </select>
-          <ion-icon name="chevron-down-outline" class="arrow-icon"></ion-icon>
-        </div>
-        </ion-item>
-      </ion-col>
-
-      <ion-col size="6">
-
-        <ion-label class="filter-text">Bathrooms</ion-label>
-        <ion-item class="filter">
-          <div class="dropdown-container">
-          <select class="dropdown" [(ngModel)]="selectedBathrooms" (ionChange)="filterProperties()" class="prop_type">
-            <option value="0">Any</option>
-            <option value="1">1 Bathroom</option>
-            <option value="2">2 Bathrooms</option>
-            <option value="3">3 Bathrooms</option>
-            <option value="4">4 Bathrooms</option>
-            <option value="5">5+ Bathrooms</option>
-          </select>
-          <ion-icon name="chevron-down-outline" class="arrow-icon"></ion-icon>
-        </div>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-
-
-    <ion-row>
-      <ion-col>
-        <ion-button class="filter-button" (click)="toggleAdditionalFilters()">
-          <ion-icon [name]="showAdditionalFilters ? 'remove' : 'add'"></ion-icon>
-          {{ showAdditionalFilters ? 'Less Filters' : 'More Filters' }}
-        </ion-button>
-      </ion-col>
-    </ion-row>
-
-    <ion-row style="width: 100%;">
-      <ion-col size="10">
-        <!-- Additional Filters -->
-        <div *ngIf="showAdditionalFilters" id="additional-features">
-
-
-
-          <ion-label class="filter-text">Parking / Garage</ion-label>
-          <ion-item class="filter">
-            <div class="dropdown-container">
-            <select class="dropdown" [(ngModel)]="selectedParking" (ionChange)="filterProperties()" class="prop_type">
-              <option value="0">Any</option>
-              <option value="1">1 Garage</option>
-              <option value="2">2 Garages</option>
-              <option value="3">3 Garages</option>
-              <option value="4">4 Garages</option>
-              <option value="5">5+ Garages</option>
-            </select>
-            <ion-icon name="chevron-down-outline" class="arrow-icon"></ion-icon>
-          </div>
-
-          </ion-item>
-
-        </div>
-      </ion-col>
-    </ion-row>
-  
-  </ion-grid>
-
-  <ion-grid>
-    <ion-row>
-      <ion-col *ngFor="let listing of listings" size="12" size-sm="6" size-md="4">
-        <ion-card>
-          <ion-card-header (click)="redirectToPage(listing)">
-            <img src="{{listing.photos[0]}}" style="width: 45%;" alt="house1">
-            <ion-card-title  >House</ion-card-title>
-            <ion-card-subtitle style="color: #0DAE4F;">{{listing.price}}</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-            {{listing.desc}}
-            </p>
-            <br>
-            <br>
-            <div id="house_details">
-              <img src="assets/icon/bedrooms.png">
-              {{listing.bed}}
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/bathrooms.png">
-              {{listing.bath}}
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/floorplan.png">
-              {{listing.floor_size}} m<sup>2</sup> 
-              &nbsp; &nbsp;&nbsp;
-              <img src="assets/icon/erf.png">
-              {{listing.property_size}} m<sup>2</sup>
-            </div>
-
-          </ion-card-content>
-          <ng-template [ngIf]="isSaved(listing.listing_id ?? '')" [ngIfElse]="notSaved">
-            <button style="float: right; margin-right: 1%" (click)="unsaveListing($event, listing.listing_id ?? '')">
-              <ion-icon name="heart" class="heart-icon" style="color: red"></ion-icon>
-            </button>
-          </ng-template>
-          <ng-template #notSaved >
-            <button style="float: right; margin-right: 1%"  (click)="saveListing($event, listing.listing_id ?? '')">
-              <ion-icon name="heart" class="heart-icon" style="color: black"></ion-icon>
-            </button>
-          </ng-template>
-        </ion-card>
-      </ion-col>
-<!-- Add more ion-cols for additional cards -->
-</ion-row>
-</ion-grid>
-
-</div>
 </ion-content>

@@ -151,7 +151,7 @@
               <label position="floating" class="house-text" style="margin-left: 3%">Property Type:</label>
             </ion-col>
             <ion-col>
-              <select class="house-dropdown" aria-label="prop-type">
+              <select class="house-dropdown" aria-label="prop-type" id="prop-type">
                 <option value="House">House</option>
                 <option value="Apartment">Apartment</option>
                 <option value="Commercial">Commercial Property</option>
@@ -277,6 +277,7 @@
           <ion-item class="ion-container" *ngFor="let feat of features,; let i = index">
             <ion-label>
               <ion-chip>
+                &nbsp;
                 {{feat}}
                 &nbsp;
                 <ion-icon name="close-circle" (click)="removeFeature(i)"></ion-icon>
@@ -292,31 +293,18 @@
         </ion-col>
       </ion-row>
 
-      <ion-row style="width: 100%">
-        <ion-button (click)="addListing()"
+      <ion-row style="width:100%">
+        <ion-button *ngIf="!ownerViewing; else ownerView" (click)="addListing()"
           [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">ADD
           LISTING</ion-button>
+        <ng-template #ownerView>
+          <ion-button (click)="editListing()"
+            [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">Edit
+            Listing</ion-button>
+        </ng-template>
       </ion-row>
     </ion-row>
-    <br><br>
-
-    <ion-row>
-      <ion-col>
-        <h2>Property Description</h2>
-        <textarea id="desc" rows="10" cols="50" [(ngModel)]="description">{{description}}</textarea><br>
-        <ion-button (click)="generateDesc()">AI Generated Description</ion-button>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-
-    </ion-row>
-
-    <ion-row>
-      <ion-button *ngIf="!ownerViewing; else ownerView" (click)="addListing()" [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">ADD LISTING</ion-button>
-      <ng-template  #ownerView>
-        <ion-button (click)="editListing()" [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">Edit Listing</ion-button>
-      </ng-template>
-    </ion-row>
+    <div style="height:200px;"></div>
   </ion-grid>
   <properproperty-footer></properproperty-footer>
 

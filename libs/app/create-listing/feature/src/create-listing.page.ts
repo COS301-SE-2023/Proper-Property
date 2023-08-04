@@ -24,14 +24,14 @@ export class CreateListingPage implements OnInit {
   @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
 
   @Select(AuthState.user) user$!: Observable<User | null>;
-  autocomplete: any;
+  // autocomplete: any;
   defaultBounds: google.maps.LatLngBounds;
   predictions: google.maps.places.AutocompletePrediction[] = [];
 
   currentUser: User | null = null;
   description = "";
   heading = "";
-  ownerViewing : boolean = false;
+  ownerViewing = false;
   listingEditee : Listing | null = null;
 
   constructor(
@@ -65,7 +65,7 @@ export class CreateListingPage implements OnInit {
     });
 
     this.route.params.subscribe((params) => {
-      let editListingId = params['listingId'] ?? 'XX'
+      const editListingId = params['listingId'] ?? 'XX'
       if(editListingId != 'XX'){
         this.listingService.getListing(editListingId).then((listing) => {
           this.listingEditee = listing;
@@ -173,44 +173,12 @@ handleAddressChange(address: string): void {
     const files: FileList | null = (event.currentTarget as HTMLInputElement).files;
     if (files) {
       for (let index = 0; index < files.length; index++) {
-        if (files.item(index)) {
+        if (files.item(index))
           this.photos.push(URL.createObjectURL(files.item(index) as Blob));
           console.log("brooo ",URL.createObjectURL(files.item(index) as Blob));
-
-          // const imageUrl = URL.createObjectURL(files.item(index) as Blob);
-          // console.log("brooo ",imageUrl);
-          // this.photos.push(imageUrl);
-          // this.getImageDimensions( this.convertBlobUrlToNormalUrl(imageUrl));          
-        }
       }
     }
   }
-
-  convertBlobUrlToNormalUrl(blobUrl: string): string {
-    const img = new Image();
-    img.src = blobUrl;
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    if (!ctx) {
-      throw new Error("Canvas context is not available.");
-    }
-    ctx.drawImage(img, 0, 0);
-    URL.revokeObjectURL(blobUrl); // Revoke the blob URL
-    return canvas.toDataURL(); // Convert to a regular data URL
-  }
-  
-  getImageDimensions(imageUrl: string): void {
-    const image = new Image();
-    image.src = imageUrl;
-  
-    image.onload = () => {
-      const width = image.naturalWidth;
-      const height = image.naturalHeight;
-  
-      console.log(`Image dimensions: ${width} x ${height} pixels`);
-    };
-  }
-   
 
   onDragOver(event: DragEvent) {
     event.preventDefault();
@@ -266,7 +234,6 @@ handleAddressChange(address: string): void {
     const pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
     const env_type_in = document.getElementById('env-type') as HTMLInputElement;
     const prop_type_in = document.getElementById('prop-type') as HTMLInputElement;
-   
     const furnish_type_in = document.getElementById('furnish-type') as HTMLInputElement;
     const orientation_in = document.getElementById('orientation') as HTMLInputElement;
     const floor_size_in = document.getElementById('floor-size') as HTMLInputElement;
@@ -279,7 +246,6 @@ handleAddressChange(address: string): void {
     for(let i = 0; i < this.features.length; i++){
       feats += this.features[i] + ", ";
     }
-    
 
     if(add_in && price_in && pos_type_in && env_type_in && prop_type_in && furnish_type_in && orientation_in && floor_size_in && property_size_in && bath_in && bed_in && parking_in){
       const info = "Address: " + add_in.value + "\n" 
@@ -339,16 +305,8 @@ handleAddressChange(address: string): void {
 
   async addListing(){
     this.address = (document.getElementById("address") as HTMLInputElement).value;
-    
-    const pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
-    const env_type_in = document.getElementById('env-type') as HTMLInputElement;
-    const prop_type_in = this.prop_type;
-    const furnish_type_in = document.getElementById('furnish-type') as HTMLInputElement;
-    const orientation_in = document.getElementById('orientation') as HTMLInputElement;
-    const desc_in = document.getElementById('desc') as HTMLInputElement;
-
     const score = await calculateQualityScore(this.photos,this.address,this.price,this.bedrooms,this.bathrooms,this.parking,this.floor_size,this.erf_size,this.pos_type,this.env_type,this.prop_type,this.furnish_type,this.orientation,this.gmapsService);
-    
+  
     if(this.currentUser != null){
       const list : Listing = {
         user_id: this.currentUser.uid,
@@ -371,11 +329,10 @@ handleAddressChange(address: string): void {
         let_sell: this.listingType,
         approved: false,
         quality_rating: score,
-        
         listingDate: "" + new Date()
       }
 
-      console.log("lisss ",list);
+      console.log(list);
       await this.listingService.createListing(list);
       this.router.navigate(['/home']);
     }
@@ -412,7 +369,7 @@ handleAddressChange(address: string): void {
         listingDate: "" + new Date()
       }
 
-      let resp = await this.listingService.editListing(list);
+      const resp = await this.listingService.editListing(list);
       if(resp){
         this.router.navigate(['/listing', {list : this.listingEditee.listing_id}]);
       }
@@ -423,164 +380,160 @@ handleAddressChange(address: string): void {
 }
 
 
-    async function calculateQualityScore(photos: string[],address:string,price:string,bedrooms:string,bathrooms:string,parking:string,floor_size:string,erf_size:string,pos_type:string,env_type:string,prop_type:string,furnish_type:string,orientation:string,gmapsService: GmapsService): Promise<number>{
+async function calculateQualityScore(photos: string[],address:string,price:string,bedrooms:string,bathrooms:string,parking:string,floor_size:string,erf_size:string,pos_type:string,env_type:string,prop_type:string,furnish_type:string,orientation:string,gmapsService: GmapsService): Promise<number>{
             
-            let score = 0;
+  let score = 0;
 
-            for(let i = 0; i < min(8, photos.length); i++){
-              const temp = photos[i];
-                score+= calculatePhotoScore(temp);
-            }
+  for(let i = 0; i < min(8, photos.length); i++){
+      score+= calculatePhotoScore(photos[i]);
+  }
 
-            if(isNumericInput(price)){
-                score+= 5;
-            } else score-=20;
+  if(isNumericInput(price)){
+      score+= 5;
+  } else score-=20;
 
-            if(isNumericInput(bedrooms)){
-                score+= 5;
-            } else score-=20;
+  if(isNumericInput(bedrooms)){
+      score+= 5;
+  } else score-=20;
 
-            if(isNumericInput(bathrooms)){
-                score+= 5;
-            } else score-=20;
+  if(isNumericInput(bathrooms)){
+      score+= 5;
+  } else score-=20;
 
-            if(isNumericInput(parking)){
-                score+= 5;
-            } else score-=20;
+  if(isNumericInput(parking)){
+      score+= 5;
+  } else score-=20;
 
-            if(isNonEmptyStringInput(floor_size)){
-                score+= 5;
-            } else score-=15;
+  if(isNonEmptyStringInput(floor_size)){
+      score+= 5;
+  } else score-=15;
 
-            if(isNonEmptyStringInput(erf_size)){
-                score+= 5;
-            } else score-=15;
+  if(isNonEmptyStringInput(erf_size)){
+      score+= 5;
+  } else score-=15;
 
-            if(isNonEmptyStringInput(pos_type)){
-                score+= 5;
-            } else score-=15;
+  if(isNonEmptyStringInput(pos_type)){
+      score+= 5;
+  } else score-=15;
 
-            if(isNonEmptyStringInput(env_type)){
-                score+= 5;
-            } else score-=15;
+  if(isNonEmptyStringInput(env_type)){
+      score+= 5;
+  } else score-=15;
 
-            if(isNonEmptyStringInput(prop_type)){
-                score+= 5;
-            } else score-=15;
+  if(isNonEmptyStringInput(prop_type)){
+      score+= 5;
+  } else score-=15;
 
-            if(isNonEmptyStringInput(furnish_type)){
-                score+= 5;
-            } else score-=15;
+  if(isNonEmptyStringInput(furnish_type)){
+      score+= 5;
+  } else score-=15;
 
-            if(isNonEmptyStringInput(orientation)){
-                score+= 5;
-            } else score-=15;
+  if(isNonEmptyStringInput(orientation)){
+      score+= 5;
+  } else score-=15;
 
 
-            const isGeocodable = await checkGeocodableAddress(gmapsService,address);
+  const isGeocodable = await checkGeocodableAddress(gmapsService,address);
 
-            if (!isGeocodable) {
-              return 0;
-            }
+  if (!isGeocodable) {
+    return 0;
+  }
 
-            return score;
-    }
+  return score;
+}
 
-    function calculatePhotoScore(photo:string):number{
+function calculatePhotoScore(photo:string):number{
 
-        let rating = 0;
+let rating = 0;
 
-        const temp = photo;
+getImageDimensions(convertBlobUrlToNormalUrl(photo))
+.then(({ width, height }) => {
+  rating = 5 * (min(width, height) / max(width, height));
+  return rating;
+})
+.catch((error) => {
+  console.error(error.message);
+});
 
-        getImageDimensions(convertBlobUrlToNormalUrl(photo))
-        .then(({ width, height }) => {
-            rating = 5 * (min(width, height) / max(width, height));
-            return rating;
-        })
-        .catch((error) => {
-            console.error(error.message);
-        });
+// getImageDimensions( this.convertBlobUrlToNormalUrl(photo));  
 
-        // getImageDimensions( this.convertBlobUrlToNormalUrl(photo));  
+return -1;
+}
 
-        return -1;
-    }
+function min(first:number,second:number):number{
 
-   function min(first:number,second:number):number{
-        
-        const ret = first < second ? first : second;
-        return ret;
-    }
+const ret = first < second ? first : second;
+return ret;
+}
 
-    function max(first:number,second:number){
-        return first > second ? first : second;
-    }
+function max(first:number,second:number){
+return first > second ? first : second;
+}
 
-    function convertBlobUrlToNormalUrl(blobUrl: string): string {
-        const img = new Image();
-        img.src = blobUrl;
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-        if (!ctx) {
-          throw new Error("Canvas context is not available.");
-        }
-        ctx.drawImage(img, 0, 0);
-        // URL.revokeObjectURL(blobUrl); // Revoke the blob URL
-        return canvas.toDataURL(); // Convert to a regular data URL
-      }
-      
-    //   getImageDimensions(imageUrl: string): void {
-    //     const image = new Image();
-    //     image.src = imageUrl;
-      
-    //     image.onload = () => {
-    //       const width = image.naturalWidth;
-    //       const height = image.naturalHeight;
-      
-    //       console.log(`Image dimensions: ${width} x ${height} pixels`);
-    //     };
-    //   }
+function convertBlobUrlToNormalUrl(blobUrl: string): string {
+const img = new Image();
+img.src = blobUrl;
+const canvas = document.createElement("canvas");
+const ctx = canvas.getContext("2d");
+if (!ctx) {
+throw new Error("Canvas context is not available.");
+}
+ctx.drawImage(img, 0, 0);
+// URL.revokeObjectURL(blobUrl); // Revoke the blob URL
+return canvas.toDataURL(); // Convert to a regular data URL
+}
 
-    async function checkGeocodableAddress(gmapsService: GmapsService,address: string): Promise<boolean> {
+//   getImageDimensions(imageUrl: string): void {
+//     const image = new Image();
+//     image.src = imageUrl;
 
-        try {
-      
-          const geocoderResult = await gmapsService.geocodeAddress(address);
-          // If the address is geocodable, the geocoderResult will not be null
-          return geocoderResult !== null;
-        } catch (error) {
-          console.error(error);
-          return false;
-        }
-      }
+//     image.onload = () => {
+//       const width = image.naturalWidth;
+//       const height = image.naturalHeight;
+
+//       console.log(`Image dimensions: ${width} x ${height} pixels`);
+//     };
+//   }
+
+async function checkGeocodableAddress(gmapsService: GmapsService,address: string): Promise<boolean> {
+
+try {
+
+const geocoderResult = await gmapsService.geocodeAddress(address);
+// If the address is geocodable, the geocoderResult will not be null
+return geocoderResult !== null;
+} catch (error) {
+console.error(error);
+return false;
+}
+}
 
 
 function getImageDimensions(imageUrl: string): Promise<{ width: number; height: number }> {
-    return new Promise((resolve, reject) => {
-      const image = new Image();
-      image.src = imageUrl;
-  
-      image.onload = () => {
-        const width = image.naturalWidth;
-        const height = image.naturalHeight;
-  
-        resolve({ width, height });
-      };
-  
-      image.onerror = () => {
-        reject(new Error("Failed to load the image."));
-      };
-    });
-  }
-  
-  function isNumericInput(input: string): boolean {
-    // Regular expression to check if the input contains only numeric characters
-    const numericRegex = /^[0-9,]+$/;
-    return numericRegex.test(input);
-  }
-  
-  function isNonEmptyStringInput(input: string): boolean {
-    return input.trim() !== "";
-  }
+return new Promise((resolve, reject) => {
+const image = new Image();
+image.src = imageUrl;
 
-  
+image.onload = () => {
+const width = image.naturalWidth;
+const height = image.naturalHeight;
+
+resolve({ width, height });
+};
+
+image.onerror = () => {
+reject(new Error("Failed to load the image."));
+};
+});
+}
+
+function isNumericInput(input: string): boolean {
+// Regular expression to check if the input contains only numeric characters
+const numericRegex = /^[0-9,]+$/;
+return numericRegex.test(input);
+}
+
+function isNonEmptyStringInput(input: string): boolean {
+return input.trim() !== "";
+}
+

@@ -2,8 +2,7 @@
 
 .sec1 {
   width: 100%;
-  height: 98vh;
-  border: 1px solid #000;
+  height: 93vh;
   background: rgba(13, 174, 79, 0.40);
 
   .slogan {
@@ -124,30 +123,34 @@
 
 .sec2 {
   width: 100%;
-  height: 100vh;
+  // height: 120vh; 
+  height: fit-content;
   position: absolute;
-  margin-top: 0;
-  margin-left: 1%;
-  margin-right: 1%;
-  top: 100%;
+  // top: 100%;
+  background: linear-gradient(180deg, rgba(13, 174, 79, 0.40) 0%, rgba(13, 174, 79, 0.00) 100%);
 
   .serv-container {
     display: flex;
     justify-content: center;
-    align-items: center;
+    // align-items: center;
     flex-wrap: wrap;
-    gap: 1rem;
+    padding-top: 3%;
   }
 
   .serv-container .serv-box {
-    flex: 1 1 10rem;
+    // flex: 1 1 10rem;
     background: white;
-    padding: 3rem 2rem 4rem;
+    padding: 15px 10px;
     border-radius: 2rem;
     text-align: center;
-    border: .2rem solid white;
+    border: 5px solid #0DAE4F;
     transition: .5s ease;
-
+    height: 50%;
+    width: 25%;
+    margin-left: 2%;
+    margin-right: 2%;
+    padding-top: 2%;
+    padding-bottom: 3%;
   }
 
   .serv-container .serv-box:hover {
@@ -184,15 +187,26 @@
   }
 }
 
+/************************med-section*************************************/
+.mid-section {
+  top: 124%;
+  position: relative;
+  background: linear-gradient(180deg, rgba(237, 237, 237, 0.00) 0%, #EDEDED 100%);
+  height: 10%;
+  margin-bottom: 0px;
+}
+
 /************************Sec 3*************************************/
 
 .sec3 {
   width: 100%;
-  height: 100vh;
-  position: absolute;
-  margin-top: 10%;
-  top: 170%;
-  background-color: rgb(248, 246, 246);
+  // height: 100vh;
+  // position: absolute;
+  position: relative;
+  // margin-top: 10%;
+  top: 124%;
+  background-color: #EDEDED;
+  padding-top: 2%;
 
   .sec3 h2 {
     margin-bottom: 4rem;
@@ -200,51 +214,33 @@
 
   .case-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    // grid-template-columns: repeat(3, 1fr);
     align-items: center;
     gap: 2.5rem;
-    margin-left: 10%;
+
+    margin-bottom: 20px;
   }
 
   .case-container .case-box {
     position: relative;
     width: 80%;
-    border-radius: 2rem;
-    box-shadow: 0 0 1rem var(--ion-color-primary-contrast);
+    height: 200px;
+    border-radius: 30px;
     overflow: hidden;
     display: flex;
+    margin-top: 17%;
+    // margin: auto;
+    padding: 5%;
+    // border-radius: 30px;
+    transition: background-color 0.5s ease;
   }
 
-  .case-box img {
-    width: 100%;
-    transition: .5s ease;
+  .case-container .case-box:hover {
+    background: rgba(13, 174, 79, 0.40);
   }
 
-  .case-box:hover img {
-    width: 100%;
-    transform: scale(1.1);
+  .case-container .case-box:hover ~ .svg-container #svg-image {
 
-  }
-
-  .case-box .case-layer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(rgba(0, 0, 0, .1), var(--ion-color-primary));
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-    padding: 0 4rem;
-    transform: translateY(300%);
-    transition: .5s ease;
-  }
-
-  .case-box:hover .case-layer {
-    transform: translateY(0);
   }
 
   .case-layer h4 {
@@ -261,118 +257,11 @@
 
 }
 
-ion-footer ion-col{
+ion-footer ion-col {
   color: white;
 }
 
-.dropdown-container {
-  position: relative;
-}
-
-.arrow-icon {
-  color: #FFF;
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  pointer-events: none; /* This prevents the icon from interfering with the select */
-}
-
-
-.prop_type{
-  width: 100%;
-  min-height: 34px;
-  height: 34px;
-  border-radius: 2px;
-  background-color:#0DAE4F;
-  border: none;
-  outline: none;
-  text-align: left;
-  color: #FFF;
-  padding: 5px 15px;
-  font-weight: 400;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
-
-}
-.white-text {
-  color: #FFF;
-}
-
-
-ion-footer ion-col{
-  color: white;
-}
-
-.green-tab {
-  --color: green;
-}#house_details img {
-  width: 10px; /* Adjust the size as desired */
-  height: 10px; /* Adjust the size as desired */
-  border-radius: 10px;
-}
-
-
-ion-card {
-  top: -50px;
-  width: 400px; /* Adjust the width as desired */
-  height: 450px;
-  margin: 0 auto; /* Center the card horizontally */
-  margin-top: 50px;
-
-  border-radius: 20px;
-}
-
-.like-button {
-  background-color: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
+.sec3 ion-row {
+  text-align: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  //move it to right hand corner
-  margin-left: 90%;
-
-  margin-top: -30px;
 }
-
-// .heart-icon {
-//   color: red;
-//   font-size: 24px;
-// }
-
-.red {
-  color: red;
-}
-.content-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Optional: Centers the content horizontally */
-  margin-top: 10%; /* Adjust the value as needed to create the desired space */
-}
-/* Component CSS file or global stylesheet */
-#buySell ion-button.active {
-  background-color: green;
-  color: black;
-  border: none; /* Remove borders to make it appear as a plain button */
-}
-
-#buySell ion-button:not(.active) {
-  border-radius: 10px;
-  --background: transparent;
-  --color: black;
-
-}
-
-.mobile-address {
-  border: 10;
-  width: 68%;
-  height: 100%;
-  border-radius: 30px;
-  padding-left: 4%;
-}
-
