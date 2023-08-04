@@ -1,49 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Register</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content style="position: relative;">
+  <ion-list>
+    <ion-item>
+      <ion-label position="floating">Name</ion-label>
+      <ion-input type="text" [(ngModel)]="name"></ion-input>
+    </ion-item>
 
-  <section class="registering">
-    <div class = "Member">
-      <div class="leftPanel">
-        <div class="content">
-          <h3>Already Have an Account</h3>
-          <p>Log In! Your World Is But a Few Clicks Away</p>
-          <div class="LogIn">
-            <a routerLink="/login">Log In</a>
-          </div>
-        </div> 
-      </div>
+    <ion-item>
+      <ion-label position="floating">Surname</ion-label>
+      <ion-input type="text" [(ngModel)]="surname"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="email" [(ngModel)]="email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Password</ion-label>
+      <ion-input type="password" [(ngModel)]="password"></ion-input>
+    </ion-item>
+
+    <ion-item [class.invalid]="!passwordMatch">
+      <ion-label position="floating">Confirm Password</ion-label>
+      <ion-input type="password" [(ngModel)]="confirm_password"></ion-input>
+    </ion-item>
+  </ion-list>
+  <div *ngIf="!passwordMatch" class="invalid-feedback">
+    Passwords do not match!.
+  </div>
+
+  <div class="button-centerer">
+    <div class="button-centerer2">
+      <ion-button class="buttons" size="default" (click)="register()">
+        Sign Up
+      </ion-button>
     </div>
-    <div class = "container">
-      <div class="reg">
-        <ion-list>
-          <h2>Create Account</h2>
-  
-          <ion-item>
-            <ion-input type="email" [(ngModel)]="email" placeholder="Enter Email"></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-input type="password" [(ngModel)]="password" placeholder="Enter Password"></ion-input>
-          </ion-item>
-
-          <ion-item [class.invalid]="!passwordMatch">
-            <ion-input type="password" [(ngModel)]="confirm_password" placeholder="Confirm Password"></ion-input>
-          </ion-item>
-
-        </ion-list>
-
-        <div *ngIf="!passwordMatch" class="invalid-feedback">
-        Passwords do not match!.
-        </div>
-
-        <div class="button-centerer">
-
-          <div >
-            <ion-button class="button-centerer1"(click)="register()" shape="round">Sign Up</ion-button>
-          </div>
-      
-        </div>
-
-      </div>
+    <div class="ion-padding">
+      <p class="text-centrer-inator">Already have an account? <a routerLink="/login">Login</a></p>
     </div>
-  </section>
+  </div>
 </ion-content>

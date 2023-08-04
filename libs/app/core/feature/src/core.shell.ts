@@ -6,8 +6,7 @@ import { AuthState } from '@properproperty/app/auth/data-access';
 import { Observable } from 'rxjs';
 import { Unsubscribe, User } from 'firebase/auth';
 // import { SubscribeToUserProfile, UnsubscribeFromUserProfile } from '@properproperty/app/user/util';
-import { UserProfileState,UserProfileService } from '@properproperty/app/profile/data-access';
-
+import { UserProfileState } from '@properproperty/app/profile/data-access';
 
 import { ActivatedRoute } from '@angular/router';
 import { httpsCallable, Functions } from '@angular/fire/functions';
@@ -18,7 +17,7 @@ import { isDevMode } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 
-declare const gtag: any;
+declare const gtag: Function;
 
 @Component({
   selector: 'proper-property-app',
@@ -31,14 +30,13 @@ export class CoreShellComponent implements OnInit, OnDestroy {
   @Select(AuthState.user) user$!: Observable<User | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
   public loggedIn = false;
-  public admin = false;
   private user: User | null = null;
   dev: boolean;
   private userProfileListener: Unsubscribe | null = null;
 
   private activatedRoute = inject(ActivatedRoute);
 
-  constructor(private readonly router: Router, private readonly store: Store, private readonly functions: Functions, @Inject(DOCUMENT) private document: Document,private profileServices : UserProfileService) {
+  constructor(private readonly router: Router, private readonly store: Store, private readonly functions: Functions, @Inject(DOCUMENT) private document: Document) {
     this.dev = isDevMode();
     this.loggedIn = this.user$ != null && this.user$ != undefined;
 
@@ -50,20 +48,6 @@ export class CoreShellComponent implements OnInit, OnDestroy {
     // when the window is unloaded
     this.userProfileListener$.subscribe((listener) => {
       this.userProfileListener = listener;
-    });
-
-    this.user$.subscribe((user) => {
-      this.user = user;
-      this.profileServices.getUser("" + user?.uid).then((profile) => {
-        if(profile !== undefined && profile){
-          if(profile.admin){
-            this.admin = true;
-          }
-          else{
-            router.navigate(['/home']);
-          }
-        }
-      });
     });
 
       this.isMobile = window.innerWidth <= 576;
@@ -92,7 +76,6 @@ export class CoreShellComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    console.log(event);
     this.isMobile = window.innerWidth <= 576;
   }
 
@@ -100,21 +83,21 @@ export class CoreShellComponent implements OnInit, OnDestroy {
 
     if (isDevMode()) {
     alert ("OI");
-    const test = JSON.parse((await httpsCallable(this.functions, 'getAnalyticsData')()).data as string);
-    const dates : Date[] = [];
-    const pageViews : number[] = [];
+    const test : any = (await httpsCallable(this.functions, 'getAnalyticsData')()).data;
+    let dates : Date[] = [];
+    let pageViews : number[] = [];
 
-    const rows = test.rows ?? [];
+    let rows: any = test.rows ?? [];
     for(let i = 0; rows && i < rows.length; i++){
       if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
-        const dimensionValue = rows[i].dimensionValues[1].value;
-        const year = Number(dimensionValue.substring(0,4));
-        const month = Number(dimensionValue.substring(4,6));
-        const day = Number(dimensionValue.substring(6,8));
+        let dimensionValue = rows[i].dimensionValues[1].value;
+        let year : number = Number(dimensionValue.substring(0,4));
+        let month : number = Number(dimensionValue.substring(4,6));
+        let day : number = Number(dimensionValue.substring(6,8));
 
         dates[i] = new Date(year, month, day);
 
-        const metricValue = rows[i].metricValues[0].value;
+        let metricValue = rows[i].metricValues[0].value;
         pageViews[i] = Number(metricValue);
       }
     }

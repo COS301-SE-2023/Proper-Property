@@ -10,7 +10,21 @@ import { Unsubscribe, User } from '@angular/fire/auth';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
-import { ActivatedRoute } from '@angular/router';
+
+
+interface Property {
+  title: string;
+  type: string;
+  price: number;
+  bedrooms: number;
+}
+// const property = {
+//   id: 1,
+//   image: 'path/to/image.jpg',
+//   price: 100000,
+//   bedrooms: 3,
+//   bathrooms: 2
+// };
 
 @Component({
   selector: 'app-search',
@@ -67,7 +81,6 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
   }
   constructor(
-    private route: ActivatedRoute,
     private gmaps: GmapsService,
     private renderer: Renderer2,
     private actionSheetCtrl: ActionSheetController,
@@ -110,20 +123,9 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
     const inputElementId = 'address';
 
-    
+    console.log("hi ");
     
     this.gmapsService.setupRegionSearchBox(inputElementId);
-
-    const queryParams = this.route.snapshot.queryParams;
-    this.searchQuery = queryParams['q'] || ''; // If 'q' parameter is not available, default to an empty string.
-
-    const addressInput = document.getElementById("address") as HTMLInputElement;
-    if (this.searchQuery!='') {
-      addressInput.value = this.searchQuery;
-    }
-
-    this.searchProperties();
-
     
   }
 
@@ -575,10 +577,10 @@ async addMarkersToMap() {
 addMMarker(coordinates: google.maps.GeocoderResult, listing: any) {
 
   const googleMaps: any = this.googleMaps;
-  // const icon = {
-  //   url: 'assets/icon/locationpin.png',
-  //   scaledSize: new googleMaps.Size(40, 40), // Adjust the size of the marker icon as desired
-  // };
+  const icon = {
+    url: 'assets/icon/locationpin.png',
+    scaledSize: new googleMaps.Size(40, 40), // Adjust the size of the marker icon as desired
+  };
   const marker = new google.maps.Marker({
     position: coordinates.geometry.location,
     map: this.map,
@@ -758,7 +760,7 @@ isSaved(listing_id : string){
 
 saveListing($event : any, listing_id : string) {
   if(listing_id != ''){
-    const heartBut = $event.target as HTMLButtonElement;
+    let heartBut = $event.target as HTMLButtonElement;
     heartBut.style.color = "red";
     
     if(this.profile){
@@ -776,7 +778,7 @@ saveListing($event : any, listing_id : string) {
 
 unsaveListing($event : any, listing_id : string){
   if(listing_id != ''){
-    const heartBut = $event.target as HTMLButtonElement;
+    let heartBut = $event.target as HTMLButtonElement;
     heartBut.style.color = "red";
     
     if(this.profile){

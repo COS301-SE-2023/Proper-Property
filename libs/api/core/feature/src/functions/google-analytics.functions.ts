@@ -32,10 +32,6 @@ export const getAnalyticsData = functions.region("europe-west1").https.onCall(
         }],
         metrics:[{
           name: "screenPageViews"
-        }, {
-          name: "userEngagementDuration"
-        },{
-          name: "totalUsers"
         }],
         dimensionFilter: {
           filter: {
@@ -74,7 +70,7 @@ export const getAnalyticsData = functions.region("europe-west1").https.onCall(
 
       console.log(response.rows);
       // TODO return stuff I guess
-      return JSON.stringify(response);
+      return response;
     }
     else{
       return null;

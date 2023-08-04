@@ -23,8 +23,7 @@
             "prefix": "proper-property-app",
             "style": "kebab-case"
           }
-        ],
-        "@typescript-eslint/no-explicit-any": 0
+        ]
       },
       "extends": [
         "plugin:@nx/angular",

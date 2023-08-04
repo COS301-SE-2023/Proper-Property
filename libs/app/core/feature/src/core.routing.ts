@@ -32,6 +32,10 @@ const routes: Routes = [
     loadChildren: () => import('@properproperty/app/loading/feature').then( m => m.LoadingPageModule)
   },
   {
+    path: 'listings',
+    loadChildren: () => import('@properproperty/app/listings/feature').then( m => m.ListingsPageModule)
+  },
+  {
     path: 'copyright',
     loadChildren: () => import('@properproperty/app/copyright/feature').then( m => m.CopyrightPageModule)
   },

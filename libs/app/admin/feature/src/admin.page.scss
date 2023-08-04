@@ -1,51 +1,29 @@
-#notApprovedHeadCol {
-  // outline: 2px solid black;
-  border-right: 2px solid black;
+#notApprovedHeadCol{
+  outline: 1px solid black;
 }
 
-#notApprovedHead {
-  width: 35%;
-  height: auto;
+#notApprovedHead{
+  width: 100%;
   text-align: center;
-  border-radius: 30px;
-  border: 3px solid #000;
-  background: #DE1313;
-  margin: auto;
-  margin-top: 0.5%;
-  align-items:center;
-  padding: 1%;
 }
 
-#notApprovedBodyCol {
-  width: 49.8%;
-  outline: 3px solid red;
-  margin-right: 0.2%;
-  background: rgba(222, 19, 19, 0.10);
-  min-height: 84vh;
+#notApprovedBodyCol{
+  width: 50%;
+  outline: 1px solid red;
 }
 
-#approvedHeadCol {
-  // outline: 1px solid black;
+#approvedHeadCol{
+  outline: 1px solid black;
 }
 
-#approvedHead {
-  width: 35%;
-  height: auto;
+#approvedHead{
+  width: 100%;
   text-align: center;
-  border-radius: 30px;
-  border: 3px solid #000;
-  background: #0DAE4F;
-  margin: auto;
-  margin-top: 0.5%;
-  align-items:center;
-  padding: 1%;
 }
 
-#approvedBodyCol {
-  width: 49.8%;
-  outline: 3px solid #0DAE4F;
-  margin-left: 0.2%;
-  background: rgba(13, 174, 79, 0.10);
+#approvedBodyCol{
+  width: 50%;
+  outline: 1px solid blue;
 }
 
 //make the img in ion-card-header smaller
@@ -60,27 +38,27 @@ ion-card-header img {
 ion-card-header ion-card-title {
   margin-left: 220px;
   //move ths up
-  margin-top: -130px;
+    margin-top: -130px;
 }
 
 ion-card-header ion-card-subtitle {
-  margin-left: 220px;
-}
+    margin-left: 220px;
+  }
 
 ion-card ion-card-content {
-  margin-left: 220px;
-}
+    margin-left: 220px;
+  }
 
 //make the ion-card take only half of the page
-ion-card {
-  width: 90%;
-  margin-left: 2%;
-  margin-top: 10px;
-  border-radius: 10px;
-}
+  ion-card {
+      width: 90%;
+      margin-left: 2%;
+      margin-top: 10px;
+      border-radius: 10px;
+  }
 
-#house_details img {
-  //set image size
-  width: 15px;
-  height: 15px;
-}
+  #house_details img {
+    //set image size
+    width: 15px;
+    height: 15px;
+  }

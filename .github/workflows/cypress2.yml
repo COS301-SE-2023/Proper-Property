@@ -35,14 +35,14 @@ jobs:
           NX_FIREBASE_MEASUREMENT_ID="$NX_FIREBASE_MEASUREMENT_ID"
           NX_GOOGLE_MAPS_KEY="$NX_GOOGLE_MAPS_KEY"
           EOF
-          echo "cat .env.prod
-          install-command: npm install --no-package-lock"
+          echo "cat .env.prod"
 
 
       - name: run cypress tests with firefox
         uses: cypress-io/github-action@v5
         timeout-minutes: 15
         with:
+          install-command: npm install --legacy-peer-deps
           build: npm run build:app:prod
           # start-command: false
           command: npx env-cmd -f .env.prod nx run-many --target=e2e --parallel=3 --verbose

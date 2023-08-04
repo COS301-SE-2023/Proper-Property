@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Listing, StatusChange } from '@properproperty/api/listings/util';
+import { UserProfile } from '@properproperty/api/profile/util';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
@@ -51,7 +52,7 @@ export class AdminPage{
     this.listingServices.getListings().then((response) => {
       listings = response;
 
-      for(const listing of listings){
+      for(let listing of listings){
         if(listing.approved){
           this.appListings.push(listing);
         }
@@ -62,11 +63,11 @@ export class AdminPage{
 
       //sorting listings by date created
       this.appListings = this.appListings.sort((a, b) => {
-        const tempA2 = a.statusChanges?.[a.statusChanges.length - 1].date ?? "";
-        const tempB2 = b.statusChanges?.[b.statusChanges.length - 1].date ?? "";
+        let tempA2 = a.statusChanges?.[a.statusChanges.length - 1].date ?? "";
+        let tempB2 = b.statusChanges?.[b.statusChanges.length - 1].date ?? "";
 
-        const tempA = new Date(tempA2);
-        const tempB = new Date(tempB2);
+        let tempA = new Date(tempA2);
+        let tempB = new Date(tempB2);
         if(tempA > tempB){
           return -1
         }
@@ -79,8 +80,8 @@ export class AdminPage{
       })
 
       this.nonAppListings = this.nonAppListings.sort((a, b) => {
-        const tempA = new Date(a.listingDate);
-        const tempB = new Date(b.listingDate);
+        let tempA = new Date(a.listingDate);
+        let tempB = new Date(b.listingDate);
         if(tempA > tempB){
           return -1
         }
@@ -95,7 +96,7 @@ export class AdminPage{
     
 
     route.params.subscribe((params) => {
-      const statusChange : StatusChange = params['statusChange'];
+      let statusChange : StatusChange = params['statusChange'];
       if(statusChange && statusChange.adminId){
         router.navigate(['/admin']);
       }

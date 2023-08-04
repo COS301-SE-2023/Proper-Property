@@ -3,30 +3,12 @@
 </p>
 <h1 align="center">Proper Property</h1>
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=COS301-SE-2023_Proper-Property&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=COS301-SE-2023_Proper-Property)
 ![Github issues](https://img.shields.io/github/issues/COS301-SE-2023/Proper-Property.svg)
 ![Github issues](https://img.shields.io/github/issues-closed/COS301-SE-2023/Proper-Property.svg)
 ![Monitoring](https://img.shields.io/uptimerobot/status/m794412596-b37953dcaaa4df17641a8a80?style=plastic)
 [![Testing...](https://github.com/COS301-SE-2023/Proper-Property/actions/workflows/tester.yml/badge.svg)](https://github.com/COS301-SE-2023/Proper-Property/actions/workflows/tester.yml)
-[![codecov](https://codecov.io/gh/COS301-SE-2023/Proper-Property/branch/main/graph/badge.svg?token=274GR552X4)](https://codecov.io/gh/COS301-SE-2023/Proper-Property)
 
----
-<strong><h3 style="font-family: Jetbrains Mono">PROJECT BOARD:</h3></strong>
 
--[Project Board View 1](https://github.com/orgs/COS301-SE-2023/projects/21/views/1)
-
-<strong><h3 style="font-family: Jetbrains Mono">DEMO 3:</h3></strong>
-- [System Requirement Specifications V3](https://drive.google.com/file/d/1gNDCB_RqPpo3Ova7XqVRzJDxda2xBy9A/view?usp=drive_link)
-- [Testing Policy V1](https://drive.google.com/file/d/1MIdRFCY9PuQo60ze5-LXeKud1Aqro8Ev/view?usp=sharing)
-  
-<strong><h3 style="font-family: Jetbrains Mono">DEMO 2:</h3></strong>
-- [System Requirement Specifications V2](https://drive.google.com/file/d/1cU503qaPC5qviA-x2P3raSAUhXTepZ71/view?usp=sharing)
-
-<strong><h3 style="font-family: Jetbrains Mono">DEMO 1:</h3></strong>
-
-- [System Requirement Specifications V1](https://drive.google.com/file/d/1eoLRuLgia6hrA_IaG4-cKxAtNYMfo3J4/view?usp=drive_link)
-- [Wireframes-Figma](https://www.figma.com/file/cM0eqPHOEl3oFjZhK0mE5q/Wireframes?type=design&node-id=0%3A1&mode=design&t=sgLrlIc4JPYCTLRD-1)
-- [Mockups-Figma](https://www.figma.com/file/CHhxn1UBgTOXumjDCXijDR/Proper-Property-MockUps-v1?type=design&mode=design&t=sgLrlIc4JPYCTLRD-1)
 ---
 
 # Team Members

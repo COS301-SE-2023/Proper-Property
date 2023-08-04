@@ -8,15 +8,13 @@ import { HomeRoutingModule } from './home.routing';
 
 import { HomePage } from './home.page';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FooterModule } from '@properproperty/app/footer/feature';
 
 @NgModule({
   imports: [
     CommonModule, 
     FormsModule, 
     IonicModule, 
-    HomeRoutingModule,
-    FooterModule
+    HomeRoutingModule
   ],
   declarations: [HomePage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
