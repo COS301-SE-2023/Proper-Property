@@ -24,13 +24,34 @@ function getClientEnvironment() {
 module.exports = (config, options, context) => {
   // Overwrite the mode set by Angular if the NODE_ENV is set
   config.mode = process.env.NODE_ENV || config.mode;
-  config.plugins.push(new webpack.DefinePlugin(getClientEnvironment()));
   config.plugins.push(
     new CopyPlugin({
       patterns: [
-        {from: 'firebase-messaging-sw.js', to: 'firebase-messaging-sw.js'}
+        {
+          from: 'firebase-messaging-sw.js', 
+          to: 'firebase-messaging-sw.js',
+          force: true,
+          transform(content, path) {
+            // Prepend firebase config to service worker file, 
+            // because GitGuardian is a stupid, paranoid robot
+            const env = getClientEnvironment();
+            const config = 
+                `const firebaseConfig = {\n`
+              + `  apiKey: ${env['process.env']['NX_FIREBASE_KEY']},\n`
+              + `  authDomain: ${env['process.env']['NX_FIREBASE_AUTH_DOMAIN']},\n`
+              + `  databaseURL: ${env['process.env']['NX_FIREBASE_DATABASE_URL']},\n`
+              + `  projectId: ${env['process.env']['NX_FIREBASE_PROJECT_ID']},\n`
+              + `  storageBucket: ${env['process.env']['NX_FIREBASE_STORAGE_BUCKET']},\n`
+              + `  messagingSenderId: ${env['process.env']['NX_FIREBASE_MESSAGING_SENDER_ID']},\n`
+              + `  appId: ${env['process.env']['NX_FIREBASE_APP_ID']},\n`
+              + `  measurementId: ${env['process.env']['NX_FIREBASE_MEASUREMENT_ID']}\n`
+              + `};\n`;
+            return Buffer.from(config + content);
+          }
+        }
       ]
     })
-  )
+  );
+  config.plugins.push(new webpack.DefinePlugin(getClientEnvironment()));
   return config;
 };
