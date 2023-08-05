@@ -1,14 +1,17 @@
-import { Component, inject, OnInit,ViewChild,ElementRef } from '@angular/core';
+import { Component, inject, OnInit,ViewChild,ElementRef,Inject,HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
 import Swiper from 'swiper';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { Router } from '@angular/router';
+import { Router ,NavigationEnd} from '@angular/router';
+import { DOCUMENT } from '@angular/common';
+
 
 // import { Storage, ref } from '@angular/fire/storage';
 // import { uploadBytes } from 'firebase/storage';
 
+declare const gtag: any;
 
 @Component({
   selector: 'app-home',
@@ -16,6 +19,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+
+  isMobile: boolean;
   @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
 
   // public autocomplete: any;
@@ -35,8 +40,26 @@ export class HomePage implements OnInit {
   public home!: string;
   private activatedRoute = inject(ActivatedRoute);
   currentUser: UserProfile | null = null;
-  constructor(public userService : UserProfileService, public gmapsService: GmapsService,private router: Router) {
+  constructor(public userService : UserProfileService, public gmapsService: GmapsService,private router: Router, @Inject(DOCUMENT) private document: Document) {
+
+    this.isMobile = window.innerWidth <= 576;
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        gtag('event', 'page_view', {
+          'page_path': event.urlAfterRedirects,
+          'page_location': this.document.location.href,
+          'is_mobile': this.isMobile ? 'yes' : 'no',
+        });
+      }
+    });
+
     this.currentUser = this.userService.getCurrentUser();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    console.log(event);
+    this.isMobile = window.innerWidth <= 576;
   }
 
    ngOnInit() {

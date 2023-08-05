@@ -3,7 +3,160 @@ core.shell.html
 -------------->
 
 
-<ion-content>
+<ion-content *ngIf="!this.isMobile" class="Desktop">
+  <!----------------------- SlideShow and Searchbar Section--------------------------->
+
+  <section class="sec1">
+
+    <div class="slogan">
+      <div id="mainHeading-Container">
+        <h1 class="mainHeading">Proper Properties For You</h1>
+      </div>
+      <div id="captionContainer">
+        <h1 id="caption">Discover Your Dream Home: Where Living Extends Beyond Walls</h1>
+      </div>
+      <div class="search-container">
+        <input type="text" id="address" [(ngModel)]="searchQuery" placeholder="Property Location Search">
+        <ion-button id="search-button" (click)="searchProperties()">
+          <h1 class="search-button-text" style="margin-top: 10px;">Search</h1>
+        </ion-button>
+      </div>
+    </div>
+
+    <img alt="homeCover" class="homeCover" src="assets/HomeCover.png">
+  </section>
+  <!------------------------------------Summarised Descriptions Section---------------------------------------------->
+  <section class="sec2" id="serv">
+    <h2 class="heading">What makes us <span class="bold2">Unique </span></h2>
+
+    <div class="serv-container">
+
+      <div class="serv-box">
+        <img src="../../assets/fakeNN.avif">
+        <h3>Proper Recommendations</h3>
+        <p>With the use of our recommendation system powered by artificial intelligence, we will be sure to understand
+          your preferences and offer the <span class="bold2">Proper Property</span> you are looking for.</p>
+      </div>
+
+      <div class="serv-box" style="margin-top: 10%;">
+        <img src="../../assets/mapImg.webp">
+        <h3>Proper Communities</h3>
+        <p>At Proper Property, we understand the importance of the surrounding area when choosing a property. We
+          consider everything, from essential utilities to amenities' quality. Whether you crave <span
+            class="bold2">mountain landscapes</span> or <span class="bold2">vibrant nightlife</span>, we cater to your
+          preferences.
+      </div>
+
+      <div class="serv-box" style="margin-top: 20%;">
+        <img src="../../assets/Cottage.jpg">
+        <h3>Proper Properties</h3>
+        <p>Properties of all types, cultures, prices, and <span class="bold2">more</span>. Renting or sharing. Stairs or
+          elevators. The library is endless and always Proper</p>
+      </div>
+    </div>
+  </section>
+  <!------------------------------------Use Case Section---------------------------------------------->
+  <section class="mid-section">
+    <h2 class="heading" style="margin-bottom: 0%;">Top <span class="bold2">features</span></h2>
+  </section>
+  <section class="sec3">
+    <ion-grid class="case-container">
+      <ion-row style="width:100%;">
+        <ion-col size="4">
+          <ion-row style="height:50%;">
+            <div class="case-box">
+              <ion-grid>
+                <ion-row>
+                  <h4>View all Property Types</h4>
+                </ion-row>
+                <ion-row>
+                  <p>Unlock a world of possibilities with our 'View all Property Types' feature! Whether it's a cozy apartment,
+                    a charming farmhouse, or a luxurious villa, we've got it all.
+                    Explore a diverse range of properties and find the one that fits your lifestyle.
+                  </p>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </ion-row>
+
+          <ion-row style="height:50%;">
+            <div class="case-box">
+              <ion-grid>
+                <ion-row>
+                  <h4>Swift Location Browsing</h4>
+                </ion-row>
+                <ion-row>
+                  <p>Navigate the real estate market with ease using Swift location browsing!
+                    Explore properties in your desired areas with just a few taps, making your property search efficient and stress-free.
+                    Don't waste time, find your perfect home faster than ever before!
+                  </p>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </ion-row>
+        </ion-col>
+
+        <ion-col class="image-col" size="4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 678 834" fill="none">
+            <!-- Define a clipPath with the same path data -->
+            <clipPath id="house-clip-path">
+              <path
+                d="M0 281.998C0 266.941 6.78452 252.687 18.4695 243.193L303.839 11.3195C322.042 -3.47094 348.079 -3.62092 366.451 10.9588L659.081 243.186C671.033 252.671 678 267.094 678 282.352V770C678 797.614 655.614 820 628 820H50C22.3858 820 0 797.614 0 770V281.998Z" />
+            </clipPath>
+
+            <!-- Use the image element with xlink:href attribute to fill the SVG with the image -->
+            <!-- Replace 'path/to/your/image.jpg' with the path to your image file -->
+            <image xlink:href="../../assets/house5.jpg" width="100%" height="100%" preserveAspectRatio="xMinYMin slice"
+              clip-path="url(#house-clip-path)" />
+          </svg>
+
+          <!-- <svg xmlns="http://www.w3.org/2000/svg" width="678" height="820" viewBox="0 0 678 820" fill="none">
+            <path d="M0 281.998C0 266.941 6.78452 252.687 18.4695 243.193L303.839 11.3195C322.042 -3.47094 348.079 -3.62092 366.451 10.9588L659.081 243.186C671.033 252.671 678 267.094 678 282.352V770C678 797.614 655.614 820 628 820H50C22.3858 820 0 797.614 0 770V281.998Z" fill="#D9D9D9"/>
+          </svg> -->
+
+        </ion-col>
+
+        <ion-col size="4">
+          <ion-row style="height:50%;">
+            <div class="case-box">
+              <ion-grid>
+                <ion-row>
+                  <h4>User-Friendly Filters</h4>
+                </ion-row>
+                <ion-row>
+                  <p>Effortlessly find what you need with our user-friendly filters.
+                    Streamline your search and discover tailored results at your fingertips.
+                  </p>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </ion-row>
+
+          <ion-row style="height:50%">
+            <div class="case-box">
+              <ion-grid>
+                <ion-row>
+                  <h4>Even Rentals and Sharing</h4>
+                </ion-row>
+                <ion-row>
+                  <p>Discover a world of possibilities with Even Rentals and Sharing!
+                    Find your dream property or connect with like-minded individuals to share spaces and experiences.
+                    Embrace flexibility and convenience with our innovative property listing application.
+                  </p>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <properproperty-footer></properproperty-footer>
+  </section>
+
+</ion-content>
+
+<ion-content *ngIf="this.isMobile" class="Mobile">
   <!----------------------- SlideShow and Searchbar Section--------------------------->
 
   <section class="sec1">
