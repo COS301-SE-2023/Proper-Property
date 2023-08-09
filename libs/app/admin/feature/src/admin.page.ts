@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Listing, StatusChange } from '@properproperty/api/listings/util';
-import { AuthState } from '@properproperty/app/auth/data-access';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
-import { Unsubscribe, User } from 'firebase/auth';
+import { Unsubscribe } from 'firebase/auth';
 import { Observable } from 'rxjs';
 
 @Component({

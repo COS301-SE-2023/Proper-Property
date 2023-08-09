@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { AuthState } from '@properproperty/app/auth/data-access';
-import { Unsubscribe, User } from '@angular/fire/auth';
+import { Unsubscribe } from '@angular/fire/auth';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Listing } from '@properproperty/api/listings/util';
@@ -102,7 +101,7 @@ export class SavedListingsPage implements OnInit {
       if(this.userProfile){
           if(this.userProfile.savedListings){
             this.userProfile.savedListings.splice(this.userProfile.savedListings.indexOf(listing_id), 1);
-            for(var listing of this.savedListings){
+            for(const listing of this.savedListings){
               if(listing.listing_id == listing_id){
                 this.savedListings.splice(this.savedListings.indexOf(listing), 1);
               }

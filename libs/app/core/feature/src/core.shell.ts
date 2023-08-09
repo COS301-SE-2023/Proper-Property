@@ -3,7 +3,7 @@ import { Store } from '@ngxs/store';
 import { SubscribeToAuthState } from '@properproperty/app/auth/util';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { Unsubscribe, User } from 'firebase/auth';
+import { Unsubscribe } from 'firebase/auth';
 // import { SubscribeToUserProfile, UnsubscribeFromUserProfile } from '@properproperty/app/user/util';
 import { UserProfileState,UserProfileService } from '@properproperty/app/profile/data-access';
 

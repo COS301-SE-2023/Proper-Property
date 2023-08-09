@@ -6,9 +6,8 @@ import { Router } from '@angular/router';
 import { Listing } from '@properproperty/api/listings/util';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { Unsubscribe, User } from '@angular/fire/auth';
+import { Unsubscribe } from '@angular/fire/auth';
 import { UserProfile } from '@properproperty/api/profile/util';
-import { AuthState } from '@properproperty/app/auth/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { ActivatedRoute } from '@angular/router';
 
