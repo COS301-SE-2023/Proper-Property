@@ -27,23 +27,21 @@ export class ListingPage{
   @ViewChild(IonContent) content: IonContent | undefined;
   // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
 
-  @Select(AuthState.user) user$!: Observable<User | null>;
+  @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
-  private user: User | null = null;
-  private profile : UserProfile | null = null;
   private userProfile : UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
   @ViewChild('swiper')
   swiperRef: ElementRef | undefined;
   swiper?: Swiper;
   list : Listing | null = null;
+  lister: UserProfile | null = null
   listerId  = "";
   listingId = "";
   pointsOfInterest: { photo: string | undefined, name: string }[] = [];
   admin = false;
   adminId = "";
   public ownerViewing$ : Observable<boolean> = of(false);
-  lister : UserProfile | null = null;
 
   price_per_sm = 0;
   lister_name = "";
@@ -96,23 +94,17 @@ export class ListingPage{
         // TODO
         console.log(this.list);
         this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
-  
-        this.userServices.getUser("" + this.list?.user_id).then((user : UserProfile) => {
-          this.lister = user;
-          this.lister_name = user.firstName + " " + user.lastName;
-        });
 
-        this.user$.subscribe((user) => {
-          this.user = user;
-          if(user && this.list && this.user?.uid == this.list?.user_id){
+        this.profileServices.getUser("" + this.list?.user_id).then((lister) => {
+          this.lister = lister;
+          this.lister_name = lister?.firstName + " " + lister?.lastName;
+        })
+
+        this.userProfile$.subscribe((profile) => {
+          this.userProfile = profile;
+          this.isRed = this.isSaved(this.listingId);
+          if(profile && this.list && this.userProfile?.userId == this.list?.user_id){
             this.ownerViewing$ = of(true);
-          }
-
-          if(this.user){
-            this.profileServices.getUser(this.user.uid).then((profile) =>{
-              this.profile = profile;
-              this.isRed = this.isSaved(this.listingId);
-            });
           }
         });
 
@@ -381,9 +373,9 @@ export class ListingPage{
   }
 
   isSaved(listing_id : string){
-    if(this.profile){
-      if(this.profile.savedListings){
-        if(this.profile.savedListings.includes(listing_id)){
+    if(this.userProfile){
+      if(this.userProfile.savedListings){
+        if(this.userProfile.savedListings.includes(listing_id)){
           console.log("Listing found in saved: " + listing_id);
           return true;
         }
@@ -395,26 +387,26 @@ export class ListingPage{
 
   saveListing() {
     if(!this.isSaved(this.listingId)){
-      if(this.profile){
-        if(this.profile.savedListings){
-          this.profile.savedListings.push(this.listingId);
+      if(this.userProfile){
+        if(this.userProfile.savedListings){
+          this.userProfile.savedListings.push(this.listingId);
         }
         else{
-          this.profile.savedListings = [this.listingId];
+          this.userProfile.savedListings = [this.listingId];
         }
 
-        this.profileServices.updateUserProfile(this.profile);
+        this.profileServices.updateUserProfile(this.userProfile);
       }
     }
   }
 
   unsaveListing(){
     if(this.isSaved(this.listingId)){
-        if(this.profile){
-          if(this.profile.savedListings){
-            this.profile.savedListings.splice(this.profile.savedListings.indexOf(this.listingId), 1);
+        if(this.userProfile){
+          if(this.userProfile.savedListings){
+            this.userProfile.savedListings.splice(this.userProfile.savedListings.indexOf(this.listingId), 1);
           }
-          this.profileServices.updateUserProfile(this.profile);
+          this.profileServices.updateUserProfile(this.userProfile);
       }
     }
   }
