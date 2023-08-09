@@ -1,4 +1,5 @@
 import { StatusChange } from './index';
+import { characteristics } from './index';
 
 export interface Listing{
   listing_id?: string;
@@ -24,4 +25,5 @@ export interface Listing{
   statusChanges?: StatusChange[];
   listingDate: string;
   quality_rating?: number;
+  characteristics: characteristics;
 }

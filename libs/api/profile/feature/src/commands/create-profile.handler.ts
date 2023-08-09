@@ -16,10 +16,19 @@ export class CreateProfileHandler implements ICommandHandler<CreateProfileComman
       listings: [],
       interests: {
         garden: 50,
+        party: 50,
         mansion: 50,
         accessible: 50,
+        foreign: 50,
         openConcept: 50,
-        ecoWarrior: 50
+        ecoWarrior: 50,
+        family: 50,
+        student: 50,
+        lovinIt: 50,
+        farm: 50,
+        Gym: 50,
+        owner: 50,
+        leftUmbrella: 50
       },
       admin: false
     };

@@ -1,5 +1,5 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { ListingEditedEvent, Listing, StatusChange } from '@properproperty/api/listings/util';
+import { ListingEditedEvent, Listing, StatusChange, characteristics } from '@properproperty/api/listings/util';
 
 export class listingModel extends AggregateRoot implements Listing {
   constructor(
@@ -23,6 +23,7 @@ export class listingModel extends AggregateRoot implements Listing {
     public heading: string,
     public approved: boolean,
     public listingDate: string,
+    public characteristics: characteristics,
     public listing_id?: string,
     public statusChanges?: StatusChange[],
     public quality_rating?: number,
@@ -52,9 +53,10 @@ export class listingModel extends AggregateRoot implements Listing {
         listing.heading,
         listing.approved,
         listing.listingDate,
+        listing.characteristics,
         listing.listing_id,
         listing.statusChanges,
-        listing.quality_rating,
+        listing.quality_rating
     );
     return model;
   }
@@ -83,6 +85,7 @@ export class listingModel extends AggregateRoot implements Listing {
     this.listing_id = listing.listing_id;
     this.statusChanges = listing.statusChanges;
     this.quality_rating = listing.quality_rating;
+    this.characteristics = listing.characteristics;
 
     this.apply(new ListingEditedEvent(listing));
   }
@@ -112,6 +115,7 @@ export class listingModel extends AggregateRoot implements Listing {
         listing_id: this.listing_id,
         statusChanges: this.statusChanges,
         quality_rating: this.quality_rating,
+        characteristics: this.characteristics
     };
   }
 }

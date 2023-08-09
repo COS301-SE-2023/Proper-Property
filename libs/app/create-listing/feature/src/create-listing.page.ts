@@ -1,6 +1,6 @@
 import { Component, OnInit , ViewChild, ElementRef} from '@angular/core';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
-import { Listing } from '@properproperty/api/listings/util';
+import { Listing, characteristics } from '@properproperty/api/listings/util';
 // import { profile } from '@properproperty/api/profile/util';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -43,6 +43,22 @@ export class CreateListingPage implements OnInit {
     private route: ActivatedRoute,
   ) {
     this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
+    this.characteristics = {
+      garden: false,
+      party: false,
+      mansion:  false,
+      accessible: false,
+      foreign: false,
+      openConcept: false,
+      ecoWarrior: false,
+      family: false,
+      student: false,
+      lovinIt: false,
+      farm: false,
+      Gym: false,
+      owner: false,
+      leftUmbrella: false 
+    }
     this.predictions = [];
     this.defaultBounds = new google.maps.LatLngBounds();
     if (isDevMode()) {
@@ -88,16 +104,30 @@ export class CreateListingPage implements OnInit {
             this.features = listing.features;
             this.photos = listing.photos;
             this.listingType = listing.let_sell;
+            (document.getElementById("garden") as HTMLIonCheckboxElement).checked = listing.characteristics.garden,
+            (document.getElementById("party") as HTMLIonCheckboxElement).checked = listing.characteristics.party,
+            (document.getElementById("mansion") as HTMLIonCheckboxElement).checked = listing.characteristics.mansion,
+            (document.getElementById("accessible") as HTMLIonCheckboxElement).checked = listing.characteristics.accessible,
+            (document.getElementById("foreign") as HTMLIonCheckboxElement).checked = listing.characteristics.foreign,
+            (document.getElementById("openConcept") as HTMLIonCheckboxElement).checked = listing.characteristics.openConcept,
+            (document.getElementById("ecoWarrior") as HTMLIonCheckboxElement).checked = listing.characteristics.ecoWarrior,
+            (document.getElementById("family") as HTMLIonCheckboxElement).checked = listing.characteristics.family,
+            (document.getElementById("student") as HTMLIonCheckboxElement).checked = listing.characteristics.student,
+            (document.getElementById("lovinIt") as HTMLIonCheckboxElement).checked = listing.characteristics.lovinIt,
+            (document.getElementById("farm") as HTMLIonCheckboxElement).checked = listing.characteristics.farm,
+            (document.getElementById("Gym") as HTMLIonCheckboxElement).checked = listing.characteristics.Gym,
+            (document.getElementById("owner") as HTMLIonCheckboxElement).checked = listing.characteristics.owner,
+            (document.getElementById("leftUmbrella") as HTMLIonCheckboxElement).checked = listing.characteristics.leftUmbrella
           }
         });
       }
-    });
+    }); 
   }
 
   features: string[] = [];
   selectedValue = true;
   listingType = "";
-
+ 
   async ngOnInit() {
     this.listingType = "Sell";
     // this.currentUser = this.userService.getCurrentUser();
@@ -165,6 +195,9 @@ handleAddressChange(address: string): void {
   furnish_type = "";
   orientation = "";
   count = 0;
+  characteristics : characteristics;
+
+  
 
   handleFileInput(event: Event) {
     if (!event.currentTarget) {
@@ -329,6 +362,22 @@ handleAddressChange(address: string): void {
         let_sell: this.listingType,
         approved: false,
         quality_rating: score,
+        characteristics: {
+          garden: (document.getElementById("garden") as HTMLIonCheckboxElement).checked,
+          party: (document.getElementById("party") as HTMLIonCheckboxElement).checked,
+          mansion: (document.getElementById("mansion") as HTMLIonCheckboxElement).checked,
+          accessible: (document.getElementById("accessible") as HTMLIonCheckboxElement).checked,
+          foreign: (document.getElementById("foreign") as HTMLIonCheckboxElement).checked,
+          openConcept: (document.getElementById("openConcept") as HTMLIonCheckboxElement).checked,
+          ecoWarrior: (document.getElementById("ecoWarrior") as HTMLIonCheckboxElement).checked,
+          family: (document.getElementById("family") as HTMLIonCheckboxElement).checked,
+          student: (document.getElementById("student") as HTMLIonCheckboxElement).checked,
+          lovinIt: (document.getElementById("lovinIt") as HTMLIonCheckboxElement).checked,
+          farm: (document.getElementById("farm") as HTMLIonCheckboxElement).checked,
+          Gym: (document.getElementById("Gym") as HTMLIonCheckboxElement).checked,
+          owner: (document.getElementById("owner") as HTMLIonCheckboxElement).checked,
+          leftUmbrella: (document.getElementById("leftUmbrella") as HTMLIonCheckboxElement).checked
+        },
         listingDate: "" + new Date()
       }
 
@@ -366,6 +415,22 @@ handleAddressChange(address: string): void {
         heading: this.heading,
         let_sell: this.listingType,
         approved: false,
+        characteristics: {
+          garden: (document.getElementById("garden") as HTMLIonCheckboxElement).checked,
+          party: (document.getElementById("party") as HTMLIonCheckboxElement).checked,
+          mansion: (document.getElementById("mansion") as HTMLIonCheckboxElement).checked,
+          accessible: (document.getElementById("accessible") as HTMLIonCheckboxElement).checked,
+          foreign: (document.getElementById("foreign") as HTMLIonCheckboxElement).checked,
+          openConcept: (document.getElementById("openConcept") as HTMLIonCheckboxElement).checked,
+          ecoWarrior: (document.getElementById("ecoWarrior") as HTMLIonCheckboxElement).checked,
+          family: (document.getElementById("family") as HTMLIonCheckboxElement).checked,
+          student: (document.getElementById("student") as HTMLIonCheckboxElement).checked,
+          lovinIt: (document.getElementById("lovinIt") as HTMLIonCheckboxElement).checked,
+          farm: (document.getElementById("farm") as HTMLIonCheckboxElement).checked,
+          Gym: (document.getElementById("Gym") as HTMLIonCheckboxElement).checked,
+          owner: (document.getElementById("owner") as HTMLIonCheckboxElement).checked,
+          leftUmbrella: (document.getElementById("leftUmbrella") as HTMLIonCheckboxElement).checked
+        },
         listingDate: "" + new Date()
       }
 

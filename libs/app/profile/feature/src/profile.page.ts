@@ -74,11 +74,20 @@ export class ProfilePage implements OnInit {
 
     // default value cus ngModel cries when the user is null
     this.interests = {
-      garden: 0,
-      mansion: 0,
-      accessible: 0,
-      openConcept: 0,
-      ecoWarrior: 0,
+      garden: 50,
+        party: 50,
+        mansion: 50,
+        accessible: 50,
+        foreign: 50,
+        openConcept: 50,
+        ecoWarrior: 50,
+        family: 50,
+        student: 50,
+        lovinIt: 50,
+        farm: 50,
+        Gym: 50,
+        owner: 50,
+        leftUmbrella: 50
     };
 
     this.userProfile$.subscribe((profile) => {
@@ -91,26 +100,22 @@ export class ProfilePage implements OnInit {
       else {
         this.interests = {
           garden: 50,
-          mansion: 20,
-          accessible: 60,
-          openConcept: 90,
-          ecoWarrior: 75,
+          party: 50,
+          mansion: 50,
+          accessible: 50,
+          foreign: 50,
+          openConcept: 50,
+          ecoWarrior: 50,
+          family: 50,
+          student: 50,
+          lovinIt: 50,
+          farm: 50,
+          Gym: 50,
+          owner: 50,
+          leftUmbrella: 50
         };
       }
     });
-
-    // this.user = {
-    //   email:"john@example.com",
-    //   name: 'John',
-    //   surname: 'Doe',
-    //   interests: {
-    //     garden: 50,
-    //     mansion: 75,
-    //     accessible: 25,
-    //     openConcept: 90,
-    //     ecoWarrior: 60,
-    //   },
-    // };
     
     this.isEditingEmail = false;
     this.isEditingName = false;
