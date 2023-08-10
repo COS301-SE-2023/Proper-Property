@@ -269,81 +269,47 @@
         </ion-col>
       </ion-row>
 
-      <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F; min-height: 56px;">
-        <ion-grid>
-          <br><ion-row><label position="floating" class="house-text" style="margin-left: 3%">Labels:</label></ion-row>
-          <br><ion-row>
-            <ion-col>
-              <ion-checkbox id="garden"  labelPlacement="end">Garden</ion-checkbox>
-            </ion-col>
-            <ion-col>
-              <ion-checkbox id="party"  labelPlacement="end">Party</ion-checkbox>
-            </ion-col>
-            <ion-col>
-              <ion-checkbox id="mansion"  labelPlacement="end">Mansion</ion-checkbox>
-            </ion-col>
-          </ion-row><br>
-          <ion-row>
-            <ion-col>
-              <ion-checkbox id="accessible"  labelPlacement="end">Accessible</ion-checkbox> 
-            </ion-col>
-            <ion-col>
-              <ion-checkbox id="foreign"  labelPlacement="end">Foreign</ion-checkbox>
-            </ion-col>
-            <ion-col>
-              <ion-checkbox id="openConcept"  labelPlacement="end">Open Concept</ion-checkbox>
-            </ion-col>
-          </ion-row><br>
-          <ion-row>
-            <ion-col>
-              <ion-checkbox id="ecoWarrior"  labelPlacement="end">Eco-Warrior</ion-checkbox>
-            </ion-col>
-            <ion-col>
-              <ion-checkbox id="family"  labelPlacement="end">Family</ion-checkbox>
-            </ion-col>
-            <ion-col>
-              <ion-checkbox id="student"  labelPlacement="end">Student</ion-checkbox>
-            </ion-col>
-          </ion-row><br>
-          <ion-row>
-            <ion-col>
-              <ion-checkbox id="lovinIt"  labelPlacement="end">Lovin' It</ion-checkbox>
-            </ion-col>
-            <ion-col>
-              <ion-checkbox id="farm"  labelPlacement="end">Farm</ion-checkbox>
-            </ion-col>
-            <ion-col>
-              <ion-checkbox id="Gym"  labelPlacement="end">Gym</ion-checkbox>
-            </ion-col>
-          </ion-row><br>
-          <ion-row>
-            <ion-col>
-              <ion-checkbox id="owner"  labelPlacement="end">Owner</ion-checkbox>
-            </ion-col>
-            <ion-col>
-              <ion-checkbox id="leftUmbrella"  labelPlacement="end">Left Umbrella</ion-checkbox>
-            </ion-col>
-            <ion-col></ion-col>
-          </ion-row><br>
-        </ion-grid>
-      </ion-row>
-
       <ion-row style="width: 100%; margin-top: 1.5%;">
         <ion-col size="6">
-          <ion-label class="house-text">Add Property Features:</ion-label>
-          <input id="feat-in" type="text" placeholder="Feature" class="addFeat house-text"
-            (keydown.enter)="addFeature()">&nbsp;<ion-button (click)="addFeature()" class="addButt">Add</ion-button><br>
-          <ion-item class="ion-container" *ngFor="let feat of features,; let i = index">
-            <ion-label>
-              <ion-chip>
-                &nbsp;
-                {{feat}}
-                &nbsp;
-                <ion-icon name="close-circle" (click)="removeFeature(i)"></ion-icon>
-                <ion-icon name="close" slot="end"></ion-icon>
-              </ion-chip>
-            </ion-label>
-          </ion-item>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-checkbox id="Pets"  labelPlacement="end">Pets</ion-checkbox>
+              </ion-col>
+              <ion-col>
+                <ion-checkbox id="Garden"  labelPlacement="end">Garden</ion-checkbox>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-checkbox id="Wifi"  labelPlacement="end">Wifi</ion-checkbox>
+              </ion-col>
+              <ion-col>
+                <ion-checkbox id="Pool"  labelPlacement="end">Pool</ion-checkbox>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-checkbox id="Accessible"  labelPlacement="end">Accessible</ion-checkbox>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-label class="house-text">Add Property Features:</ion-label>
+              <input id="feat-in" type="text" placeholder="Feature" class="addFeat house-text"
+                (keydown.enter)="addFeature()">&nbsp;<ion-button (click)="addFeature()" class="addButt">Add</ion-button><br>
+              <ion-item class="ion-container" *ngFor="let feat of features,; let i = index">
+                <ion-label>
+                  <ion-chip>
+                    &nbsp;
+                    {{feat}}
+                    &nbsp;
+                    <ion-icon name="close-circle" (click)="removeFeature(i)"></ion-icon>
+                    <ion-icon name="close" slot="end"></ion-icon>
+                  </ion-chip>
+                </ion-label>
+              </ion-item>
+            </ion-row>
+          </ion-grid>
         </ion-col>
         <ion-col size="6">
           <ion-label class="house-text">Property Description</ion-label>

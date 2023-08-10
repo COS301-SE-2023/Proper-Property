@@ -43,22 +43,6 @@ export class CreateListingPage implements OnInit {
     private route: ActivatedRoute,
   ) {
     this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
-    this.characteristics = {
-      garden: false,
-      party: false,
-      mansion:  false,
-      accessible: false,
-      foreign: false,
-      openConcept: false,
-      ecoWarrior: false,
-      family: false,
-      student: false,
-      lovinIt: false,
-      farm: false,
-      Gym: false,
-      owner: false,
-      leftUmbrella: false 
-    }
     this.predictions = [];
     this.defaultBounds = new google.maps.LatLngBounds();
     if (isDevMode()) {
@@ -104,20 +88,13 @@ export class CreateListingPage implements OnInit {
             this.features = listing.features;
             this.photos = listing.photos;
             this.listingType = listing.let_sell;
-            (document.getElementById("garden") as HTMLIonCheckboxElement).checked = listing.characteristics.garden,
-            (document.getElementById("party") as HTMLIonCheckboxElement).checked = listing.characteristics.party,
-            (document.getElementById("mansion") as HTMLIonCheckboxElement).checked = listing.characteristics.mansion,
-            (document.getElementById("accessible") as HTMLIonCheckboxElement).checked = listing.characteristics.accessible,
-            (document.getElementById("foreign") as HTMLIonCheckboxElement).checked = listing.characteristics.foreign,
-            (document.getElementById("openConcept") as HTMLIonCheckboxElement).checked = listing.characteristics.openConcept,
-            (document.getElementById("ecoWarrior") as HTMLIonCheckboxElement).checked = listing.characteristics.ecoWarrior,
-            (document.getElementById("family") as HTMLIonCheckboxElement).checked = listing.characteristics.family,
-            (document.getElementById("student") as HTMLIonCheckboxElement).checked = listing.characteristics.student,
-            (document.getElementById("lovinIt") as HTMLIonCheckboxElement).checked = listing.characteristics.lovinIt,
-            (document.getElementById("farm") as HTMLIonCheckboxElement).checked = listing.characteristics.farm,
-            (document.getElementById("Gym") as HTMLIonCheckboxElement).checked = listing.characteristics.Gym,
-            (document.getElementById("owner") as HTMLIonCheckboxElement).checked = listing.characteristics.owner,
-            (document.getElementById("leftUmbrella") as HTMLIonCheckboxElement).checked = listing.characteristics.leftUmbrella
+            
+            for(const feature of listing.features){
+              if(feature == "Pool" || feature == "Wifi" || feature == "Pets" || feature == "Accessible" || feature == "Garden"){
+                this.features.splice(this.features.indexOf(feature),1);
+                (document.getElementById(feature) as HTMLIonCheckboxElement).checked = true;
+              }
+            }
           }
         });
       }
@@ -195,7 +172,6 @@ handleAddressChange(address: string): void {
   furnish_type = "";
   orientation = "";
   count = 0;
-  characteristics : characteristics;
 
   
 
@@ -336,9 +312,17 @@ handleAddressChange(address: string): void {
     }
   }
 
+  checkboxes =  ["Wifi", "Pets", "Garden", "Pool", "Accessible"];
+
   async addListing(){
     this.address = (document.getElementById("address") as HTMLInputElement).value;
     const score = await calculateQualityScore(this.photos,this.address,this.price,this.bedrooms,this.bathrooms,this.parking,this.floor_size,this.erf_size,this.pos_type,this.env_type,this.prop_type,this.furnish_type,this.orientation,this.gmapsService);
+
+    for(let i = 0; i < this.checkboxes.length; i++){
+      if((document.getElementById(this.checkboxes[i]) as HTMLIonCheckboxElement) && (document.getElementById(this.checkboxes[i]) as HTMLIonCheckboxElement).checked){
+        this.features.push((document.getElementById(this.checkboxes[i]) as HTMLIonCheckboxElement).id);
+      }
+    }
   
     if(this.currentUser != null){
       const list : Listing = {
@@ -363,20 +347,20 @@ handleAddressChange(address: string): void {
         approved: false,
         quality_rating: score,
         characteristics: {
-          garden: (document.getElementById("garden") as HTMLIonCheckboxElement).checked,
-          party: (document.getElementById("party") as HTMLIonCheckboxElement).checked,
-          mansion: (document.getElementById("mansion") as HTMLIonCheckboxElement).checked,
-          accessible: (document.getElementById("accessible") as HTMLIonCheckboxElement).checked,
-          foreign: (document.getElementById("foreign") as HTMLIonCheckboxElement).checked,
-          openConcept: (document.getElementById("openConcept") as HTMLIonCheckboxElement).checked,
-          ecoWarrior: (document.getElementById("ecoWarrior") as HTMLIonCheckboxElement).checked,
-          family: (document.getElementById("family") as HTMLIonCheckboxElement).checked,
-          student: (document.getElementById("student") as HTMLIonCheckboxElement).checked,
-          lovinIt: (document.getElementById("lovinIt") as HTMLIonCheckboxElement).checked,
-          farm: (document.getElementById("farm") as HTMLIonCheckboxElement).checked,
-          Gym: (document.getElementById("Gym") as HTMLIonCheckboxElement).checked,
-          owner: (document.getElementById("owner") as HTMLIonCheckboxElement).checked,
-          leftUmbrella: (document.getElementById("leftUmbrella") as HTMLIonCheckboxElement).checked
+          garden: false,
+          party: false,
+          mansion:  false,
+          accessible: false,
+          foreign: false,
+          openConcept: false,
+          ecoWarrior: false,
+          family: false,
+          student: false,
+          lovinIt: false,
+          farm: false,
+          Gym: false,
+          owner: false,
+          leftUmbrella: false 
         },
         listingDate: "" + new Date()
       }
@@ -392,6 +376,12 @@ handleAddressChange(address: string): void {
 
   async editListing(){
     if(this.currentUser != null && this.listingEditee != null){
+      for(const feat in this.checkboxes){
+        if((document.getElementById(feat) as HTMLIonCheckboxElement).checked){
+          this.features.push((document.getElementById(feat) as HTMLIonCheckboxElement).value);
+        }
+      }
+
       const list : Listing = {
         listing_id: this.listingEditee.listing_id,
         statusChanges: this.listingEditee.statusChanges,
@@ -416,20 +406,20 @@ handleAddressChange(address: string): void {
         let_sell: this.listingType,
         approved: false,
         characteristics: {
-          garden: (document.getElementById("garden") as HTMLIonCheckboxElement).checked,
-          party: (document.getElementById("party") as HTMLIonCheckboxElement).checked,
-          mansion: (document.getElementById("mansion") as HTMLIonCheckboxElement).checked,
-          accessible: (document.getElementById("accessible") as HTMLIonCheckboxElement).checked,
-          foreign: (document.getElementById("foreign") as HTMLIonCheckboxElement).checked,
-          openConcept: (document.getElementById("openConcept") as HTMLIonCheckboxElement).checked,
-          ecoWarrior: (document.getElementById("ecoWarrior") as HTMLIonCheckboxElement).checked,
-          family: (document.getElementById("family") as HTMLIonCheckboxElement).checked,
-          student: (document.getElementById("student") as HTMLIonCheckboxElement).checked,
-          lovinIt: (document.getElementById("lovinIt") as HTMLIonCheckboxElement).checked,
-          farm: (document.getElementById("farm") as HTMLIonCheckboxElement).checked,
-          Gym: (document.getElementById("Gym") as HTMLIonCheckboxElement).checked,
-          owner: (document.getElementById("owner") as HTMLIonCheckboxElement).checked,
-          leftUmbrella: (document.getElementById("leftUmbrella") as HTMLIonCheckboxElement).checked
+          garden: false,
+          party: false,
+          mansion:  false,
+          accessible: false,
+          foreign: false,
+          openConcept: false,
+          ecoWarrior: false,
+          family: false,
+          student: false,
+          lovinIt: false,
+          farm: false,
+          Gym: false,
+          owner: false,
+          leftUmbrella: false 
         },
         listingDate: "" + new Date()
       }
