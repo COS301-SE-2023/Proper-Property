@@ -89,10 +89,12 @@ export class CreateListingPage implements OnInit {
             this.photos = listing.photos;
             this.listingType = listing.let_sell;
             
-            for(const feature of listing.features){
-              if(feature == "Pool" || feature == "Wifi" || feature == "Pets" || feature == "Accessible" || feature == "Garden"){
-                this.features.splice(this.features.indexOf(feature),1);
-                (document.getElementById(feature) as HTMLIonCheckboxElement).checked = true;
+            console.log(this.features);
+            for(let i = 0 ; i < listing.features.length ; i++){
+              if(listing.features[i] == "Pool" || listing.features[i] == "Wifi" || listing.features[i] == "Pets" || listing.features[i] == "Accessible" || listing.features[i] == "Garden"){
+                (document.getElementById(listing.features[i]) as HTMLIonCheckboxElement).checked = true;
+                listing.features.splice(i,1);
+                i--;
               }
             }
           }
@@ -376,9 +378,9 @@ handleAddressChange(address: string): void {
 
   async editListing(){
     if(this.currentUser != null && this.listingEditee != null){
-      for(const feat in this.checkboxes){
-        if((document.getElementById(feat) as HTMLIonCheckboxElement).checked){
-          this.features.push((document.getElementById(feat) as HTMLIonCheckboxElement).value);
+      for(let i = 0; i < this.checkboxes.length; i++){
+        if((document.getElementById(this.checkboxes[i]) as HTMLIonCheckboxElement) && (document.getElementById(this.checkboxes[i]) as HTMLIonCheckboxElement).checked){
+          this.features.push((document.getElementById(this.checkboxes[i]) as HTMLIonCheckboxElement).id);
         }
       }
 
