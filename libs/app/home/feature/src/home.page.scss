@@ -272,9 +272,15 @@ ion-footer ion-col {
   /************************* Sec 1 ******************************/
 
   .sec1 {
+    img.homeCover {
+      height: 50%;
+      width: 50%;
+    }
+  
     width: 100%;
     padding: 5%;
     background: rgba(13, 174, 79, 0.40);
+    height: 50vh;
 
     .slogan {
       text-align: center;
@@ -283,7 +289,8 @@ ion-footer ion-col {
     .mainHeading {
       font-size: 30px;
       font-weight: 500;
-      margin-bottom: 10px;
+      
+      
     }
 
     #caption {
@@ -319,9 +326,7 @@ ion-footer ion-col {
       }
     }
 
-    .homeCover {
-      display: none;
-    }
+
   }
 
   /************************ Sec 2 ******************************/
@@ -330,6 +335,7 @@ ion-footer ion-col {
     width: 100%;
     padding: 5%;
 
+    height: 50vh; /* Adjusted height to take half of the viewport height */
 
     .serv-box {
       width: 100%;
