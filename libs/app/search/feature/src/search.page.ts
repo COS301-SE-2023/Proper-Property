@@ -1,5 +1,5 @@
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild,HostListener } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
@@ -21,6 +21,7 @@ import { ActivatedRoute } from '@angular/router';
 
 export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
+  isMobile: boolean;
 
   autocomplete: any;
   defaultBounds: google.maps.LatLngBounds;
@@ -93,8 +94,15 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
         this.userProfileListener = listener;
       });
       
+      this.isMobile = isMobile();
     }
 
+    @HostListener('window:resize', ['$event'])
+    onResize(event: Event) {
+      console.log(event);
+      this.isMobile = window.innerWidth <= 576;
+    }
+    
   async ngOnInit() {
     // await this.listingServices.getApprovedListings().then((listings) => {
     //   this.listings = listings;
@@ -790,4 +798,7 @@ unsaveListing($event : any, listing_id : string){
 }
 
 
+}
+function isMobile(): boolean {
+  return window.innerWidth <= 576;
 }

@@ -3,7 +3,7 @@ core.shell.html
 -------------->
 
 
-<ion-content>
+<ion-content *ngIf="!this.isMobile" class="Desktop">
   <!----------------------- SlideShow and Searchbar Section--------------------------->
 
   <section class="sec1">
@@ -154,4 +154,57 @@ core.shell.html
     <properproperty-footer></properproperty-footer>
   </section>
 
+</ion-content>
+
+<ion-content *ngIf="isMobile" class="Mobile">
+  <!-- Mobile-specific content here -->
+
+  <section class="sec1">
+    <!-- Simplified version of the SlideShow and Searchbar Section for mobile -->
+    
+
+    <div class="slogan">
+      <img alt="homeCover" class="homeCover" src="assets/HomeCover.png">
+      <h1 class="mainHeading">Proper Properties For You</h1>
+      <h1 id="caption">Discover Your Dream Home</h1>
+      <div class="search-container">
+        <input type="text" id="address" [(ngModel)]="searchQuery" placeholder="Property Location Search">
+        <ion-button id="search-button" (click)="searchProperties()">
+          <h1 class="search-button-text">Search</h1>
+        </ion-button>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec2">
+    <!-- Simplified version of the Summarised Descriptions Section for mobile -->
+    <div class="serv-container">
+      <div class="serv-box">
+        <h3>Proper Recommendations</h3>
+        <p>We use AI to understand your preferences and offer you the Proper Property you're looking for.</p>
+      </div>
+      <!-- Similar adjustments for other serv-box elements -->
+    </div>
+  </section>
+
+  <section class="mid-section">
+    <h2 class="heading">Top Features</h2>
+  </section>
+
+  <section class="sec3">
+    <!-- Simplified version of the Use Case Section for mobile -->
+    <ion-grid class="case-container">
+      <ion-row>
+        <ion-col size="12">
+          <div class="case-box">
+            <h4>View all Property Types</h4>
+            <p>Explore a diverse range of properties and find the one that fits your lifestyle.</p>
+          </div>
+        </ion-col>
+        <!-- Similar adjustments for other case-box elements -->
+      </ion-row>
+    </ion-grid>
+  </section>
+
+  <properproperty-footer></properproperty-footer>
 </ion-content>

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild} from '@angular/core';
+import { Component, ElementRef, ViewChild,HostListener} from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { Listing } from '@properproperty/api/listings/util';
 import Swiper from 'swiper';
@@ -27,6 +27,7 @@ export class ListingPage{
   @ViewChild(IonContent) content: IonContent | undefined;
   // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
 
+  isMobile: boolean;
   @Select(AuthState.user) user$!: Observable<User | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
   private user: User | null = null;
@@ -138,6 +139,14 @@ export class ListingPage{
     this.userProfileListener$.subscribe((listener) => {
       this.userProfileListener = listener;
     });
+
+    this.isMobile = isMobile(); 
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    console.log(event);
+    this.isMobile = window.innerWidth <= 576;
   }
 
   async showAnalytics(){
@@ -437,4 +446,7 @@ export class ListingPage{
   editListing(){
     this.router.navigate(['/create-listing', {listingId : this.listingId}]);
   }
+}
+function isMobile(): boolean {
+  return window.innerWidth <= 576;
 }
