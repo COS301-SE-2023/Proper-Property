@@ -210,9 +210,16 @@
 
     <ion-row style="width: 100%; margin-top: 1%;">
       <ion-row style="width: 100%;">
-        <ion-col size="10">
+        <ion-col size="9">
           <input type="text" id="address" [(ngModel)]="searchQuery" placeholder="search">
+        </ion-col
+        >
+        <ion-col size="3">
+          <ion-button class="map-button" (click)="mapView()">
+            <ion-icon name="map"></ion-icon>
+          </ion-button>
         </ion-col>
+
         <ion-col>
           <ion-button class="search-button" (click)="searchProperties()">Search</ion-button>
         </ion-col>
@@ -333,8 +340,8 @@
 
   <div id="listings-and-map">
     <ion-grid>
-      <ion-row>
-        <ion-col size="12">
+      <ion-row *ngIf="!this.MapView" size="12">
+        <ion-col>
           <ion-card *ngFor="let listing of listings">
             <div (click)="redirectToPage(listing)">
               <ion-card-header>
@@ -377,8 +384,10 @@
             </ng-template>
           </ion-card>
       </ion-col>
-      <ion-col size="6">
-        <div class="map" #map></div>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" *ngIf="this.MapView">
+        <div class="map-container"  #map></div>
       </ion-col>
     </ion-row>
   </ion-grid>

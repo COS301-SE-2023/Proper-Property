@@ -456,31 +456,31 @@
     color: grey;
   }
   
-  .map {
-    // margin-left: 50%;
-    // width: 40%;
-    // margin-left: 55%;
-    margin-top: -10px;
-    width: 95%;
-    margin-left: 2%;
-    margin-right: 3%;
-    height: 600px;
-    border-radius: 10px;
-    background-color: transparent;
-    opacity: 0;
-    transition: opacity 150ms ease-in;
-  }
+  // .map {
+  //   // margin-left: 50%;
+  //   // width: 40%;
+  //   // margin-left: 55%;
+  //   margin-top: -10px;
+  //   width: 95%;
+  //   margin-left: 2%;
+  //   margin-right: 3%;
+  //   height: 600px;
+  //   border-radius: 10px;
+  //   background-color: transparent;
+  //   opacity: 0;
+  //   transition: opacity 150ms ease-in;
+  // }
   
-  .map.visible {
-    opacity: 1;
-  }
+  // .map.visible {
+  //   opacity: 1;
+  // }
   
-  #map {
-    width: 50%;
-    margin-left: 2%;
-    margin-top: 10px;
-    border-radius: 10px;
-  }
+  // #map {
+  //   width: 50%;
+  //   margin-left: 2%;
+  //   margin-top: 10px;
+  //   border-radius: 10px;
+  // }
   
   // #login-button{
   //   background-color: #0DAE4F;

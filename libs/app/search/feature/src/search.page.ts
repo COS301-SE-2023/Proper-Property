@@ -22,7 +22,7 @@ import { ActivatedRoute } from '@angular/router';
 export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
   isMobile: boolean;
-
+  MapView: boolean;
   autocomplete: any;
   defaultBounds: google.maps.LatLngBounds;
   predictions: google.maps.places.AutocompletePrediction[] = [];
@@ -95,6 +95,11 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       });
       
       this.isMobile = isMobile();
+      this.MapView = false;
+    }
+
+    mapView(){
+      this.MapView = !this.MapView;
     }
 
     @HostListener('window:resize', ['$event'])
