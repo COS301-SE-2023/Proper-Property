@@ -1,5 +1,5 @@
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild,HostListener } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild,HostListener, ViewChildren, QueryList  } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
@@ -11,6 +11,8 @@ import { UserProfile } from '@properproperty/api/profile/util';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { ActivatedRoute } from '@angular/router';
+import { IonContent } from '@ionic/angular';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-search',
@@ -21,13 +23,16 @@ import { ActivatedRoute } from '@angular/router';
 
 export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
-  isMobile: boolean;
-  MapView: boolean;
+  isMobile = true;
+  MapView = true ;
   autocomplete: any;
   defaultBounds: google.maps.LatLngBounds;
   predictions: google.maps.places.AutocompletePrediction[] = [];
 
-  @ViewChild('map', { static: true }) mapElementRef!: ElementRef;
+  @ViewChild('map', { static: false }) mapElementRef!: ElementRef;
+  @ViewChild('map1', { static: false }) mapElementRef1!: ElementRef;
+  @ViewChildren(IonContent) contentElements!: QueryList<IonContent>;
+  
   googleMaps: any;
   // center = { lat: -25.7477, lng: 28.2433 };
   center = { lat: 0, lng: 0 };
@@ -98,8 +103,16 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       this.MapView = false;
     }
 
-    mapView(){
+    async mapView(){
       this.MapView = !this.MapView;
+      if(this.MapView &&this.isMobile){
+        await this.setCentre();
+      } else {
+        const map1Element = document.getElementById("map1");
+        if (map1Element) {
+          map1Element.innerHTML = ''; // Clear the contents of the map1 div
+        }
+      }
     }
 
     @HostListener('window:resize', ['$event'])
@@ -138,6 +151,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     this.searchProperties();
 
     
+    
   }
 
   handleInputChange(event: Event): void {
@@ -163,9 +177,10 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
 
   ngAfterViewInit() {
-    this.setCentre();
-    
-    this.loadMap();
+    if(!this.isMobile ||this.MapView) {
+      this.setCentre();
+      this.loadMap();
+    }
 
   }
 
@@ -228,9 +243,22 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
 async loadMap() {
   try {
+  
+    //const addressInput = document.getElementById("address") as HTMLInputElement;
+   
+    const mapElementRef1 = document.getElementById("map1") as HTMLElement;
+    console.log("ehlo ",mapElementRef1);
     const googleMaps: any = await this.gmaps.loadGoogleMaps();
     this.googleMaps = googleMaps;
-    const mapEl = this.mapElementRef.nativeElement;
+    console.log("Sferb ",this.isMobile ,mapElementRef1);
+    
+    let mapEl = null;
+    
+    if(!this.isMobile) mapEl = this.mapElementRef.nativeElement;
+    else if(this.isMobile && this.MapView) mapEl = mapElementRef1;
+    console.log("hello  ",mapEl);
+    
+    console.log("Sferbbb ",this.isMobile ,this.mapElementRef1);
     
       const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
       this.map = new googleMaps.Map(mapEl, {
@@ -246,7 +274,8 @@ async loadMap() {
     //const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
 
     this.renderer.addClass(mapEl, 'visible');
-
+  
+    console.log("success!");
     // Generate info window content for each listing
     const infoWindowContent = this.listings.map((listing) => this.createListingCard(listing));
 
