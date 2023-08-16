@@ -232,28 +232,28 @@
                         </ion-toolbar>
                       </ion-header>
                       <ion-content class="ion-padding">
-                        <ion-grid style="border: 1px solid black"> 
-                          <ion-row style="border: 1px solid black">
-                            <ion-col style="border: 1px solid black">
+                        <ion-grid> 
+                          <ion-row class="lister-row" style="margin-top:1%;">
+                            <ion-col>
                               <ion-avatar>
                                 <img alt="profilePic" [src]="">
                               </ion-avatar>
                               <p>{{lister_name}}</p>
                             </ion-col>
                           </ion-row>
-                          <ion-row style="border: 1px solid black">
-                            <ion-col style="border: 1px solid black">
-                                Email
+                          <ion-row class="lister-row">
+                            <ion-col style="border-right: 1px solid #0DAE4F">
+                                Email:
                             </ion-col>
-                            <ion-col style="border: 1px solid black">
+                            <ion-col style="border-left: 1px solid #0DAE4F">
                               {{lister?.email}}
                             </ion-col>
                           </ion-row>
-                          <ion-row style="border: 1px solid black">
-                            <ion-col style="border: 1px solid black">
-                                Phone
+                          <ion-row class="lister-row">
+                            <ion-col style="border-right: 1px solid #0DAE4F">
+                                Phone:
                             </ion-col>
-                            <ion-col style="border: 1px solid black">
+                            <ion-col style="border-left: 1px solid #0DAE4F">
                               {{lister?.phoneNumber}}
                             </ion-col>
                           </ion-row>
