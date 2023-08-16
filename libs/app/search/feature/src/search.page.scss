@@ -1,4 +1,4 @@
-.Desktop {
+.common-styles {
   .filter {
     border-radius: 10px;
     //make it smaller so that 4 can fit in 1 line
@@ -90,7 +90,61 @@
   ion-toolbar {
     --background: rgb(255, 255, 255);
   }
+
+    //make the ion-card take only half of the page
+    ion-card {
+      // width: 45%;
+      margin-left: 2%;
+      margin-top: 10px;
+      border-radius: 10px;
+    }
+
+    .heart-button {
+      background-color: transparent;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      //move it to right hand corner
+      margin-left: 90%;
+      margin-top: -30px;
+    }
   
+    .red {
+      color: red;
+    }
+    
+    .grey {
+      color: grey;
+    }
+    
+    .map1 {
+      // margin-left: 50%;
+      // width: 40%;
+      // margin-left: 55%;
+      margin-top: -10px;
+      width: 95%;
+      margin-left: 2%;
+      margin-right: 3%;
+      height: 600px;
+      border-radius: 10px;
+      background-color: transparent;
+      opacity: 0;
+      transition: opacity 150ms ease-in;
+    }
+    .green-button {
+      background-color: green;
+      color: white;
+    }
+    
+}
+.Desktop {
+
+  @extend .common-styles;
   
   //make the img in ion-card-header smaller
   ion-card-header img {
@@ -115,14 +169,6 @@
     margin-left: 220px;
   }
   
-  //make the ion-card take only half of the page
-  ion-card {
-    // width: 45%;
-    margin-left: 2%;
-    margin-top: 10px;
-    border-radius: 10px;
-  }
-  
   //styling for div with id="house_details"
   #house_details img {
     //set image size
@@ -130,21 +176,7 @@
     height: 15px;
   }
   
-  .heart-button {
-    background-color: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    //move it to right hand corner
-    margin-left: 90%;
-    margin-top: -30px;
-  }
-  
+
   // .heart-icon {
   //   color: red;
   //   font-size: 24px;
@@ -297,182 +329,14 @@
 }
 
 .Mobile {
-  .filter {
-    border-radius: 10px;
-    //make it smaller so that 4 can fit in 1 line
-    margin: 0 5px;
-    //make all of them fit in 1 line
-    display: inline-block;
-    --ion-background-color: transparent;
-    border-bottom: none;
-  }
-  
-  #filter-container {
-    border-radius: 30px;
-    border: 1px solid #000;
-    background: rgba(13, 174, 79, 0.40);
-    width: 92%;
-    margin-left: 4%;
-    height: auto;
-  }
-  
-  .filter-text {
-    color: rgb(68, 68, 68);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-  }
-  
-  #additional-features {
-    width: 88%;
-    margin-left: 6%;
-    height: auto;
-    border-radius: 0px 0px 30px 30px;
-    border-right: 2px solid #0DAE4F;
-    border-bottom: 2px solid #0DAE4F;
-    border-left: 2px solid #0DAE4F;
-    background: #FFF;
-    padding: 10px;
-  }
-  
-  #address {
-    border-radius: 30px;
-    border: 1.5px solid #000;
-    background: #FFF;
-    width: 92%;
-    margin-left: 4%;
-    margin-bottom: 1%;
-    padding-left: 18px;
-    height: 50px;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-  }
-  
-  .dropdown {
-    color: rgb(68, 68, 68);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    background-color: transparent;
-    border: none;
-  }
-  
-  .filter-button {
-    width: 90%;
-    height: 80%;
-    margin-right: 10%;
-    --border-radius: 30px;
-    margin-top: 1%;
-  }
-  
-  .search-button {
-    width: 90%;
-    height: 70%;
-    margin-right: 10%;
-    color: white;
-    border: none;
-    --border-radius: 30px;
-    cursor: pointer;
-    margin-top: 1%;
-  }
-  
-  .link {
-    --color: var(--ion-color-primary-contrast);
-  }
-  
-  .active {
-    --color: var(--ion-color-primary);
-  }
-  
-  ion-toolbar {
-    --background: rgb(255, 255, 255);
-  }
-  
-  
-  // //make the img in ion-card-header smaller
-  // ion-card-header img {
-  //   width: 200px;
-  //   height: 200px;
-  //   //rounded edges
-  //   border-radius: 10px;
-  // }
-  
-  // //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
-  // ion-card-header ion-card-title {
-  //   margin-left: 220px;
-  //   //move ths up
-  //   margin-top: -100px;
-  // }
-  
-  // ion-card-header ion-card-subtitle {
-  //   margin-left: 220px;
-  // }
-  
-  // ion-card ion-card-content {
-  //   margin-left: 220px;
-  // }
-  
-  //make the ion-card take only half of the page
-  ion-card {
-    // width: 45%;
-    margin-left: 2%;
-    margin-top: 10px;
-    border-radius: 10px;
-  }
-  
+
+  @extend .common-styles;
+
   //styling for div with id="house_details"
   #house_details img {
     //set image size
     width: 15px;
     height: 15px;
-  }
-  
-  .heart-button {
-    background-color: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    //move it to right hand corner
-    margin-left: 90%;
-    margin-top: -30px;
-  }
-  
-  // .heart-icon {
-  //   color: red;
-  //   font-size: 24px;
-  // }
-  
-  .red {
-    color: red;
-  }
-  
-  .grey {
-    color: grey;
-  }
-  
-  .map1 {
-    // margin-left: 50%;
-    // width: 40%;
-    // margin-left: 55%;
-    margin-top: -10px;
-    width: 95%;
-    margin-left: 2%;
-    margin-right: 3%;
-    height: 600px;
-    border-radius: 10px;
-    background-color: transparent;
-    opacity: 0;
-    transition: opacity 150ms ease-in;
-  }
-  .green-button {
-    background-color: green;
-    color: white;
   }
   
   .map1.visible {
