@@ -309,7 +309,7 @@
             <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
             <ion-button (click)="editListing()">Edit Listing</ion-button>
           </div>
-          <canvas id="lineGraph"></canvas>
+          <canvas id="lineGraph" [class.graph-style]="showData"></canvas>
           <div *ngIf="showData">
             <h3>Average engagement per user: </h3>
             <ion-input type="string" [(ngModel)]="avgEnagement"></ion-input>
