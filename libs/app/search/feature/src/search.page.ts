@@ -22,7 +22,8 @@ import { Console } from 'console';
 
 
 export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
-  @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('address', { static: false }) addressInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('address1', { static: false }) addressInput1!: ElementRef<HTMLInputElement>;
   isMobile = true;
   MapView = true ;
   autocomplete: any;
@@ -134,21 +135,42 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
     console.log(this.listings);
 
-    const inputElementId = 'address';
+    if(!this.isMobile){
+      const inputElementId = 'address';
 
     
     
-    this.gmapsService.setupRegionSearchBox(inputElementId);
-
-    const queryParams = this.route.snapshot.queryParams;
-    this.searchQuery = queryParams['q'] || ''; // If 'q' parameter is not available, default to an empty string.
-
-    const addressInput = document.getElementById("address") as HTMLInputElement;
-    if (this.searchQuery!='') {
-      addressInput.value = this.searchQuery;
+      this.gmapsService.setupRegionSearchBox(inputElementId);
+  
+      const queryParams = this.route.snapshot.queryParams;
+      this.searchQuery = queryParams['q'] || ''; // If 'q' parameter is not available, default to an empty string.
+  
+      const addressInput = document.getElementById("address") as HTMLInputElement;
+      if (this.searchQuery!='') {
+        addressInput.value = this.searchQuery;
+      }
+  
+      this.searchProperties();
     }
 
-    this.searchProperties();
+    else {
+      const inputElementId = 'address1';
+
+    
+    
+      this.gmapsService.setupRegionSearchBox(inputElementId);
+  
+      const queryParams = this.route.snapshot.queryParams;
+      this.searchQuery = queryParams['q'] || ''; // If 'q' parameter is not available, default to an empty string.
+  
+      const addressInput = document.getElementById("address1") as HTMLInputElement;
+      if (this.searchQuery!='') {
+        addressInput.value = this.searchQuery;
+      }
+  
+      this.searchProperties();
+    }
+
 
     
     
@@ -167,11 +189,20 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       event.preventDefault(); // Prevent the default behavior of the <a> tag
     }
 
-    const addressInput = document.getElementById("address") as HTMLInputElement;
-    if (addressInput) {
-      addressInput.value = prediction;
+    if(!this.isMobile){
+      const addressInput = document.getElementById("address") as HTMLInputElement;
+      if (addressInput) {
+        addressInput.value = prediction;
+      }
+      this.predictions = [];
     }
-    this.predictions = [];
+    else {
+      const addressInput = document.getElementById("address1") as HTMLInputElement;
+      if (addressInput) {
+        addressInput.value = prediction;
+      }
+      this.predictions = [];
+    }
   }
 
 
@@ -483,7 +514,8 @@ toggleColor() {
     this.listings = listings;
     this.filterProperties();
 
-    this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
+    if(this.isMobile)this.searchQuery = (document.getElementById("address1") as HTMLInputElement).value;
+    else this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
    
     this.setCentre();
     // this.center.lat = (await this.gmaps.getLatLongFromAddress(this.searchQuery)).latitude;
@@ -510,6 +542,7 @@ toggleColor() {
       
           }
         } catch (error) {
+          this.listings.splice(i, 1);
           console.error('Error:', error);
         }
       }
