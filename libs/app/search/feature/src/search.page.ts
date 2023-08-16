@@ -247,18 +247,14 @@ async loadMap() {
     //const addressInput = document.getElementById("address") as HTMLInputElement;
    
     const mapElementRef1 = document.getElementById("map1") as HTMLElement;
-    console.log("ehlo ",mapElementRef1);
+  
     const googleMaps: any = await this.gmaps.loadGoogleMaps();
     this.googleMaps = googleMaps;
-    console.log("Sferb ",this.isMobile ,mapElementRef1);
     
     let mapEl = null;
     
     if(!this.isMobile) mapEl = this.mapElementRef.nativeElement;
     else if(this.isMobile && this.MapView) mapEl = mapElementRef1;
-    console.log("hello  ",mapEl);
-    
-    console.log("Sferbbb ",this.isMobile ,this.mapElementRef1);
     
       const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
       this.map = new googleMaps.Map(mapEl, {
@@ -274,8 +270,7 @@ async loadMap() {
     //const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
 
     this.renderer.addClass(mapEl, 'visible');
-  
-    console.log("success!");
+
     // Generate info window content for each listing
     const infoWindowContent = this.listings.map((listing) => this.createListingCard(listing));
 
@@ -512,7 +507,7 @@ toggleColor() {
             console.log('Address 1 is not in the area of Address 2', i);
           } else {
             console.log('Address 1 is in the area of Address 2', i);
-            console.log(this.listings[i].address, "eyy");
+      
           }
         } catch (error) {
           console.error('Error:', error);
