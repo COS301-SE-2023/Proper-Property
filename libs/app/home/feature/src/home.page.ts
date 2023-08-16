@@ -1,4 +1,4 @@
-import { Component, inject, OnInit,ViewChild,ElementRef } from '@angular/core';
+import { Component, inject, OnInit,ViewChild,ElementRef, HostListener} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 export class HomePage implements OnInit {
   @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
 
+  isMobile:boolean;
   // public autocomplete: any;
 
   public predictions: google.maps.places.AutocompletePrediction[] = [];
@@ -37,8 +38,8 @@ export class HomePage implements OnInit {
   currentUser: UserProfile | null = null;
   constructor(public userService : UserProfileService, public gmapsService: GmapsService,private router: Router) {
     this.currentUser = this.userService.getCurrentUser();
+    this.isMobile = isMobile();
   }
-
    ngOnInit() {
     this.currentUser = this.userService.getCurrentUser();
     this.home = this.activatedRoute.snapshot.paramMap.get('id') as string;
@@ -65,6 +66,12 @@ export class HomePage implements OnInit {
     this.gmapsService.setupRegionSearchBox(inputElementId);
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    console.log(event);
+    this.isMobile = window.innerWidth <= 576;
+  }
+  
   searchQuery = '';
   //to be implemented
   searchProperties() {
@@ -84,4 +91,7 @@ export class HomePage implements OnInit {
   // goPrev() {
   //   this.swiper?.slidePrev();
   // }
+}
+ function isMobile(): boolean {
+  return window.innerWidth <= 576;
 }
