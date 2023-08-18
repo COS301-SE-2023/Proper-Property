@@ -22,7 +22,8 @@ import { Console } from 'console';
 
 
 export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
-  @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('address', { static: false }) addressInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('address1', { static: false }) addressInput1!: ElementRef<HTMLInputElement>;
   isMobile = true;
   MapView = true ;
   autocomplete: any;
@@ -134,21 +135,42 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
     console.log(this.listings);
 
-    const inputElementId = 'address';
+    if(!this.isMobile){
+      const inputElementId = 'address';
 
     
     
-    this.gmapsService.setupRegionSearchBox(inputElementId);
-
-    const queryParams = this.route.snapshot.queryParams;
-    this.searchQuery = queryParams['q'] || ''; // If 'q' parameter is not available, default to an empty string.
-
-    const addressInput = document.getElementById("address") as HTMLInputElement;
-    if (this.searchQuery!='') {
-      addressInput.value = this.searchQuery;
+      this.gmapsService.setupRegionSearchBox(inputElementId);
+  
+      const queryParams = this.route.snapshot.queryParams;
+      this.searchQuery = queryParams['q'] || ''; // If 'q' parameter is not available, default to an empty string.
+  
+      const addressInput = document.getElementById("address") as HTMLInputElement;
+      if (this.searchQuery!='') {
+        addressInput.value = this.searchQuery;
+      }
+  
+      this.searchProperties();
     }
 
-    this.searchProperties();
+    else {
+      const inputElementId = 'address1';
+
+    
+    
+      this.gmapsService.setupRegionSearchBox(inputElementId);
+  
+      const queryParams = this.route.snapshot.queryParams;
+      this.searchQuery = queryParams['q'] || ''; // If 'q' parameter is not available, default to an empty string.
+  
+      const addressInput = document.getElementById("address1") as HTMLInputElement;
+      if (this.searchQuery!='') {
+        addressInput.value = this.searchQuery;
+      }
+  
+      this.searchProperties();
+    }
+
 
     
     
@@ -167,11 +189,20 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       event.preventDefault(); // Prevent the default behavior of the <a> tag
     }
 
-    const addressInput = document.getElementById("address") as HTMLInputElement;
-    if (addressInput) {
-      addressInput.value = prediction;
+    if(!this.isMobile){
+      const addressInput = document.getElementById("address") as HTMLInputElement;
+      if (addressInput) {
+        addressInput.value = prediction;
+      }
+      this.predictions = [];
     }
-    this.predictions = [];
+    else {
+      const addressInput = document.getElementById("address1") as HTMLInputElement;
+      if (addressInput) {
+        addressInput.value = prediction;
+      }
+      this.predictions = [];
+    }
   }
 
 
@@ -247,18 +278,14 @@ async loadMap() {
     //const addressInput = document.getElementById("address") as HTMLInputElement;
    
     const mapElementRef1 = document.getElementById("map1") as HTMLElement;
-    console.log("ehlo ",mapElementRef1);
+  
     const googleMaps: any = await this.gmaps.loadGoogleMaps();
     this.googleMaps = googleMaps;
-    console.log("Sferb ",this.isMobile ,mapElementRef1);
     
     let mapEl = null;
     
     if(!this.isMobile) mapEl = this.mapElementRef.nativeElement;
     else if(this.isMobile && this.MapView) mapEl = mapElementRef1;
-    console.log("hello  ",mapEl);
-    
-    console.log("Sferbbb ",this.isMobile ,this.mapElementRef1);
     
       const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
       this.map = new googleMaps.Map(mapEl, {
@@ -274,8 +301,7 @@ async loadMap() {
     //const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
 
     this.renderer.addClass(mapEl, 'visible');
-  
-    console.log("success!");
+
     // Generate info window content for each listing
     const infoWindowContent = this.listings.map((listing) => this.createListingCard(listing));
 
@@ -488,7 +514,8 @@ toggleColor() {
     this.listings = listings;
     this.filterProperties();
 
-    this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
+    if(this.isMobile)this.searchQuery = (document.getElementById("address1") as HTMLInputElement).value;
+    else this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
    
     this.setCentre();
     // this.center.lat = (await this.gmaps.getLatLongFromAddress(this.searchQuery)).latitude;
@@ -512,9 +539,10 @@ toggleColor() {
             console.log('Address 1 is not in the area of Address 2', i);
           } else {
             console.log('Address 1 is in the area of Address 2', i);
-            console.log(this.listings[i].address, "eyy");
+      
           }
         } catch (error) {
+          this.listings.splice(i, 1);
           console.error('Error:', error);
         }
       }
