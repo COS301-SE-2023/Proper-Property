@@ -30,6 +30,9 @@
       "@properproperty/api/notifications/feature": [
         "libs/api/notifications/feature/src/index.ts"
       ],
+      "@properproperty/api/notifications/util": [
+        "libs/api/notifications/util/src/index.ts"
+      ],
       "@properproperty/api/profile/data-access": [
         "libs/api/profile/data-access/src/index.ts"
       ],
