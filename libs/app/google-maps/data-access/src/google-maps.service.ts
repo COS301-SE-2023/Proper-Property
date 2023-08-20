@@ -344,6 +344,29 @@ export class GmapsService {
     });
   }
 
+  getNearbySchools(latitude: number, longitude: number): Promise<google.maps.places.PlaceResult[]> {
+    return this.loadGoogleMaps().then((maps) => {
+      const service = new maps.places.PlacesService(document.createElement('div'));
+
+      return new Promise<google.maps.places.PlaceResult[]>((resolve, reject) => {
+        const request = {
+          location: new maps.LatLng(latitude, longitude),
+          radius: 20000, // Specify the radius within which to search for nearby places (in meters)
+          keyword: 'school'
+        };
+
+        service.nearbySearch(request, (results: google.maps.places.PlaceResult[], status: google.maps.places.PlacesServiceStatus) => {
+          if (status === maps.places.PlacesServiceStatus.OK) {
+            resolve(results);
+            console.log("results: ",results)
+          } else {
+            reject('Failed to retrieve nearby schools');
+          }
+        });
+      });
+    });
+  }
+
   
 
   

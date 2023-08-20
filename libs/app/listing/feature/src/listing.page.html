@@ -97,7 +97,7 @@
                 </ion-col>
               </ion-row>
             </ion-grid>
-            <ion-card-title id="greenbox-title">Developement Highlights</ion-card-title>
+            <ion-card-title id="greenbox-title" style="padding:10px">Developement Highlights</ion-card-title>
             <ion-card-content style="padding:0;">
               <ion-grid style="z-index:1;">
                 <ion-row>
@@ -156,7 +156,7 @@
             </ion-card>
           </ion-row>
           <ion-row>
-            <ion-card class="quarter-container" style="margin-top:20px">
+            <ion-card class="quarter-container-loc-info" style="margin-top:20px">
               <ion-card-header style="padding-bottom: 1px">
                 <ion-card-title class="house-titles" style="font-size: 25px;">Area Score: 4.3</ion-card-title>
               </ion-card-header>
@@ -181,12 +181,18 @@
                     </div>
                   </ion-row>
                   <ion-row>
-                    <div class="white-text">Pollution</div>
+                    <div class="white-text">Waste Water Handling</div>
                     <div class="slider">
                       <div class="progress" style="width: 50%"></div>
                     </div>
                   </ion-row>
-  
+                  <ion-row>
+                    <div class="white-text">School Quality</div>
+                    <div class="slider">
+                      <div id="schoolProgress" class="progress" style="width: 80%"></div>
+                    </div>
+                  </ion-row>
+                  
                 </ion-grid>
               </ion-card-content>
             </ion-card>

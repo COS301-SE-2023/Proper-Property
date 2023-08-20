@@ -16,6 +16,7 @@ import { AuthState } from '@properproperty/app/auth/data-access';
 import { Unsubscribe, User } from 'firebase/auth';
 import { IonContent } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
+
 register();
 
 @Component({
@@ -123,6 +124,8 @@ export class ListingPage{
       });
 
         this.getNearbyPointsOfInterest();
+        
+        this.getSchoolRating();
       });
     });
 
@@ -257,6 +260,28 @@ export class ListingPage{
 
         }
       } catch (error) {
+        console.error('Error retrieving nearby places:', error);
+      }
+    }
+  }
+
+  async getSchoolRating(){
+    if(this.list && this.list.address){
+      try{
+        await this.gmapsService.getLatLongFromAddress(this.list.address).then(async (coordinates) => {
+            this.gmapsService.getNearbySchools(coordinates.latitude, coordinates.longitude).then((schools : google.maps.places.PlaceResult[]) => {
+              if(schools.length > 0){
+                let totalRating = 0;
+                for(let i = 0; i < schools.length; i++){
+                  totalRating += schools[i].rating ?? 0;
+                }
+
+                document.getElementById("schoolProgress")?.setAttribute("style", "width: " + (totalRating / schools.length) * 20 + "%");
+              }
+          })
+        })
+      }
+      catch (error) {
         console.error('Error retrieving nearby places:', error);
       }
     }
