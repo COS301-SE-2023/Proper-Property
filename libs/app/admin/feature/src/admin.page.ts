@@ -5,6 +5,7 @@ import { Listing, StatusChange } from '@properproperty/api/listings/util';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
+import { AdminService } from '@properproperty/app/admin/data-access';
 import { Unsubscribe, User } from 'firebase/auth';
 import { Observable } from 'rxjs';
 
@@ -20,11 +21,18 @@ export class AdminPage{
   private user: User | null = null;
   private userProfileListener: Unsubscribe | null = null;
   public adminLogged = false;
+  public quarter = "";
+  files: FileList | null = null;
 
   nonAppListings : Listing[] = [];
   appListings : Listing[] = [];
+  isPopoverOpen = false;
 
-  constructor(private listingServices : ListingsService, private router : Router, route : ActivatedRoute, private profileServices : UserProfileService){
+  constructor(private listingServices : ListingsService,
+    private router : Router,
+    route : ActivatedRoute,
+    private profileServices : UserProfileService,
+    private adminServices : AdminService){
     this.user$.subscribe((user) => {
       this.user = user;
       this.profileServices.getUser("" + user?.uid).then((profile) => {
@@ -104,5 +112,36 @@ export class AdminPage{
 
   async redirectToPage(listing : Listing) {
     this.router.navigate(['/listing', {list : listing.listing_id, admin : this.user?.uid}]);
+  }
+
+  addData(){
+    this.isPopoverOpen = true;
+    console.log("Adding data");
+  }
+
+  handleFileInput(event: Event) {
+    if (!event.currentTarget) {
+      return;
+    }
+    this.files = (event.currentTarget as HTMLInputElement).files;
+    
+  }
+
+  processData(){
+    console.log("Processing data");
+    if (this.files) {
+      for (let index = 0; index < this.files.length; index++) {
+        if (this.files.item(index))
+          fetch(URL.createObjectURL(this.files.item(index) as Blob)).then((response) => response.json()).then((response) =>{
+            let crimeData : any = [];
+            response.forEach((element : any) => {
+              crimeData.push(element);
+            });
+            this.adminServices.uploadCrimeStats(crimeData, this.quarter);
+            // console.log(response);
+          });
+      }
+    }
+    this.isPopoverOpen = false;
   }
 }

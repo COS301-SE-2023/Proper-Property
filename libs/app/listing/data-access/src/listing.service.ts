@@ -38,7 +38,7 @@ export class ListingsService {
       this.uploadImages(response.message, list.photos);
     }
   }
-
+  
   async uploadImages(listingID : string, input: string[]) {
     const photoURLs : string[] = [];
     for(let i = 0; i < input.length; i++){

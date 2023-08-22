@@ -84,3 +84,31 @@ ion-card {
   width: 15px;
   height: 15px;
 }
+
+.drag-drop-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px dashed #000000;
+  padding: 16px;
+  cursor: pointer;
+}
+
+#content{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+#popover {
+  --width: 25%;
+  --height: 300px;
+}
+
+#popoverHeading {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  background-color: #94d2ae
+}

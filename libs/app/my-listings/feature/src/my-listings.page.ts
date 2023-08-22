@@ -67,6 +67,7 @@ export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
     }
 
   async ngOnInit() {
+    //TODO - get listing addresses from User then collect listings
     await this.listingServices.getListings().then((listings) => {
       this.listings = listings;
     });
