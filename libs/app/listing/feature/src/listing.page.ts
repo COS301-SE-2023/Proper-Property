@@ -36,7 +36,6 @@ export class ListingPage{
   private userProfileListener: Unsubscribe | null = null;
   @ViewChild('swiper')
   swiperRef: ElementRef | undefined;
-  swiper?: Swiper;
   list : Listing | null = null;
   listerId  = "";
   listingId = "";
@@ -326,16 +325,22 @@ export class ListingPage{
     console.log("Accepted: " + this.pointsOfInterest);
   }
 
-  swiperReady() {
-    this.swiper = this.swiperRef?.nativeElement.swiper;
-    console.log(this.swiperRef?.nativeElement.swiper);
-  }
-
-  goNext() {
-    this.swiper?.slideNext();
+  goNext(event: any) {
+    console.log(event)
+    if(this.swiperRef){
+      this.swiperRef.nativeElement.swiper.slideNext();
+    }
+    else{
+      console.log("Swiper undefined");
+    }
   }
   goPrev() {
-    this.swiper?.slidePrev();
+    if(this.swiperRef){
+      this.swiperRef.nativeElement.swiper.slideNext();
+    }
+    else{
+      console.log("Swiper undefined");
+    }
   }
 
   swiperSlideChanged(e:Event) {

@@ -1,4 +1,7 @@
 <ion-template *ngIf="list&&!isMobile" >
+  <script>
+    console.log("Desktop view")
+  </script>
   <ion-header [translucent]="true">
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -30,7 +33,7 @@
           <img src="assets/icon/arrow1.svg" #back>
         </ion-button>
       </ion-buttons>
-      <swiper-container #swiper (afterinit)="swiperReady()"
+      <swiper-container #swiper
         (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true" slides-per-view="1" class="swiper-container">
         <swiper-slide *ngFor="let picture of list.photos">
           <img alt="img" src="{{picture}}" />
@@ -43,7 +46,7 @@
         </swiper-slide> -->
       </swiper-container>
       <ion-buttons slot="end" class="swiper-button2" #two>
-        <ion-button id="next-button" style="height:100px;" (click)="goNext()" #two>
+        <ion-button id="next-button" style="height:100px;" (click)="goNext($event)" #two>
           <img src="assets/icon/arrow.svg" #forward>
         </ion-button>
       </ion-buttons>
@@ -320,6 +323,9 @@
 </ion-template>
 
 <ion-template *ngIf="list&&isMobile">
+  <script>
+    console.log("Mobile view")
+  </script>
   <ion-header [translucent]="true">
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -351,7 +357,7 @@
           <img src="assets/icon/arrow1.svg" #back>
         </ion-button>
       </ion-buttons>
-      <swiper-container #swiper (afterinit)="swiperReady()"
+      <swiper-container #swiper
         (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true" slides-per-view="1" class="swiper-container">
         <swiper-slide *ngFor="let picture of list.photos">
           <img alt="img" src="{{picture}}" />
@@ -364,7 +370,7 @@
         </swiper-slide> -->
       </swiper-container>
       <ion-buttons slot="end" class="swiper-button2" #two>
-        <ion-button id="next-button" style="height:100px;" (click)="goNext()" #two>
+        <ion-button id="next-button" style="height:100px;" (click)="goNext($event)" #two>
           <img src="assets/icon/arrow.svg" #forward>
         </ion-button>
       </ion-buttons>
