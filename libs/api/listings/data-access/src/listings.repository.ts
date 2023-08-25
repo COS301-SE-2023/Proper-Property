@@ -1,4 +1,5 @@
 import * as admin from 'firebase-admin';
+import { FieldValue } from 'firebase-admin/firestore';
 import { Injectable } from '@nestjs/common';
 import { GetListingsRequest,
   Listing,
@@ -110,7 +111,7 @@ export class ListingsRepository {
       .doc(listingId)
       .update({
         'approved': true,
-        'statusChanges': admin.firestore.FieldValue.arrayUnion(change)
+        'statusChanges': FieldValue.arrayUnion(change)
       });
     // console.log("Its show time");
     // const listingDoc = await admin
