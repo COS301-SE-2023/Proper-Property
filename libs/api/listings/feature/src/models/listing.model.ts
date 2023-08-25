@@ -1,7 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { ListingEditedEvent, Listing, StatusChange } from '@properproperty/api/listings/util';
 
-export class listingModel extends AggregateRoot implements Listing {
+export class ListingModel extends AggregateRoot implements Listing {
   constructor(
     public user_id: string | undefined,
     public address: string,
@@ -31,30 +31,30 @@ export class listingModel extends AggregateRoot implements Listing {
   }
 
   static createListing(listing: Listing) {
-    const model = new listingModel(
-        listing.user_id,
-        listing.address,
-        listing.price,
-        listing.pos_type,
-        listing.env_type,
-        listing.prop_type,
-        listing.furnish_type,
-        listing.orientation,
-        listing.floor_size,
-        listing.property_size,
-        listing.bath,
-        listing.bed,
-        listing.parking,
-        listing.features,
-        listing.photos,
-        listing.desc,
-        listing.let_sell,
-        listing.heading,
-        listing.approved,
-        listing.listingDate,
-        listing.listing_id,
-        listing.statusChanges,
-        listing.quality_rating,
+    const model = new ListingModel(
+      listing.user_id,
+      listing.address,
+      listing.price,
+      listing.pos_type,
+      listing.env_type,
+      listing.prop_type,
+      listing.furnish_type,
+      listing.orientation,
+      listing.floor_size,
+      listing.property_size,
+      listing.bath,
+      listing.bed,
+      listing.parking,
+      listing.features,
+      listing.photos,
+      listing.desc,
+      listing.let_sell,
+      listing.heading,
+      listing.approved,
+      listing.listingDate,
+      listing.listing_id,
+      listing.statusChanges,
+      listing.quality_rating,
     );
     return model;
   }
@@ -87,31 +87,41 @@ export class listingModel extends AggregateRoot implements Listing {
     this.apply(new ListingEditedEvent(listing));
   }
 
+  approve(adminId: string) {
+    this.approved = true;
+    this.statusChanges = this.statusChanges ?? [];
+    this.statusChanges.push({
+      adminId: adminId,
+      status: true,
+      date: new Date().toISOString(),
+    });
+  }
+
   toJSON(): Listing {
     return {
-        user_id: this.user_id,
-        address: this.address,
-        price: this.price,
-        pos_type: this.pos_type,
-        env_type: this.env_type,
-        prop_type: this.prop_type,
-        furnish_type: this.furnish_type,
-        orientation: this.orientation,
-        floor_size: this.floor_size,
-        property_size: this.property_size,
-        bath: this.bath,
-        bed: this.bed,
-        parking: this.parking,
-        features: this.features,
-        photos: this.photos,
-        desc: this.desc,
-        let_sell: this.let_sell,
-        heading: this.heading,
-        approved: this.approved,
-        listingDate: this.listingDate,
-        listing_id: this.listing_id,
-        statusChanges: this.statusChanges,
-        quality_rating: this.quality_rating,
+      user_id: this.user_id,
+      address: this.address,
+      price: this.price,
+      pos_type: this.pos_type,
+      env_type: this.env_type,
+      prop_type: this.prop_type,
+      furnish_type: this.furnish_type,
+      orientation: this.orientation,
+      floor_size: this.floor_size,
+      property_size: this.property_size,
+      bath: this.bath,
+      bed: this.bed,
+      parking: this.parking,
+      features: this.features,
+      photos: this.photos,
+      desc: this.desc,
+      let_sell: this.let_sell,
+      heading: this.heading,
+      approved: this.approved,
+      listingDate: this.listingDate,
+      listing_id: this.listing_id,
+      statusChanges: this.statusChanges,
+      quality_rating: this.quality_rating,
     };
   }
 }

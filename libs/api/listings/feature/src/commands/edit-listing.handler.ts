@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { EditListingCommand, EditListingResponse } from '@properproperty/api/listings/util';
-import { listingModel } from '../models';
+import { ListingModel } from '../models';
 import { ListingsRepository } from '@properproperty/api/listings/data-access';
 
 @CommandHandler(EditListingCommand)
@@ -18,18 +18,17 @@ implements ICommandHandler<
     console.log(EditListingHandler.name);
     console.log(command);
     if(command.listing.listing_id){
-        const listing = (await this.listingRepo.getListing(command.listing.listing_id)).listings[0];
+      const listing = (await this.listingRepo.getListing(command.listing.listing_id)).listings[0];
 
-        if (!listing) {
-            return  {listingId: "FAILURE"};
-        }
-        const model = this.eventPublisher
-        .mergeObjectContext(listingModel.createListing(listing));
-        
-        model.editListing(command.listing);
-        model.commit();
+      if (!listing) {
+        return  {listingId: "FAILURE"};
+      }
+      const model = this.eventPublisher.mergeObjectContext(ListingModel.createListing(listing));
+      
+      model.editListing(command.listing);
+      model.commit();
 
-        return  {listingId: command.listing.listing_id};
+      return  {listingId: command.listing.listing_id};
     }
     else{
         return {listingId: "FAILURE"};

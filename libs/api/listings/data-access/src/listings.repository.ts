@@ -104,7 +104,7 @@ export class ListingsRepository {
 
   async changeStatus(req : ChangeStatusRequest): Promise<ChangeStatusResponse>{
     console.log("Its show time");
-    const listingDoc = admin
+    const listingDoc = await admin
     .firestore()
     .doc(`listings/${req.listingId}`)
     .withConverter<Listing>({
@@ -112,20 +112,22 @@ export class ListingsRepository {
       toFirestore: (listing: Listing) => listing
     }).get();
 
-    listingDoc.then((doc) => {
-      let tempStatusChanges = doc.data()?.statusChanges;
-      if(tempStatusChanges){
-        tempStatusChanges.push({adminId : req.adminId, status : !doc.data()?.approved, date : new Date().toISOString()});
-      }
-      else{
-        tempStatusChanges = [{adminId : req.adminId, status : !doc.data()?.approved, date : new Date().toISOString()}];
-      }
+    let tempStatusChanges = listingDoc.data()?.statusChanges ?? [];
+    tempStatusChanges
+      .push({
+        adminId : req.adminId, 
+        status : !listingDoc.data()?.approved, 
+        date : new Date().toISOString()
+      });
 
-      admin.firestore().doc(`listings/${req.listingId}`).update({approved : !doc.data()?.approved, statusChanges : tempStatusChanges});
-      return {statusChange : tempStatusChanges[tempStatusChanges.length - 1]};
-    })
-
-    return {statusChange : {adminId : "", status : false, date : ""}};
+    admin
+      .firestore()
+      .doc(`listings/${req.listingId}`)
+      .update({
+        approved : !listingDoc.data()?.approved, 
+        statusChanges : tempStatusChanges
+      });
+    return {statusChange : tempStatusChanges[tempStatusChanges.length - 1]};
   }
 
   async getApprovedListings(): Promise<GetApprovedListingsResponse>{
