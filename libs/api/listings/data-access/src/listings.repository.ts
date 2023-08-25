@@ -7,7 +7,8 @@ import { GetListingsRequest,
   ChangeStatusRequest, 
   ChangeStatusResponse, 
   GetApprovedListingsResponse,
-  EditListingResponse
+  EditListingResponse,
+  StatusChange
 } from '@properproperty/api/listings/util';
 // import { FieldValue, FieldPath } from 'firebase-admin/firestore';
 @Injectable()
@@ -102,32 +103,39 @@ export class ListingsRepository {
     });
   }
 
-  async changeStatus(req : ChangeStatusRequest): Promise<ChangeStatusResponse>{
-    console.log("Its show time");
-    const listingDoc = await admin
-    .firestore()
-    .doc(`listings/${req.listingId}`)
-    .withConverter<Listing>({
-      fromFirestore: (snapshot) => snapshot.data() as Listing,
-      toFirestore: (listing: Listing) => listing
-    }).get();
-
-    let tempStatusChanges = listingDoc.data()?.statusChanges ?? [];
-    tempStatusChanges
-      .push({
-        adminId : req.adminId, 
-        status : !listingDoc.data()?.approved, 
-        date : new Date().toISOString()
-      });
-
+  async changeStatus(listingId: string, change : StatusChange){
     admin
       .firestore()
-      .doc(`listings/${req.listingId}`)
+      .collection('listings')
+      .doc(listingId)
       .update({
-        approved : !listingDoc.data()?.approved, 
-        statusChanges : tempStatusChanges
+        'approved': true,
+        'statusChanges': admin.firestore.FieldValue.arrayUnion(change)
       });
-    return {statusChange : tempStatusChanges[tempStatusChanges.length - 1]};
+    // console.log("Its show time");
+    // const listingDoc = await admin
+    // .firestore()
+    // .doc(`listings/${req.listingId}`)
+    // .withConverter<Listing>({
+    //   fromFirestore: (snapshot) => snapshot.data() as Listing,
+    //   toFirestore: (listing: Listing) => listing
+    // }).get();
+
+    // let tempStatusChanges = listingDoc.data()?.statusChanges ?? [];
+    // tempStatusChanges
+    //   .push({
+    //     adminId : req.adminId, 
+    //     status : !listingDoc.data()?.approved, 
+    //     date : new Date().toISOString()
+    //   });
+
+    // admin
+    //   .firestore()
+    //   .doc(`listings/${req.listingId}`)
+    //   .update({
+    //     approved : !listingDoc.data()?.approved, 
+    //     statusChanges : tempStatusChanges
+    //   });
   }
 
   async getApprovedListings(): Promise<GetApprovedListingsResponse>{

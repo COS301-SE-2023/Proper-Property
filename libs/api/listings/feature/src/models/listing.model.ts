@@ -1,5 +1,5 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { ListingEditedEvent, Listing, StatusChange } from '@properproperty/api/listings/util';
+import { ListingEditedEvent, Listing, StatusChange, StatusChangedEvent, ChangeStatusResponse } from '@properproperty/api/listings/util';
 
 export class ListingModel extends AggregateRoot implements Listing {
   constructor(
@@ -87,14 +87,21 @@ export class ListingModel extends AggregateRoot implements Listing {
     this.apply(new ListingEditedEvent(listing));
   }
 
-  approve(adminId: string) {
-    this.approved = true;
-    this.statusChanges = this.statusChanges ?? [];
-    this.statusChanges.push({
+  approve(adminId: string): ChangeStatusResponse {
+    const change: StatusChange = {
       adminId: adminId,
       status: true,
       date: new Date().toISOString(),
-    });
+    };
+    this.approved = true;
+    this.statusChanges = this.statusChanges ?? [];
+    this.statusChanges.push(change);
+    if (!this.listing_id) {
+      throw new Error('yeah idk fam. this should never happen. the listing has no listing_id');
+    }
+    this.apply(new StatusChangedEvent(this.listing_id, change));
+
+    return {success: true, statusChange: change};
   }
 
   toJSON(): Listing {

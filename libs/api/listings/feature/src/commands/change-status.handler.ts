@@ -1,20 +1,33 @@
 import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { ChangeStatusCommand } from '@properproperty/api/listings/util';
+import { ChangeStatusCommand, ChangeStatusResponse } from '@properproperty/api/listings/util';
 import { ListingsRepository } from '@properproperty/api/listings/data-access';
 import { ListingModel } from '../models'; 
 import { Listing } from '@properproperty/api/listings/util';
 @CommandHandler(ChangeStatusCommand)
-export class ChangeStatusHandler implements ICommandHandler<ChangeStatusCommand> {
+export class ChangeStatusHandler 
+implements ICommandHandler<
+  ChangeStatusCommand,
+  ChangeStatusResponse
+> {
   constructor(
     private readonly listingRepo : ListingsRepository,
     private readonly eventPublisher: EventPublisher
   ){}
 
-  async execute(command: ChangeStatusCommand){
-    const listing = (await this.listingRepo.getListing(command.req.listingId)).listings[0];
+  async execute(command: ChangeStatusCommand): Promise<ChangeStatusResponse>{
+    let listing = (await this.listingRepo.getListing(command.req.listingId)).listings[0];
 
     const listingModel = this.eventPublisher.mergeObjectContext(ListingModel.createListing(listing));
+    let response;
 
-    listingModel.approve(command.req.adminId);
+    try {
+      response = listingModel.approve(command.req.adminId);
+      listingModel.commit();
+    } catch (error) {
+      console.log(error);
+      response = {success: false, statusChange: undefined}; 
+    }
+    
+    return response;
   }
 }
