@@ -15,7 +15,7 @@ import { Unsubscribe, User } from 'firebase/auth';
 // import { SubscribeToUserProfile, UnsubscribeFromUserProfile } from '@properproperty/app/user/util';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { UserProfileState,UserProfileService } from '@properproperty/app/profile/data-access';
-import { httpsCallable, Functions } from '@angular/fire/functions';
+import { Functions } from '@angular/fire/functions';
 import { isDevMode } from '@angular/core';
 import { NotificationsService } from 'libs/app/notifications/data-access/src/notifications.service';
 // import { GetUserProfileRequest, GetUserProfileResponse, UpdateUserProfileRequest, UpdateUserProfileResponse, profile } from '@properproperty/api/profile/util';

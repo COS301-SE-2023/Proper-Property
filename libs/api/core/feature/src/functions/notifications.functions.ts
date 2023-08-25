@@ -13,6 +13,6 @@ export const sendNotification = functions.region('europe-west1').https.onCall(
     };
     console.log("NOTIF:");
     console.log(notificationMessage);
-    admin.messaging().send(notificationMessage);
+    admin.messaging().sendEach([notificationMessage]);
   }
 );
