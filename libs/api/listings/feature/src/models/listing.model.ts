@@ -3,7 +3,7 @@ import { ListingEditedEvent, Listing, StatusChange, StatusChangedEvent, ChangeSt
 
 export class ListingModel extends AggregateRoot implements Listing {
   constructor(
-    public user_id: string | undefined,
+    public user_id: string,
     public address: string,
     public price: string,
     public pos_type: string,
@@ -104,7 +104,7 @@ export class ListingModel extends AggregateRoot implements Listing {
     if (!this.listing_id) {
       throw new Error('yeah idk fam. this should never happen. the listing has no listing_id');
     }
-    this.apply(new StatusChangedEvent(this.listing_id, change));
+    this.apply(new StatusChangedEvent(this.listing_id, change, this.user_id));
 
     return {success: true, statusChange: change};
   }

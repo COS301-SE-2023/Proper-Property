@@ -2,7 +2,7 @@ import { StatusChange } from './index';
 
 export interface Listing{
   listing_id?: string;
-  user_id: string | undefined;
+  user_id: string;
   address: string;
   price: string;
   pos_type: string;

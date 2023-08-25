@@ -4,6 +4,6 @@ import { NotifyApprovalChangeCommand } from '@properproperty/api/notifications/u
 @CommandHandler(NotifyApprovalChangeCommand)
 export class NotifyApprovalChangeHandler implements ICommandHandler<NotifyApprovalChangeCommand> {
   async execute(command: NotifyApprovalChangeCommand) {
-    console.log('NotifyApprovalChangeCommand');
+    console.log('---NotifyApprovalChangeCommand:' + command.status);
   }
 }
