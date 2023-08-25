@@ -532,7 +532,7 @@
       </ion-row>
 
       <ion-row style="width: 100%; margin-top: 1.5%;">
-        <ion-col size="6">
+        <ion-col size="8">
           <ion-label class="house-text">Add Property Features:</ion-label>
           <input id="feat-in" type="text" placeholder="Feature" class="addFeat house-text"
             (keydown.enter)="addFeature()">&nbsp;<ion-button (click)="addFeature()" class="addButt">Add</ion-button><br>
@@ -548,12 +548,15 @@
             </ion-label>
           </ion-item>
         </ion-col>
-        <ion-col size="6">
-          <ion-label class="house-text">Property Description</ion-label>
-          <textarea id="desc" rows="10" cols="50">{{description}}</textarea><br>
-          <ion-button (click)="generateDesc()">AI Generated Description</ion-button>
-        </ion-col>
       </ion-row>
+
+      <ion-row style="width: 100%; margin-top: 1.5%;">
+      <ion-col size="12">
+        <ion-label class="house-text">Property Description</ion-label>
+        <textarea id="desc" rows="10" cols="50">{{description}}</textarea><br>
+        <ion-button (click)="generateDesc()">AI Generated Description</ion-button>
+      </ion-col>
+    </ion-row>
 
       <ion-row style="width:100%">
         <ion-button *ngIf="!ownerViewing; else ownerView" (click)="addListing()"
