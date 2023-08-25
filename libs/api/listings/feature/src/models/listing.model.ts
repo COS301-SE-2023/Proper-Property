@@ -83,7 +83,12 @@ export class ListingModel extends AggregateRoot implements Listing {
     this.listing_id = listing.listing_id;
     this.statusChanges = listing.statusChanges;
     this.quality_rating = listing.quality_rating;
-
+    this.statusChanges = this.statusChanges ?? [];
+    this.statusChanges.push({
+      adminId: 'SYSTEM',
+      status: false,
+      date: new Date().toISOString(),
+    });
     this.apply(new ListingEditedEvent(listing));
   }
 
