@@ -1,7 +1,7 @@
-import { NotifyViewDropCommand } from '../commands';
+import { Notification } from '@properproperty/api/notifications/util';
 
 export class ViewDropNotifiedEvent {
   constructor(
-    public readonly command: NotifyViewDropCommand,
+    public readonly notification: Notification,
   ) {}
 }

@@ -1,7 +1,7 @@
-import { NotifyStatusChangeCommand } from '../commands';
+import { Notification } from '@properproperty/api/notifications/util';
 
 export class StatusChangeNotifiedEvent {
   constructor(
-    public readonly command: NotifyStatusChangeCommand,
+    public readonly notification: Notification,
   ) {}
 }

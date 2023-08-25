@@ -1,7 +1,7 @@
-import { NotifyApprovalChangeCommand } from '../commands';
+import { Notification } from '@properproperty/api/notifications/util';
 
 export class ApprovalChangeNotifiedEvent {
   constructor(
-    public readonly command: NotifyApprovalChangeCommand
+    public readonly notification: Notification
   ) {}
 }
