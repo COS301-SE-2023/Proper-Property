@@ -6,7 +6,10 @@ import { Select } from '@ngxs/store';
 import { UploadCrimeStatsRequest,
   UploadCrimeStatsResponse,
   Station,
-  Crime } from '@properproperty/api/loc-info/util';
+  Crime,
+  UploadSaniStatsRequest,
+  UploadSaniStatsResponse,
+  Sanitation} from '@properproperty/api/loc-info/util';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 
 @Injectable({
@@ -65,5 +68,22 @@ export class AdminService {
     >(this.functions, 'uploadCrimeStats')(request)).data;
 
     console.warn(response);
+  }
+
+  async uploadSaniStats(saniData : any[]){
+    const WSAs : Sanitation[] = []
+    for(let i = 0; i < saniData.length; i++){
+      WSAs.push({
+        WSA: saniData[i]['WSA'],
+        percentageBasicSani: saniData[i]['% Basic Sanitation']
+      })
+
+      console.log(WSAs[WSAs.length - 1]);
+    }
+
+    const response: UploadSaniStatsResponse = (await httpsCallable<
+      UploadSaniStatsRequest,
+      UploadSaniStatsResponse
+    >(this.functions, 'uploadSaniStats')({wsaSaniStats: WSAs})).data;
   }
 }

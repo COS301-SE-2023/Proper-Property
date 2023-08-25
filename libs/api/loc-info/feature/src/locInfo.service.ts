@@ -3,7 +3,10 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { 
   UploadCrimeStatsRequest,
   UploadCrimeStatsResponse,
-  UploadCrimeStatsCommand 
+  UploadCrimeStatsCommand,
+  UploadSaniStatsRequest,
+  UploadSaniStatsResponse,
+  UploadSaniStatsCommand
 } from '@properproperty/api/loc-info/util';
 
 @Injectable()
@@ -18,5 +21,11 @@ export class LocInfoService {
   ): Promise<UploadCrimeStatsResponse> {
     return this.commandBus.execute(new UploadCrimeStatsCommand(req));
     // return {status: false};
+  }
+
+  async uploadSaniStats(
+    req: UploadSaniStatsRequest
+  ): Promise<UploadSaniStatsResponse> {
+    return this.commandBus.execute(new UploadSaniStatsCommand(req));
   }
 }

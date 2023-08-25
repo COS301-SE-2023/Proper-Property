@@ -22,7 +22,9 @@ export class AdminPage{
   private userProfileListener: Unsubscribe | null = null;
   public adminLogged = false;
   public quarter = "";
-  files: FileList | null = null;
+  crimeFiles: FileList | null = null;
+  sanitationFiles: FileList | null = null;
+  waterFiles: FileList | null = null;
 
   nonAppListings : Listing[] = [];
   appListings : Listing[] = [];
@@ -119,26 +121,51 @@ export class AdminPage{
     console.log("Adding data");
   }
 
-  handleFileInput(event: Event) {
+  handleFileInput(event: Event, type: string) {
     if (!event.currentTarget) {
       return;
     }
-    this.files = (event.currentTarget as HTMLInputElement).files;
-    
+
+    console.log(type)
+
+    if(type == "crime"){
+      this.crimeFiles = (event.currentTarget as HTMLInputElement).files;
+      console.log("Crime files uploaded");
+    }
+    else if(type == "sanitation"){
+      this.sanitationFiles = (event.currentTarget as HTMLInputElement).files;
+      console.log("Sanitation files uploaded");
+    }
+    else if(type == "water"){
+      this.waterFiles = (event.currentTarget as HTMLInputElement).files;
+      console.log("Water files uploaded");
+    }    
   }
 
   processData(){
     console.log("Processing data");
-    if (this.files) {
-      for (let index = 0; index < this.files.length; index++) {
-        if (this.files.item(index))
-          fetch(URL.createObjectURL(this.files.item(index) as Blob)).then((response) => response.json()).then((response) =>{
-            let crimeData : any = [];
-            response.forEach((element : any) => {
+    if (this.crimeFiles && this.crimeFiles.length > 0) {
+      for (let index = 0; index < this.crimeFiles.length; index++) {
+        if (this.crimeFiles.item(index))
+          fetch(URL.createObjectURL(this.crimeFiles.item(index) as Blob)).then((response) => response.json()).then((response) =>{
+              let crimeData : any = [];
+              response.forEach((element : any) => {
               crimeData.push(element);
             });
             this.adminServices.uploadCrimeStats(crimeData, this.quarter);
-            // console.log(response);
+          });
+      }
+    }
+
+    if(this.sanitationFiles && this.sanitationFiles.length > 0){
+      for (let index = 0; index < this.sanitationFiles.length; index++) {
+        if (this.sanitationFiles.item(index))
+          fetch(URL.createObjectURL(this.sanitationFiles.item(index) as Blob)).then((response) => response.json()).then((response) =>{
+              let saniData : any = [];
+              response.forEach((element : any) => {
+              saniData.push(element);
+            });
+            this.adminServices.uploadSaniStats(saniData);
           });
       }
     }
