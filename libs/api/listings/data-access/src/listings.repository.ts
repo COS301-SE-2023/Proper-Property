@@ -5,8 +5,6 @@ import { GetListingsRequest,
   Listing,
   CreateListingResponse,
   GetListingsResponse, 
-  ChangeStatusRequest, 
-  ChangeStatusResponse, 
   GetApprovedListingsResponse,
   EditListingResponse,
   StatusChange
@@ -31,7 +29,7 @@ export class ListingsRepository {
   }
 
   async getListings(req: GetListingsRequest): Promise<GetListingsResponse>{
-    let collection = admin.firestore().collection('listings');
+    const collection = admin.firestore().collection('listings');
     let query: admin.firestore.Query;
 
     if(req.userId){
@@ -78,7 +76,7 @@ export class ListingsRepository {
     //   });
 
     // you
-    let listingRef = admin
+    const listingRef = admin
       .firestore()
       .collection('listings')
       .withConverter<Listing>({
@@ -140,11 +138,11 @@ export class ListingsRepository {
   }
 
   async getApprovedListings(): Promise<GetApprovedListingsResponse>{
-    let query = admin
+    const query = admin
     .firestore()
     .collection('listings').where("approved", "==", true);
     
-    let listings : Listing[] = [];
+    const listings : Listing[] = [];
     (await query.get()).docs.map((doc) => {
       doc.data() as Listing;
       listings.push(doc.data() as Listing);

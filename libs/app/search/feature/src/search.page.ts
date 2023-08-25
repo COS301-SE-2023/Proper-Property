@@ -12,7 +12,7 @@ import { AuthState } from '@properproperty/app/auth/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { ActivatedRoute } from '@angular/router';
 import { IonContent } from '@ionic/angular';
-import { Console } from 'console';
+// import { Console } from 'console';
 
 @Component({
   selector: 'app-search',

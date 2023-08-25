@@ -1,6 +1,6 @@
 import { NotificationsDoc, Notification } from '@properproperty/api/notifications/util';
 import { AggregateRoot } from '@nestjs/cqrs';
-import { Timestamp } from '@firebase/firestore';
+// import { Timestamp } from '@firebase/firestore';
 import { 
   ApprovalChangeNotifiedEvent,
   StatusChangeNotifiedEvent,

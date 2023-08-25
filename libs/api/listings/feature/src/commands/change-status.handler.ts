@@ -2,7 +2,6 @@ import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { ChangeStatusCommand, ChangeStatusResponse } from '@properproperty/api/listings/util';
 import { ListingsRepository } from '@properproperty/api/listings/data-access';
 import { ListingModel } from '../models'; 
-import { Listing } from '@properproperty/api/listings/util';
 @CommandHandler(ChangeStatusCommand)
 export class ChangeStatusHandler 
 implements ICommandHandler<
@@ -15,7 +14,7 @@ implements ICommandHandler<
   ){}
 
   async execute(command: ChangeStatusCommand): Promise<ChangeStatusResponse>{
-    let listing = (await this.listingRepo.getListing(command.req.listingId)).listings[0];
+    const listing = (await this.listingRepo.getListing(command.req.listingId)).listings[0];
 
     const listingModel = this.eventPublisher.mergeObjectContext(ListingModel.createListing(listing));
     let response;

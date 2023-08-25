@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild,HostListener} from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { Listing } from '@properproperty/api/listings/util';
-import Swiper from 'swiper';
+// import Swiper from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
