@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content *ngIf = "!isMobile" class ="Desktop">
   <div class="profileCard">
 
     <ion-grid>
@@ -152,6 +152,137 @@
           </ion-row>
         </ion-col>
       </ion-row>
+    </ion-grid>
+
+  </div>
+</ion-content>
+<ion-content *ngIf = "isMobile"  class ="Mobile">
+  <div class="profileCard">
+
+    <ion-grid>
+      <ion-row class="profilePic">
+        <ion-col>
+          <ion-icon name="person-outline"></ion-icon>
+          <h1>{{ user?.firstName }} {{ user?.lastName }}</h1>
+        </ion-col>
+      </ion-row>
+
+      <ion-col class="utils">
+        <ion-col class="navbut">
+
+          
+          <ion-row class="toListings">
+            <ion-col>
+              <ion-button class="but1" routerLink="/saved-listings" routerDirection="root">
+                <ion-icon name="heart-outline" size="large"></ion-icon>
+                <ion-label>Saved Listings</ion-label>
+              </ion-button>             
+            </ion-col>
+            <ion-col>
+              <ion-button class="but1" routerLink="/my-listings" routerDirection="root">
+                <ion-icon name="list-outline" size="large"></ion-icon>
+                <ion-label>My Listings</ion-label>
+              </ion-button>              
+            </ion-col>
+
+          </ion-row>
+          <ion-row class="upGrade">
+            <ion-col>
+              <ion-button class="but1">
+                <ion-label>Upgrade Preferences</ion-label>
+              </ion-button>              
+            </ion-col>
+          </ion-row>
+          <ion-row class="upGrade">
+            <ion-col>
+              <ion-button class="but1">
+                <ion-label>Another wow button</ion-label>
+              </ion-button>              
+            </ion-col>
+          </ion-row>
+          <ion-row class="logOut">
+            <ion-col>
+              <ion-button class="logout-button" expand="full"  (click)="logout()">
+                <ion-label>Log Out</ion-label>
+              </ion-button>
+            </ion-col>
+          </ion-row>            
+        </ion-col>
+
+        
+        <ion-row class="settings">
+          <ion-grid>
+          <ion-row>
+            <h2>User Details</h2>
+          </ion-row>
+          <ion-row>
+            <ion-col size="8">
+            <h3>Name: {{ user?.firstName }} {{ user?.lastName }} </h3>
+            </ion-col>
+            <ion-col>
+              <ion-button  (click)="editName()" class="but2">
+                <ion-icon name="create-outline" class="edit-icon" size="large"></ion-icon>
+              </ion-button>           
+            </ion-col>
+
+            <div class="edits" *ngIf="isEditingName">
+              <ion-input type="text" [(ngModel)]="newFirstName" placeholder="Enter a new first name" clearInput></ion-input>
+              <ion-input type="text" [(ngModel)]="newLastName" placeholder="Enter a new last name" clearInput></ion-input>
+              <ion-button expand="full" color="primary" (click)="saveName()">Save</ion-button>
+              <ion-button expand="full" color="danger" (click)="discardName()">Cancel</ion-button>
+            </div>
+          </ion-row>
+
+          <ion-row>
+
+            <ion-col size="8">
+              <h3>Edit Email {{ user?.email }}</h3>
+            </ion-col>
+            <ion-col>
+              <ion-button class="but2" (click)="editEmail()">
+                <ion-icon name="create-outline" class="edit-icon" size="large"></ion-icon>
+              </ion-button>
+            </ion-col>
+
+
+            <div class="edits" *ngIf="isEditingEmail">
+              <ion-input type="text" [(ngModel)]="newEmail" placeholder="Enter a new email" clearInput></ion-input>
+              <ion-button expand="full" color="primary" (click)="saveEmail()">Save</ion-button>
+              <ion-button expand="full" color="danger" (click)="discardEmail()">Cancel</ion-button>
+            </div>
+
+          </ion-row>
+
+          <ion-row>
+
+            <ion-col size="8">
+              <h3>Edit Phone Number {{ user?.phoneNumber }}</h3>
+            </ion-col>
+
+            <ion-col>
+              <ion-button class="but2" (click)="editPhoneNumber()">
+                <ion-icon name="create-outline" class="edit-icon" size="large"></ion-icon>
+              </ion-button>
+            </ion-col>
+
+            <div class="edits" *ngIf="isEditingPhoneNumber">
+              <ion-input type="text" [(ngModel)]="newPhoneNumber" placeholder="Enter a new phone number" clearInput></ion-input>
+              <ion-button expand="full" color="primary" (click)="savePhoneNumber()">Save</ion-button>
+              <ion-button expand="full" color="danger" (click)="discardPhoneNumber()">Cancel</ion-button>
+            </div>
+
+          </ion-row>
+
+          <ion-row>
+              <ion-button class="delete-account-button" expand="full" color="danger" (click)="confirmDeleteAccount()">
+                Delete Account
+              </ion-button>
+          </ion-row>
+          
+        </ion-grid>
+        </ion-row>
+      
+      </ion-col>
     </ion-grid>
 
   </div>
