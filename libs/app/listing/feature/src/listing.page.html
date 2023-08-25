@@ -136,8 +136,8 @@
             </ion-card-content>
           </ion-card>
         </ion-col>
-        <ion-row>
-          <ion-col>
+        <ion-col>
+          <ion-row>
             <ion-card class="quarter-container">
               <ion-card-header>
                 <ion-card-title>Points of Interest</ion-card-title>
@@ -154,8 +154,8 @@
                   
               </ion-card-header>
             </ion-card>
-          </ion-col>
-          <ion-col>
+          </ion-row>
+          <ion-row>
             <ion-card class="quarter-container" style="margin-top:20px">
               <ion-card-header style="padding-bottom: 1px">
                 <ion-card-title class="house-titles" style="font-size: 25px;">Area Score: 4.3</ion-card-title>
@@ -190,8 +190,8 @@
                 </ion-grid>
               </ion-card-content>
             </ion-card>
-          </ion-col>
-        </ion-row>
+          </ion-row>
+        </ion-col>
       </ion-row>
       <ion-row style="margin-top: 1%">
         <ion-card class="full-container">
@@ -309,7 +309,7 @@
             <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
             <ion-button (click)="editListing()">Edit Listing</ion-button>
           </div>
-          <canvas id="lineGraph" [class.graph-style]="showData"></canvas>
+          <canvas id="lineGraph"></canvas>
           <div *ngIf="showData">
             <h3>Average engagement per user: </h3>
             <ion-input type="string" [(ngModel)]="avgEnagement"></ion-input>

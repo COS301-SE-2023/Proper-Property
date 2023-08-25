@@ -416,12 +416,17 @@
   // }
   
   //make the ion-card take only half of the page
-  ion-card {
-    // width: 45%;
-    margin-left: 2%;
-    margin-top: 10px;
-    border-radius: 10px;
-  }
+
+ion-card {
+  top: -50px;
+  width: 400px; /* Adjust the width as desired */
+  height: 450px;
+  margin: 0 auto; /* Center the card horizontally */
+  margin-top: 50px;
+
+  border-radius: 10px;
+}
+
   
   //styling for div with id="house_details"
   #house_details img {
