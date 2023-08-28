@@ -263,10 +263,19 @@ a
     border: none;
     border-radius: 50px !important;
     color: black;
-    background: var(--ion-color-primary) !important;
     font-weight: 600;
     text-transform: uppercase;
     
+}
+
+.button-centerer2 {
+  border: 2px solid var(--ion-color-primary);
+  border-radius: 80px !important;
+  --background: rgba(255, 255, 255, 0) !important;
+  --color: var(--ion-color-primary--contrast);
+  font-weight: 600;
+  --text-transform: lowercase;
+  --background-hover: var(--ion-color-primary);
 }
 
 .logo-container {
