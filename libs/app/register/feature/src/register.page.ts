@@ -12,8 +12,11 @@ import { Register } from '@properproperty/app/auth/util';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
+  isMobile = false;
+
   constructor(private readonly store: Store, public authService: AuthService, public router: Router, public userProfileService: UserProfileService) {
     this.name = this.surname = this.password = this.email = this.confirm_password = "";
+    this.isMobile = isMobile();
   }
 
   name:string;
@@ -53,4 +56,8 @@ export class RegisterPage implements OnInit {
     console.log ("Lifecycle methods should not be empty");
   }
 
+}
+
+function isMobile(): boolean {
+  return window.innerWidth <= 576;
 }
