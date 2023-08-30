@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Station, UploadDistrictDataResponse, UploadDistrictDataRequest, GetSaniDataRequest, GetSaniDataResponse } from '@properproperty/api/loc-info/util';
+import { UploadDistrictDataResponse, UploadDistrictDataRequest, GetSaniDataRequest, GetSaniDataResponse } from '@properproperty/api/loc-info/util';
 import { UploadCrimeStatsRequest,
   UploadCrimeStatsResponse,
   UploadSaniStatsRequest,
@@ -62,9 +62,7 @@ export class LocInfoRepository {
   }
 
   async getSaniData(req: GetSaniDataRequest): Promise<GetSaniDataResponse>{
-    try{
-      let perc : number = 0;
-      
+    try{      
       console.log("Municipality", req.municipality);
       let result = await admin.
       firestore().

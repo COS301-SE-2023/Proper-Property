@@ -16,7 +16,6 @@ import { AuthState } from '@properproperty/app/auth/data-access';
 import { Unsubscribe, User } from 'firebase/auth';
 import { IonContent } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
-import { GetSaniDataResponse } from '@properproperty/api/loc-info/util';
 
 register();
 
@@ -335,6 +334,7 @@ export class ListingPage{
   }
 
   async getNearbyPoliceStations(coordinates: {latitude: number, longitude: number}){
+    console.log(coordinates);
     // if(this.list && this.list.address){
     //   try{
     //       this.gmapsService.getNearbyPoliceStations(coordinates.latitude, coordinates.longitude).then((policeStations : google.maps.places.PlaceResult[]) => {

@@ -3,7 +3,7 @@ import { CqrsModule } from '@nestjs/cqrs'
 import { LocInfoService } from './locInfo.service';
 import { UploadCrimeStatsHandler, UploadSaniStatsHandler, UploadDistrictDataHandler } from './commands';
 import { GetSaniDataHandler } from './queries';
-import { ApiLocInfoDataAccessModule, LocInfoRepository } from '@properproperty/api/loc-info/data-access';
+import { ApiLocInfoDataAccessModule } from '@properproperty/api/loc-info/data-access';
 const CommandHandlers = [UploadCrimeStatsHandler, UploadSaniStatsHandler, UploadDistrictDataHandler];
 const QueryHandlers = [ GetSaniDataHandler ];
 

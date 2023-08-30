@@ -170,6 +170,7 @@ export class ListingsService {
   }
 
   async getWaterScore(municipality : string){
+    console.log(municipality);
     // return await httpsCallable<
     // GetWaterDataRequest,
     // GetWaterDataResponse

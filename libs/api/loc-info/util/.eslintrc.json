@@ -8,7 +8,17 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "rules": {}
+      "rules": {
+        "@typescript-eslint/no-explicit-any": [
+          "off",
+          {
+            "ignoreRestArgs": true
+          }
+        ]
+      },
+      "extends": [
+        "plugin:@typescript-eslint/recommended"
+      ]
     },
     {
       "files": ["*.js", "*.jsx"],

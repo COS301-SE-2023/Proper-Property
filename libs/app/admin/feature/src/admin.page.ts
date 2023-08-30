@@ -156,7 +156,7 @@ export class AdminPage{
       for (let index = 0; index < this.crimeFiles.length; index++) {
         if (this.crimeFiles.item(index))
           fetch(URL.createObjectURL(this.crimeFiles.item(index) as Blob)).then((response) => response.json()).then((response) =>{
-              let crimeData : any = [];
+              const crimeData : any = [];
               response.forEach((element : any) => {
               crimeData.push(element);
             });
@@ -169,7 +169,7 @@ export class AdminPage{
       for (let index = 0; index < this.sanitationFiles.length; index++) {
         if (this.sanitationFiles.item(index))
           fetch(URL.createObjectURL(this.sanitationFiles.item(index) as Blob)).then((response) => response.json()).then((response) =>{
-              let saniData : any = [];
+              const saniData : any = [];
               response.forEach((element : any) => {
               saniData.push(element);
             });
@@ -182,7 +182,7 @@ export class AdminPage{
       for(let index = 0; index < this.WWQ.length; index++){
         if(this.WWQ.item(index))
           fetch(URL.createObjectURL(this.WWQ.item(index) as Blob)).then((response) => response.json()).then((response) =>{
-            let WWQData : any = [];
+            const WWQData : any = [];
             response.forEach((element : any) => {
             WWQData.push(element);
           });
@@ -195,7 +195,7 @@ export class AdminPage{
       for (let index = 0; index < this.muniFiles.length; index++) {
         if (this.muniFiles.item(index))
           fetch(URL.createObjectURL(this.muniFiles.item(index) as Blob)).then((response) => response.json()).then((response) =>{
-              let muniData : any = [];
+              const muniData : any = [];
               response.forEach((element : any) => {
               muniData.push(element);
             });

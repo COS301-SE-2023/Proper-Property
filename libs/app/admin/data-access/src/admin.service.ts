@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
+import { UserProfileState } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { Observable } from 'rxjs';
 import { Select } from '@ngxs/store';
 import { UploadCrimeStatsRequest,
   UploadCrimeStatsResponse,
   Station,
-  Crime,
   UploadSaniStatsRequest,
   UploadSaniStatsResponse,
   Sanitation,
@@ -24,7 +23,6 @@ export class AdminService {
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
 
   constructor(
-    private readonly userServices: UserProfileService, 
     private readonly functions: Functions
   ) {
     this.userProfile$.subscribe((user) => {
@@ -34,7 +32,7 @@ export class AdminService {
 
   async uploadCrimeStats(crimeData : any[], quarter: string){
     let stationCount = 0;
-    let encounteredStations : String[] = [];
+    const encounteredStations : string[] = [];
     const stations : Station[] = [];
     for(let i = 0; i < crimeData.length; i++){
       if(encounteredStations.includes(crimeData[i]['Station'])){
@@ -85,7 +83,7 @@ export class AdminService {
       console.log(WSAs[WSAs.length - 1]);
     }
 
-    const response: UploadSaniStatsResponse = (await httpsCallable<
+    return (await httpsCallable<
       UploadSaniStatsRequest,
       UploadSaniStatsResponse
     >(this.functions, 'uploadSaniStats')({wsaSaniStats: WSAs})).data;
@@ -113,7 +111,7 @@ export class AdminService {
 
   async uploadMuniData(muniData : any[]){
     let districtCount = 0;
-    let encounteredDistricts : String[] = [];
+    const encounteredDistricts : string[] = [];
     const districts : District[] = [];
     for(let i = 0; i < muniData.length; i++){
       if(muniData[i]['District'] == ""){
@@ -145,7 +143,7 @@ export class AdminService {
 
     console.log(districts);
 
-    const response: UploadDistrictDataResponse = (await httpsCallable<
+    return (await httpsCallable<
       UploadDistrictDataRequest,
       UploadDistrictDataResponse
     >(this.functions, 'uploadDistrictData')({districts: districts})).data;
