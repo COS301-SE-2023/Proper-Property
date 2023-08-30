@@ -3,16 +3,16 @@ import { UserProfileState } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { Observable } from 'rxjs';
 import { Select } from '@ngxs/store';
-import { UploadCrimeStatsRequest,
-  UploadCrimeStatsResponse,
-  Station,
-  UploadSaniStatsRequest,
-  UploadSaniStatsResponse,
+import { Station,
   Sanitation,
   District,
-  UploadDistrictDataResponse,
+  WWQ,
+  UploadLocInfoDataRequest,
+  UploadLocInfoDataResponse,
+  UploadCrimeStatsRequest,
+  UploadSaniStatsRequest,
   UploadDistrictDataRequest,
-  WWQ} from '@properproperty/api/loc-info/util';
+  UploadWWQStatsRequest} from '@properproperty/api/loc-info/util';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 
 @Injectable({
@@ -62,12 +62,11 @@ export class AdminService {
       stationStats: stations,
       quarter: ""
     };
-    const response: UploadCrimeStatsResponse = (await httpsCallable<
-      UploadCrimeStatsRequest,
-      UploadCrimeStatsResponse
-    >(this.functions, 'uploadCrimeStats')(request)).data;
 
-    console.warn(response);
+    return (await httpsCallable<
+      UploadLocInfoDataRequest,
+      UploadLocInfoDataResponse
+    >(this.functions, 'uploadLocInfoData')({request: request, path: 'crime'})).data;
   }
 
   /** SANITATION STATISTICS **/
@@ -83,10 +82,14 @@ export class AdminService {
       console.log(WSAs[WSAs.length - 1]);
     }
 
+    const request : UploadSaniStatsRequest = {
+      wsaSaniStats: WSAs
+    }
+
     return (await httpsCallable<
-      UploadSaniStatsRequest,
-      UploadSaniStatsResponse
-    >(this.functions, 'uploadSaniStats')({wsaSaniStats: WSAs})).data;
+      UploadLocInfoDataRequest,
+      UploadLocInfoDataResponse
+    >(this.functions, 'uploadLocInfoData')({request: request, path: 'sani'})).data;
   }
 
   async uploadWWQStats(WWQData : any[]){
@@ -103,10 +106,14 @@ export class AdminService {
       console.log(WSAs[WSAs.length - 1]);
     }
 
-    // const response: UploadWWQStatsResponse = (await httpsCallable<
-    //   UploadWWQStatsRequest,
-    //   UploadWWQStatsResponse
-    // >(this.functions, 'uploadWWQStats')({wsaWWQStats: WSAs})).data;
+    const request : UploadWWQStatsRequest = {
+      wsaWWQStats: WSAs
+    }
+
+    return (await httpsCallable<
+      UploadLocInfoDataRequest,
+      UploadLocInfoDataResponse
+    >(this.functions, 'uploadLocInfoData')({request: request, path : 'wwq'})).data;
   }
 
   async uploadMuniData(muniData : any[]){
@@ -141,11 +148,15 @@ export class AdminService {
       }
     }
 
+    const request : UploadDistrictDataRequest = {
+      districts: districts
+    }
+
     console.log(districts);
 
     return (await httpsCallable<
-      UploadDistrictDataRequest,
-      UploadDistrictDataResponse
-    >(this.functions, 'uploadDistrictData')({districts: districts})).data;
+      UploadLocInfoDataRequest,
+      UploadLocInfoDataResponse
+    >(this.functions, 'uploadDistrictData')({request: request, path: "muni"})).data;
   }
 }

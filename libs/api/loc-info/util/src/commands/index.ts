@@ -1,3 +1,1 @@
-export * from './upload-crime-stats.command'
-export * from './upload-sani-stats.command'
-export * from './upload-district-data.command'
+export * from './upload-loc-info-data.command'

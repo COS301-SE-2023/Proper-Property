@@ -186,7 +186,9 @@ export class AdminPage{
             response.forEach((element : any) => {
             WWQData.push(element);
           });
-          this.adminServices.uploadWWQStats(WWQData);
+          this.adminServices.uploadWWQStats(WWQData).then((response) => {
+            console.log(response);
+          })
         });
       }
     }

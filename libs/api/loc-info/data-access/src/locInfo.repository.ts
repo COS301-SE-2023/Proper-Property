@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { UploadDistrictDataResponse, UploadDistrictDataRequest, GetSaniDataRequest, GetSaniDataResponse } from '@properproperty/api/loc-info/util';
-import { UploadCrimeStatsRequest,
-  UploadCrimeStatsResponse,
+import {  UploadLocInfoDataResponse,
+  GetSaniDataRequest,
+  GetSaniDataResponse,
+  UploadCrimeStatsRequest, 
   UploadSaniStatsRequest,
-  UploadSaniStatsResponse } from '@properproperty/api/loc-info/util';
+  UploadDistrictDataRequest,
+  UploadWWQStatsRequest} from '@properproperty/api/loc-info/util';
 import * as admin from 'firebase-admin';
 
 @Injectable()
 export class LocInfoRepository {
-  async uploadCrimeStats(req : UploadCrimeStatsRequest): Promise<UploadCrimeStatsResponse>{
+  async uploadCrimeStats(req : UploadCrimeStatsRequest): Promise<UploadLocInfoDataResponse>{
     try{
       for(let station of req.stationStats){
         admin
@@ -18,32 +20,48 @@ export class LocInfoRepository {
         .set(station);
       }
     
-      return {status: true};
+      return {type: "crime", status: true};
     }
-    catch{
-      return {status: false};
+    catch(e : any){
+      return {type: "crime", status: false, error: e ? e.message : "No error message available"};
     }
   }
 
-  async uploadSaniStats(req : UploadSaniStatsRequest): Promise<UploadSaniStatsResponse>{
+  async uploadSaniStats(req : UploadSaniStatsRequest): Promise<UploadLocInfoDataResponse>{
     try{
       for(let wsa of req.wsaSaniStats){
         admin
         .firestore()
-        .collection('SaniStats/')
+        .collection('SaniStats-Sanitation')
         .doc(wsa.WSA.toLowerCase())
         .set(wsa);
       }
     
-      return {status: true};
+      return {type: "sanitation", status: true};
     }
-    catch(e){
-      console.log(e)
-      return {status: false};
+    catch(e : any){
+      return {type: "crime", status: false, error: e ? e.message : "No error message available"};
     }
   }
 
-  async uploadDistrictData(req : UploadDistrictDataRequest): Promise<UploadDistrictDataResponse>{
+  async uploadWWQStats(req : UploadWWQStatsRequest): Promise<UploadLocInfoDataResponse>{
+    try{
+      for(let wsa of req.wsaWWQStats){
+        admin
+        .firestore()
+        .collection('SaniStats-WWQ')
+        .doc(wsa.WSA.toLowerCase())
+        .set(wsa);
+      }
+    
+      return {type: "wwq", status: true};
+    }
+    catch(e : any){
+      return {type: "crime", status: false, error: e ? e.message : "No error message available"};
+    }
+  }
+
+  async uploadDistrictData(req : UploadDistrictDataRequest): Promise<UploadLocInfoDataResponse>{
     try{
       for(let district of req.districts){
         admin
@@ -53,11 +71,10 @@ export class LocInfoRepository {
         .set(district);
       }
     
-      return {status: true};
+      return {type: "district", status: true};
     }
-    catch(e){
-      console.log(e)
-      return {status: false};
+    catch(e : any){
+      return {type: "crime", status: false, error: e ? e.message : "No error message available"};
     }
   }
 

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs'
 import { LocInfoService } from './locInfo.service';
-import { UploadCrimeStatsHandler, UploadSaniStatsHandler, UploadDistrictDataHandler } from './commands';
+import { UploadLocInfoDataHandler } from './commands';
 import { GetSaniDataHandler } from './queries';
 import { ApiLocInfoDataAccessModule } from '@properproperty/api/loc-info/data-access';
-const CommandHandlers = [UploadCrimeStatsHandler, UploadSaniStatsHandler, UploadDistrictDataHandler];
+const CommandHandlers = [UploadLocInfoDataHandler];
 const QueryHandlers = [ GetSaniDataHandler ];
 
 @Module({
