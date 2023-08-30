@@ -23,8 +23,14 @@ const eventHandlers = [
   StatusChangeNotifiedHandler,
   ViewDropNotifiedHandler
 ];
+
+import { NotificationsModule as NotificationsDataAccessModule } from '@properproperty/api/notifications/data-access';
+
 @Module({
-  imports: [CqrsModule],
+  imports: [
+    CqrsModule, 
+    NotificationsDataAccessModule
+  ],
   providers: [
     NotificationsService,
     NotificationSagas,

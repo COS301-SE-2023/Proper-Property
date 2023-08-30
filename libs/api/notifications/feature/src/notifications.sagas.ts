@@ -13,7 +13,7 @@ export class NotificationSagas {
         map(
           (event: ListingEditedEvent) => new NotifyApprovalChangeCommand(
             event.listing.user_id, 
-            event.listing.listing_id, 
+            event.listing.listing_id ?? "", 
             false, 
             "Listing has been edited"
           )

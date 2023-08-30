@@ -16,8 +16,8 @@ export class NotificationsDocModel extends AggregateRoot implements Notification
 
   static createNotifications(notificationsDoc: NotificationsDoc) {
     const model = new NotificationsDocModel(
-        notificationsDoc.userId,
-        notificationsDoc.notifications,
+      notificationsDoc.userId,
+      notificationsDoc.notifications,
     );
     return model;
   }
