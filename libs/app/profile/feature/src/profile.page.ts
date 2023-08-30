@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,HostListener } from '@angular/core';
 import { UserProfileState, UserProfileService } from '@properproperty/app/profile/data-access';
 import {AuthService} from '@properproperty/app/auth/data-access';
 import { Logout } from '@properproperty/app/auth/util';
@@ -17,6 +17,7 @@ import { UpdateUserProfile, RemoveCurrentUser } from '@properproperty/app/profil
 })
 export class ProfilePage implements OnInit {
 
+  isMobile:boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   user: UserProfile | null = null;
   interests: Interests; // Needs to not be nullable cus ngModel no like
@@ -72,6 +73,7 @@ export class ProfilePage implements OnInit {
       private readonly store: Store
     ) {
 
+      this.isMobile = isMobile();
     // default value cus ngModel cries when the user is null
     this.interests = {
       garden: 50,
@@ -126,6 +128,12 @@ export class ProfilePage implements OnInit {
     this.newPhoneNumber = '';
    }
 
+   @HostListener('window:resize', ['$event'])
+   onResize(event: Event) {
+     console.log(event);
+     this.isMobile = window.innerWidth <= 576;
+   }
+   
   ngOnInit() {
     console.log ("Linter: Lifecycle methods should not be empty");
   }
@@ -217,4 +225,7 @@ export class ProfilePage implements OnInit {
     this.newPhoneNumber = '';
     this.isEditingPhoneNumber = false;
   }
+}
+function isMobile(): boolean {
+  return window.innerWidth <= 576;
 }
