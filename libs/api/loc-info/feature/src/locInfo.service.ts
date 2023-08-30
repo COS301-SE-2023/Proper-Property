@@ -6,7 +6,13 @@ import {
   UploadCrimeStatsCommand,
   UploadSaniStatsRequest,
   UploadSaniStatsResponse,
-  UploadSaniStatsCommand
+  UploadSaniStatsCommand,
+  UploadDistrictDataRequest,
+  UploadDistrictDataResponse,
+  UploadDistrictDataCommand,
+  GetSaniDataRequest,
+  GetSaniDataResponse,
+  GetSaniDataQuery
 } from '@properproperty/api/loc-info/util';
 
 @Injectable()
@@ -27,5 +33,17 @@ export class LocInfoService {
     req: UploadSaniStatsRequest
   ): Promise<UploadSaniStatsResponse> {
     return this.commandBus.execute(new UploadSaniStatsCommand(req));
+  }
+
+  async uploadDistrictData(
+    req: UploadDistrictDataRequest
+  ): Promise<UploadDistrictDataResponse>{
+    return this.commandBus.execute(new UploadDistrictDataCommand(req));
+  }
+
+  async getSaniData(
+    req: GetSaniDataRequest
+  ): Promise<GetSaniDataResponse>{
+    return this.queryBus.execute(new GetSaniDataQuery(req));
   }
 }

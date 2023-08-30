@@ -1,5 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Listing, CreateListingRequest, CreateListingResponse, GetListingsRequest, GetListingsResponse, ChangeStatusResponse, ChangeStatusRequest, GetApprovedListingsResponse, EditListingRequest, EditListingResponse } from '@properproperty/api/listings/util';
+import { Listing,
+  CreateListingRequest,
+  CreateListingResponse,
+  GetListingsRequest,
+  GetListingsResponse,
+  ChangeStatusResponse,
+  ChangeStatusRequest,
+  GetApprovedListingsResponse,
+  EditListingRequest,
+  EditListingResponse } from '@properproperty/api/listings/util';
+import { GetSaniDataRequest,
+  GetSaniDataResponse } from '@properproperty/api/loc-info/util';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
 import { Storage, deleteObject, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
@@ -147,5 +158,21 @@ export class ListingsService {
     // TODO Add this via CQRS
     const listingRef = doc(this.firestore, `listings/${listingId}`);
       await updateDoc(listingRef, {photos: photoURLs});
+  }
+
+  async getSanitationScore(municipality : string){
+    const response: GetSaniDataResponse = (await httpsCallable<
+      GetSaniDataRequest,
+      GetSaniDataResponse
+    >(this.functions, 'getSaniData')({municipality: municipality})).data;
+
+    return response;
+  }
+
+  async getWaterScore(municipality : string){
+    // return await httpsCallable<
+    // GetWaterDataRequest,
+    // GetWaterDataResponse
+    // >(this.functions, 'getWaterData')({municipality: municipality});
   }
 }

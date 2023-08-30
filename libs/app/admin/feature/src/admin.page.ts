@@ -24,7 +24,9 @@ export class AdminPage{
   public quarter = "";
   crimeFiles: FileList | null = null;
   sanitationFiles: FileList | null = null;
+  WWQ: FileList | null = null;
   waterFiles: FileList | null = null;
+  muniFiles: FileList | null = null;
 
   nonAppListings : Listing[] = [];
   appListings : Listing[] = [];
@@ -139,7 +141,13 @@ export class AdminPage{
     else if(type == "water"){
       this.waterFiles = (event.currentTarget as HTMLInputElement).files;
       console.log("Water files uploaded");
-    }    
+    }  
+    else if(type == "muni"){
+      this.muniFiles = (event.currentTarget as HTMLInputElement).files;
+    } 
+    else if(type == "WWQ"){
+      this.WWQ = (event.currentTarget as HTMLInputElement).files;
+    } 
   }
 
   processData(){
@@ -166,6 +174,33 @@ export class AdminPage{
               saniData.push(element);
             });
             this.adminServices.uploadSaniStats(saniData);
+          });
+      }
+    }
+
+    if(this.WWQ && this.WWQ.length > 0){
+      for(let index = 0; index < this.WWQ.length; index++){
+        if(this.WWQ.item(index))
+          fetch(URL.createObjectURL(this.WWQ.item(index) as Blob)).then((response) => response.json()).then((response) =>{
+            let WWQData : any = [];
+            response.forEach((element : any) => {
+            WWQData.push(element);
+          });
+          this.adminServices.uploadWWQStats(WWQData);
+        });
+      }
+    }
+
+    if(this.muniFiles && this.muniFiles.length > 0){
+      for (let index = 0; index < this.muniFiles.length; index++) {
+        if (this.muniFiles.item(index))
+          fetch(URL.createObjectURL(this.muniFiles.item(index) as Blob)).then((response) => response.json()).then((response) =>{
+              let muniData : any = [];
+              response.forEach((element : any) => {
+              muniData.push(element);
+            });
+            console.log(muniData);
+            this.adminServices.uploadMuniData(muniData);
           });
       }
     }

@@ -16,6 +16,7 @@ import { AuthState } from '@properproperty/app/auth/data-access';
 import { Unsubscribe, User } from 'firebase/auth';
 import { IonContent } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
+import { GetSaniDataResponse } from '@properproperty/api/loc-info/util';
 
 register();
 
@@ -46,6 +47,8 @@ export class ListingPage{
   adminId = "";
   public ownerViewing$ : Observable<boolean> = of(false);
   lister : UserProfile | null = null;
+  coordinates: {latitude: number, longitude: number} | null = null;
+  addressInfo: google.maps.GeocoderResult | null = null;
 
   price_per_sm = 0;
   lister_name = "";
@@ -123,9 +126,20 @@ export class ListingPage{
         this.userProfileListener = listener;
       });
 
-        this.getNearbyPointsOfInterest();
-        
-        this.getSchoolRating();
+      this.gmapsService.getLatLongFromAddress("" + this.list?.address).then((coordinates) => {
+        this.coordinates = coordinates;
+        this.gmapsService.geocodeAddress("" + this.list?.address).then(response => {
+          this.addressInfo = response;
+          if(response){
+            this.getSanitationScore(response);
+          } 
+        });
+        this.getNearbyPointsOfInterest(coordinates).then(() => {
+          this.getSchoolRating(coordinates).then(() =>{
+            this.getNearbyPoliceStations(coordinates);
+          })
+        })
+      })
       });
     });
 
@@ -241,10 +255,9 @@ export class ListingPage{
     }
   }
 
-  async getNearbyPointsOfInterest() {
+  async getNearbyPointsOfInterest(coordinates: {latitude: number, longitude: number}) {
     if (this.list && this.list.address) {
       try {
-        const coordinates = await this.gmapsService.getLatLongFromAddress(this.list.address);
         if (coordinates) {
           const results = await this.gmapsService.getNearbyPlaces(
             coordinates.latitude,
@@ -265,20 +278,19 @@ export class ListingPage{
     }
   }
 
-  async getSchoolRating(){
+  async getSchoolRating(coordinates: {latitude: number, longitude: number}){
     if(this.list && this.list.address){
       try{
-        await this.gmapsService.getLatLongFromAddress(this.list.address).then(async (coordinates) => {
-            this.gmapsService.getNearbySchools(coordinates.latitude, coordinates.longitude).then((schools : google.maps.places.PlaceResult[]) => {
-              if(schools.length > 0){
-                let totalRating = 0;
-                for(let i = 0; i < schools.length; i++){
-                  totalRating += schools[i].rating ?? 0;
-                }
-
-                document.getElementById("schoolProgress")?.setAttribute("style", "width: " + (totalRating / schools.length) * 20 + "%");
+          this.gmapsService.getNearbySchools(coordinates.latitude, coordinates.longitude).then((schools : google.maps.places.PlaceResult[]) => {
+            // console.log("schools: " + schools);
+            if(schools.length > 0){
+              let totalRating = 0;
+              for(let i = 0; i < schools.length; i++){
+                totalRating += schools[i].rating ?? 0;
               }
-          })
+
+              document.getElementById("schoolProgress")?.setAttribute("style", "width: " + (totalRating / schools.length) * 20 + "%");
+            }
         })
       }
       catch (error) {
@@ -287,9 +299,58 @@ export class ListingPage{
     }
   }
 
+  async getSanitationScore(location : google.maps.GeocoderResult){
+    if(this.list){
+      let muni = "";
+      for(let i = 0; i < location.address_components.length; i++){
+        if(location.address_components[i].long_name.toLowerCase().includes("municipality")){
+          muni = location.address_components[i].long_name;
+        }
+      }
+      
+      console.log(muni);
+
+      this.listingServices.getSanitationScore(muni).then((response : any) => {
+        if(response.percentage){
+          document.getElementById("wasteWaterProgress")?.setAttribute("style", "width: " + response.percentage);
+        }
+      });
+    }
+  }
+  async getWaterScore(location : google.maps.GeocoderResult){
+    if(this.list){
+      let muni = "";
+      for(let i = 0; i < location.address_components.length; i++){
+        if(location.address_components[i].long_name.toLowerCase().includes("municipality")){
+          muni = location.address_components[i].long_name;
+        }
+      }
+
+      this.listingServices.getWaterScore(muni).then((response : any) => {
+        if(response.percentage){
+          document.getElementById("waterProgress")?.setAttribute("style", "width: " + response.percentage);
+        }
+      })
+    }
+  }
+
+  async getNearbyPoliceStations(coordinates: {latitude: number, longitude: number}){
+    // if(this.list && this.list.address){
+    //   try{
+    //       this.gmapsService.getNearbyPoliceStations(coordinates.latitude, coordinates.longitude).then((policeStations : google.maps.places.PlaceResult[]) => {
+            
+    //       })
+    //     }
+    //     catch(error){
+    //       console.error('Error retrieving nearby places:', error);
+
+    //     }
+    //   }
+  }
+
   
+  //TODO - move to listing.service.ts
   async processPointsOfInterestResults(results: google.maps.places.PlaceResult[], address_lat:number, address_lng:number) {
-    console.log(results);
     // Clear the existing points of interest
     this.pointsOfInterest = [];
     const wantedTypes : string[] = [
@@ -348,7 +409,7 @@ export class ListingPage{
       }
     }
 
-    console.log("Accepted: " + this.pointsOfInterest);
+    console.log("Accepted: ", this.pointsOfInterest);
   }
 
   swiperReady() {
