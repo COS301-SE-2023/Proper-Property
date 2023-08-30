@@ -38,7 +38,8 @@ export class CreateListingPage implements OnInit {
     private readonly router: Router, 
     private readonly userService: UserProfileService, 
     private readonly listingService: ListingsService, 
-    private readonly openAIService: OpenAIService,public gmapsService: GmapsService,
+    private readonly openAIService: OpenAIService,
+    public gmapsService: GmapsService,
     private readonly store: Store,
     private route: ActivatedRoute,
   ) {
@@ -182,6 +183,7 @@ handleAddressChange(address: string): void {
   orientation = "";
   count = 0;
 
+
   
 
   handleFileInput(event: Event) {
@@ -312,6 +314,160 @@ handleAddressChange(address: string): void {
     this.features.splice(index, 1);
   }
 
+  ////////////////////////////// Recommendation System Add-Ons ////////////////////////////////////////
+
+  garden = false;
+  farm = false;
+  party = false;
+  mansion = false;
+  tour = false;
+  food = false;
+  kids = false;
+  students = false;
+  accessible = false;
+  eco = false;
+  gym = false;
+  ownder = false;
+  umbrella = false;
+
+  pointOfInterest: { photo: string | undefined, name: string }[] = [];
+
+  setCharacteristics()
+  {
+    this.checklocationfeatures();
+    //Garden
+    this.garden = this.checkfeature("Garden");
+    // Check for garden image
+
+    //party
+    if(this.checkPoi("liquor_store") && (this.checkPoi("bar") || this.checkPoi("night_club") || this.checkPoi("casino")))
+    {
+      this.party = true;
+    }
+
+  }
+  checkfeature(a : string)
+  {
+      for(let x =0; x< this.features.length; x++)
+      {
+        if(a == this.features[x])
+        {
+          return true;
+        }
+      }
+
+      return false;
+  }
+
+  checkPoi(a : string)
+  {
+    for(let x=0; x< this.pointOfInterest.length; x++)
+    {
+      if(this.pointOfInterest[x].name==a)
+      {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  confirmPartyChar()
+  {
+
+  }
+
+  async checklocationfeatures()
+  {
+   
+    try {
+      const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
+      if (coordinates) {
+        const results = await this.gmapsService.getNearbyPlaces(
+          coordinates.latitude,
+          coordinates.longitude
+        );
+        
+        this.processPointsOfInterestResults(results,coordinates.latitude, coordinates.longitude);
+        // const testing = await this.gmapsService.getLatLongFromAddress("Durban, South Africa");
+
+        // await this.gmapsService.calculateDistanceInMeters(coordinates.latitude,coordinates.longitude,testing.latitude,testing.longitude).then((distanceInMeters) => {
+        //   console.log('Distance between the two coordinates:', distanceInMeters, 'meters');
+        // });
+
+      }
+    } catch (error) {
+      console.error('Error retrieving nearby places:', error);
+    }
+    
+  }
+
+  async processPointsOfInterestResults(results: google.maps.places.PlaceResult[], address_lat:number, address_lng:number) {
+    console.log(results);
+    // Clear the existing points of interest
+    this.pointOfInterest = [];
+    const wantedTypes : string[] = [
+      "school",
+      "night_club",
+      "liquor_store",
+      "bar",
+      "casino",
+      "cafe",
+      "gym",
+      "park",
+      "tourist_attraction",
+      "train_station",
+      "university",
+      "amusement_park",
+      "aquarium",
+      "book_store",
+      "zoo",
+      "restuarant",
+      "police",
+      "park",
+      "movie_theatre",
+      "meal_takeaway",
+      "meal_delivery",
+      "library"
+    ]
+
+    // Iterate over the results and extract the icons and names of the places
+    for (const result of results) {
+      if(result.photos && result.photos.length > 0 && result.name && result.types){
+        for(const type of result.types){
+          if(wantedTypes.includes(type)){
+            let dist = 0;
+
+            await this.gmapsService.getLatLongFromAddress(result.vicinity+"").then((coord)=> {
+              console.log("these are the coords ",coord);
+  
+  
+                this.gmapsService.calculateDistanceInMeters(
+                  address_lat,
+                  address_lng,
+                  coord.latitude,
+                  coord.longitude
+                ).then((distanceInMeters) => {
+                console.log('Distance between the two coordinates:', distanceInMeters, 'meters');
+                dist = distanceInMeters;
+              });
+            });
+
+            const naam = result.name + " ("+ (dist / 1000).toFixed(10)+"km)";
+            this.pointOfInterest.push({ photo : result.photos[0].getUrl(), name : naam });
+            break;
+          }
+        }
+      }
+    }
+
+    console.log("Accepted: " + this.pointOfInterest);
+  }
+
+
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   changeListingType(){
     if(this.selectedValue){
       this.listingType = "Rent";
@@ -332,7 +488,9 @@ handleAddressChange(address: string): void {
         this.features.push((document.getElementById(this.checkboxes[i]) as HTMLIonCheckboxElement).id);
       }
     }
-  
+    
+    this.setCharacteristics();
+
     if(this.currentUser != null){
       const list : Listing = {
         user_id: this.currentUser.uid,
@@ -356,8 +514,8 @@ handleAddressChange(address: string): void {
         approved: false,
         quality_rating: score,
         characteristics: {
-          garden: false,
-          party: false,
+          garden: this.garden,
+          party: this.party,
           mansion:  false,
           accessible: false,
           foreign: false,
@@ -382,6 +540,8 @@ handleAddressChange(address: string): void {
       console.log("Error in create-lisitng.page.ts");
     }
   }
+
+
 
   async editListing(){
     if(this.currentUser != null && this.listingEditee != null){
