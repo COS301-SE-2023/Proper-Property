@@ -18,6 +18,7 @@ export class LocInfoService {
   async uploadLocInfoData(
     req: UploadLocInfoDataRequest
   ): Promise<UploadLocInfoDataResponse>{
+    console.log("Service call: ", req.request)
     return this.commandBus.execute(new UploadLocInfoDataCommand(req));
   }
 

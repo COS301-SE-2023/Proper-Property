@@ -12,7 +12,15 @@ import { Station,
   UploadCrimeStatsRequest,
   UploadSaniStatsRequest,
   UploadDistrictDataRequest,
-  UploadWWQStatsRequest} from '@properproperty/api/loc-info/util';
+  UploadWWQStatsRequest,
+  waterAccessWSA,
+  UploadWaterAccessDataRequest,
+  waterQualityWSA,
+  UploadWaterQualityDataRequest,
+  waterReliabilityWSA,
+  UploadWaterReliabilityDataRequest,
+  waterTariffWMA,
+  UploadWaterTariffDataRequest} from '@properproperty/api/loc-info/util';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 
 @Injectable({
@@ -76,7 +84,7 @@ export class AdminService {
     for(let i = 0; i < saniData.length; i++){
       WSAs.push({
         WSA: saniData[i]['WSA'],
-        percentageBasicSani: saniData[i]['% Basic Sanitation']
+        percentageBasicSani: saniData[i]['% Basic Sanitation'].includes("%") ? saniData[i]['% Basic Sanitation'].substring(0, saniData[i]['% Basic Sanitation'].length - 1)/100 : null
       })
 
       console.log(WSAs[WSAs.length - 1]);
@@ -97,10 +105,10 @@ export class AdminService {
     for(let i = 0; i < WWQData.length; i++){
       WSAs.push({
         WSA: WWQData[i]['WSA'],
-        chemPerc: WWQData[i]['Chemical'],
-        microbiologicalPerc:  WWQData[i]['Microbiological'],
-        physicalPerc:  WWQData[i]['Physical'],
-        monitoringPerc: WWQData[i]['Monitoring']
+        chemPerc: WWQData[i]['Chemical'].includes("%") ? WWQData[i]['Chemical'].substring(0, WWQData[i]['Chemical'].length - 1)/100 : null,
+        microbiologicalPerc:  WWQData[i]['Microbiological'].includes("%") ? WWQData[i]['Microbiological'].substring(0, WWQData[i]['Microbiological'].length - 1)/100 : null,
+        physicalPerc:  WWQData[i]['Physical'].includes("%") ? WWQData[i]['Physical'].substring(0, WWQData[i]['Physical'].length - 1)/100 : null,
+        monitoringPerc: WWQData[i]['Monitoring'].includes("%") ? WWQData[i]['Monitoring'].substring(0, WWQData[i]['Monitoring'].length - 1)/100 : null
       })
 
       console.log(WSAs[WSAs.length - 1]);
@@ -127,22 +135,28 @@ export class AdminService {
     }
     for(let i = 0; i < muniData.length; i++){
       if(encounteredDistricts.includes(muniData[i]['District'])){
-          districts[encounteredDistricts.indexOf(muniData[i]['District'])].municipalities.push({
-            name: muniData[i]['Name'] as string,
-            province: muniData[i]['Province'] as string,
-            population: muniData[i]['Population (2016)[3]'] as number,
-            popDensity: muniData[i]['Pop. Density (per km2)'] as number,
-          })
+        const tempPop : string | number = muniData[i]['Population (2016)[3]'] ;
+        const tempPopDens : string | number = muniData[i]['Pop. Density (per km2)'];
+        districts[encounteredDistricts.indexOf(muniData[i]['District'])].municipalities.push({
+          name: muniData[i]['Name'] as string,
+          province: muniData[i]['Province'] as string,
+          population: typeof tempPop === "string" ?  parseInt(tempPop.slice(0, tempPop.indexOf(",")) + tempPop.slice(tempPop.indexOf(",") + 1)) : tempPop,
+          popDensity: typeof tempPopDens === "string" ?  parseInt(tempPopDens.slice(0, tempPopDens.indexOf(",") - 1) + tempPopDens.slice(tempPopDens.indexOf(","))) : tempPopDens,
+        })
       }
       else{
           encounteredDistricts.push(muniData[i]['District']);
+          const tempPop : string | number = muniData[i]['Population (2016)[3]'] ;
+          const tempPopDens : string | number = muniData[i]['Pop. Density (per km2)'];
+
+          console.log(typeof tempPop === "string");
           districts[districtCount++] = {
             name: muniData[i]['District'],
             municipalities: [{
               name: muniData[i]['Name'],
               province: muniData[i]['Province'],
-              population: muniData[i]['Population (2016)[3]'],
-              popDensity: muniData[i]['Pop. Density (per km2)'],
+              population: typeof tempPop === "string" ?  parseInt(tempPop.slice(0, tempPop.indexOf(",")) + tempPop.slice(tempPop.indexOf(",") + 1)) : tempPop,
+              popDensity: typeof tempPopDens === "string" ?  parseInt(tempPopDens.slice(0, tempPopDens.indexOf(",")) + tempPopDens.slice(tempPopDens.indexOf(",") + 1)) : tempPopDens,
             }]
           }       
       }
@@ -157,6 +171,103 @@ export class AdminService {
     return (await httpsCallable<
       UploadLocInfoDataRequest,
       UploadLocInfoDataResponse
-    >(this.functions, 'uploadDistrictData')({request: request, path: "muni"})).data;
+    >(this.functions, 'uploadLocInfoData')({request: request, path: 'district'})).data;
+  }
+
+  async uploadWaterAccessData(data : any[]){
+    const WSAs : waterAccessWSA[] = []
+    for(let i = 0; i < data.length; i++){
+      WSAs.push({
+        wsa: data[i]['WSA'],
+        population: data[i]['Population'],
+        accessPercentage: data[i]['%Population  with access'].includes("%") ? data[i]['%Population  with access'].substring(0, data[i]['%Population  with access'].length - 1)/100 : null
+      })
+
+      console.log(WSAs[WSAs.length - 1]);
+    }
+
+    const request : UploadWaterAccessDataRequest = {
+      wsaData: WSAs
+    }
+
+    return (await httpsCallable<
+      UploadLocInfoDataRequest,
+      UploadLocInfoDataResponse
+    >(this.functions, 'uploadLocInfoData')({request: request, path : 'waterAccess'})).data;
+  }
+
+  async uploadWaterQualityData(data : any[]){
+    const WSAs : waterQualityWSA[] = []
+    for(let i = 0; i < data.length; i++){
+      WSAs.push({
+        wsa: data[i]['WSA'],
+        chemicalAcuteHealth: data[i]['Chemical : Acute Health'].includes("%") ? data[i]['Chemical : Acute Health'].substring(0, data[i]['Chemical : Acute Health'].length - 1)/100 : null,
+        chemicalAesthetic: data[i]['Chemical : Aesthetic'].includes("%") ? data[i]['Chemical : Aesthetic'].substring(0, data[i]['Chemical : Aesthetic'].length - 1)/100 : null,
+        chemicalChronicHealth: data[i]['Chemical : Chronic Health'].includes("%") ? data[i]['Chemical : Chronic Health'].substring(0, data[i]['Chemical : Chronic Health'].length - 1)/100 : null,
+        chemicalDisenfectant: data[i]['Chemical : Disinfectant'].includes("%") ? data[i]['Chemical : Disinfectant'].substring(0, data[i]['Chemical : Disinfectant'].length - 1)/100 : null,
+        chemicalOperational: data[i]['Chemical : Operational'].includes("%") ? data[i]['Chemical : Operational'].substring(0, data[i]['Chemical : Operational'].length - 1)/100 : null,
+        microbiological: data[i]['Microbiological : Acute Health'].includes("%") ? data[i]['Microbiological : Acute Health'].substring(0, data[i]['Microbiological : Acute Health'].length - 1)/100 : null
+      })
+
+      console.log(WSAs[WSAs.length - 1]);
+    }
+
+    const request : UploadWaterQualityDataRequest = {
+      wsaData: WSAs
+    }
+
+    return (await httpsCallable<
+      UploadLocInfoDataRequest,
+      UploadLocInfoDataResponse
+    >(this.functions, 'uploadLocInfoData')({request: request, path : 'waterQuality'})).data;
+  }
+
+  async uploadWaterReliabilityData(data : any[]){
+    const WSAs : waterReliabilityWSA[] = []
+    for(let i = 0; i < data.length; i++){
+      WSAs.push({
+        wsa: data[i]['WSA Name'],
+        urbanPopulation: data[i]['Urban Population'],
+        ruralPopulation: data[i]['Rural Population'],
+        urbanPopAccess: data[i]['Urban Population with access to water'],
+        ruralPopAccess: data[i]['Rural Population with access to water'],
+        urbanPopReliable: data[i]['Urban Population Reliable Supply'],
+        ruralPopReliable: data[i]['Rural Population Reliable Supply']
+      })
+
+      console.log(WSAs[WSAs.length - 1]);
+    }
+
+    const request : UploadWaterReliabilityDataRequest = {
+      wsaData: WSAs
+    }
+
+    return (await httpsCallable<
+      UploadLocInfoDataRequest,
+      UploadLocInfoDataResponse
+    >(this.functions, 'uploadLocInfoData')({request: request, path : 'waterReliability'})).data;
+  }
+
+  async uploadWaterTariffData(data : any[]){
+    const WSAs : waterTariffWMA[] = []
+    for(let i = 0; i < data.length; i++){
+      WSAs.push({
+        wma : data[i]['WMA'],
+        domesticTariff: data[i]['Domestic and Industry c/m3'],
+        irigationTariff: data[i]['Irrigation c/m3'],
+        forestryTariff: data[i]['Forestry c/m3']
+      })
+
+      console.log(WSAs[WSAs.length - 1]);
+    }
+
+    const request : UploadWaterTariffDataRequest = {
+      wmaData: WSAs
+    }
+
+    return (await httpsCallable<
+      UploadLocInfoDataRequest,
+      UploadLocInfoDataResponse
+    >(this.functions, 'uploadLocInfoData')({request: request, path : 'waterTariff'})).data;
   }
 }

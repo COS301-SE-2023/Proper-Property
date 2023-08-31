@@ -4,3 +4,7 @@ export * from  './sanitation.interface';
 export * from './municipality.interface';
 export * from './district.interface';
 export * from './wwq.interface';
+export * from './waterAccessWSA.interface';
+export * from './waterQualityWSA.interface';
+export * from './waterReliabilityWSA.interface';
+export * from './waterTariffWMA.interface';

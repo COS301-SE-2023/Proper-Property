@@ -1,4 +1,4 @@
-import { Crime } from '@properproperty/api/loc-info/util';
+import { Crime } from '../interfaces';
 
 export interface Station{
   crimeStats: Crime[];

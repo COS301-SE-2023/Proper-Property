@@ -1,7 +1,7 @@
 export interface WWQ{
     WSA: string,
-    chemPerc: number,
-    microbiologicalPerc: number,
-    physicalPerc: number,
-    monitoringPerc: number
+    chemPerc: number | null,
+    microbiologicalPerc: number | null,
+    physicalPerc: number | null,
+    monitoringPerc: number | null
 }

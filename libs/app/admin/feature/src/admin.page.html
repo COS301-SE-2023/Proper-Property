@@ -47,22 +47,39 @@
               </div>
             </ion-col>
             <ion-col>
-              <div id="popoverHeading"><h3>Import Water Data</h3></div>
-              <div class="drag-drop-area" (click)="waterFileInput.click()">
+              <div id="popoverHeading"><h3>Import Water Access Data</h3></div>
+              <div class="drag-drop-area" (click)="waterAccessFileInput.click()">
                 <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
                 <ion-label class="imageText">Click here or drag and drop a file</ion-label>
-                <input type="file" accept="file/*" (change)="handleFileInput($event, 'water')" hidden #waterFileInput>
+                <input type="file" accept="file/*" (change)="handleFileInput($event, 'waterAccess')" hidden #waterAccessFileInput>
               </div>
-              <ion-input type="text" [(ngModel)]="quarter" placeholder="Enter a quater of the form MONTH YEAR to MONTH YEAR" clearInput></ion-input>
+              <div id="popoverHeading"><h3>Import Water Quality Data</h3></div>
+              <div class="drag-drop-area" (click)="waterQualityFileInput.click()">
+                <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
+                <ion-label class="imageText">Click here or drag and drop a file</ion-label>
+                <input type="file" accept="file/*" (change)="handleFileInput($event, 'waterQuality')" hidden #waterQualityFileInput>
+              </div>
+              <div id="popoverHeading"><h3>Import Water Reliability Data</h3></div>
+              <div class="drag-drop-area" (click)="waterReliabilityFileInput.click()">
+                <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
+                <ion-label class="imageText">Click here or drag and drop a file</ion-label>
+                <input type="file" accept="file/*" (change)="handleFileInput($event, 'waterReliability')" hidden #waterReliabilityFileInput>
+              </div>
+              <div id="popoverHeading"><h3>Import Water Tariffs Data</h3></div>
+              <div class="drag-drop-area" (click)="waterTariffsFileInput.click()">
+                <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
+                <ion-label class="imageText">Click here or drag and drop a file</ion-label>
+                <input type="file" accept="file/*" (change)="handleFileInput($event, 'waterTariffs')" hidden #waterTariffsFileInput>
+              </div>
             </ion-col>
-            <ion-col>
+            <!-- <ion-col>
               <div id="popoverHeading"><h3>Import Municipal Data</h3></div>
               <div class="drag-drop-area" (click)="muniFileInput.click()">
                 <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
                 <ion-label class="imageText">Click here or drag and drop a file</ion-label>
                 <input type="file" accept="file/*" (change)="handleFileInput($event, 'muni')" hidden #muniFileInput>
               </div>
-            </ion-col>
+            </ion-col> -->
           </ion-row>
         </ion-grid>
         <!-- <ion-grid>

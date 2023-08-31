@@ -25,8 +25,12 @@ export class AdminPage{
   crimeFiles: FileList | null = null;
   sanitationFiles: FileList | null = null;
   WWQ: FileList | null = null;
-  waterFiles: FileList | null = null;
+  waterAccessFiles: FileList | null = null;
+  waterQualityFiles: FileList | null = null;
+  waterReliabilityFiles: FileList | null = null;
+  waterTariffsFiles: FileList | null = null;
   muniFiles: FileList | null = null;
+
 
   nonAppListings : Listing[] = [];
   appListings : Listing[] = [];
@@ -138,29 +142,39 @@ export class AdminPage{
       this.sanitationFiles = (event.currentTarget as HTMLInputElement).files;
       console.log("Sanitation files uploaded");
     }
-    else if(type == "water"){
-      this.waterFiles = (event.currentTarget as HTMLInputElement).files;
-      console.log("Water files uploaded");
-    }  
+    else if(type == "waterAccess"){
+      this.waterAccessFiles = (event.currentTarget as HTMLInputElement).files;
+      console.log("Water Access files uploaded");
+    }
+    else if(type == "waterQuality"){
+      this.waterQualityFiles = (event.currentTarget as HTMLInputElement).files;
+      console.log("Water Quality files uploaded");
+    }
+    else if(type == "waterReliability"){
+      this.waterReliabilityFiles = (event.currentTarget as HTMLInputElement).files;
+    }
+    else if(type == "waterTariffs"){
+      this.waterTariffsFiles = (event.currentTarget as HTMLInputElement).files;
+    }
     else if(type == "muni"){
       this.muniFiles = (event.currentTarget as HTMLInputElement).files;
     } 
     else if(type == "WWQ"){
       this.WWQ = (event.currentTarget as HTMLInputElement).files;
-    } 
+    }
   }
 
-  processData(){
+  async processData(){
     console.log("Processing data");
     if (this.crimeFiles && this.crimeFiles.length > 0) {
       for (let index = 0; index < this.crimeFiles.length; index++) {
         if (this.crimeFiles.item(index))
-          fetch(URL.createObjectURL(this.crimeFiles.item(index) as Blob)).then((response) => response.json()).then((response) =>{
+          fetch(URL.createObjectURL(this.crimeFiles.item(index) as Blob)).then((response) => response.json()).then(async (response) =>{
               const crimeData : any = [];
               response.forEach((element : any) => {
               crimeData.push(element);
             });
-            this.adminServices.uploadCrimeStats(crimeData, this.quarter);
+            await this.adminServices.uploadCrimeStats(crimeData, this.quarter);
           });
       }
     }
@@ -168,12 +182,12 @@ export class AdminPage{
     if(this.sanitationFiles && this.sanitationFiles.length > 0){
       for (let index = 0; index < this.sanitationFiles.length; index++) {
         if (this.sanitationFiles.item(index))
-          fetch(URL.createObjectURL(this.sanitationFiles.item(index) as Blob)).then((response) => response.json()).then((response) =>{
+          fetch(URL.createObjectURL(this.sanitationFiles.item(index) as Blob)).then((response) => response.json()).then(async (response) =>{
               const saniData : any = [];
               response.forEach((element : any) => {
               saniData.push(element);
             });
-            this.adminServices.uploadSaniStats(saniData);
+            await this.adminServices.uploadSaniStats(saniData);
           });
       }
     }
@@ -181,12 +195,12 @@ export class AdminPage{
     if(this.WWQ && this.WWQ.length > 0){
       for(let index = 0; index < this.WWQ.length; index++){
         if(this.WWQ.item(index))
-          fetch(URL.createObjectURL(this.WWQ.item(index) as Blob)).then((response) => response.json()).then((response) =>{
+          fetch(URL.createObjectURL(this.WWQ.item(index) as Blob)).then((response) => response.json()).then(async (response) =>{
             const WWQData : any = [];
             response.forEach((element : any) => {
             WWQData.push(element);
           });
-          this.adminServices.uploadWWQStats(WWQData).then((response) => {
+          await this.adminServices.uploadWWQStats(WWQData).then((response) => {
             console.log(response);
           })
         });
@@ -196,13 +210,69 @@ export class AdminPage{
     if(this.muniFiles && this.muniFiles.length > 0){
       for (let index = 0; index < this.muniFiles.length; index++) {
         if (this.muniFiles.item(index))
-          fetch(URL.createObjectURL(this.muniFiles.item(index) as Blob)).then((response) => response.json()).then((response) =>{
+          fetch(URL.createObjectURL(this.muniFiles.item(index) as Blob)).then((response) => response.json()).then(async (response) =>{
               const muniData : any = [];
               response.forEach((element : any) => {
               muniData.push(element);
             });
             console.log(muniData);
-            this.adminServices.uploadMuniData(muniData);
+            await this.adminServices.uploadMuniData(muniData);
+          });
+      }
+    }
+
+    if(this.waterAccessFiles && this.waterAccessFiles.length > 0){
+      for (let index = 0; index < this.waterAccessFiles.length; index++) {
+        if (this.waterAccessFiles.item(index))
+          fetch(URL.createObjectURL(this.waterAccessFiles.item(index) as Blob)).then((response) => response.json()).then(async (response) =>{
+              const waterAccessData : any = [];
+              response.forEach((element : any) => {
+              waterAccessData.push(element);
+            });
+            console.log(waterAccessData);
+            await this.adminServices.uploadWaterAccessData(waterAccessData);
+          });
+      }
+    }
+
+    if(this.waterQualityFiles && this.waterQualityFiles.length > 0){
+      for (let index = 0; index < this.waterQualityFiles.length; index++) {
+        if (this.waterQualityFiles.item(index))
+          fetch(URL.createObjectURL(this.waterQualityFiles.item(index) as Blob)).then((response) => response.json()).then(async (response) =>{
+              const waterQualityData : any = [];
+              response.forEach((element : any) => {
+              waterQualityData.push(element);
+            });
+            console.log(waterQualityData);
+            await this.adminServices.uploadWaterQualityData(waterQualityData);
+          });
+      }
+    }
+
+    if(this.waterReliabilityFiles && this.waterReliabilityFiles.length > 0){
+      for (let index = 0; index < this.waterReliabilityFiles.length; index++) {
+        if (this.waterReliabilityFiles.item(index))
+          fetch(URL.createObjectURL(this.waterReliabilityFiles.item(index) as Blob)).then((response) => response.json()).then(async (response) =>{
+              const waterReliabilityData : any = [];
+              response.forEach((element : any) => {
+              waterReliabilityData.push(element);
+            });
+            console.log(waterReliabilityData);
+            await this.adminServices.uploadWaterReliabilityData(waterReliabilityData);
+          });
+      }
+    }
+
+    if(this.waterTariffsFiles && this.waterTariffsFiles.length > 0){
+      for (let index = 0; index < this.waterTariffsFiles.length; index++) {
+        if (this.waterTariffsFiles.item(index))
+          fetch(URL.createObjectURL(this.waterTariffsFiles.item(index) as Blob)).then((response) => response.json()).then(async (response) =>{
+              const waterTariffData : any = [];
+              response.forEach((element : any) => {
+              waterTariffData.push(element);
+            });
+            console.log(waterTariffData);
+            await this.adminServices.uploadWaterTariffData(waterTariffData);
           });
       }
     }

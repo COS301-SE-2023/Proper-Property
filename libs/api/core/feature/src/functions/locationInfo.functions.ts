@@ -21,6 +21,7 @@ export const uploadLocInfoData = functions.region('europe-west1').https.onCall(
   ): Promise<UploadLocInfoDataResponse> => {
     const appContext = await NestFactory.createApplicationContext(CoreModule)
     const locInfoService = appContext.get(LocInfoService);
+    console.log("Function call: ", request.request)
     return locInfoService.uploadLocInfoData(request);
   }
 );

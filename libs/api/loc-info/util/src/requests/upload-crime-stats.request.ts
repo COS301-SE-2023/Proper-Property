@@ -1,4 +1,4 @@
-import { Station } from '@properproperty/api/loc-info/util'
+import { Station } from '../interfaces'
 
 export interface UploadCrimeStatsRequest {
   stationStats: Station[];
