@@ -38,12 +38,6 @@
         <swiper-slide *ngFor="let picture of list.photos">
           <img alt="img" src="{{picture}}" />
         </swiper-slide>
-        <!-- <swiper-slide>
-          <img src="assets/house5.jpg">
-        </swiper-slide>
-        <swiper-slide>
-          <img src="assets/house4.jpg">
-        </swiper-slide> -->
       </swiper-container>
       <ion-buttons slot="end" class="swiper-button2" #two>
         <ion-button id="next-button" style="height:100px;" (click)="goNext($event)" #two>
@@ -51,10 +45,6 @@
         </ion-button>
       </ion-buttons>
     </div>
-    <!-- <div class="image-gallery">
-      <img *ngFor="let picture of list.photos" [src]="picture">
-    </div> -->
-    
   
     <ion-grid style="width:80%;">
       <ion-row style="height:550px">
