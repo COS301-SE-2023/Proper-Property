@@ -330,20 +330,18 @@ handleAddressChange(address: string): void {
   ownder = false;
   umbrella = false;
 
-  pointOfInterest: { photo: string | undefined, name: string }[] = [];
-
-  setCharacteristics()
+  async setCharacteristics()
   {
-    this.checklocationfeatures();
     //Garden
     this.garden = this.checkfeature("Garden");
     // Check for garden image
 
     //party
-    if(this.checkPoi("liquor_store") && (this.checkPoi("bar") || this.checkPoi("night_club") || this.checkPoi("casino")))
+    if(await this.checklocationfeatures("liquor_store") && (await this.checklocationfeatures("bar") || await this.checklocationfeatures("night_club") || await this.checklocationfeatures("casino")))
     {
       this.party = true;
     }
+
 
   }
   checkfeature(a : string)
@@ -359,111 +357,42 @@ handleAddressChange(address: string): void {
       return false;
   }
 
-  checkPoi(a : string)
-  {
-    for(let x=0; x< this.pointOfInterest.length; x++)
-    {
-      if(this.pointOfInterest[x].name==a)
-      {
-        return true;
-      }
-    }
 
-    return false;
-  }
-
-  confirmPartyChar()
-  {
-
-  }
-
-  async checklocationfeatures()
+  async checklocationfeatures(placeType: string)
   {
    
     try {
       const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
       if (coordinates) {
-        const results = await this.gmapsService.getNearbyPlaces(
+        const results = await this.gmapsService.getNearbyPlaceType(
           coordinates.latitude,
-          coordinates.longitude
+          coordinates.longitude,
+          placeType
         );
-        
-        this.processPointsOfInterestResults(results,coordinates.latitude, coordinates.longitude);
-        // const testing = await this.gmapsService.getLatLongFromAddress("Durban, South Africa");
 
-        // await this.gmapsService.calculateDistanceInMeters(coordinates.latitude,coordinates.longitude,testing.latitude,testing.longitude).then((distanceInMeters) => {
-        //   console.log('Distance between the two coordinates:', distanceInMeters, 'meters');
-        // });
+        console.log(results);
+
+        for (const result of results) {
+          if(result.types){
+            for(const type of result.types){
+              
+              if(type == placeType){
+
+                return true;
+              }
+            }
+          }
+        }
+
+        return false;
 
       }
     } catch (error) {
       console.error('Error retrieving nearby places:', error);
     }
     
+    return false;
   }
-
-  async processPointsOfInterestResults(results: google.maps.places.PlaceResult[], address_lat:number, address_lng:number) {
-    console.log(results);
-    // Clear the existing points of interest
-    this.pointOfInterest = [];
-    const wantedTypes : string[] = [
-      "school",
-      "night_club",
-      "liquor_store",
-      "bar",
-      "casino",
-      "cafe",
-      "gym",
-      "park",
-      "tourist_attraction",
-      "train_station",
-      "university",
-      "amusement_park",
-      "aquarium",
-      "book_store",
-      "zoo",
-      "restuarant",
-      "police",
-      "park",
-      "movie_theatre",
-      "meal_takeaway",
-      "meal_delivery",
-      "library"
-    ]
-
-    // Iterate over the results and extract the icons and names of the places
-    for (const result of results) {
-      if(result.photos && result.photos.length > 0 && result.name && result.types){
-        for(const type of result.types){
-          if(wantedTypes.includes(type)){
-            let dist = 0;
-
-            await this.gmapsService.getLatLongFromAddress(result.vicinity+"").then((coord)=> {
-              console.log("these are the coords ",coord);
-  
-  
-                this.gmapsService.calculateDistanceInMeters(
-                  address_lat,
-                  address_lng,
-                  coord.latitude,
-                  coord.longitude
-                ).then((distanceInMeters) => {
-                console.log('Distance between the two coordinates:', distanceInMeters, 'meters');
-                dist = distanceInMeters;
-              });
-            });
-
-            const naam = result.name + " ("+ (dist / 1000).toFixed(10)+"km)";
-            this.pointOfInterest.push({ photo : result.photos[0].getUrl(), name : naam });
-            break;
-          }
-        }
-      }
-    }
-
-    console.log("Accepted: " + this.pointOfInterest);
-  }
-
 
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -489,7 +418,7 @@ handleAddressChange(address: string): void {
       }
     }
     
-    this.setCharacteristics();
+    await this.setCharacteristics();
 
     if(this.currentUser != null){
       const list : Listing = {

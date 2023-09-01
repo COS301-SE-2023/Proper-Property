@@ -344,7 +344,31 @@ export class GmapsService {
     });
   }
 
-  
+  //////////////////////////////////// Added for Recomendation System: getNearbyPlace + an extra parameter///////////////
+  getNearbyPlaceType(latitude: number, longitude: number, placeType: string): Promise<google.maps.places.PlaceResult[]> {
+    return this.loadGoogleMaps().then((maps) => {
+      const service = new maps.places.PlacesService(document.createElement('div'));
+
+      return new Promise<google.maps.places.PlaceResult[]>((resolve, reject) => {
+        const request = {
+          location: new maps.LatLng(latitude, longitude),
+          radius: 5000, // Specify the radius within which to search for nearby places (in meters)
+          type: placeType,
+        };
+
+        service.nearbySearch(request, (results: google.maps.places.PlaceResult[], status: google.maps.places.PlacesServiceStatus) => {
+          if (status === maps.places.PlacesServiceStatus.OK) {
+            resolve(results);
+            console.log("results: ",results)
+          } else {
+            reject('Failed to retrieve nearby places');
+          }
+        });
+      });
+    });
+  }
+
+
 
   
 getLatLongFromAddress(address: string): Promise<{ latitude: number; longitude: number }> {
