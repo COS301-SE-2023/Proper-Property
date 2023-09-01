@@ -320,7 +320,7 @@ handleAddressChange(address: string): void {
   farm = false;
   party = false;
   mansion = false;
-  tour = false;
+  foreign = false;
   food = false;
   kids = false;
   students = false;
@@ -329,6 +329,37 @@ handleAddressChange(address: string): void {
   gym = false;
   ownder = false;
   umbrella = false;
+
+  touristDestinations: { lat: number, long: number }[] = [
+    
+    {lat:-34.176050 , long:18.342900 },
+    {lat: -34.195390, long:18.448440 },
+    {lat: -33.905883288483416, long:18.419559881341613 },
+    {lat: -34.027445620027166, long:18.423969494340202 },
+    {lat: -33.392068620368626, long:22.214438260829674 },
+    {lat: -33.96514937559787, long: 23.647563426763526},
+    {lat: -33.63071315123244, long: 22.16256336631636},
+    {lat: -34.03129778606299, long:23.268054710171135 },
+    {lat: -34.059403776473296, long: 24.925173425242086}, 
+    {lat: -28.739026512440127, long: 24.75851569159852},
+    {lat: -28.591087302842954, long: 20.340018582987643}, 
+    {lat: -26.237620540599668, long:28.008435662716852  },
+    {lat: -26.235801689082212, long:28.013123779328716 },
+    {lat: -26.1559515206671, long:28.08378026658916 },
+    {lat: -25.749179107587615, long: 27.89070119780269},
+    {lat:-26.10722590098277 , long: 28.054846836406742},
+    {lat: -26.024251206632584, long:28.01180037855904 },
+    {lat: -25.77601429876691, long: 28.1757716231563}, 
+    {lat: -25.966873618607902, long: 27.6625737674743},
+    {lat: -26.016628111537738, long:27.7335727936381 },
+    {lat: -25.357142891151142, long:27.100530200731004 },
+    {lat: -25.253891585249146, long: 27.219679545822608}, 
+    {lat: -29.86710808840616, long: 31.045841467231135},
+    {lat: -29.846719768113445, long:31.036797371292593 }, 
+    {lat: -34.07715084394336, long: 18.891699304113544}, 
+    {lat: -24.572030884249113, long: 30.79878685209525},  
+    {lat: -24.057146033668925, long:30.86003735206916 }, 
+  ];
 
   async setCharacteristics()
   {
@@ -358,7 +389,16 @@ handleAddressChange(address: string): void {
       }
     }
 
+    //Foreign
+    if(await this.checkNearTourist())
+    {
+      this.foreign = true;
+    }
+
+
+
   }
+
   checkfeature(a : string)
   {
       for(let x =0; x< this.features.length; x++)
@@ -406,6 +446,24 @@ handleAddressChange(address: string): void {
       console.error('Error retrieving nearby places:', error);
     }
     
+    return false;
+  }
+
+  async checkNearTourist()
+  {
+    const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
+
+    for(const pin of this.touristDestinations)
+    {
+      const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, pin.lat, pin.long)
+
+      if(distance< 15000)
+      {
+        console.log("tourist coordinates:", pin.lat, pin.long);
+        return true;
+      }
+    }
+
     return false;
   }
 
@@ -462,7 +520,7 @@ handleAddressChange(address: string): void {
           party: this.party,
           mansion:  this.mansion,
           accessible: this.accessible,
-          foreign: false,
+          foreign: this.foreign,
           openConcept: false,
           ecoWarrior: false,
           family: false,
