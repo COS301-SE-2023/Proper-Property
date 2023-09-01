@@ -329,6 +329,7 @@ handleAddressChange(address: string): void {
   gym = false;
   ownder = false;
   umbrella = false;
+  
 
   touristDestinations: { lat: number, long: number }[] = [
     
@@ -368,7 +369,7 @@ handleAddressChange(address: string): void {
     // Check for garden image
 
     //party
-    if(await this.checklocationfeatures("liquor_store") && (await this.checklocationfeatures("bar") || await this.checklocationfeatures("night_club") || await this.checklocationfeatures("casino")))
+    if(await this.checklocationfeatures("liquor_store", 1000) && (await this.checklocationfeatures("bar", 1000) || await this.checklocationfeatures("night_club", 1000) || await this.checklocationfeatures("casino", 2000)))
     {
       this.party = true;
     }
@@ -398,6 +399,12 @@ handleAddressChange(address: string): void {
     //eco-warrior
     this.eco = this.checkfeature("Solar Panels");
 
+    //gym
+    if(await this.checklocationfeatures("gym", 3000))
+    {
+      this.gym = true;
+    }
+
 
 
 
@@ -417,9 +424,10 @@ handleAddressChange(address: string): void {
   }
 
 
-  async checklocationfeatures(placeType: string)
+  async checklocationfeatures(placeType: string, distanceFrom: number)
   {
-   
+
+    
     try {
       const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
       if (coordinates) {
@@ -434,10 +442,20 @@ handleAddressChange(address: string): void {
         for (const result of results) {
           if(result.types){
             for(const type of result.types){
-              
               if(type == placeType){
+                if(result.vicinity)
+                {
+                  const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
 
-                return true;
+                  const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
+                  console.log(result.name, distance, "meters away from ", this.address);
+                  if(distance< distanceFrom)
+                  {
+                    return true;
+                  }
+
+                }
+  
               }
             }
           }
@@ -455,6 +473,7 @@ handleAddressChange(address: string): void {
 
   async checkNearTourist()
   {
+
     const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
 
     for(const pin of this.touristDestinations)
@@ -531,7 +550,7 @@ handleAddressChange(address: string): void {
           student: false,
           lovinIt: false,
           farm: false,
-          Gym: false,
+          Gym: this.gym,
           owner: false,
           leftUmbrella: false 
         },

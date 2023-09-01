@@ -352,7 +352,7 @@ export class GmapsService {
       return new Promise<google.maps.places.PlaceResult[]>((resolve, reject) => {
         const request = {
           location: new maps.LatLng(latitude, longitude),
-          radius: 3000, // Specify the radius within which to search for nearby places (in meters)
+          radius: 2000, // Specify the radius within which to search for nearby places (in meters)
           type: placeType,
         };
 
