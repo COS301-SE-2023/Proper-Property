@@ -349,6 +349,15 @@ handleAddressChange(address: string): void {
       this.mansion = true;
     }
 
+    //accessible
+    for(const feat of this.features)
+    {
+      if(feat == "Accessible")
+      {
+        this.accessible = true;
+      }
+    }
+
   }
   checkfeature(a : string)
   {
@@ -452,7 +461,7 @@ handleAddressChange(address: string): void {
           garden: this.garden,
           party: this.party,
           mansion:  this.mansion,
-          accessible: false,
+          accessible: this.accessible,
           foreign: false,
           openConcept: false,
           ecoWarrior: false,
