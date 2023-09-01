@@ -64,11 +64,16 @@
   // padding: 1%;
 }
 
+swiper-slide{
+  align-self: center;
+}
+
 swiper-slide img {
-  width: 100%;
-  height: auto;
+  width: auto;
+  height: 600px;
   border-radius: 20px;
   margin: auto;
+  display: flex;
 }
 
 .swiper-container-wrapper {

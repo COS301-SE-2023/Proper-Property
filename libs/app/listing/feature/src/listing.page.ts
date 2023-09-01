@@ -149,7 +149,6 @@ export class ListingPage{
   }
 
   async showAnalytics(){
-    this.showData = true;
     const request : GetAnalyticsDataRequest = {listingId : this.list?.listing_id ?? ""};
     const analyticsData = JSON.parse((await httpsCallable(this.functions, 'getAnalyticsData')(request)).data as string);
     if(analyticsData == null){
@@ -224,7 +223,7 @@ export class ListingPage{
     const seconds = (avgPerUser - minutes * 60).toPrecision(2);
 
     this.avgEnagement = minutes + " min " + seconds + " sec";
-    
+    this.showData = true;
     return;
   }
 
