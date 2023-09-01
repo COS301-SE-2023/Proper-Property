@@ -342,6 +342,12 @@ handleAddressChange(address: string): void {
       this.party = true;
     }
 
+    //Mansion
+
+    if(parseInt(this.floor_size) >= 2500 && parseInt(this.bedrooms)>= 4)
+    {
+      this.mansion = true;
+    }
 
   }
   checkfeature(a : string)
@@ -445,7 +451,7 @@ handleAddressChange(address: string): void {
         characteristics: {
           garden: this.garden,
           party: this.party,
-          mansion:  false,
+          mansion:  this.mansion,
           accessible: false,
           foreign: false,
           openConcept: false,
@@ -557,9 +563,9 @@ async function calculateQualityScore(photos: string[],address:string,price:strin
       score+= 5;
   } else score-=20;
 
-  if(isNonEmptyStringInput(floor_size)){
-      score+= 5;
-  } else score-=15;
+  // if(isNonEmptyStringInput(floor_size)){
+  //     score+= 5;
+  // } else score-=15;
 
   if(isNonEmptyStringInput(erf_size)){
       score+= 5;
