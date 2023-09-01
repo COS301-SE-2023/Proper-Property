@@ -395,6 +395,10 @@ handleAddressChange(address: string): void {
       this.foreign = true;
     }
 
+    //eco-warrior
+    this.eco = this.checkfeature("Solar Panels");
+
+
 
 
   }
@@ -479,7 +483,7 @@ handleAddressChange(address: string): void {
     }
   }
 
-  checkboxes =  ["Wifi", "Pets", "Garden", "Pool", "Accessible"];
+  checkboxes =  ["Wifi", "Pets", "Garden", "Pool", "Accessible", "Solar Panels"];
 
   async addListing(){
     this.address = (document.getElementById("address") as HTMLInputElement).value;
@@ -522,7 +526,7 @@ handleAddressChange(address: string): void {
           accessible: this.accessible,
           foreign: this.foreign,
           openConcept: false,
-          ecoWarrior: false,
+          ecoWarrior: this.eco,
           family: false,
           student: false,
           lovinIt: false,
