@@ -176,6 +176,7 @@ export class ProfilePage implements OnInit {
     if (!this.user) {
       return;
     }
+    
     this.isEditingName = true;
     this.newFirstName = this.user.firstName ?? '';
     this.newLastName = this.user.lastName ?? '';

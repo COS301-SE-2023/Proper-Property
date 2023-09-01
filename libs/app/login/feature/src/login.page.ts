@@ -13,10 +13,14 @@ import { Login } from '@properproperty/app/auth/util';
 })
 export class LoginPage implements OnInit {
 
+  isMobile = false;
+
   constructor(private readonly store: Store, public authService: AuthService, public router: Router, public userService : UserProfileService) {
     this.email = this.password = "";
+    this.isMobile = isMobile();
   }
 
+  
   email: string;
   password: string;
 
@@ -45,4 +49,8 @@ export class LoginPage implements OnInit {
     console.log ("Linter: Lifecycle methods should not be empty");
   }
 
+}
+
+function isMobile(): boolean {
+  return window.innerWidth <= 576;
 }
