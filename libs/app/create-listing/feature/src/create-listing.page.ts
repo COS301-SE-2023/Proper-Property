@@ -49,19 +49,19 @@ export class CreateListingPage implements OnInit {
     this.predictions = [];
     this.defaultBounds = new google.maps.LatLngBounds();
     if (isDevMode()) {
-      // this.address = "123 Fake Street";
-      // this.price = "1000000";
-      // this.floor_size = "100";
-      // this.erf_size = "100";
-      // this.bathrooms = "2";
-      // this.bedrooms = "3";
-      // this.parking = "1";
-      // this.pos_type = "Leasehold";
-      // this.env_type = "Urban";
-      // this.prop_type = "House";
-      // this.furnish_type = "Furnished";
-      // this.orientation = "North";
-      // this.description = "This is a description";
+      this.address = "123 Fake Street";
+      this.price = "1000000";
+      this.floor_size = "100";
+      this.erf_size = "100";
+      this.bathrooms = "2";
+      this.bedrooms = "3";
+      this.parking = "1";
+      this.pos_type = "Leasehold";
+      this.env_type = "Urban";
+      this.prop_type = "House";
+      this.furnish_type = "Furnished";
+      this.orientation = "North";
+      this.description = "This is a description";
     }
     this.user$.subscribe((user: User | null) => {
       this.currentUser =  user;
@@ -405,6 +405,36 @@ handleAddressChange(address: string): void {
       this.gym = true;
     }
 
+    //Food
+    this.food = true;
+    const Dansw = this.checklocationfeaturesCounter("meal_delivery", 3000);
+    console.log("Meal Delivery: ", Dansw);
+    if(await Dansw < 2)
+    {
+      this.food = false;
+    }
+
+    const Ransw = this.checklocationfeaturesCounter("restaurant", 3000);
+    console.log("Restaurants: ", Ransw);
+    if(await Ransw < 3)
+    {
+      this.food = false;
+    }
+
+    const Cansw = this.checklocationfeaturesCounter("cafe", 3000);
+    console.log("Cafes: ", Cansw);
+    if(await Cansw < 1)
+    {
+      this.food = false;
+    }
+
+    const Tansw = this.checklocationfeaturesCounter("meal_takeaway", 3000);
+    console.log("Takeawaya: ", Tansw);
+    if(await Tansw < 6)
+    {
+      this.food = false;
+    }
+
 
 
 
@@ -426,8 +456,6 @@ handleAddressChange(address: string): void {
 
   async checklocationfeatures(placeType: string, distanceFrom: number)
   {
-
-    
     try {
       const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
       if (coordinates) {
@@ -453,22 +481,58 @@ handleAddressChange(address: string): void {
                   {
                     return true;
                   }
-
                 }
-  
               }
             }
           }
         }
-
         return false;
-
       }
     } catch (error) {
       console.error('Error retrieving nearby places:', error);
     }
     
     return false;
+  }
+
+  async checklocationfeaturesCounter(placeType: string, distanceFrom: number)
+  {
+    this.count = 0;
+    try {
+      const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
+      if (coordinates) {
+        const results = await this.gmapsService.getNearbyPlaceType(
+          coordinates.latitude,
+          coordinates.longitude,
+          placeType
+        );
+
+        console.log(results);
+
+        for (const result of results) {
+          if(result.types){
+            for(const type of result.types){
+              if(type == placeType){
+                if(result.vicinity)
+                {
+                  const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
+
+                  const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
+                  console.log(result.name, distance, "meters away from ", this.address);
+                  if(distance< distanceFrom)
+                  {
+                    this.count++;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error retrieving nearby places:', error);
+    }
+    return this.count;
   }
 
   async checkNearTourist()
@@ -548,7 +612,7 @@ handleAddressChange(address: string): void {
           ecoWarrior: this.eco,
           family: false,
           student: false,
-          lovinIt: false,
+          lovinIt: this.food,
           farm: false,
           Gym: this.gym,
           owner: false,
