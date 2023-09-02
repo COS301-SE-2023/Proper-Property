@@ -111,10 +111,61 @@ export class UserProfileService {
     }
     (await profile).interests.ecoWarrior = this.adjustment.ecoWarrior;
 
+    // party
+    holder = (await profile).interests.party;
+    this.adjustment.party = holder + (+!!characteristic.party)*this.vPotency;
+    if(this.adjustment.party>100)
+    {
+      this.adjustment.party=100;
+    }
+    (await profile).interests.party = this.adjustment.party;
+
+    holder = (await profile).interests.student;
+    this.adjustment.student = holder + (+!!characteristic.party)*this.vPotency*0.25;
+    if(this.adjustment.student>100)
+    {
+      this.adjustment.student=100;
+    }
+    (await profile).interests.student = this.adjustment.student;
+
+    holder = (await profile).interests.lovinIt;
+    this.adjustment.lovinIt = holder + (+!!characteristic.party)*this.vPotency*0.25;
+    if(this.adjustment.lovinIt>100)
+    {
+      this.adjustment.lovinIt=100;
+    }
+    (await profile).interests.lovinIt = this.adjustment.lovinIt;
+
+    holder = (await profile).interests.foreign;
+    this.adjustment.foreign = holder + (+!!characteristic.party)*this.vPotency*0.25;
+    if(this.adjustment.foreign>100)
+    {
+      this.adjustment.foreign=100;
+    }
+    (await profile).interests.foreign = this.adjustment.foreign;
+
+    //--- decays
+    holder = (await profile).interests.farm;
+    this.adjustment.farm = holder + (+!!characteristic.party)*this.vPotency*-0.25;
+    if(this.adjustment.farm<0)
+    {
+      this.adjustment.farm=0;
+    }
+    (await profile).interests.farm = this.adjustment.farm;
+
+    holder = (await profile).interests.family;
+    this.adjustment.family = holder + (+!!characteristic.party)*this.vPotency*-0.25;
+    if(this.adjustment.family>100)
+    {
+      this.adjustment.family=100;
+    }
+    (await profile).interests.family = this.adjustment.family;
+
+
 
     this.updateUserProfile(await profile);
     
-    // party: boolean;
+ 
     // mansion: boolean;
     // accessible: boolean;
     // foreign: boolean;
