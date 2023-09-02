@@ -24,7 +24,7 @@ export class CreateListingPage implements OnInit {
   @ViewChild('address', { static: false }) addressInput!: ElementRef<HTMLInputElement>;
 
   @Select(AuthState.user) user$!: Observable<User | null>;
-  // autocomplete: any;
+  autocomplete: any;
   defaultBounds: google.maps.LatLngBounds;
   predictions: google.maps.places.AutocompletePrediction[] = [];
   isMobile = false;
