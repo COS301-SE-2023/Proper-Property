@@ -329,7 +329,6 @@ handleAddressChange(address: string): void {
   gym = false;
   owner = false;
   umbrella = false;
-  
 
   touristDestinations: { lat: number, long: number }[] = [
     
@@ -369,9 +368,13 @@ handleAddressChange(address: string): void {
     // Check for garden image
 
     //party
-    if(await this.checklocationfeatures("liquor_store", 1000) && (await this.checklocationfeatures("bar", 1000) || await this.checklocationfeatures("night_club", 1000) || await this.checklocationfeatures("casino", 2000)))
+    if(await this.checklocationfeatures("bar", 1000) || await this.checklocationfeatures("night_club", 1000) || await this.checklocationfeatures("casino", 2000))
     {
-      this.party = true;
+      if(await this.checklocationfeaturesCounter("liquor_store", 1000)> 1)
+      {
+        this.party = true;
+      }
+      
     }
 
     //Mansion
@@ -453,6 +456,16 @@ handleAddressChange(address: string): void {
     {
       console.log("Is an owner and ", this.furnish_type);
       this.owner = true;
+    }
+
+    //PG 13 { crime and school quality still needed }
+
+    if(await this.checklocationfeatures("amusement_park", 10000) || await this.checklocationfeatures("aquarium", 10000) || await this.checklocationfeatures("bowling_alley", 10000) || await this.checklocationfeatures("zoo", 10000) || await this.checklocationfeatures("park", 1000) || await this.checklocationfeatures("movie_theatre", 10000))
+    {
+      if(await this.checklocationfeatures("school", 10000) || await this.checklocationfeatures("primary_school", 10000))
+      {
+        this.kids = true;
+      }
     }
 
   }
@@ -627,7 +640,7 @@ handleAddressChange(address: string): void {
           foreign: this.foreign,
           openConcept: false,
           ecoWarrior: this.eco,
-          family: false,
+          family: this.kids,
           student: this.students,
           lovinIt: this.food,
           farm: false,
