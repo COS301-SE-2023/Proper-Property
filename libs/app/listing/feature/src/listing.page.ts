@@ -417,6 +417,13 @@ export class ListingPage{
         }
 
         this.profileServices.updateUserProfile(this.profile);
+
+        if(this.list && this.list.characteristics)
+        {
+          this.profileServices.updateInterests(this.list.characteristics, this.profile.userId);
+        
+        }
+        
       }
     }
   }
