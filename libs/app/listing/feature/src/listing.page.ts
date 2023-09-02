@@ -149,6 +149,8 @@ export class ListingPage{
   }
 
   async showAnalytics(){
+    const loader=document.querySelector(".graph-animation") as HTMLElement;
+    loader.style.display="block";
     const request : GetAnalyticsDataRequest = {listingId : this.list?.listing_id ?? ""};
     const analyticsData = JSON.parse((await httpsCallable(this.functions, 'getAnalyticsData')(request)).data as string);
     if(analyticsData == null){
@@ -224,6 +226,9 @@ export class ListingPage{
 
     this.avgEnagement = minutes + " min " + seconds + " sec";
     this.showData = true;
+    const element = document.querySelector(".graph") as HTMLElement;
+    loader.style.display="none";
+    element.style.display="block";
     return;
   }
 
