@@ -1,4 +1,4 @@
-<ion-content style="position: relative;">
+<ion-content style="position: relative;" *ngIf = "!isMobile" class="Desktop">
 
   <section class="registering">
     <div class = "Member">
@@ -17,6 +17,14 @@
         <ion-list>
           <h2>Create Account</h2>
   
+          <ion-item>
+            <ion-input type="name" [(ngModel)]="name" placeholder="Enter Name"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input type="name" [(ngModel)]="surname" placeholder="Enter Surname"></ion-input>
+          </ion-item>
+          
           <ion-item>
             <ion-input type="email" [(ngModel)]="email" placeholder="Enter Email"></ion-input>
           </ion-item>
@@ -45,5 +53,62 @@
 
       </div>
     </div>
+  </section>
+</ion-content>
+<ion-content style="position: relative;" *ngIf = "isMobile" class="Mobile">
+
+  <section class="registering">
+    <div class = "container">
+
+        <div class="logo-container">
+          <img src="assets/Logo_v1.png" alt="Proper Property Logo">
+      </div>
+  
+      <div class="reg">
+        <ion-list>
+          <h2 class="sign-up-text">Create Account</h2>
+  
+          <ion-item>
+            <ion-input type="name" [(ngModel)]="name" placeholder="Enter Name"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input type="name" [(ngModel)]="surname" placeholder="Enter Surname"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input type="email" [(ngModel)]="email" placeholder="Enter Email"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input type="password" [(ngModel)]="password" placeholder="Enter Password"></ion-input>
+          </ion-item>
+
+          <ion-item [class.invalid]="!passwordMatch">
+            <ion-input type="password" [(ngModel)]="confirm_password" placeholder="Confirm Password"></ion-input>
+          </ion-item>
+
+        </ion-list>
+
+        <div *ngIf="!passwordMatch" class="invalid-feedback">
+        Passwords do not match!.
+        </div>
+
+
+          <div >
+            <ion-button class="button-centerer1"(click)="register()" shape="round">Sign Up</ion-button>
+          </div>
+      
+
+      </div>
+      <div class="Member">
+        <div class="rightPanel">
+          <div class="content"> 
+            <p>Already have an account? <a routerLink="/login">login</a></p>
+          </div> 
+        </div>
+      </div>
+    </div>
+
   </section>
 </ion-content>
