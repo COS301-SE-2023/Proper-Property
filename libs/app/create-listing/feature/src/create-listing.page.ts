@@ -435,6 +435,20 @@ handleAddressChange(address: string): void {
       this.food = false;
     }
 
+    //Student
+
+    if(await this.checklocationfeatures("university", 5000))
+    {
+      if(parseInt(this.price) < 6000)
+      {
+        if(this.checkfeature("Wifi"))
+        {
+          this.students = true;
+        }
+      }
+    }
+
+
 
 
 
@@ -611,7 +625,7 @@ handleAddressChange(address: string): void {
           openConcept: false,
           ecoWarrior: this.eco,
           family: false,
-          student: false,
+          student: this.students,
           lovinIt: this.food,
           farm: false,
           Gym: this.gym,
