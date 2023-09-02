@@ -468,6 +468,14 @@ handleAddressChange(address: string): void {
       }
     }
 
+    //Middle of nowhere, farm
+
+    if(await this.checkNolocationfeatures(10000))
+    {
+      this.farm = true;
+    }
+
+
   }
 
   checkfeature(a : string)
@@ -516,7 +524,6 @@ handleAddressChange(address: string): void {
             }
           }
         }
-        return false;
       }
     } catch (error) {
       console.error('Error retrieving nearby places:', error);
@@ -584,6 +591,45 @@ handleAddressChange(address: string): void {
     return false;
   }
 
+  async checkNolocationfeatures(distanceFrom: number)
+  {
+    try {
+      const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
+      if (coordinates) {
+        const results = await this.gmapsService.getNearbyPlaces(
+          coordinates.latitude,
+          coordinates.longitude
+        );
+
+        console.log(results);
+
+        for (const result of results) {
+          if(result.types){
+            for(const type of result.types){
+              if(type != "cemetery" && type != "campground"){
+                if(result.vicinity)
+                {
+                  const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
+
+                  const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
+                  console.log(result.name, distance, "meters away from ", this.address);
+                  if(distance< distanceFrom)
+                  {
+                    return false;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error retrieving nearby places:', error);
+    }
+    
+    return true;
+  }
+
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -643,7 +689,7 @@ handleAddressChange(address: string): void {
           family: this.kids,
           student: this.students,
           lovinIt: this.food,
-          farm: false,
+          farm: this.farm,
           Gym: this.gym,
           owner: this.owner,
           leftUmbrella: false 
@@ -670,6 +716,8 @@ handleAddressChange(address: string): void {
         }
       }
 
+      await this.setCharacteristics();
+
       const list : Listing = {
         listing_id: this.listingEditee.listing_id,
         statusChanges: this.listingEditee.statusChanges,
@@ -694,19 +742,19 @@ handleAddressChange(address: string): void {
         let_sell: this.listingType,
         approved: false,
         characteristics: {
-          garden: false,
-          party: false,
-          mansion:  false,
-          accessible: false,
-          foreign: false,
+          garden: this.garden,
+          party: this.party,
+          mansion:  this.mansion,
+          accessible: this.accessible,
+          foreign: this.foreign,
           openConcept: false,
-          ecoWarrior: false,
-          family: false,
-          student: false,
-          lovinIt: false,
-          farm: false,
-          Gym: false,
-          owner: false,
+          ecoWarrior: this.eco,
+          family: this.kids,
+          student: this.students,
+          lovinIt: this.food,
+          farm: this.farm,
+          Gym: this.gym,
+          owner: this.owner,
           leftUmbrella: false 
         },
         listingDate: "" + new Date()
