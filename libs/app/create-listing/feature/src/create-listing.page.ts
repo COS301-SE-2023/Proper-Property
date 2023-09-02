@@ -327,7 +327,7 @@ handleAddressChange(address: string): void {
   accessible = false;
   eco = false;
   gym = false;
-  ownder = false;
+  owner = false;
   umbrella = false;
   
 
@@ -448,9 +448,12 @@ handleAddressChange(address: string): void {
       }
     }
 
-
-
-
+    //owner
+    if(this.features.length > 8 && (this.furnish_type== "Furnished"|| this.furnish_type== "Partly Furnished"))
+    {
+      console.log("Is an owner and ", this.furnish_type);
+      this.owner = true;
+    }
 
   }
 
@@ -629,7 +632,7 @@ handleAddressChange(address: string): void {
           lovinIt: this.food,
           farm: false,
           Gym: this.gym,
-          owner: false,
+          owner: this.owner,
           leftUmbrella: false 
         },
         listingDate: "" + new Date()
