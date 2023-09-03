@@ -11,13 +11,15 @@ import { Observable, of } from 'rxjs';
 import { Select } from '@ngxs/store';
 import { httpsCallable, Functions } from '@angular/fire/functions';
 import { Chart, registerables } from 'chart.js';
-import { GetAnalyticsDataRequest } from '@properproperty/api/core/feature';
+// import { GetAnalyticsDataRequest } from '@properproperty/api/core/feature';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { Unsubscribe, User } from 'firebase/auth';
 import { IonContent } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
 register();
-
+export interface GetAnalyticsDataRequest {
+  listingId: string;
+}
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.page.html',

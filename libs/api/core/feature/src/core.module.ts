@@ -10,22 +10,7 @@ import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
   imports: [
     ProfileModule, 
     ListingsModule, 
-    NotificationsModule,
-    MailerModule.forRootAsync({
-      useFactory: () => ({
-        transport: `smtps://${process.env['NX_SPAMBOT_PASSWORD']}:${process.env['NX_SPAMBOT_PASSWORD']}@smtp.google.com`,
-        defaults: {
-          from: '"nest-modules" <modules@nestjs.com>',
-        },
-        template: {
-          dir: __dirname + '/templates',
-          adapter: new PugAdapter(),
-          options: {
-            strict: true,
-          },
-        },
-      }),
-    }),
+    NotificationsModule
   ],
 })
 export class CoreModule {}

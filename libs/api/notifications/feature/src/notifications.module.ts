@@ -25,11 +25,12 @@ const eventHandlers = [
 ];
 
 import { NotificationsModule as NotificationsDataAccessModule } from '@properproperty/api/notifications/data-access';
-
+import { ProfileModule as ProfileDataAccessModule } from '@properproperty/api/profile/data-access';
 @Module({
   imports: [
     CqrsModule, 
-    NotificationsDataAccessModule
+    NotificationsDataAccessModule,
+    ProfileDataAccessModule
   ],
   providers: [
     NotificationsService,
