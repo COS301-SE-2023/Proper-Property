@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { NotifyApprovalChangeCommand } from '@properproperty/api/notifications/util';
 import { Notification } from '@properproperty/api/notifications/util';
-import { Timestamp } from '@firebase/firestore';
+import { Timestamp } from 'firebase-admin/firestore';
 import { NotificationsDocModel } from '../models/notifications.model';
 import { NotificationsDoc } from '@properproperty/api/notifications/util';
 import { NotificationsRepository } from '@properproperty/api/notifications/data-access';
@@ -15,7 +15,6 @@ export class NotifyApprovalChangeHandler implements ICommandHandler<NotifyApprov
   constructor(
     private readonly notifRepo: NotificationsRepository,
     private readonly eventPublisher: EventPublisher,
-    private readonly mailer: MailerService,
     private readonly profileRepo: ProfileRepository 
   ){}
   async execute(command: NotifyApprovalChangeCommand) {
@@ -68,15 +67,15 @@ export class NotifyApprovalChangeHandler implements ICommandHandler<NotifyApprov
       }
     });
 
-    // const notificationsDoc: NotificationsDoc = await this.notifRepo.getNotifications(command.userId);
-    // const notifModel: NotificationsDocModel = this
-    //   .eventPublisher
-    //   .mergeObjectContext(
-    //     NotificationsDocModel
-    //     .createNotifications(notificationsDoc)
-    //   );
+    const notificationsDoc = await this.notifRepo.getNotifications(command.userId);
+    const notifModel: NotificationsDocModel = this
+      .eventPublisher
+      .mergeObjectContext(
+        NotificationsDocModel
+        .createNotifications(notificationsDoc)
+      );
 
-    // notifModel.sendApprovalChangeNotification(notification);
-    // notifModel.commit();
+    notifModel.sendApprovalChangeNotification(notification);
+    notifModel.commit();
   }
 }
