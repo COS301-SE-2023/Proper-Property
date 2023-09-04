@@ -45,6 +45,7 @@ export class CoreShellComponent implements OnInit, OnDestroy {
     this.user$.subscribe((user) => {
       this.user = user;
       this.loggedIn = user != null && user != undefined;
+      
     });
     // Update listener whenever is changes such that it can be unsubscribed from
     // when the window is unloaded
@@ -76,7 +77,7 @@ export class CoreShellComponent implements OnInit, OnDestroy {
           });
         }
       });
-      console.log("indeed ",this.isMobile);
+      
   }
   
   ngOnInit() {
