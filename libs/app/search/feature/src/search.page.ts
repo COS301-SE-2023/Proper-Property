@@ -524,6 +524,8 @@ toggleColor() {
     
   // });
 
+  this.showAdditionalFilters = false;
+
   this.listingServices.getApprovedListings().then(async (listings) => {
     this.listings = listings;
     this.filterProperties();
