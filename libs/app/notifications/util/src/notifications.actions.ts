@@ -1,6 +1,6 @@
 export class SubscribeToNotificationsState {
   static readonly type = '[Notifications] SubscribeToNotificationsState';
-  constructor(public readonly userId: string) {}
+  constructor(public readonly userId: string | undefined) {}
 }
 
 export class UnsubscribeFromNotificationsState {

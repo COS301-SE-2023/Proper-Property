@@ -36,12 +36,13 @@ export class CoreShellComponent implements OnInit, OnDestroy {
   isMobile: boolean;
   @Select(AuthState.user) user$!: Observable<User | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
-  @Select(NotificationsState.notifications) notifications$!: Observable<any>;
+  @Select(NotificationsState.notificationsListener) notificationsListener$!: Observable<Unsubscribe | null>;
   public loggedIn = false;
   public admin = false;
   private user: User | null = null;
   public dev: boolean;
   private userProfileListener: Unsubscribe | null = null;
+  private notificationsListener: Unsubscribe | null = null;
   private NotificationToken = 'whups';
   private activatedRoute = inject(ActivatedRoute);
   constructor(
@@ -68,6 +69,10 @@ export class CoreShellComponent implements OnInit, OnDestroy {
     // when the window is unloaded
     this.userProfileListener$.subscribe((listener) => {
       this.userProfileListener = listener;
+    });
+
+    this.notificationsListener$.subscribe((listener) => {
+      this.notificationsListener = listener;
     });
 
     this.user$.subscribe((user) => {
@@ -100,11 +105,15 @@ export class CoreShellComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.store.dispatch(new SubscribeToAuthState());
   }
-  // Unsubscribes from snapshot listener when window is unloaded
+  // Unsubscribes from snapshot listeners when window is unloaded
   @HostListener('window:beforeunload')
   ngOnDestroy() {
     if (this.userProfileListener) {
       this.userProfileListener();
+    }
+
+    if (this.notificationsListener) {
+      this.notificationsListener();
     }
   }
 
