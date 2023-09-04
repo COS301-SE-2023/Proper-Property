@@ -10,6 +10,7 @@ import { Store } from '@ngxs/store';
 import { SubscribeToAuthState } from '@properproperty/app/auth/util';
 import { Select } from '@ngxs/store';
 import { AuthState } from '@properproperty/app/auth/data-access';
+import { NotificationsState } from '@properproperty/app/notifications/data-access';
 import { Observable } from 'rxjs';
 import { Unsubscribe, User } from 'firebase/auth';
 // import { SubscribeToUserProfile, UnsubscribeFromUserProfile } from '@properproperty/app/user/util';
@@ -35,6 +36,7 @@ export class CoreShellComponent implements OnInit, OnDestroy {
   isMobile: boolean;
   @Select(AuthState.user) user$!: Observable<User | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
+  @Select(NotificationsState.notifications) notifications$!: Observable<any>;
   public loggedIn = false;
   public admin = false;
   private user: User | null = null;

@@ -98,6 +98,9 @@
       "@properproperty/app/notifications/data-access": [
         "libs/app/notifications/data-access/src/index.ts"
       ],
+      "@properproperty/app/notifications/util": [
+        "libs/app/notifications/util/src/index.ts"
+      ],
       "@properproperty/app/open-ai/data-access": [
         "libs/app/open-ai/data-access/src/index.ts"
       ],
