@@ -1,24 +1,14 @@
 <ion-content style="position: relative;" *ngIf = "!isMobile" class="Desktop">
 
   <section class="registering">
-    <div class = "Member">
-      <div class="leftPanel">
-        <div class="content">
-          <h3>Already Have an Account</h3>
-          <p>Log In! Your World Is But a Few Clicks Away</p>
-          <div class="LogIn">
-            <a routerLink="/login">Log In</a>
-          </div>
-        </div> 
-      </div>
-    </div>
+
     <div class = "container">
       <div class="reg">
         <ion-list>
           <h2>Create Account</h2>
   
           <div >
-            <ion-button class="button-centerer2" size="default" (click)="googleLogin()" shape="round">
+            <ion-button class="button-centerer2"(click)="googleLogin()" shape="round">
               <ion-icon name="logo-google"></ion-icon>
                  Sign up with Google
             </ion-button>
@@ -61,6 +51,17 @@
 
       </div>
     </div>
+    <div class = "Member">
+      <div class="leftPanel">
+        <div class="content">
+          <h3>Already Have an Account</h3>
+          <p>Log In! Your World Is But a Few Clicks Away</p>
+          <div class="LogIn">
+            <a routerLink="/login">Log In</a>
+          </div>
+        </div> 
+      </div>
+    </div>
   </section>
 </ion-content>
 <ion-content style="position: relative;" *ngIf = "isMobile" class="Mobile">
@@ -83,7 +84,7 @@
             </ion-button>
           </div>
           <p class="or-text">or</p>
-          
+
           <ion-item>
             <ion-input type="name" [(ngModel)]="name" placeholder="Enter Name"></ion-input>
           </ion-item>
