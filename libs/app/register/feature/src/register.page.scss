@@ -30,6 +30,7 @@ ion-content
 
 .container
 {
+
   align-items: center;
   justify-content: center;
   width: 50%;
@@ -38,11 +39,12 @@ ion-content
   min-width: 240px;
   padding: 0 10px;
   z-index: 1;
+  
 }
 
 .reg
 {
-  top: 15%;
+  top: 0%;
   justify-content: center;
   position: absolute;
   align-items: center;
@@ -136,18 +138,18 @@ ion-input
 }
 
 .button-centerer2 {
-  border-radius: 50px !important;
-  padding-right: 30px;
-  border: 2px solid var(--ion-color-primary) !important;
-  --background: rgba(129, 17, 17, 0) !important;
-  height: 80%;
-  width: 90%;
-  margin: 25px 0;
-  margin-left: 10%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  margin-bottom: 10%;
+  width: 95%;
+  height: 50%;
+  border: 2px solid var(--ion-color-primary);
+  border-radius: 80px !important;
+  --background: rgba(255, 255, 255, 0) !important;
+  --color: var(--ion-color-primary--contrast);
+  font-weight: 600;
+  --text-transform: lowercase;
+  --background-hover: var(--ion-color-primary);
+  margin-right: 5%;
+  margin-left: 5%;
 }
 .Member
 {
