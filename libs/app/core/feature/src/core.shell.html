@@ -105,5 +105,15 @@
       <!-- <ion-content class="ion-padding"> Tap the button in the toolbar to open the menu. </ion-content> -->
       
     </div>
+    <ion-content id="notification-tray">
+      <ion-card *ngFor="let notification of notifications">
+        <ion-card-header>
+          <ion-card-title>{{notification.head}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          {{notification.body}}
+        </ion-card-content> 
+      </ion-card>
+    </ion-content>
     <ion-router-outlet></ion-router-outlet>
 </ion-app>

@@ -23,6 +23,7 @@ import { NotificationsService } from 'libs/app/notifications/data-access/src/not
 
 
 import { DOCUMENT } from '@angular/common';
+import { Notification } from '@properproperty/api/notifications/util';
 
 declare const gtag: any;
 
@@ -36,6 +37,7 @@ export class CoreShellComponent implements OnInit, OnDestroy {
   isMobile: boolean;
   @Select(AuthState.user) user$!: Observable<User | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
+  @Select(NotificationsState.notifications) notifications$!: Observable<Notification[] | null>;
   @Select(NotificationsState.notificationsListener) notificationsListener$!: Observable<Unsubscribe | null>;
   public loggedIn = false;
   public admin = false;
@@ -43,6 +45,7 @@ export class CoreShellComponent implements OnInit, OnDestroy {
   public dev: boolean;
   private userProfileListener: Unsubscribe | null = null;
   private notificationsListener: Unsubscribe | null = null;
+  public notifications: Notification[] = [];
   private NotificationToken = 'whups';
   private activatedRoute = inject(ActivatedRoute);
   constructor(
@@ -73,6 +76,11 @@ export class CoreShellComponent implements OnInit, OnDestroy {
 
     this.notificationsListener$.subscribe((listener) => {
       this.notificationsListener = listener;
+    });
+
+    this.notifications$.subscribe((notifications) => {
+      console.log("notifications", notifications);
+      this.notifications = notifications ?? [];
     });
 
     this.user$.subscribe((user) => {
