@@ -12,7 +12,7 @@ import { UpdateUserProfile } from '@properproperty/app/profile/util';
 import { Unsubscribe, User } from 'firebase/auth';
 
 import { AuthState } from '@properproperty/app/auth/data-access';
-
+import { AuthProviderLogin } from '@properproperty/app/auth/util';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -102,6 +102,27 @@ export class RegisterPage implements OnInit {
 
   ngOnInit() {
     console.log ("Lifecycle methods should not be empty");
+  }
+
+  googleLogin(){
+    // this.authService.GoogleAuth()
+    //   .then((res) => {
+    //     if (res !== null)
+    //       this.router.navigate(['/home']);
+    //   })
+    //   .catch((err) => console.log(err));
+    this.store.dispatch(new AuthProviderLogin());
+
+    this.user$.subscribe((user) => {
+      this.userProfile$.subscribe((profile) => {
+        this.userProfile = profile;
+        if (profile) {
+          profile.firstName = user?.displayName?.split(" ")[0];
+          profile.lastName = user?.displayName?.split(" ")[1];
+        }
+      });
+      
+    });
   }
 
 }

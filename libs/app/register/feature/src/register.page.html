@@ -17,6 +17,14 @@
         <ion-list>
           <h2>Create Account</h2>
   
+          <div >
+            <ion-button class="button-centerer2" size="default" (click)="googleLogin()" shape="round">
+              <ion-icon name="logo-google"></ion-icon>
+                 Sign up with Google
+            </ion-button>
+          </div>
+          <p class="or-text">or</p>
+
           <ion-item>
             <ion-input type="name" [(ngModel)]="name" placeholder="Enter Name"></ion-input>
           </ion-item>
@@ -68,6 +76,14 @@
         <ion-list>
           <h2 class="sign-up-text">Create Account</h2>
   
+          <div >
+            <ion-button class="button-centerer2" size="default" (click)="googleLogin()" shape="round">
+              <ion-icon name="logo-google"></ion-icon>
+                 Sign up with Google
+            </ion-button>
+          </div>
+          <p class="or-text">or</p>
+          
           <ion-item>
             <ion-input type="name" [(ngModel)]="name" placeholder="Enter Name"></ion-input>
           </ion-item>

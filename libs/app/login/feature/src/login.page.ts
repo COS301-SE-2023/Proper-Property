@@ -5,6 +5,12 @@ import { Router } from '@angular/router'
 import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { Store } from '@ngxs/store';
 import { Login } from '@properproperty/app/auth/util';
+import { AuthState } from '@properproperty/app/auth/data-access';
+import { Observable } from 'rxjs';
+import { User } from 'firebase/auth';
+import { Select } from '@ngxs/store';
+import { UserProfileState } from '@properproperty/app/profile/data-access';
+import { UserProfile } from '@properproperty/api/profile/util';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +18,10 @@ import { Login } from '@properproperty/app/auth/util';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+
+  @Select(AuthState.user) user$!: Observable<User | null>;
+  @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
+  userProfile: UserProfile | null = null;
 
   isMobile = false;
 
@@ -43,6 +53,20 @@ export class LoginPage implements OnInit {
     //   })
     //   .catch((err) => console.log(err));
     this.store.dispatch(new AuthProviderLogin());
+
+    this.user$.subscribe((user) => {
+      this.userProfile$.subscribe((profile) => {
+        this.userProfile = profile;
+        if (profile) {
+          if(!profile.firstName){
+            profile.firstName = user?.displayName?.split(" ")[0];
+            profile.lastName = user?.displayName?.split(" ")[1];
+          }
+        }
+      });
+      
+    });
+
   }
 
   ngOnInit() {
