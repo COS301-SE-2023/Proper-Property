@@ -20,7 +20,7 @@ implements ICommandHandler<
     let response;
 
     try {
-      response = listingModel.approve(command.req.adminId);
+      response = listingModel.changeStatus(command.req.adminId);
       listingModel.commit();
     } catch (error) {
       console.log(error);

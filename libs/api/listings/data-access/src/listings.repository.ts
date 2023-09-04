@@ -108,7 +108,7 @@ export class ListingsRepository {
       .collection('listings')
       .doc(listingId)
       .update({
-        'approved': true,
+        'approved': change.status,
         'statusChanges': FieldValue.arrayUnion(change)
       });
     // console.log("Its show time");

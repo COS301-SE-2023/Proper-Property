@@ -92,13 +92,14 @@ export class ListingModel extends AggregateRoot implements Listing {
     this.apply(new ListingEditedEvent(listing));
   }
 
-  approve(adminId: string): ChangeStatusResponse {
+  changeStatus(adminId: string): ChangeStatusResponse {
+    this.approved = !this.approved;
     const change: StatusChange = {
       adminId: adminId,
-      status: true,
+      status: this.approved,
       date: new Date().toISOString(),
     };
-    this.approved = true;
+    console.log(change);
     this.statusChanges = this.statusChanges ?? [];
     this.statusChanges.push(change);
     if (!this.listing_id) {

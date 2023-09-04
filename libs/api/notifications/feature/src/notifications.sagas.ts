@@ -29,8 +29,8 @@ export class NotificationSagas {
           (event: StatusChangedEvent) => new NotifyApprovalChangeCommand(
             event.userId, 
             event.listingId, 
-            true, 
-            "Listing has been approved"
+            event.change.status, 
+            event.change.status ? "Listing has been approved" : "Listing has been rejected"
           )
         )
       );

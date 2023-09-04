@@ -43,10 +43,10 @@ export class NotifyApprovalChangeHandler implements ICommandHandler<NotifyApprov
     const notification: Notification = {
       userId: command.userId,
       listingId: command.listingId,
-      head: command.status ? "Your listing has been approved" : "Your listing has been edited",
+      head: command.status ? "Your listing has been approved" : "Your listing has been rejected",
       body: command.status 
-        ? "Your listing is now visible to other users and you will be able to review its engagement."
-        : "Your listing has been edited and is awaiting reapproval.",
+        ? "Your listing is now visible to other users and you will be able to review its engagement"
+        : "The approval status on your listing has been reverted. This may have been due to recent editing of the listing",
       type: "ApprovalChange",
       senderId: "system",
       date: Timestamp.fromDate(new Date())
