@@ -646,11 +646,14 @@
           <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
           <ion-button (click)="editListing()">Edit Listing</ion-button>
         </div>
-        <canvas id="lineGraph"></canvas>
-        <div *ngIf="showData">
-          <h3>Average engagement per user: </h3>
-          <ion-input type="string" [(ngModel)]="avgEnagement"></ion-input>
+        <div class="graph-animation">
+          <img src="assets/loader1.gif">
         </div>
+          <canvas id="lineGraph" class="graph"></canvas>
+          <div class="data-calc" *ngIf="showData">
+            <h3>Average engagement per user: </h3>
+            <ion-input type="string" [(ngModel)]="avgEnagement"></ion-input>
+          </div>
       </ion-row>
     </ion-grid>
   </ion-content>
