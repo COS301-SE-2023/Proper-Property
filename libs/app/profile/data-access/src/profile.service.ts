@@ -65,173 +65,183 @@ export class UserProfileService {
     leftUmbrella: 0
   }
 
+  temp: Interests={
+    garden: 0,
+    party: 0,
+    mansion: 0,
+    accessible: 0,
+    foreign: 0,
+    openConcept: 0,
+    ecoWarrior: 0,
+    family: 0,
+    student: 0,
+    lovinIt: 0,
+    farm: 0,
+    Gym: 0,
+    owner: 0,
+    leftUmbrella: 0
+  }
+
+  
   async updateInterests(characteristic : characteristics, userID: string)
   {
     const profile = this.getUser(userID);
     this.calculatePotency(characteristic);
- 
+
+    this.temp.Gym=(await profile).interests.Gym;
+    this.temp.garden =(await profile).interests.garden;
+    this.temp.accessible=(await profile).interests.accessible;
+    this.temp.party =(await profile).interests.party;
+    this.temp.ecoWarrior=(await profile).interests.ecoWarrior;
+    this.temp.mansion =(await profile).interests.mansion;
+    this.temp.foreign=(await profile).interests.foreign;
+    this.temp.family=(await profile).interests.family;
+    this.temp.student=(await profile).interests.student;
+    this.temp.lovinIt=(await profile).interests.lovinIt;
+    this.temp.farm =(await profile).interests.farm;
+    this.temp.owner=(await profile).interests.owner;
+
     // garden
-    let holder = (await profile).interests.garden;
-    this.adjustment.garden = holder + (+!!characteristic.garden)*this.vPotency;
-    if(this.adjustment.garden>100)
-    {
-      this.adjustment.garden=100;
-    }
-    (await profile).interests.garden = this.adjustment.garden;
+    this.adjustment.garden +=this.mainIncrease(this.temp.garden,(+!!characteristic.garden));
 
-    holder = (await profile).interests.owner;
-    this.adjustment.owner = holder + (+!!characteristic.garden)*this.vPotency*0.25;
-    if(this.adjustment.owner> 100)
-    {
-      this.adjustment.owner=100;
-    }
-    (await profile).interests.owner = this.adjustment.owner;
-
-    holder = (await profile).interests.mansion;
-    this.adjustment.mansion = holder + (+!!characteristic.garden)*this.vPotency*0.25;
-    if(this.adjustment.mansion> 100)
-    {
-      this.adjustment.mansion=100;
-    }
-    (await profile).interests.mansion = this.adjustment.mansion;
-
-    holder = (await profile).interests.farm;
-    this.adjustment.farm = holder + (+!!characteristic.garden)*this.vPotency*0.25;
-    if(this.adjustment.farm> 100)
-    {
-      this.adjustment.farm=100;
-    }
-    (await profile).interests.farm = this.adjustment.farm;
-
-    holder = (await profile).interests.ecoWarrior;
-    this.adjustment.ecoWarrior = holder + (+!!characteristic.garden)*this.vPotency*0.25;
-    if(this.adjustment.ecoWarrior> 100)
-    {
-      this.adjustment.ecoWarrior=100;
-    }
-    (await profile).interests.ecoWarrior = this.adjustment.ecoWarrior;
+    this.adjustment.owner += this.allyIncrease(this.temp.owner, (+!!characteristic.garden));
+    this.adjustment.mansion += this.allyIncrease(this.temp.mansion, (+!!characteristic.garden));
+    this.adjustment.farm += this.allyIncrease(this.temp.farm, (+!!characteristic.garden));
+    this.adjustment.ecoWarrior += this.allyIncrease(this.temp.ecoWarrior, (+!!characteristic.garden));
 
     // party
-    holder = (await profile).interests.party;
-    this.adjustment.party = holder + (+!!characteristic.party)*this.vPotency;
-    if(this.adjustment.party>100)
-    {
-      this.adjustment.party=100;
-    }
-    (await profile).interests.party = this.adjustment.party;
+    this.adjustment.party +=this.mainIncrease(this.temp.party,(+!!characteristic.party));
 
-    holder = (await profile).interests.student;
-    this.adjustment.student = holder + (+!!characteristic.party)*this.vPotency*0.25;
-    if(this.adjustment.student>100)
-    {
-      this.adjustment.student=100;
-    }
+    this.adjustment.student += this.allyIncrease(this.temp.student, (+!!characteristic.party));
+    this.adjustment.lovinIt += this.allyIncrease(this.temp.lovinIt,(+!!characteristic.party));
+    this.adjustment.foreign += this.allyIncrease(this.temp.foreign, (+!!characteristic.party))
+
+    this.adjustment.farm += this.decay(this.temp.farm, (+!!characteristic.party));
+    this.adjustment.family += this.decay(this.temp.family, (+!!characteristic.party));
+
+    // mansion
+    this.adjustment.mansion +=this.mainIncrease(this.temp.mansion,(+!!characteristic.mansion));
+
+    this.adjustment.owner += this.allyIncrease(this.temp.owner, (+!!characteristic.mansion));
+    this.adjustment.farm += this.allyIncrease(this.temp.farm,(+!!characteristic.mansion));
+    this.adjustment.garden += this.allyIncrease(this.temp.garden, (+!!characteristic.mansion))
+
+    this.adjustment.student += this.decay(this.temp.student, (+!!characteristic.mansion));
+
+    //Accessible
+    this.adjustment.accessible +=this.mainIncrease(this.temp.accessible,(+!!characteristic.accessible));
+
+    //Foreign
+    this.adjustment.foreign +=this.mainIncrease(this.temp.foreign,(+!!characteristic.foreign));
+
+    this.adjustment.party += this.allyIncrease(this.temp.party, (+!!characteristic.foreign));
+    this.adjustment.lovinIt += this.allyIncrease(this.temp.lovinIt,(+!!characteristic.foreign));
+
+    //Ecowarrior
+    this.adjustment.ecoWarrior +=this.mainIncrease(this.temp.ecoWarrior,(+!!characteristic.ecoWarrior));
+
+    //PG 13
+    this.adjustment.family +=this.mainIncrease(this.temp.family,(+!!characteristic.family));
+
+    this.adjustment.party +=this.decay(this.temp.party,(+!!characteristic.family));
+
+    //Student
+    this.adjustment.student +=this.mainIncrease(this.temp.student,(+!!characteristic.student));
+
+    this.adjustment.party +=this.allyIncrease(this.temp.party,(+!!characteristic.student));
+    this.adjustment.Gym +=this.allyIncrease(this.temp.Gym,(+!!characteristic.student));
+    this.adjustment.party +=this.allyIncrease(this.temp.party,(+!!characteristic.student));
+
+    this.adjustment.farm +=this.decay(this.temp.family,(+!!characteristic.student));
+
+    //Food
+    this.adjustment.lovinIt +=this.mainIncrease(this.temp.lovinIt,(+!!characteristic.lovinIt));
+
+    this.adjustment.farm += this.decay(this.temp.farm, (+!!characteristic.lovinIt));
+
+    //Gym rats
+    this.adjustment.Gym +=this.mainIncrease(this.temp.Gym,(+!!characteristic.Gym));
+
+    this.adjustment.farm += this.decay(this.temp.farm, (+!!characteristic.Gym));
+
+    //Owner
+    this.adjustment.owner +=this.mainIncrease(this.temp.owner,(+!!characteristic.owner));
+
+    this.adjustment.mansion +=this.allyIncrease(this.temp.mansion,(+!!characteristic.owner));
+    this.adjustment.garden +=this.allyIncrease(this.temp.garden,(+!!characteristic.owner));
+
+    this.adjustment.student += this.decay(this.temp.student, (+!!characteristic.owner));
+
+    //farm
+    this.adjustment.farm +=this.mainIncrease(this.temp.farm,(+!!characteristic.farm));
+
+    this.adjustment.garden +=this.allyIncrease(this.temp.garden,(+!!characteristic.farm));
+    this.adjustment.mansion +=this.allyIncrease(this.temp.mansion,(+!!characteristic.farm));
+
+    this.adjustment.party +=this.decay(this.temp.party,(+!!characteristic.farm));
+    this.adjustment.student +=this.decay(this.temp.student,(+!!characteristic.farm));
+    this.adjustment.lovinIt +=this.decay(this.temp.lovinIt,(+!!characteristic.farm));
+
+    (await profile).interests.Gym = this.adjustment.Gym;
+    (await profile).interests.accessible = this.adjustment.accessible;
+    (await profile).interests.ecoWarrior = this.adjustment.ecoWarrior;
+    (await profile).interests.family = this.adjustment.family;
+    (await profile).interests.farm = this.adjustment.farm;
+    (await profile).interests.foreign= this.adjustment.foreign;
+    (await profile).interests.garden = this.adjustment.garden;
+    (await profile).interests.lovinIt = this.adjustment.lovinIt;
+    (await profile).interests.mansion = this.adjustment.mansion;
+    (await profile).interests.owner = this.adjustment.owner;
+    (await profile).interests.party = this.adjustment.party;
     (await profile).interests.student = this.adjustment.student;
 
-    holder = (await profile).interests.lovinIt;
-    this.adjustment.lovinIt = holder + (+!!characteristic.party)*this.vPotency*0.25;
-    if(this.adjustment.lovinIt>100)
-    {
-      this.adjustment.lovinIt=100;
-    }
-    (await profile).interests.lovinIt = this.adjustment.lovinIt;
-
-    holder = (await profile).interests.foreign;
-    this.adjustment.foreign = holder + (+!!characteristic.party)*this.vPotency*0.25;
-    if(this.adjustment.foreign>100)
-    {
-      this.adjustment.foreign=100;
-    }
-    (await profile).interests.foreign = this.adjustment.foreign;
-
-    //--- decays
-    holder = (await profile).interests.farm;
-    this.adjustment.farm = holder + (+!!characteristic.party)*this.vPotency*-0.25;
-    if(this.adjustment.farm<0)
-    {
-      this.adjustment.farm=0;
-    }
-    (await profile).interests.farm = this.adjustment.farm;
-
-    holder = (await profile).interests.family;
-    this.adjustment.family = holder + (+!!characteristic.party)*this.vPotency*-0.25;
-    if(this.adjustment.family>100)
-    {
-      this.adjustment.family=100;
-    }
-    (await profile).interests.family = this.adjustment.family;
-
-
-
     this.updateUserProfile(await profile);
-    
- 
-    // mansion: boolean;
-    // accessible: boolean;
-    // foreign: boolean;
-    // openConcept: boolean;
-    // ecoWarrior: boolean;
-    // family: boolean;
-    // student: boolean;
-    // lovinIt: boolean;
-    // farm: boolean;
-    // Gym: boolean;
-    // owner: boolean;
-    // leftUmbrella: boolean;
+  }
 
+  mainIncrease(fixed: number, boolCharacteristic: number)
+  {
+    let updates = fixed + boolCharacteristic*this.vPotency;
+    if(updates>100)
+    {
+      updates=100;
+    }
+
+    return updates;
+  }
+
+  allyIncrease(fixed: number, boolCharacteristic: number)
+  {
+    let ally = fixed + boolCharacteristic*this.vPotency*0.25;
+    if(ally> 100)
+    {
+      ally=100;
+    }
     
+    return ally;
+  }
+
+  decay(fixed: number, boolCharacteristic: number)
+  {
+    let enemy = fixed + boolCharacteristic*this.vPotency*-0.25;
+    if(enemy<0)
+    {
+      enemy=0;
+    }
+    
+    return enemy;
   }
 
   calculatePotency(c: characteristics)
   {
+    let loop: boolean[] = [c.garden, c.party, c.mansion, c.accessible, c.foreign, c.ecoWarrior, c.family, c.student, c.lovinIt, c.farm, c.Gym, c.owner];
     this.vPotency=1;
-    if(c.garden)
+
+    for(let x=0; x< loop.length; x++)
     {
-      this.vPotency++;
-    }
-    if(c.party)
-    {
-      this.vPotency++;
-    }
-    if(c.mansion)
-    {
-      this.vPotency++;
-    }
-    if(c.accessible)
-    {
-      this.vPotency++;
-    }
-    if(c.foreign)
-    {
-      this.vPotency++;
-    }
-    if(c.ecoWarrior)
-    {
-      this.vPotency++;
-    }
-    if(c.family)
-    {
-      this.vPotency++;
-    }
-    if(c.student)
-    {
-      this.vPotency++;
-    }
-    if(c.lovinIt)
-    {
-      this.vPotency++;
-    }
-    if(c.farm)
-    {
-      this.vPotency++;
-    }
-    if(c.Gym)
-    {
-      this.vPotency++;
-    }
-    if(c.owner)
-    {
-      this.vPotency++;
+      if(loop[x])
+      {
+        this.vPotency++;
+      }
     }
   }
 }
