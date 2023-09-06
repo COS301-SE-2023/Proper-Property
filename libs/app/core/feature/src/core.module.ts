@@ -11,6 +11,10 @@ import { CoreRouting } from './core.routing';
 // Has router-outlet
 import { CoreShellComponent } from './core.shell';
 
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 // Firebase App
 import { 
   initializeApp, 
@@ -95,6 +99,9 @@ if (NX_ENVIRONMENT === 'development') {
 @NgModule({
   declarations: [CoreShellComponent],
   imports: [
+    
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     IonicModule.forRoot(),
     BrowserModule,

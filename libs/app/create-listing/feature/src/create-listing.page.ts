@@ -14,13 +14,37 @@ import { Store } from '@ngxs/store';
 import { isDevMode } from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 
+import { FormControl } from '@angular/forms';
+
+import { map, startWith } from 'rxjs/operators'
+
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+
 @Component({
   selector: 'app-create-listing',
   templateUrl: './create-listing.page.html',
   styleUrls: ['./create-listing.page.scss'],
+  
 })
 export class CreateListingPage implements OnInit {
 
+  
+  @ViewChild(MatAutocompleteTrigger,{ static: false }) trigger!: MatAutocompleteTrigger;
+  @ViewChild('inputElement', { static: false }) inputElement!: ElementRef;
+
+  onFocus() {
+    setTimeout(() => {
+      this.inputElement.nativeElement.focus();
+      this.trigger.openPanel();
+    });
+  }
+
+  myControl = new FormControl();
+  options: string[] = ['Angular', 'React', 'Vue', 'Ionic', 'TypeScript'];
+  filteredOptions: Observable<string[]>;
+
+  items: any[] = [];
+  
   @ViewChild('address', { static: false }) addressInput!: ElementRef<HTMLInputElement>;
 
   @Select(AuthState.user) user$!: Observable<User | null>;
@@ -42,6 +66,12 @@ export class CreateListingPage implements OnInit {
     private readonly store: Store,
     private route: ActivatedRoute,
   ) {
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map((value) => this._filter(value))
+    );
+
+
     this.isMobile = isMobile();
     
     this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
@@ -95,6 +125,14 @@ export class CreateListingPage implements OnInit {
       }
     });
   }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.options.filter((option) =>
+      option.toLowerCase().includes(filterValue)
+    );
+  }
+
 @HostListener('window:resize', ['$event'])
 onResize(event: Event) {
   console.log(event);
@@ -110,13 +148,19 @@ onResize(event: Event) {
     // this.currentUser = this.userService.getCurrentUser();
     const inputElementId = 'address';
 
-    this.gmapsService.setupSearchBox(inputElementId);
+    // this.gmapsService.setupSearchBox(inputElementId);
   }
 
-  handleInputChange(event: Event): void {
+  async handleInputChange(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
-    this.gmapsService.handleInput(input, this.defaultBounds);
+
+    if(input.value.length <=0){
+      this.predictions = [];
+      return;
+    }
+    await this.gmapsService.handleInput(input, this.defaultBounds);
     this.predictions = this.gmapsService.predictions;
+    console.log("predictions: ", this.predictions);
     this.address= input.value;
     
     this.handleAddressChange(input.value);
@@ -139,6 +183,7 @@ onResize(event: Event) {
 
   replaceInputText(event: MouseEvent | undefined, prediction: string) {
     console.log("your prediction: ",prediction);
+    
     if (event) {
       event.preventDefault(); // Prevent the default behavior of the <a> tag
     }
