@@ -23,7 +23,7 @@ export class NotificationsService {
     this.commandBus.execute(new NotifyApprovalChangeCommand(userId, listingId, status, reason));
   } 
 
-  async statusChange(listingId: string, status: string) {
+  async ApprovalChange(listingId: string, status: string) {
     this.commandBus.execute(new NotifyStatusChangeCommand(listingId, status));
   }
 

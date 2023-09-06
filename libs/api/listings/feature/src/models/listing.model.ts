@@ -1,5 +1,5 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { ListingEditedEvent, Listing, StatusChange, StatusChangedEvent, ChangeStatusResponse } from '@properproperty/api/listings/util';
+import { ListingEditedEvent, Listing, ApprovalChange, StatusChangedEvent, ChangeStatusResponse } from '@properproperty/api/listings/util';
 
 export class ListingModel extends AggregateRoot implements Listing {
   constructor(
@@ -24,7 +24,7 @@ export class ListingModel extends AggregateRoot implements Listing {
     public approved: boolean,
     public listingDate: string,
     public listing_id?: string,
-    public statusChanges?: StatusChange[],
+    public approvalChanges?: ApprovalChange[],
     public quality_rating?: number,
   ) {
     super();
@@ -53,7 +53,7 @@ export class ListingModel extends AggregateRoot implements Listing {
       listing.approved,
       listing.listingDate,
       listing.listing_id,
-      listing.statusChanges,
+      listing.approvalChanges,
       listing.quality_rating,
     );
     return model;
@@ -81,10 +81,10 @@ export class ListingModel extends AggregateRoot implements Listing {
     this.approved = listing.approved;
     this.listingDate = listing.listingDate;
     this.listing_id = listing.listing_id;
-    this.statusChanges = listing.statusChanges;
+    this.approvalChanges = listing.approvalChanges;
     this.quality_rating = listing.quality_rating;
-    this.statusChanges = this.statusChanges ?? [];
-    this.statusChanges.push({
+    this.approvalChanges = this.approvalChanges ?? [];
+    this.approvalChanges.push({
       adminId: 'SYSTEM',
       status: false,
       date: new Date().toISOString(),
@@ -94,20 +94,20 @@ export class ListingModel extends AggregateRoot implements Listing {
 
   changeStatus(adminId: string): ChangeStatusResponse {
     this.approved = !this.approved;
-    const change: StatusChange = {
+    const change: ApprovalChange = {
       adminId: adminId,
       status: this.approved,
       date: new Date().toISOString(),
     };
     console.log(change);
-    this.statusChanges = this.statusChanges ?? [];
-    this.statusChanges.push(change);
+    this.approvalChanges = this.approvalChanges ?? [];
+    this.approvalChanges.push(change);
     if (!this.listing_id) {
       throw new Error('yeah idk fam. this should never happen. the listing has no listing_id');
     }
     this.apply(new StatusChangedEvent(this.listing_id, change, this.user_id));
 
-    return {success: true, statusChange: change};
+    return {success: true, ApprovalChange: change};
   }
 
   toJSON(): Listing {
@@ -133,7 +133,7 @@ export class ListingModel extends AggregateRoot implements Listing {
       approved: this.approved,
       listingDate: this.listingDate,
       listing_id: this.listing_id,
-      statusChanges: this.statusChanges,
+      approvalChanges: this.approvalChanges,
       quality_rating: this.quality_rating,
     };
   }

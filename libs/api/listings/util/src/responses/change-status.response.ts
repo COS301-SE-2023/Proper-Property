@@ -1,6 +1,6 @@
-import { StatusChange } from "../interfaces";
+import { ApprovalChange } from "../interfaces";
 
 export interface ChangeStatusResponse{
   success: boolean,
-  statusChange: StatusChange | undefined
+  ApprovalChange: ApprovalChange | undefined
 }

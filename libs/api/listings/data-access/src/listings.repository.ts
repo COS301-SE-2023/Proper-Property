@@ -7,7 +7,7 @@ import { GetListingsRequest,
   GetListingsResponse, 
   GetApprovedListingsResponse,
   EditListingResponse,
-  StatusChange
+  ApprovalChange
 } from '@properproperty/api/listings/util';
 // import { FieldValue, FieldPath } from 'firebase-admin/firestore';
 @Injectable()
@@ -102,14 +102,14 @@ export class ListingsRepository {
     });
   }
 
-  async changeStatus(listingId: string, change : StatusChange){
+  async changeStatus(listingId: string, change : ApprovalChange){
     admin
       .firestore()
       .collection('listings')
       .doc(listingId)
       .update({
         'approved': change.status,
-        'statusChanges': FieldValue.arrayUnion(change)
+        'approvalChanges': FieldValue.arrayUnion(change)
       });
     // console.log("Its show time");
     // const listingDoc = await admin
@@ -120,7 +120,7 @@ export class ListingsRepository {
     //   toFirestore: (listing: Listing) => listing
     // }).get();
 
-    // let tempStatusChanges = listingDoc.data()?.statusChanges ?? [];
+    // let tempStatusChanges = listingDoc.data()?.approvalChanges ?? [];
     // tempStatusChanges
     //   .push({
     //     adminId : req.adminId, 
@@ -133,7 +133,7 @@ export class ListingsRepository {
     //   .doc(`listings/${req.listingId}`)
     //   .update({
     //     approved : !listingDoc.data()?.approved, 
-    //     statusChanges : tempStatusChanges
+    //     approvalChanges : tempStatusChanges
     //   });
   }
 

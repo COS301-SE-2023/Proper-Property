@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Select } from '@ngxs/store';
-import { Listing, StatusChange } from '@properproperty/api/listings/util';
+import { Listing, ApprovalChange } from '@properproperty/api/listings/util';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
@@ -62,8 +62,8 @@ export class AdminPage{
 
       //sorting listings by date created
       this.appListings = this.appListings.sort((a, b) => {
-        const tempA2 = a.statusChanges?.[a.statusChanges.length - 1].date ?? "";
-        const tempB2 = b.statusChanges?.[b.statusChanges.length - 1].date ?? "";
+        const tempA2 = a.approvalChanges?.[a.approvalChanges.length - 1].date ?? "";
+        const tempB2 = b.approvalChanges?.[b.approvalChanges.length - 1].date ?? "";
 
         const tempA = new Date(tempA2);
         const tempB = new Date(tempB2);
@@ -95,8 +95,8 @@ export class AdminPage{
     
 
     route.params.subscribe((params) => {
-      const statusChange : StatusChange = params['statusChange'];
-      if(statusChange && statusChange.adminId){
+      const ApprovalChange : ApprovalChange = params['ApprovalChange'];
+      if(ApprovalChange && ApprovalChange.adminId){
         router.navigate(['/admin']);
       }
     });

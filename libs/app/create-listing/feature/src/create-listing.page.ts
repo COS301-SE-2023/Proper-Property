@@ -350,7 +350,7 @@ handleAddressChange(address: string): void {
         heading: this.heading,
         let_sell: this.listingType,
         approved: false,
-        statusChanges: [],
+        approvalChanges: [],
         quality_rating: score,
         listingDate: "" + new Date()
       }
@@ -368,7 +368,7 @@ handleAddressChange(address: string): void {
     if(this.currentUser != null && this.listingEditee != null){
       const list : Listing = {
         listing_id: this.listingEditee.listing_id,
-        statusChanges: this.listingEditee.statusChanges,
+        approvalChanges: this.listingEditee.approvalChanges,
         quality_rating: this.listingEditee.quality_rating,
         user_id: this.currentUser.uid,
         address: this.address,

@@ -1,4 +1,4 @@
-import { StatusChange } from './index';
+import { ApprovalChange } from './index';
 
 export interface Listing{
   listing_id?: string;
@@ -21,7 +21,7 @@ export interface Listing{
   let_sell: string;
   heading: string;
   approved: boolean;
-  statusChanges?: StatusChange[];
+  approvalChanges?: ApprovalChange[];
   listingDate: string;
   quality_rating?: number;
 }

@@ -234,7 +234,7 @@ export class ListingPage{
     if(this.list && this.adminId != ""){
       this.listingServices.changeStatus("" + this.list.listing_id, this.adminId).then((response) => {
         console.log(response);
-        // this.router.navigate(['/admin', {statusChange : response}]);
+        this.router.navigate(['/admin', {ApprovalChange : response}]);
       });
     }
   }

@@ -1,9 +1,9 @@
-import { StatusChange } from '../interfaces';
+import { ApprovalChange } from '../interfaces';
 
 export class StatusChangedEvent {
   constructor(
     public readonly listingId: string,
-    public readonly change: StatusChange,
+    public readonly change: ApprovalChange,
     public readonly userId: string
   ){}
 }
