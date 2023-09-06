@@ -429,6 +429,40 @@ handleAddressChange(address: string): void {
     return false
   }
 
+
+  selectedAmenity = '';
+  amenities: string[] = [
+    'Swimming Pool',
+    'Gym',
+    'Playground',
+    'Tennis Court',
+    'Clubhouse',
+    'Park',
+    'Security',
+    'Laundry Facilities',
+    'Pet-Friendly',
+  ];
+  filteredAmenities: string[] = [];
+
+  handleAmenityInputChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const inputValue = input.value.toLowerCase();
+
+    if (inputValue.length <= 0) {
+      this.filteredAmenities = [];
+      return;
+    }
+
+    this.filteredAmenities = this.amenities.filter((amenity) =>
+      amenity.toLowerCase().includes(inputValue)
+    );
+  }
+
+  selectAmenity(amenity: string): void {
+    this.selectedAmenity = amenity;
+    this.filteredAmenities = [];
+  }
+
 }
 
 
