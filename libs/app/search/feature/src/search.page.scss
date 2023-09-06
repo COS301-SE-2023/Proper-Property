@@ -1,5 +1,3 @@
-
-
 .Desktop {
   .filter {
     border-radius: 10px;
@@ -11,6 +9,20 @@
     border-bottom: none;
   }
   
+  .loading-animation{
+    position: absolute;
+    right: 50%;
+    text-align: center;
+    z-index: 1;
+    top: 40%;
+    // display: block
+  }
+
+  .footer-gap{
+    height:800px;
+    position:relative;
+  }
+
   #filter-container {
     border-radius: 30px;
     border: 1px solid #000;
@@ -199,6 +211,7 @@
     transition: transform 0.3s ease-in-out;
     margin-top:3%;
     margin-bottom: 25%;
+    display: none;
   }
   
   #listings-and-map ion-card{
