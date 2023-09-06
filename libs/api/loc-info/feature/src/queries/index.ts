@@ -1,1 +1,1 @@
-export * from './get-sani-data.handler';
+export * from './get-locInfo-data.handler';

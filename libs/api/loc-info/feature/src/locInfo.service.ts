@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import {  GetSaniDataRequest,
-  GetSaniDataResponse,
-  GetSaniDataQuery,
+import {  GetLocInfoDataRequest,
+  GetLocInfoDataResponse,
+  GetLocInfoDataQuery,
   UploadLocInfoDataCommand,
   UploadLocInfoDataRequest,
   UploadLocInfoDataResponse
@@ -18,13 +18,12 @@ export class LocInfoService {
   async uploadLocInfoData(
     req: UploadLocInfoDataRequest
   ): Promise<UploadLocInfoDataResponse>{
-    console.log("Service call: ", req.request)
     return this.commandBus.execute(new UploadLocInfoDataCommand(req));
   }
 
-  async getSaniData(
-    req: GetSaniDataRequest
-  ): Promise<GetSaniDataResponse>{
-    return this.queryBus.execute(new GetSaniDataQuery(req));
+  async getLocInfoData(
+    req: GetLocInfoDataRequest
+  ): Promise<GetLocInfoDataResponse>{
+    return this.queryBus.execute(new GetLocInfoDataQuery(req));
   }
 }

@@ -1,6 +1,6 @@
 export interface waterTariffWMA{
   wma: string;
   domesticTariff: number;
-  irigationTariff: number;
+  irrigationTariff: number;
   forestryTariff: number;
 }

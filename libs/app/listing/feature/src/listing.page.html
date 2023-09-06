@@ -158,38 +158,38 @@
           <ion-row>
             <ion-card class="quarter-container-loc-info" style="margin-top:20px">
               <ion-card-header style="padding-bottom: 1px">
-                <ion-card-title class="house-titles" style="font-size: 25px;">Area Score: 4.3</ion-card-title>
+                <ion-card-title class="house-titles" style="font-size: 25px;">Area Score: <span id="areaScore">{{areaScore}} / 100</span></ion-card-title>
               </ion-card-header>
               <ion-card-content>
                 <ion-grid style="z-index:1;">
                   <ion-row>
                     <div class="white-text">Water</div>
                     <div class="slider">
-                      <div class="waterProgress" style="width: 80%"></div>
+                      <div id="waterProgress" class="progress"></div>
                     </div>
                   </ion-row>
-                  <ion-row>
+                  <!-- <ion-row>
                     <div class="white-text">Power</div>
                     <div class="slider">
                       <div class="progress" style="width: 30%"></div>
                     </div>
-                  </ion-row>
+                  </ion-row> -->
                   <ion-row>
                     <div class="white-text">Crime</div>
                     <div class="slider">
-                      <div class="progress" style="width: 60%"></div>
+                      <div id="crimeProgress" class="progress"></div>
                     </div>
                   </ion-row>
                   <ion-row>
-                    <div class="white-text">Waste Water Handling</div>
+                    <div class="white-text">Sanitation</div>
                     <div class="slider">
-                      <div id="wasteWaterProgress" class="progress" style="width: 50%"></div>
+                      <div id="sanitationProgress" class="progress"></div>
                     </div>
                   </ion-row>
                   <ion-row>
                     <div class="white-text">School Quality</div>
                     <div class="slider">
-                      <div id="schoolProgress" class="progress" style="width: 80%"></div>
+                      <div id="schoolProgress" class="progress"></div>
                     </div>
                   </ion-row>
                   

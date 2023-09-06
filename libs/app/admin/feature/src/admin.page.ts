@@ -123,6 +123,14 @@ export class AdminPage{
   }
 
   addData(){
+    this.crimeFiles = null;
+    this.sanitationFiles = null;
+    this.waterAccessFiles = null;
+    this.waterQualityFiles = null;
+    this.waterReliabilityFiles = null;
+    this.waterTariffsFiles = null;
+    this.muniFiles = null;
+    this.WWQ = null;
     this.isPopoverOpen = true;
     console.log("Adding data");
   }

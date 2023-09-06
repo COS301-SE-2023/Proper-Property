@@ -47,6 +47,7 @@ export class CreateListingPage implements OnInit {
     this.defaultBounds = new google.maps.LatLngBounds();
     if (isDevMode()) {
       this.address = "123 Fake Street";
+      this.district = "temp";
       this.price = "1000000";
       this.floor_size = "100";
       this.erf_size = "100";
@@ -95,8 +96,6 @@ export class CreateListingPage implements OnInit {
   }
 
   features: string[] = [];
-  selectedValue = true;
-  listingType = "";
 
   async ngOnInit() {
     this.listingType = "Sell";
@@ -153,6 +152,7 @@ handleAddressChange(address: string): void {
 
   photos: string[] = [];
   address = "";
+  district = "";
   price = "";
   bathrooms = "";
   bedrooms = "";
@@ -294,12 +294,26 @@ handleAddressChange(address: string): void {
     this.features.splice(index, 1);
   }
 
+  selectedValue = true;
+  listingAreaTypeSlider = true;
+  listingAreaType = "";
+  listingType = "";
+
   changeListingType(){
     if(this.selectedValue){
       this.listingType = "Rent";
     }
     else{
       this.listingType = "Sell";
+    }
+  }
+
+  changeListingAreaType(){
+    if(this.listingAreaTypeSlider){
+      this.listingAreaType = "Urban";
+    }
+    else{
+      this.listingAreaType = "Rural";
     }
   }
 
@@ -311,6 +325,7 @@ handleAddressChange(address: string): void {
       const list : Listing = {
         user_id: this.currentUser.uid,
         address: this.address,
+        district: this.district,
         price: this.price,
         pos_type: this.pos_type,
         env_type: this.env_type,
@@ -327,6 +342,7 @@ handleAddressChange(address: string): void {
         desc: this.description,
         heading: this.heading,
         let_sell: this.listingType,
+        listingAreaType: this.listingAreaType,
         approved: false,
         quality_rating: score,
         listingDate: "" + new Date()
@@ -349,6 +365,7 @@ handleAddressChange(address: string): void {
         quality_rating: this.listingEditee.quality_rating,
         user_id: this.currentUser.uid,
         address: this.address,
+        district: this.district,
         price: this.price,
         pos_type: this.pos_type,
         env_type: this.env_type,
@@ -365,6 +382,7 @@ handleAddressChange(address: string): void {
         desc: this.description,
         heading: this.heading,
         let_sell: this.listingType,
+        listingAreaType: this.listingAreaType,
         approved: false,
         listingDate: "" + new Date()
       }

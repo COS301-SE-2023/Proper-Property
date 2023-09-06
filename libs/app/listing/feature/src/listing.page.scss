@@ -316,6 +316,26 @@ ion-item {
   transition: width 0.3s ease-in-out;
 }
 
+.errorProgressBar{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: red;
+  border-radius: 5px;
+  transition: width 0.3s ease-in-out;
+}
+
+.warningProgressBar{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #ffcc00;
+  border-radius: 5px;
+  transition: width 0.3s ease-in-out;
+}
+
 .house-titles {
   font-size: 30px;
   font-weight: 400;

@@ -47,6 +47,7 @@ export class AdminService {
         stations[encounteredStations.indexOf(crimeData[i]['Station'])].crimeStats.push({
           category: crimeData[i]['Crime_Category'],
           quarterCount: crimeData[i][quarter],
+          incDec: crimeData[i]['Count direction'],
         })
       }
       else{
@@ -57,7 +58,10 @@ export class AdminService {
           crimeStats: [{
             category: crimeData[i]['Crime_Category'],
             quarterCount: crimeData[i][quarter],
-          }]
+            incDec: crimeData[i]['Count direction']
+          }],
+          weightedTotal: 0,
+          rank: -1
         }
       }
     }
@@ -71,10 +75,18 @@ export class AdminService {
       quarter: ""
     };
 
-    return (await httpsCallable<
+    const response = (await httpsCallable<
       UploadLocInfoDataRequest,
       UploadLocInfoDataResponse
     >(this.functions, 'uploadLocInfoData')({request: request, path: 'crime'})).data;
+    if (response.status) {
+      console.log(response);
+    }
+    else {
+      console.error(response);
+    }
+
+    return response;
   }
 
   /** SANITATION STATISTICS **/
@@ -135,35 +147,31 @@ export class AdminService {
     }
     for(let i = 0; i < muniData.length; i++){
       if(encounteredDistricts.includes(muniData[i]['District'])){
-        const tempPop : string | number = muniData[i]['Population (2016)[3]'] ;
-        const tempPopDens : string | number = muniData[i]['Pop. Density (per km2)'];
         districts[encounteredDistricts.indexOf(muniData[i]['District'])].municipalities.push({
           name: muniData[i]['Name'] as string,
           province: muniData[i]['Province'] as string,
-          population: typeof tempPop === "string" ?  parseInt(tempPop.slice(0, tempPop.indexOf(",")) + tempPop.slice(tempPop.indexOf(",") + 1)) : tempPop,
-          popDensity: typeof tempPopDens === "string" ?  parseInt(tempPopDens.slice(0, tempPopDens.indexOf(",") - 1) + tempPopDens.slice(tempPopDens.indexOf(","))) : tempPopDens,
+          population: parseFloat(("" + muniData[i]['Population (2016)[3]']).replace(",", "")),
+          popDensity: parseFloat(("" + muniData[i]['Pop. Density (per km2)']).replace(",", "")),
         })
       }
       else{
           encounteredDistricts.push(muniData[i]['District']);
-          const tempPop : string | number = muniData[i]['Population (2016)[3]'] ;
-          const tempPopDens : string | number = muniData[i]['Pop. Density (per km2)'];
 
-          console.log(typeof tempPop === "string");
           districts[districtCount++] = {
             name: muniData[i]['District'],
             municipalities: [{
               name: muniData[i]['Name'],
               province: muniData[i]['Province'],
-              population: typeof tempPop === "string" ?  parseInt(tempPop.slice(0, tempPop.indexOf(",")) + tempPop.slice(tempPop.indexOf(",") + 1)) : tempPop,
-              popDensity: typeof tempPopDens === "string" ?  parseInt(tempPopDens.slice(0, tempPopDens.indexOf(",")) + tempPopDens.slice(tempPopDens.indexOf(",") + 1)) : tempPopDens,
+              population: parseFloat(("" + muniData[i]['Population (2016)[3]']).replace(",", "")),
+              popDensity: parseFloat(("" + muniData[i]['Pop. Density (per km2)']).replace(",", "")),
             }]
           }       
       }
     }
 
     const request : UploadDistrictDataRequest = {
-      districts: districts
+      districts: districts,
+      metadata: encounteredDistricts
     }
 
     console.log(districts);
@@ -216,10 +224,13 @@ export class AdminService {
       wsaData: WSAs
     }
 
-    return (await httpsCallable<
+    const response = (await httpsCallable<
       UploadLocInfoDataRequest,
       UploadLocInfoDataResponse
     >(this.functions, 'uploadLocInfoData')({request: request, path : 'waterQuality'})).data;
+
+    console.log("ADMIN SERVICES - WATER QUALITY RESPONSE: ", response)
+    return response;
   }
 
   async uploadWaterReliabilityData(data : any[]){
@@ -254,7 +265,7 @@ export class AdminService {
       WSAs.push({
         wma : data[i]['WMA'],
         domesticTariff: data[i]['Domestic and Industry c/m3'],
-        irigationTariff: data[i]['Irrigation c/m3'],
+        irrigationTariff: data[i]['Irrigation c/m3'],
         forestryTariff: data[i]['Forestry c/m3']
       })
 

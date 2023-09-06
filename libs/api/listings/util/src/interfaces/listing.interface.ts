@@ -4,6 +4,7 @@ export interface Listing{
   listing_id?: string;
   user_id: string | undefined;
   address: string;
+  district: string;
   price: string;
   pos_type: string;
   env_type: string;
@@ -19,6 +20,7 @@ export interface Listing{
   photos: string[];
   desc: string;
   let_sell: string;
+  listingAreaType: string;
   heading: string;
   approved: boolean;
   statusChanges?: StatusChange[];

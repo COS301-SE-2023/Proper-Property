@@ -5,6 +5,7 @@ export class listingModel extends AggregateRoot implements Listing {
   constructor(
     public user_id: string | undefined,
     public address: string,
+    public district: string,
     public price: string,
     public pos_type: string,
     public env_type: string,
@@ -20,6 +21,7 @@ export class listingModel extends AggregateRoot implements Listing {
     public photos: string[],
     public desc: string,
     public let_sell: string,
+    public listingAreaType: string,
     public heading: string,
     public approved: boolean,
     public listingDate: string,
@@ -34,6 +36,7 @@ export class listingModel extends AggregateRoot implements Listing {
     const model = new listingModel(
         listing.user_id,
         listing.address,
+        listing.district,
         listing.price,
         listing.pos_type,
         listing.env_type,
@@ -49,6 +52,7 @@ export class listingModel extends AggregateRoot implements Listing {
         listing.photos,
         listing.desc,
         listing.let_sell,
+        listing.listingAreaType,
         listing.heading,
         listing.approved,
         listing.listingDate,
@@ -62,6 +66,7 @@ export class listingModel extends AggregateRoot implements Listing {
   editListing(listing: Listing) {
     this.user_id = listing.user_id;
     this.address = listing.address;
+    this.district = listing.district;
     this.price = listing.price;
     this.pos_type = listing.pos_type;
     this.env_type = listing.env_type;
@@ -77,6 +82,7 @@ export class listingModel extends AggregateRoot implements Listing {
     this.photos = listing.photos;
     this.desc = listing.desc;
     this.let_sell = listing.let_sell;
+    this.listingAreaType = listing.listingAreaType;
     this.heading = listing.heading;
     this.approved = listing.approved;
     this.listingDate = listing.listingDate;
@@ -91,6 +97,7 @@ export class listingModel extends AggregateRoot implements Listing {
     return {
         user_id: this.user_id,
         address: this.address,
+        district: this.district,
         price: this.price,
         pos_type: this.pos_type,
         env_type: this.env_type,
@@ -106,6 +113,7 @@ export class listingModel extends AggregateRoot implements Listing {
         photos: this.photos,
         desc: this.desc,
         let_sell: this.let_sell,
+        listingAreaType: this.listingAreaType,
         heading: this.heading,
         approved: this.approved,
         listingDate: this.listingDate,

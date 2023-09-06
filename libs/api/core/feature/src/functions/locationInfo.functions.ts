@@ -2,8 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { CoreModule } from '../core.module';
 import * as functions from 'firebase-functions';
 import { LocInfoService } from '@properproperty/api/loc-info/feature';
-import { GetSaniDataResponse,
-  GetSaniDataRequest,
+import { GetLocInfoDataResponse,
+  GetLocInfoDataRequest,
   UploadLocInfoDataRequest,
   UploadLocInfoDataResponse} from '@properproperty/api/loc-info/util';
 
@@ -21,18 +21,17 @@ export const uploadLocInfoData = functions.region('europe-west1').https.onCall(
   ): Promise<UploadLocInfoDataResponse> => {
     const appContext = await NestFactory.createApplicationContext(CoreModule)
     const locInfoService = appContext.get(LocInfoService);
-    console.log("Function call: ", request.request)
     return locInfoService.uploadLocInfoData(request);
   }
 );
 
 
-export const getSaniData = functions.region('europe-west1').https.onCall(
+export const getLocInfoData = functions.region('europe-west1').https.onCall(
   async(
-    request: GetSaniDataRequest
-  ): Promise<GetSaniDataResponse> => {
+    request: GetLocInfoDataRequest
+  ): Promise<GetLocInfoDataResponse> => {
     const appContext = await NestFactory.createApplicationContext(CoreModule)
     const locInfoService = appContext.get(LocInfoService);
-    return locInfoService.getSaniData(request);
+    return locInfoService.getLocInfoData(request);
   }
 );

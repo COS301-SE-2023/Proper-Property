@@ -1,1 +1,1 @@
-export * from './get-sani-data.query'
+export * from './get-locInfo-data.query'

@@ -9,8 +9,8 @@ import { Listing,
   GetApprovedListingsResponse,
   EditListingRequest,
   EditListingResponse } from '@properproperty/api/listings/util';
-import { GetSaniDataRequest,
-  GetSaniDataResponse } from '@properproperty/api/loc-info/util';
+import { GetLocInfoDataRequest,
+  GetLocInfoDataResponse } from '@properproperty/api/loc-info/util';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
 import { Storage, deleteObject, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
@@ -160,20 +160,31 @@ export class ListingsService {
       await updateDoc(listingRef, {photos: photoURLs});
   }
 
-  async getSanitationScore(municipality : string){
-    const response: GetSaniDataResponse = (await httpsCallable<
-      GetSaniDataRequest,
-      GetSaniDataResponse
-    >(this.functions, 'getSaniData')({municipality: municipality})).data;
+  async getSanitationScore(district : string){
+    const response: GetLocInfoDataResponse = (await httpsCallable<
+      GetLocInfoDataRequest,
+      GetLocInfoDataResponse
+    >(this.functions, 'getLocInfoData')({type: "sanitation", district: district})).data;
 
     return response;
   }
 
-  async getWaterScore(municipality : string){
-    console.log(municipality);
-    // return await httpsCallable<
-    // GetWaterDataRequest,
-    // GetWaterDataResponse
-    // >(this.functions, 'getWaterData')({municipality: municipality});
+  async getWaterScore(district : string, listingAreaType: string, listingType: string, coordinates: {lat: number, long: number}){
+    const response: GetLocInfoDataResponse = (await httpsCallable<
+      GetLocInfoDataRequest,
+      GetLocInfoDataResponse
+    >(this.functions, 'getLocInfoData')({type: "water", district: district, listingAreaType: listingAreaType, listingType: listingType, latlong: coordinates})).data;
+
+    console.log("Listing services", response);
+    return response;
+  }
+
+  async getCrimeScore(coordinates: {lat: number, long: number}){
+    const response: GetLocInfoDataResponse = (await httpsCallable<
+      GetLocInfoDataRequest,
+      GetLocInfoDataResponse
+    >(this.functions, 'getLocInfoData')({type: "crime", latlong: coordinates})).data;
+
+    return response;
   }
 }
