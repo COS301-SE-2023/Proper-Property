@@ -46,6 +46,7 @@ export class CoreShellComponent implements OnInit, OnDestroy {
   private userProfileListener: Unsubscribe | null = null;
   private notificationsListener: Unsubscribe | null = null;
   public notifications: Notification[] = [];
+  public showNotifications = false;
   private NotificationToken = 'whups';
   private activatedRoute = inject(ActivatedRoute);
   constructor(
@@ -138,5 +139,9 @@ export class CoreShellComponent implements OnInit, OnDestroy {
       console.log(this.NotificationToken);
       this.notificationsService.sendNotification(this.NotificationToken, "this is a title", "this is a body");
     }
+  }
+
+  async toggleNotifications() {
+    this.showNotifications = !this.showNotifications;
   }
 }
