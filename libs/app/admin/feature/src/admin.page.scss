@@ -84,3 +84,16 @@ ion-card {
   width: 15px;
   height: 15px;
 }
+
+#loader{
+  position: absolute;
+  right: 50%;
+  text-align: center;
+  z-index: 1;
+  top: 40%;
+  opacity: 0;
+}
+
+#show{
+  opacity: 1;
+}

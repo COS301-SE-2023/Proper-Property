@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Listing, StatusChange } from '@properproperty/api/listings/util';
@@ -6,14 +6,14 @@ import { AuthState } from '@properproperty/app/auth/data-access';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { Unsubscribe, User } from 'firebase/auth';
-import { Observable } from 'rxjs';
+import { Observable, timeout } from 'rxjs';
 
 @Component({
   selector: 'properproperty-admin-page',
   templateUrl: './admin.page.html',
   styleUrls: ['./admin.page.scss'],
 })
-export class AdminPage{
+export class AdminPage implements OnInit{
 
   @Select(AuthState.user) user$!: Observable<User | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
@@ -45,6 +45,30 @@ export class AdminPage{
       this.userProfileListener = listener;
     });
 
+    route.params.subscribe((params) => {
+      const statusChange : StatusChange = params['statusChange'];
+      if(statusChange && statusChange.adminId){
+        router.navigate(['/admin']);
+      }
+    });
+
+    // if(load){
+    //   load.style.display="none";
+    // }
+    // if(show){
+    //   show.style.display="block";
+    // }
+  }
+
+  async redirectToPage(listing : Listing) {
+    this.router.navigate(['/listing', {list : listing.listing_id, admin : this.user?.uid}]);
+  }
+
+  async ngOnInit() {
+    const show=document.querySelector('#show') as HTMLDivElement;
+    show.style.opacity="0";
+    const load=document.querySelector('#loader') as HTMLElement;
+    load.style.opacity="1";
     this.appListings = [];
     this.nonAppListings = [];
     let listings : Listing[] = [];
@@ -92,17 +116,14 @@ export class AdminPage{
         }
       })
     });
-    
-
-    route.params.subscribe((params) => {
-      const statusChange : StatusChange = params['statusChange'];
-      if(statusChange && statusChange.adminId){
-        router.navigate(['/admin']);
+    setTimeout( function finishLoading(){
+      const show=document.querySelector('#show') as HTMLDivElement;
+      const load=document.querySelector('#loader') as HTMLElement;
+      if(!show){
+        console.log("Show does not exist");
       }
-    });
-  }
-
-  async redirectToPage(listing : Listing) {
-    this.router.navigate(['/listing', {list : listing.listing_id, admin : this.user?.uid}]);
+      load.style.opacity="0";
+      show.style.opacity="1";
+    }, 1000)
   }
 }
