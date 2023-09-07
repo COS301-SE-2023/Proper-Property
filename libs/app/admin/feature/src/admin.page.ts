@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Listing, StatusChange } from '@properproperty/api/listings/util';
-import { AuthState } from '@properproperty/app/auth/data-access';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
-import { Unsubscribe, User } from 'firebase/auth';
+import { UserProfile } from '@properproperty/api/profile/util';
+import { Unsubscribe } from 'firebase/auth';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -15,9 +15,9 @@ import { Observable } from 'rxjs';
 })
 export class AdminPage{
 
-  @Select(AuthState.user) user$!: Observable<User | null>;
+  @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
-  private user: User | null = null;
+  private userProfile: UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
   public adminLogged = false;
 
@@ -25,19 +25,16 @@ export class AdminPage{
   appListings : Listing[] = [];
 
   constructor(private listingServices : ListingsService, private router : Router, route : ActivatedRoute, private profileServices : UserProfileService){
-    this.user$.subscribe((user) => {
-      this.user = user;
-      this.profileServices.getUser("" + user?.uid).then((profile) => {
+    this.userProfile$.subscribe((profile) => {
+      this.userProfile = profile;
         if(profile !== undefined && profile){
           if(profile.admin){
             this.adminLogged = true;
           }
           else{
             router.navigate(['/home']);
-          }
-        }
+          }}
       });
-    });
 
     // Update listener whenever is changes such that it can be unsubscribed from
     // when the window is unloaded
@@ -103,6 +100,6 @@ export class AdminPage{
   }
 
   async redirectToPage(listing : Listing) {
-    this.router.navigate(['/listing', {list : listing.listing_id, admin : this.user?.uid}]);
+    this.router.navigate(['/listing', {list : listing.listing_id, admin : this.userProfile?.userId}]);
   }
 }

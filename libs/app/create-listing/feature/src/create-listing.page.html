@@ -134,7 +134,7 @@
               <label position="floating" class="house-text">Possession Type:</label>
             </ion-col>
             <ion-col>
-              <select class="house-dropdown" aria-label="pos-type">
+              <select  [(ngModel)]="pos_type" class="house-dropdown" aria-label="pos-type">
                 <option value="Leasehold">Leasehold</option>
                 <option value="Freehold">Freehold</option>
                 <option value="Condominium">Condominium</option>
@@ -396,7 +396,7 @@
               <label position="floating" class="house-text">Possession Type:</label>
             </ion-col>
             <ion-col>
-              <select class="house-dropdown" aria-label="pos-type">
+              <select [(ngModel)]="pos_type" class="house-dropdown" aria-label="pos-type" id="pos-type">
                 <option value="Leasehold">Leasehold</option>
                 <option value="Freehold">Freehold</option>
                 <option value="Condominium">Condominium</option>
