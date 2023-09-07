@@ -5,5 +5,4 @@ export interface Station{
   stationName: string;
   district: string;
   weightedTotal: number;
-  rank: number;
 }

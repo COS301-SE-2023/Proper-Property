@@ -94,10 +94,6 @@ export class LocInfoRepository {
           let levenScore = 0;
           for(let district of districts){
             const temp = natural.LevenshteinDistance(district.toLowerCase(), station.district.toLowerCase());
-            // if(district.toLowerCase().includes(station.district.toLowerCase()) 
-            // || station.district.toLowerCase().includes(district.toLowerCase())) {
-            //   correctDistrict = district;
-            // }
             
             if(temp > levenScore){
               levenScore = temp;
@@ -106,7 +102,7 @@ export class LocInfoRepository {
           }
         }
         catch(error : any){
-          console.log("Error when calculating JaroWinkler score: ", error.message ?? "No error message");
+          console.log("Error when calculating leven score: ", error.message ?? "No error message");
         }
 
         if (correctDistrict === "") {
@@ -127,21 +123,6 @@ export class LocInfoRepository {
         station.weightedTotal = 0;
         stations.push(station.stationName.toLowerCase());
         for(let crime of station.crimeStats){
-          // if(encounteredCrimes.includes(crime.category)){
-          //   crimeTotal[encounteredCrimes.indexOf(crime.category)] = {
-          //     category: crime.category,
-          //     total: crimeTotal[encounteredCrimes.indexOf(crime.category)].total + crime.quarterCount,
-          //     average: 0
-          //   }
-          // }
-          // else{
-          //   encounteredCrimes.push(crime.category);
-          //   crimeTotal.push({
-          //     category: crime.category,
-          //     total: crime.quarterCount,
-          //     average: 0
-          //   });
-          // }
           crime.perHunThou = (crime.quarterCount/districtData?.['totalPopulation'] ?? 1) * 100000;
           console.log(this.crimeWeights[crime.category]);
           
@@ -156,23 +137,18 @@ export class LocInfoRepository {
       });
 
       for(let station of req.stationStats){
-        station.rank = req.stationStats.indexOf(station);
         admin
         .firestore()
         .collection('crimeStats/')
-        .doc(station.stationName)
-        .set({stations: station});
+        .doc(station.stationName.toLowerCase())
+        .set({score: (1 -req.stationStats.indexOf(station)/req.stationStats.length)});
       }
-
-      // for(let crime of crimeTotal){
-      //   crime.average = crime.total / stations.length;
-      // }
 
       admin
       .firestore()
       .collection('crimeStats/')
       .doc('metadata')
-      .set({stations: stations});
+      .set({stations: stations, countStations: req.stationStats.length});
     
       return {type: "crime", status: true};
     }
@@ -664,22 +640,18 @@ export class LocInfoRepository {
 
   async getCrimeScore(req : GetLocInfoDataRequest): Promise<GetLocInfoDataResponse>{
     try{
-      let foundStation = "";
+      console.log(req.latlong?.lat, req.latlong?.long);
       let url = "https://services.arcgis.com/k7HsiFEIdlPzZNnP/arcgis/rest/services/South_African_police_boundaries/FeatureServer/0/query?where=1%3D1&outFields=*&geometry=" 
-      + req.latlong?.lat
-      + "%2C" + req.latlong?.long 
+      + req.latlong?.long
       + "%2C" + req.latlong?.lat 
-      + "%2C" + req.latlong?.long + " &geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outSR=4326&f=json";
+      + "%2C" + req.latlong?.long 
+      + "%2C" + req.latlong?.lat + " &geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outSR=4326&f=json";
 
-      fetch(url, { method: 'GET' })
-      .then(Result => Result.json())
-      .then((response) => {
-        foundStation = response.data?.['features']?.[0]?.['attributes']?.['COMPNT_NAME'];
-      });
+      const stationResponse = (await(await fetch(url, { method: 'GET' })).json());
+      const foundStation = stationResponse?.['features'][0]?.['attributes']?.['COMPNT_NM'];
 
       console.log("RECEIVED POLICING AREA")
 
-      let metadata : any;
       let correctStation = "";
       await admin
       .firestore()
@@ -688,16 +660,19 @@ export class LocInfoRepository {
       .then((response) => {
         if(response.data()?.['stations']){
           for(let station of response.data()?.['stations']){
-            if(station.toLowerCase().includes("" + foundStation.toLowerCase())){
+            if(station.toLowerCase().includes("" + foundStation.toLowerCase()
+             || ("" + foundStation.toLowerCase()).includes(station.toLowerCase()))){
               correctStation = station.toLowerCase();
+              break;
             }
           }
+          if (correctStation === "") {
+            console.log("Could not find station", foundStation);
+            console.log(stationResponse);
+            console.log(foundStation);
+          }
         }
-
-        metadata = response.data()?.['crimeMeta'];
-      })
-
-      console.log("RECEIVED METADATA", metadata);
+      });
 
       let finalScore = 0;
       await admin
@@ -705,40 +680,7 @@ export class LocInfoRepository {
       .doc('crimeStats/' + correctStation)
       .get()
       .then((response) => {
-        console.log("CALCULATING TEMP SCORE");
-        let tempScore = 0;
-        let multiplier = 1;
-
-        for(let crime of response.data()?.['stations']['crimeStats']){
-          if(crime?.['incDec'].includes('Increased')){
-            tempScore += 0.45;
-            multiplier = -1;
-            console.log("Increased", tempScore)
-          }
-          else if(crime?.['incDec'].includes('Stabilized')){
-            tempScore += 0.5
-          }
-          else{
-            tempScore += 0.55;
-            console.log("Decreased", tempScore)
-          }
-          for(let meta of metadata){
-            if(crime.category.toLowerCase().includes(meta.category.toLowerCase())){
-              console.log(crime.quarterCount, meta.average)
-              tempScore += (crime.quarterCount / meta.average) ? (crime.quarterCount / meta.average) * multiplier : 0;
-              console.log("Temp after normalisation", tempScore);
-              break;
-            }
-          }
-
-          console.log("Temp score for " + crime.category, tempScore);
-        }
-
-        console.log("DIVIDING SCORE")
-
-        console.log(tempScore, (response.data()?.['stations']['crimeStats'] as []).length)
-
-        finalScore =  tempScore / ((response.data()?.['stations']['crimeStats'].length * 2) + 1);
+        finalScore = response.data()?.['score'];
       })
 
       console.log("FINAL SCORE", finalScore);

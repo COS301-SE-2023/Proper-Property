@@ -61,7 +61,6 @@ export class AdminService {
             incDec: crimeData[i]['Count direction']
           }],
           weightedTotal: 0,
-          rank: -1
         }
       }
     }
