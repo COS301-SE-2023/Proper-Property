@@ -239,8 +239,7 @@
       <ion-row style="width: 100%; margin-top: 1.5%;">
         <ion-col size="6">
           <ion-label class="house-text">Add Property Features:</ion-label>
-          <label position="floating" class="amenities-text">Select Amenities</label>
-          
+  
           <ion-input (ionInput)="handleAmenityInputChange($event)" id="feat-in" class="feat-in" type="text"
           placeholder="Feature"  class="addFeat house-text"
           [(ngModel)]="selectedAmenity" placeholder="Search amenities" (keydown.enter)="addFeature()"></ion-input>
