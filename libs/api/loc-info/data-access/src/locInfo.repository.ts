@@ -245,14 +245,14 @@ export class LocInfoRepository {
   async uploadWaterAccessStats(req : UploadWaterAccessDataRequest): Promise<UploadLocInfoDataResponse>{
     try{
       const WSAs = [];
-      let totalPop = 0;
+      // let totalPop = 0;
       for(let wsa of req.wsaData){
         if(wsa.wsa.toLowerCase().includes("/")){
           wsa.wsa = wsa.wsa.replace("/", "-").toLowerCase();
         }
 
         WSAs.push(wsa.wsa);
-        totalPop += wsa.population;
+        // totalPop += wsa.population;
         admin
         .firestore()
         .collection('WaterStats-Access/')
