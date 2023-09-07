@@ -1,5 +1,5 @@
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild,HostListener, ViewChildren, QueryList  } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { Unsubscribe } from '@angular/fire/auth';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { ActivatedRoute } from '@angular/router';
+import { IonContent } from '@ionic/angular';
 
 @Component({
   selector: 'app-search',
@@ -19,13 +20,18 @@ import { ActivatedRoute } from '@angular/router';
 
 
 export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
-  @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
-
+  @ViewChild('address', { static: false }) addressInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('address1', { static: false }) addressInput1!: ElementRef<HTMLInputElement>;
+  isMobile = true;
+  MapView = true ;
   autocomplete: any;
   defaultBounds: google.maps.LatLngBounds;
   predictions: google.maps.places.AutocompletePrediction[] = [];
 
-  @ViewChild('map', { static: true }) mapElementRef!: ElementRef;
+  @ViewChild('map', { static: false }) mapElementRef!: ElementRef;
+  @ViewChild('map1', { static: false }) mapElementRef1!: ElementRef;
+  @ViewChildren(IonContent) contentElements!: QueryList<IonContent>;
+  
   googleMaps: any;
   // center = { lat: -25.7477, lng: 28.2433 };
   center = { lat: 0, lng: 0 };
@@ -86,8 +92,28 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
         this.userProfileListener = listener;
       });
       
+      this.isMobile = isMobile();
+      this.MapView = false;
     }
 
+    async mapView(){
+      this.MapView = !this.MapView;
+      if(this.MapView &&this.isMobile){
+        await this.setCentre();
+      } else {
+        const map1Element = document.getElementById("map1");
+        if (map1Element) {
+          map1Element.innerHTML = ''; // Clear the contents of the map1 div
+        }
+      }
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event: Event) {
+      console.log(event);
+      this.isMobile = window.innerWidth <= 576;
+    }
+    
   async ngOnInit() {
     // await this.listingServices.getApprovedListings().then((listings) => {
     //   this.listings = listings;
@@ -99,24 +125,60 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       this.filterProperties();
     });
 
+    setTimeout(function () {
+      // Hide the loader
+      const load=document.querySelector('.loading-animation') as HTMLElement;
+      const footerGap=document.querySelector('.footer-gap') as HTMLElement;
+      // load.style.display="none";
+      load.style.opacity="0";
+      footerGap.style.display="none";
+
+      // Display the map listing
+      const maplisting=document.querySelector('#listings-and-map') as HTMLElement;
+      // maplisting.style.display="block";
+      maplisting.style.display="block";
+  }, 2000);
+
     console.log(this.listings);
 
-    const inputElementId = 'address';
+    if(!this.isMobile){
+      const inputElementId = 'address';
 
     
     
-    this.gmapsService.setupRegionSearchBox(inputElementId);
-
-    const queryParams = this.route.snapshot.queryParams;
-    this.searchQuery = queryParams['q'] || ''; // If 'q' parameter is not available, default to an empty string.
-
-    const addressInput = document.getElementById("address") as HTMLInputElement;
-    if (this.searchQuery!='') {
-      addressInput.value = this.searchQuery;
+      this.gmapsService.setupRegionSearchBox(inputElementId);
+  
+      const queryParams = this.route.snapshot.queryParams;
+      this.searchQuery = queryParams['q'] || ''; // If 'q' parameter is not available, default to an empty string.
+  
+      const addressInput = document.getElementById("address") as HTMLInputElement;
+      if (this.searchQuery!='') {
+        addressInput.value = this.searchQuery;
+      }
+  
+      this.searchProperties();
     }
 
-    this.searchProperties();
+    else {
+      const inputElementId = 'address1';
 
+    
+    
+      this.gmapsService.setupRegionSearchBox(inputElementId);
+  
+      const queryParams = this.route.snapshot.queryParams;
+      this.searchQuery = queryParams['q'] || ''; // If 'q' parameter is not available, default to an empty string.
+  
+      const addressInput = document.getElementById("address1") as HTMLInputElement;
+      if (this.searchQuery!='') {
+        addressInput.value = this.searchQuery;
+      }
+  
+      this.searchProperties();
+    }
+
+
+    
     
   }
 
@@ -133,19 +195,29 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       event.preventDefault(); // Prevent the default behavior of the <a> tag
     }
 
-    const addressInput = document.getElementById("address") as HTMLInputElement;
-    if (addressInput) {
-      addressInput.value = prediction;
+    if(!this.isMobile){
+      const addressInput = document.getElementById("address") as HTMLInputElement;
+      if (addressInput) {
+        addressInput.value = prediction;
+      }
+      this.predictions = [];
     }
-    this.predictions = [];
+    else {
+      const addressInput = document.getElementById("address1") as HTMLInputElement;
+      if (addressInput) {
+        addressInput.value = prediction;
+      }
+      this.predictions = [];
+    }
   }
 
 
 
   ngAfterViewInit() {
-    this.setCentre();
-    
-    this.loadMap();
+    if(!this.isMobile ||this.MapView) {
+      this.setCentre();
+      this.loadMap();
+    }
 
   }
 
@@ -208,9 +280,18 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
 async loadMap() {
   try {
+  
+    //const addressInput = document.getElementById("address") as HTMLInputElement;
+   
+    const mapElementRef1 = document.getElementById("map1") as HTMLElement;
+  
     const googleMaps: any = await this.gmaps.loadGoogleMaps();
     this.googleMaps = googleMaps;
-    const mapEl = this.mapElementRef.nativeElement;
+    
+    let mapEl = null;
+    
+    if(!this.isMobile) mapEl = this.mapElementRef.nativeElement;
+    else if(this.isMobile && this.MapView) mapEl = mapElementRef1;
     
       const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
       this.map = new googleMaps.Map(mapEl, {
@@ -439,7 +520,8 @@ toggleColor() {
     this.listings = listings;
     this.filterProperties();
 
-    this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
+    if(this.isMobile)this.searchQuery = (document.getElementById("address1") as HTMLInputElement).value;
+    else this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
    
     this.setCentre();
     // this.center.lat = (await this.gmaps.getLatLongFromAddress(this.searchQuery)).latitude;
@@ -463,9 +545,10 @@ toggleColor() {
             console.log('Address 1 is not in the area of Address 2', i);
           } else {
             console.log('Address 1 is in the area of Address 2', i);
-            console.log(this.listings[i].address, "eyy");
+      
           }
         } catch (error) {
+          this.listings.splice(i, 1);
           console.error('Error:', error);
         }
       }
@@ -783,4 +866,7 @@ unsaveListing($event : any, listing_id : string){
 }
 
 
+}
+function isMobile(): boolean {
+  return window.innerWidth <= 576;
 }

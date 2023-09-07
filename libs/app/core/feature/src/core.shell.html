@@ -1,5 +1,5 @@
-<ion-app>
-  <ion-header >
+<ion-app >
+  <ion-header *ngIf="!this.isMobile">
     <ion-toolbar>
       <ion-row class="ion-align-items-center">
         <ion-col size="0.5"><img class="logo" src="assets/Logo_v1.png" width="60%"></ion-col>
@@ -49,5 +49,61 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-router-outlet></ion-router-outlet>
+  <ion-header *ngIf="this.isMobile">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title class="title-container">
+        <img class="logo" src="assets/Logo_v1.png" width="10%">
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <ion-menu contentId="main-content" *ngIf="this.isMobile">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title><img class="logo" src="assets/Logo_v1.png" width="20%"></ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <div>
+        <ion-button *ngIf="!this.loggedIn" id="login-button" fill="clear" routerLink="login" routerDirection="root" routerLinkActive="active" class="link" style="display: block;">
+          Log In
+        </ion-button>
+        <ion-button *ngIf="!this.loggedIn" id="signup-button" fill="clear" routerLink="register" routerDirection="root" routerLinkActive="active" class="link" style="display: block;">
+          Sign Up
+        </ion-button>
+        <ion-button fill="clear" routerLink="home" routerDirection="root" routerLinkActive="active" class="link" style="display: block;">
+          Home
+        </ion-button>
+        <ion-button *ngIf="this.loggedIn" fill="clear" routerLink="/create-listing" routerDirection="root" routerLinkActive="active" class="link" style="display: block;">
+          Add Listing
+        </ion-button>
+        <ion-button fill="clear" routerLink="search" routerDirection="root" routerLinkActive="active" class="link" style="display: block;">
+          View Listings
+        </ion-button>
+        <ion-button *ngIf="this.loggedIn" fill="clear" routerLink="/profile" routerDirection="root" routerLinkActive="active" class="link" style="display: block;">
+          Profile
+        </ion-button>
+        
+      </div>
+    </ion-content>
+  </ion-menu>
+  
+
+    <div class="ion-page" id="main-content" *ngIf="this.isMobile">
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+          <ion-title>Menu</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <!-- <ion-content class="ion-padding"> Tap the button in the toolbar to open the menu. </ion-content> -->
+      
+    </div>
+    <ion-router-outlet></ion-router-outlet>
 </ion-app>

@@ -21,6 +21,8 @@ export class SavedListingsPage implements OnInit {
   private userProfile : UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
 
+  isMobile = false;
+
   public savedListings : Listing[] = [];
 
   constructor(
@@ -53,6 +55,7 @@ export class SavedListingsPage implements OnInit {
 
   ngOnInit() {
     console.log ("Linter: Lifecycle methods should not be empty");
+    this.isMobile = isMobile();
   }
 
   async redirectToPage(listing : Listing) {
@@ -112,4 +115,7 @@ export class SavedListingsPage implements OnInit {
       }
     } 
   } 
+}
+function isMobile(): boolean {
+  return window.innerWidth <= 576;
 }

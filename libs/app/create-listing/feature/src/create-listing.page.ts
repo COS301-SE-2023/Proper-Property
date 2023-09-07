@@ -1,4 +1,4 @@
-import { Component, OnInit , ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit , ViewChild, ElementRef,HostListener} from '@angular/core';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { Listing } from '@properproperty/api/listings/util';
 // import { profile } from '@properproperty/api/profile/util';
@@ -21,13 +21,13 @@ import { GmapsService } from '@properproperty/app/google-maps/data-access';
 })
 export class CreateListingPage implements OnInit {
 
-  @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('address', { static: false }) addressInput!: ElementRef<HTMLInputElement>;
 
   @Select(AuthState.user) user$!: Observable<User | null>;
   // autocomplete: any;
   defaultBounds: google.maps.LatLngBounds;
   predictions: google.maps.places.AutocompletePrediction[] = [];
-
+  isMobile = false;
   currentUser: User | null = null;
   description = "";
   heading = "";
@@ -42,23 +42,25 @@ export class CreateListingPage implements OnInit {
     private readonly store: Store,
     private route: ActivatedRoute,
   ) {
+    this.isMobile = isMobile();
+    
     this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
     this.predictions = [];
     this.defaultBounds = new google.maps.LatLngBounds();
     if (isDevMode()) {
-      this.address = "123 Fake Street";
-      this.price = "1000000";
-      this.floor_size = "100";
-      this.erf_size = "100";
-      this.bathrooms = "2";
-      this.bedrooms = "3";
-      this.parking = "1";
-      this.pos_type = "Leasehold";
-      this.env_type = "Urban";
-      this.prop_type = "House";
-      this.furnish_type = "Furnished";
-      this.orientation = "North";
-      this.description = "This is a description";
+      // this.address = "123 Fake Street";
+      // this.price = "1000000";
+      // this.floor_size = "100";
+      // this.erf_size = "100";
+      // this.bathrooms = "2";
+      // this.bedrooms = "3";
+      // this.parking = "1";
+      // this.pos_type = "Leasehold";
+      // this.env_type = "Urban";
+      // this.prop_type = "House";
+      // this.furnish_type = "Furnished";
+      // this.orientation = "North";
+      // this.description = "This is a description";
     }
     this.user$.subscribe((user: User | null) => {
       this.currentUser =  user;
@@ -93,6 +95,11 @@ export class CreateListingPage implements OnInit {
       }
     });
   }
+@HostListener('window:resize', ['$event'])
+onResize(event: Event) {
+  console.log(event);
+  this.isMobile = window.innerWidth <= 576;
+}
 
   features: string[] = [];
   selectedValue = true;
@@ -380,7 +387,20 @@ handleAddressChange(address: string): void {
 }
 
 
-async function calculateQualityScore(photos: string[],address:string,price:string,bedrooms:string,bathrooms:string,parking:string,floor_size:string,erf_size:string,pos_type:string,env_type:string,prop_type:string,furnish_type:string,orientation:string,gmapsService: GmapsService): Promise<number>{
+async function calculateQualityScore(photos: string[],
+  address:string,
+  price:string,
+  bedrooms:string,
+  bathrooms:string,
+  parking:string,
+  floor_size:string,
+  erf_size:string,
+  pos_type:string,
+  env_type:string,
+  prop_type:string,
+  furnish_type:string,
+  orientation:string,
+  gmapsService: GmapsService): Promise<number>{
             
   let score = 0;
 
@@ -404,11 +424,11 @@ async function calculateQualityScore(photos: string[],address:string,price:strin
       score+= 5;
   } else score-=20;
 
-  if(isNonEmptyStringInput(floor_size)){
+  if(isNonEmptyStringInput("" + floor_size)){
       score+= 5;
   } else score-=15;
 
-  if(isNonEmptyStringInput(erf_size)){
+  if(isNonEmptyStringInput("" + erf_size)){
       score+= 5;
   } else score-=15;
 
@@ -537,3 +557,6 @@ function isNonEmptyStringInput(input: string): boolean {
 return input.trim() !== "";
 }
 
+function isMobile(): boolean {
+  return window.innerWidth <= 576;
+}

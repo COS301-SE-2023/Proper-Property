@@ -1,7 +1,6 @@
-import { Component, ElementRef, ViewChild} from '@angular/core';
+import { Component, ElementRef, ViewChild,HostListener} from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { Listing } from '@properproperty/api/listings/util';
-import Swiper from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
@@ -26,13 +25,13 @@ export class ListingPage{
   @ViewChild(IonContent) content: IonContent | undefined;
   // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
 
+  isMobile: boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
   private userProfile : UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
   @ViewChild('swiper')
   swiperRef: ElementRef | undefined;
-  swiper?: Swiper;
   list : Listing | null = null;
   lister: UserProfile | null = null
   listerId  = "";
@@ -129,10 +128,19 @@ export class ListingPage{
     this.userProfileListener$.subscribe((listener) => {
       this.userProfileListener = listener;
     });
+
+    this.isMobile = isMobile(); 
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    console.log(event);
+    this.isMobile = window.innerWidth <= 576;
   }
 
   async showAnalytics(){
-    this.showData = true;
+    const loader=document.querySelector(".graph-animation") as HTMLElement;
+    loader.style.display="block";
     const request : GetAnalyticsDataRequest = {listingId : this.list?.listing_id ?? ""};
     const analyticsData = JSON.parse((await httpsCallable(this.functions, 'getAnalyticsData')(request)).data as string);
     if(analyticsData == null){
@@ -207,7 +215,10 @@ export class ListingPage{
     const seconds = (avgPerUser - minutes * 60).toPrecision(2);
 
     this.avgEnagement = minutes + " min " + seconds + " sec";
-    
+    this.showData = true;
+    const element = document.querySelector(".graph") as HTMLElement;
+    loader.style.display="none";
+    element.style.display="block";
     return;
   }
 
@@ -308,16 +319,22 @@ export class ListingPage{
     console.log("Accepted: " + this.pointsOfInterest);
   }
 
-  swiperReady() {
-    this.swiper = this.swiperRef?.nativeElement.swiper;
-    console.log(this.swiperRef?.nativeElement.swiper);
-  }
-
-  goNext() {
-    this.swiper?.slideNext();
+  goNext(event: Event) {
+    console.log(event)
+    if(this.swiperRef){
+      this.swiperRef.nativeElement.swiper.slideNext();
+    }
+    else{
+      console.log("Swiper undefined");
+    }
   }
   goPrev() {
-    this.swiper?.slidePrev();
+    if(this.swiperRef){
+      this.swiperRef.nativeElement.swiper.slideNext();
+    }
+    else{
+      console.log("Swiper undefined");
+    }
   }
 
   swiperSlideChanged(e:Event) {
@@ -428,4 +445,7 @@ export class ListingPage{
   editListing(){
     this.router.navigate(['/create-listing', {listingId : this.listingId}]);
   }
+}
+function isMobile(): boolean {
+  return window.innerWidth <= 576;
 }
