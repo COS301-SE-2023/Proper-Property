@@ -1,3 +1,5 @@
+// eslint-disable-next-line
+/// <reference types="@types/google.maps" />
 import { StatusChange } from './index';
 
 export interface Listing{
@@ -24,4 +26,9 @@ export interface Listing{
   statusChanges?: StatusChange[];
   listingDate: string;
   quality_rating?: number;
+  geometry: {
+    lat: number,
+    lng: number
+  },
+  pointsOfInterest: google.maps.places.PlaceResult[];
 }
