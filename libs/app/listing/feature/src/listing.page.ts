@@ -95,7 +95,9 @@ export class ListingPage{
         
         // TODO
         console.log(this.list);
-        this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
+
+       
+        this.price_per_sm = Number( this.list?.price.replace(/,/g, '')) / Number(this.list?.property_size);
   
         this.userServices.getUser("" + this.list?.user_id).then((user : UserProfile) => {
           this.lister = user;
