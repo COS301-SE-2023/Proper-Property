@@ -432,14 +432,11 @@ handleAddressChange(address: string): void {
 
   selectedAmenity = '';
   amenities: string[] = [
-    'Swimming Pool',
-    'Gym',
-    'Playground',
-    'Tennis Court',
-    'Clubhouse',
-    'Park',
-    'Security',
-    'Laundry Facilities',
+    'Pool',
+    'Security Estate',
+    'Solar panels',
+    'Flatlet',
+    'Garden',
     'Pet-Friendly',
   ];
   filteredAmenities: string[] = [];

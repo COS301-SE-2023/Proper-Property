@@ -508,8 +508,16 @@
       <ion-row style="width: 100%; margin-top: 1.5%;">
         <ion-col size="8">
           <ion-label class="house-text">Add Property Features:</ion-label>
-          <input id="feat-in" type="text" placeholder="Feature" class="addFeat house-text"
-            (keydown.enter)="addFeature()"> &nbsp;<ion-button (click)="addFeature()" class="addButt">Add</ion-button><br>
+          <ion-input (ionInput)="handleAmenityInputChange($event)" id="feat-in" class="feat-in" type="text"
+          placeholder="Feature"  class="addFeat house-text"
+          [(ngModel)]="selectedAmenity" placeholder="Search amenities" (keydown.enter)="addFeature()"></ion-input>
+         
+          <ion-list [hidden]="filteredAmenities.length === 0">
+            <ion-item (click)="selectAmenity(amenity)" *ngFor="let amenity of filteredAmenities">
+              {{ amenity }}
+            </ion-item>
+          </ion-list>
+             &nbsp;<ion-button (click)="addFeature()" class="addButt">Add</ion-button><br>
           <ion-item class="ion-container" *ngFor="let feat of features,; let i = index">
             <ion-label>
               <ion-chip>
