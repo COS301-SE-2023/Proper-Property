@@ -18,7 +18,6 @@ import { FormControl } from '@angular/forms';
 
 import { map, startWith } from 'rxjs/operators'
 
-import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-create-listing',
@@ -28,16 +27,8 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 })
 export class CreateListingPage implements OnInit {
 
-  
-  @ViewChild(MatAutocompleteTrigger,{ static: false }) trigger!: MatAutocompleteTrigger;
-  @ViewChild('inputElement', { static: false }) inputElement!: ElementRef;
 
-  onFocus() {
-    setTimeout(() => {
-      this.inputElement.nativeElement.focus();
-      this.trigger.openPanel();
-    });
-  }
+  @ViewChild('inputElement', { static: false }) inputElement!: ElementRef;
 
   myControl = new FormControl();
   options: string[] = ['Angular', 'React', 'Vue', 'Ionic', 'TypeScript'];
