@@ -1,4 +1,5 @@
 import { StatusChange } from './index';
+import { areaScore } from './index';
 
 export interface Listing{
   listing_id?: string;
@@ -26,4 +27,5 @@ export interface Listing{
   statusChanges?: StatusChange[];
   listingDate: string;
   quality_rating?: number;
+  areaScore: areaScore;
 }

@@ -110,14 +110,22 @@ export class ListingsService {
     return null;
   }
 
-  async changeStatus(listingId : string, admin : string){
+  async changeStatus(listingId : string, admin : string, crimeScore: number, waterScore: number, sanitationScore: number, schoolScore: number){
     const response: ChangeStatusResponse = (await httpsCallable<
       ChangeStatusRequest,
       ChangeStatusResponse
     >(
       this.functions,
       'changeStatus'
-    )({listingId : listingId, adminId : admin})).data;
+    )(
+      {
+        listingId : listingId,
+        adminId : admin, 
+        crimeScore: crimeScore, 
+        schoolScore: schoolScore, 
+        waterScore: waterScore, 
+        sanitationScore: sanitationScore
+      })).data;
 
     return response;
   }
@@ -166,6 +174,7 @@ export class ListingsService {
       GetLocInfoDataResponse
     >(this.functions, 'getLocInfoData')({type: "sanitation", district: district})).data;
 
+    console.log("Listing services", response);
     return response;
   }
 
@@ -185,6 +194,7 @@ export class ListingsService {
       GetLocInfoDataResponse
     >(this.functions, 'getLocInfoData')({type: "crime", latlong: coordinates})).data;
 
+    console.log("Listing services", response);
     return response;
   }
 }

@@ -109,22 +109,19 @@ export class LocInfoRepository {
           console.log(station.district + " not found");
           continue;
         }
-        console.log("Found district", correctDistrict);
-        
+
         let districtData;
         try {
           districtData = (await admin
             .firestore()
             .doc('DistrictData/' + correctDistrict.toLowerCase()).get()).data();
         } catch (error) {
-          console.log(correctDistrict);
-          throw new Error("yo, wtf, " + correctDistrict);
+          throw new Error("yError when trying to find district: " + correctDistrict);
         }
         station.weightedTotal = 0;
         stations.push(station.stationName.toLowerCase());
         for(let crime of station.crimeStats){
           crime.perHunThou = (crime.quarterCount/districtData?.['totalPopulation'] ?? 1) * 100000;
-          console.log(this.crimeWeights[crime.category]);
           
           station.weightedTotal += ((crime.quarterCount/districtData?.['totalPopulation'] ?? 1) * 100000) * this.crimeWeights[crime.category];
         }   
@@ -252,7 +249,6 @@ export class LocInfoRepository {
       for(let wsa of req.wsaData){
         if(wsa.wsa.toLowerCase().includes("/")){
           wsa.wsa = wsa.wsa.replace("/", "-").toLowerCase();
-          console.log(wsa.wsa);
         }
 
         WSAs.push(wsa.wsa);
@@ -283,7 +279,6 @@ export class LocInfoRepository {
       for(let wsa of req.wsaData){
         if(wsa.wsa.toLowerCase().includes("/")){
           wsa.wsa = wsa.wsa.replace("/", "-");
-          console.log(wsa.wsa);
         }
 
         WSAs.push(wsa.wsa.toLowerCase());
@@ -456,8 +451,6 @@ export class LocInfoRepository {
           }
         })
 
-      console.log("Access received")
-
       await admin.
       firestore().
       doc('WaterStats-Quality/metadata').
@@ -469,8 +462,6 @@ export class LocInfoRepository {
       })
 
       
-      console.log("Quality received")
-
       await admin.
       firestore().
       doc('WaterStats-Reliability/metadata').
@@ -481,8 +472,6 @@ export class LocInfoRepository {
         }
       })
 
-      console.log("Reliability received")
-
       let accessWSA = "";
       let qualityWSA = "";
       let reliabilityWSA = "";
@@ -491,23 +480,16 @@ export class LocInfoRepository {
           accessWSA = wsa;
         }
       }
-      console.log("Found access WSA")
       for(let wsa of qualityWSAs){
         if(wsa.toLowerCase().includes("" + req.district?.toLowerCase())){
           qualityWSA = wsa;
         }
       }
-      console.log("Found quality WSA")
       for(let wsa of reliabilityWSAs){
         if(wsa.toLowerCase().includes("" + req.district?.toLowerCase())){
           reliabilityWSA = wsa;
         }
       }
-      console.log("Found relability WSA")
-
-      console.log("ACCESS", accessWSA);
-      console.log("QUALITY", qualityWSA);
-      console.log("RELIABILITY", reliabilityWSA);
 
       let accessScore = 0;
       let qualityScore = 0;
@@ -539,8 +521,6 @@ export class LocInfoRepository {
       })
 
       //TODO - fix reliability score - returning 0 each time
-      console.log(req.listingAreaType)
-      console.log(req.listingAreaType?.toLowerCase().includes("urban"))
       await admin.
       firestore().
       doc('WaterStats-Reliability/' + reliabilityWSA).
@@ -548,7 +528,6 @@ export class LocInfoRepository {
       then((response) => {
         if(req.listingAreaType?.toLowerCase().includes("rural")){
           if(response.data()?.['ruralPopReliable'] != "" && response.data()?.['ruralPopAccess'] != ""){
-            console.log("Calculating rural score");
             reliabilityScore = parseInt(response.data()?.['ruralPopReliable'])/parseInt(response.data()?.['ruralPopAccess']);
           }
           else{
@@ -558,7 +537,6 @@ export class LocInfoRepository {
         }
         else if(req.listingAreaType?.toLowerCase().includes("urban")){
           if(response.data()?.['urbanPopReliable'] != "" && response.data()?.['urbanPopAccess'] != ""){
-            console.log("Calculating urban score")
             reliabilityScore = parseInt(response.data()?.['urbanPopReliable'])/parseInt(response.data()?.['urbanPopAccess']);
           }
           else{
@@ -609,8 +587,6 @@ export class LocInfoRepository {
         }
       }
 
-      console.log("Found WMA")
-
       await admin
         .firestore()
         .doc("WaterStats-Tariffs/" + tariffWMA)
@@ -625,10 +601,6 @@ export class LocInfoRepository {
           }
         })
 
-        console.log("About to calculate water score")
-
-        console.log(accessScore, qualityScore, reliabilityScore, tariffScore);
-
       const waterScore = (accessScore + qualityScore + reliabilityScore + tariffScore) / 4;
 
       return {type: "waterScore", status: true, percentage: waterScore};
@@ -640,7 +612,6 @@ export class LocInfoRepository {
 
   async getCrimeScore(req : GetLocInfoDataRequest): Promise<GetLocInfoDataResponse>{
     try{
-      console.log(req.latlong?.lat, req.latlong?.long);
       let url = "https://services.arcgis.com/k7HsiFEIdlPzZNnP/arcgis/rest/services/South_African_police_boundaries/FeatureServer/0/query?where=1%3D1&outFields=*&geometry=" 
       + req.latlong?.long
       + "%2C" + req.latlong?.lat 
@@ -649,8 +620,6 @@ export class LocInfoRepository {
 
       const stationResponse = (await(await fetch(url, { method: 'GET' })).json());
       const foundStation = stationResponse?.['features'][0]?.['attributes']?.['COMPNT_NM'];
-
-      console.log("RECEIVED POLICING AREA")
 
       let correctStation = "";
       await admin
@@ -668,8 +637,6 @@ export class LocInfoRepository {
           }
           if (correctStation === "") {
             console.log("Could not find station", foundStation);
-            console.log(stationResponse);
-            console.log(foundStation);
           }
         }
       });
@@ -682,8 +649,6 @@ export class LocInfoRepository {
       .then((response) => {
         finalScore = response.data()?.['score'];
       })
-
-      console.log("FINAL SCORE", finalScore);
 
       return {type: "crime", status: true, percentage: finalScore};
     }

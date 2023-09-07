@@ -129,10 +129,10 @@ export class ListingPage{
       this.gmapsService.getLatLongFromAddress("" + this.list?.address).then((coordinates) => {
         this.coordinates = coordinates;
         this.getNearbyPointsOfInterest(coordinates);
-        this.getSanitationScore();
-        this.getWaterScore();
-        this.getSchoolRating(this.coordinates);
-        this.getCrimeScore();
+        this.setCrimeScore();
+        this.setSanitationScore();
+        this.setSchoolRating();
+        this.setWaterScore();
       })
       });
     });
@@ -242,11 +242,24 @@ export class ListingPage{
 
   async changeStatus(){
     if(this.list && this.adminId != ""){
-      this.listingServices.changeStatus("" + this.list.listing_id, this.adminId).then((response) => {
-        console.log("Listing page: " + response);
-        this.router.navigate(['/admin', {statusChange : response}]);
-      });
+      const crimeScore = await this.getCrimeScore();
+      const schoolScore = await this.getSchoolRating(this.coordinates);
+      const waterScore = await this.getWaterScore();
+      const sanitationScore = await this.getSanitationScore();
+
+      console.log(crimeScore, schoolScore, waterScore, sanitationScore);
+
+
+      if(crimeScore && schoolScore && waterScore && sanitationScore){
+        console.log("Changing status");
+        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, crimeScore, waterScore, sanitationScore, schoolScore);
+        this.router.navigate(['/admin']);
+      }
+
+      return false;
     }
+
+    return;
   }
 
   async getNearbyPointsOfInterest(coordinates: {latitude: number, longitude: number}) {
@@ -272,123 +285,144 @@ export class ListingPage{
     }
   }
 
-  async getSchoolRating(coordinates: {latitude: number, longitude: number} | null){
+  async getSchoolRating(coordinates: {latitude: number, longitude: number} | null): Promise<number>{
     if(this.list && this.list.address){
       try{
         if(coordinates){
-          this.gmapsService.getNearbySchools(coordinates.latitude, coordinates.longitude).then((schools : google.maps.places.PlaceResult[]) => {
+          const response = await this.gmapsService.getNearbySchools(coordinates.latitude, coordinates.longitude);
             // console.log("schools: " + schools);
-            if(schools.length > 0){
+            if(response.length > 0){
               let totalRating = 0;
-              for(let i = 0; i < schools.length; i++){
-                totalRating += schools[i].rating ?? 0;
+              for(let i = 0; i < response.length; i++){
+                totalRating += response[i].rating ?? 0;
               }
-
-              const finalScore = (totalRating / schools.length) * 20;
-              if(finalScore * 100 < 25){
-                document.getElementById("schoolProgress")?.setAttribute("style", "width: " + finalScore + "%;");
-                document.getElementById("schoolProgress")?.setAttribute("class", "errorProgressBar");
-              }
-              else if(finalScore * 100 < 60){
-                document.getElementById("schoolProgress")?.setAttribute("style", "width: " + finalScore + "%;");
-                document.getElementById("schoolProgress")?.setAttribute("class", "warningProgressBar");
-              }
-              else{
-                document.getElementById("schoolProgress")?.setAttribute("style", "width: " + finalScore + "%");
-              }
-
-              console.log("SCHOOL RATING: ", finalScore);
-              this.areaScore = parseInt(((this.areaScore + finalScore) / 2).toFixed(2));
+              console.log("School is here bitch");
+              return (totalRating / response.length) * 20;
             }
-        })
+              
+            return 0;
         }
       }
       catch (error) {
         console.error('Error retrieving nearby places:', error);
       }
     }
+
+    return 0;
   }
 
-  async getSanitationScore(){
+  setSchoolRating(){
     if(this.list){
-      this.listingServices.getSanitationScore(this.list.district).then((response : any) => {
-        if(response.status){
-          console.log("SANITATION SCORE:", response.percentage * 100);
-          if(response.percentage * 100 < 25){
-            document.getElementById("sanitationProgress")?.setAttribute("style", "width: " + response.percentage * 100 + "%;");
-            document.getElementById("sanitationProgress")?.setAttribute("class", "errorProgressBar");
-          }
-          else if(response.percentage * 100 < 60){
-            document.getElementById("sanitationProgress")?.setAttribute("style", "width: " + response.percentage * 100 + "%;");
-            document.getElementById("sanitationProgress")?.setAttribute("class", "warningProgressBar");
-          }
-          else{
-            document.getElementById("sanitationProgress")?.setAttribute("style", "width: " + response.percentage * 100 + "%");
-          }
-
-          this.areaScore = parseInt(((this.areaScore + response.percentage * 100) / 2).toFixed(2));
-        }
-      });
+      if(this.list?.areaScore.schoolScore < 25){
+        document.getElementById("schoolProgress")?.setAttribute("style", "width: " + this.list?.areaScore.schoolScore + "%;");
+        document.getElementById("schoolProgress")?.setAttribute("class", "errorProgressBar");
+      }
+      else if(this.list?.areaScore.schoolScore < 60){
+        document.getElementById("schoolProgress")?.setAttribute("style", "width: " + this.list?.areaScore.schoolScore + "%;");
+        document.getElementById("schoolProgress")?.setAttribute("class", "warningProgressBar");
+      }
+      else{
+        document.getElementById("schoolProgress")?.setAttribute("style", "width: " + this.list?.areaScore.schoolScore + "%");
+      }
+  
+      this.areaScore = parseInt(((this.areaScore + this.list?.areaScore.schoolScore) / 2).toFixed(2));
     }
   }
-  async getWaterScore(){
+
+  async getSanitationScore():Promise<number>{
+    if(this.list){
+      const response = await this.listingServices.getSanitationScore(this.list.district)
+        console.log("SANITATION SCORE:", (response.percentage? response.percentage : 0) * 100);
+        console.log("Sanitation is here bitch");
+        return (response.percentage ? response.percentage : 0) * 100;
+    }
+
+    return 0;
+  }
+
+  setSanitationScore(){
+    if(this.list){
+      if(this.list?.areaScore.sanitationScore < 25){
+        document.getElementById("sanitationProgress")?.setAttribute("style", "width: " + this.list?.areaScore.sanitationScore + "%;");
+        document.getElementById("sanitationProgress")?.setAttribute("class", "errorProgressBar");
+      }
+      else if(this.list?.areaScore.sanitationScore < 60){
+        document.getElementById("sanitationProgress")?.setAttribute("style", "width: " + this.list?.areaScore.sanitationScore + "%;");
+        document.getElementById("sanitationProgress")?.setAttribute("class", "warningProgressBar");
+      }
+      else{
+        document.getElementById("sanitationProgress")?.setAttribute("style", "width: " + this.list?.areaScore.sanitationScore + "%");
+      }
+  
+      this.areaScore = parseInt(((this.areaScore + this.list?.areaScore.sanitationScore) / 2).toFixed(2));
+    }
+  }
+
+  async getWaterScore(): Promise<number>{
     if(this.list && this.coordinates){
       console.log("Calculating water score")
-      this.listingServices.getWaterScore(this.list.district
+      const response = await this.listingServices.getWaterScore(this.list.district
         ,this.list.listingAreaType
         ,this.list.prop_type
-        ,{lat: this.coordinates?.latitude, long: this.coordinates?.longitude}).then((response : any) => {
-        if(response.percentage){
-          console.log("WATER SCORE:", response.percentage? response.percentage * 100 : response.error);
-          if(response.percentage * 100 < 25){
-            document.getElementById("waterProgress")?.setAttribute("style", "width: " + response.percentage * 100 + "%;");
-            document.getElementById("waterProgress")?.setAttribute("class", "errorProgressBar");
-          }
-          else if(response.percentage * 100 < 60){
-            document.getElementById("waterProgress")?.setAttribute("style", "width: " + response.percentage * 100 + "%;");
-            document.getElementById("waterProgress")?.setAttribute("class", "warningProgressBar");
-          }
-          else{
-            document.getElementById("waterProgress")?.setAttribute("style", "width: " + response.percentage * 100 + "%");
-          }
+        ,{lat: this.coordinates?.latitude, long: this.coordinates?.longitude})
+        console.log("Water is here bitch");
+        return (response.percentage ? response.percentage : 0) * 100;
+      }
 
-          this.areaScore = parseInt(((this.areaScore + response.percentage * 100) / 2).toFixed(2));
-        }
-      })
+      return 0;
+    }
+
+  setWaterScore(){
+    if(this.list){
+      if(this.list?.areaScore.waterScore < 25){
+        document.getElementById("waterProgress")?.setAttribute("style", "width: " + this.list?.areaScore.waterScore + "%;");
+        document.getElementById("waterProgress")?.setAttribute("class", "errorProgressBar");
+      }
+      else if(this.list?.areaScore.waterScore < 60){
+        document.getElementById("waterProgress")?.setAttribute("style", "width: " + this.list?.areaScore.waterScore + "%;");
+        document.getElementById("waterProgress")?.setAttribute("class", "warningProgressBar");
+      }
+      else{
+        document.getElementById("waterProgress")?.setAttribute("style", "width: " + this.list?.areaScore.waterScore + "%");
+      }
+
+      this.areaScore = parseInt(((this.areaScore +this.list?.areaScore.waterScore) / 2).toFixed(2));
     }
   }
 
-  async getCrimeScore(){
+
+  async getCrimeScore(): Promise<number>{
   if(this.list && this.coordinates){
     try{
-        this.listingServices.getCrimeScore({lat: this.coordinates?.latitude, long: this.coordinates.longitude}).then((response) => {
-          console.log("CRIME SCORE:", response.percentage? response.percentage * 100 : "error");
-          if(response.status && response.percentage){
-            if(response.percentage * 100 < 25){
-              document.getElementById("crimeProgress")?.setAttribute("style", "width: " + response.percentage * 100 + "%;");
-              document.getElementById("crimeProgress")?.setAttribute("class", "errorProgressBar");
-            }
-            else if(response.percentage * 100 < 60){
-              document.getElementById("crimeProgress")?.setAttribute("style", "width: " + response.percentage * 100 + "%;");
-              document.getElementById("crimeProgress")?.setAttribute("class", "warningProgressBar");
-            }
-            else{
-              document.getElementById("crimeProgress")?.setAttribute("style", "width: " + response.percentage * 100 + "%");
-            }
-
-            this.areaScore = parseInt(((this.areaScore + response.percentage * 100) / 2).toFixed(2));
-          }
-          else{
-            console.log("error bar loading", response.status, response.error)
-            document.getElementById("crimeProgress")?.setAttribute("style", "width: 100%; background-color: red;");
-            (document.getElementById("crimeProgress") as HTMLDivElement).innerHTML = "Error loading crime data";
-            // document.getElementById("crimeProgress")?.setAttribute("style", "width: 100%");
-          }
-        });
+        const response = await this.listingServices.getCrimeScore({lat: this.coordinates?.latitude, long: this.coordinates.longitude});
+        console.log("CRIME SCORE:", response.percentage? response.percentage * 100 : "error");
+        console.log(response);
+        console.log("Crime is here bitch");
+        return (response.percentage? response.percentage : 0) * 100;
       }
       catch(error){
         console.error('Error retrieving nearby places:', error);
       }
+    }
+
+    return 0;
+  }
+
+  setCrimeScore(){
+    if(this.list){
+      if(this.list?.areaScore.crimeScore < 25){
+        document.getElementById("crimeProgress")?.setAttribute("style", "width: " + this.list?.areaScore.crimeScore + "%;");
+        document.getElementById("crimeProgress")?.setAttribute("class", "errorProgressBar");
+      }
+      else if(this.list?.areaScore.crimeScore < 60){
+        document.getElementById("crimeProgress")?.setAttribute("style", "width: " + this.list?.areaScore.crimeScore + "%;");
+        document.getElementById("crimeProgress")?.setAttribute("class", "warningProgressBar");
+      }
+      else{
+        document.getElementById("crimeProgress")?.setAttribute("style", "width: " + this.list?.areaScore.crimeScore + "%");
+      }
+  
+      this.areaScore = parseInt(((this.areaScore + this.list?.areaScore.crimeScore) / 2).toFixed(2));
     }
   }
   

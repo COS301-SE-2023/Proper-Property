@@ -1,7 +1,6 @@
 import { Component, OnInit , ViewChild, ElementRef} from '@angular/core';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { Listing } from '@properproperty/api/listings/util';
-// import { profile } from '@properproperty/api/profile/util';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OpenAIService } from '@properproperty/app/open-ai/data-access';
@@ -10,7 +9,6 @@ import { AuthState } from '@properproperty/app/auth/data-access';
 import { User } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
-// import { UpdateUserProfile } from '@properproperty/app/profile/util';
 import { isDevMode } from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 
@@ -38,7 +36,8 @@ export class CreateListingPage implements OnInit {
     private readonly router: Router, 
     private readonly userService: UserProfileService, 
     private readonly listingService: ListingsService, 
-    private readonly openAIService: OpenAIService,public gmapsService: GmapsService,
+    private readonly openAIService: OpenAIService,
+    private readonly gmapsService: GmapsService,
     private readonly store: Store,
     private route: ActivatedRoute,
   ) {
@@ -319,7 +318,7 @@ handleAddressChange(address: string): void {
 
   async addListing(){
     this.address = (document.getElementById("address") as HTMLInputElement).value;
-    const score = await calculateQualityScore(this.photos,this.address,this.price,this.bedrooms,this.bathrooms,this.parking,this.floor_size,this.erf_size,this.pos_type,this.env_type,this.prop_type,this.furnish_type,this.orientation,this.gmapsService);
+    const score = await this.calculateQualityScore(this.photos,this.address,this.price,this.bedrooms,this.bathrooms,this.parking,this.floor_size,this.erf_size,this.pos_type,this.env_type,this.prop_type,this.furnish_type,this.orientation);
   
     if(this.currentUser != null){
       const list : Listing = {
@@ -345,7 +344,13 @@ handleAddressChange(address: string): void {
         listingAreaType: this.listingAreaType,
         approved: false,
         quality_rating: score,
-        listingDate: "" + new Date()
+        listingDate: "" + new Date(),
+        areaScore: {
+          crimeScore: 0,
+          schoolScore: 0,
+          waterScore: 0,
+          sanitationScore: 0
+        }
       }
 
       console.log(list);
@@ -384,7 +389,13 @@ handleAddressChange(address: string): void {
         let_sell: this.listingType,
         listingAreaType: this.listingAreaType,
         approved: false,
-        listingDate: "" + new Date()
+        listingDate: "" + new Date(),
+        areaScore: {
+          crimeScore: 0,
+          schoolScore: 0,
+          waterScore: 0,
+          sanitationScore: 0
+        }
       }
 
       const resp = await this.listingService.editListing(list);
@@ -395,163 +406,154 @@ handleAddressChange(address: string): void {
     return false
   }
 
-}
-
-
-async function calculateQualityScore(photos: string[],address:string,price:string,bedrooms:string,bathrooms:string,parking:string,floor_size:string,erf_size:string,pos_type:string,env_type:string,prop_type:string,furnish_type:string,orientation:string,gmapsService: GmapsService): Promise<number>{
+  async calculateQualityScore(photos: string[],address:string,price:string,bedrooms:string,bathrooms:string,parking:string,floor_size:string,erf_size:string,pos_type:string,env_type:string,prop_type:string,furnish_type:string,orientation:string): Promise<number>{
             
-  let score = 0;
-
-  for(let i = 0; i < min(8, photos.length); i++){
-      score+= calculatePhotoScore(photos[i]);
+    let score = 0;
+  
+    for(let i = 0; i < this.min(8, photos.length); i++){
+        score+= this.calculatePhotoScore(photos[i]);
+    }
+  
+    if(this.isNumericInput(price)){
+        score+= 5;
+    } else score-=20;
+  
+    if(this.isNumericInput(bedrooms)){
+        score+= 5;
+    } else score-=20;
+  
+    if(this.isNumericInput(bathrooms)){
+        score+= 5;
+    } else score-=20;
+  
+    if(this.isNumericInput(parking)){
+        score+= 5;
+    } else score-=20;
+  
+    if(this.isNonEmptyStringInput(floor_size)){
+        score+= 5;
+    } else score-=15;
+  
+    if(this.isNonEmptyStringInput(erf_size)){
+        score+= 5;
+    } else score-=15;
+  
+    if(this.isNonEmptyStringInput(pos_type)){
+        score+= 5;
+    } else score-=15;
+  
+    if(this.isNonEmptyStringInput(env_type)){
+        score+= 5;
+    } else score-=15;
+  
+    if(this.isNonEmptyStringInput(prop_type)){
+        score+= 5;
+    } else score-=15;
+  
+    if(this.isNonEmptyStringInput(furnish_type)){
+        score+= 5;
+    } else score-=15;
+  
+    if(this.isNonEmptyStringInput(orientation)){
+        score+= 5;
+    } else score-=15;
+  
+  
+    const geoCode = await this.checkGeocodableAddress(address);
+  
+    if (geoCode == null) {
+      return 0;
+    }
+  
+    return score;
   }
-
-  if(isNumericInput(price)){
-      score+= 5;
-  } else score-=20;
-
-  if(isNumericInput(bedrooms)){
-      score+= 5;
-  } else score-=20;
-
-  if(isNumericInput(bathrooms)){
-      score+= 5;
-  } else score-=20;
-
-  if(isNumericInput(parking)){
-      score+= 5;
-  } else score-=20;
-
-  if(isNonEmptyStringInput(floor_size)){
-      score+= 5;
-  } else score-=15;
-
-  if(isNonEmptyStringInput(erf_size)){
-      score+= 5;
-  } else score-=15;
-
-  if(isNonEmptyStringInput(pos_type)){
-      score+= 5;
-  } else score-=15;
-
-  if(isNonEmptyStringInput(env_type)){
-      score+= 5;
-  } else score-=15;
-
-  if(isNonEmptyStringInput(prop_type)){
-      score+= 5;
-  } else score-=15;
-
-  if(isNonEmptyStringInput(furnish_type)){
-      score+= 5;
-  } else score-=15;
-
-  if(isNonEmptyStringInput(orientation)){
-      score+= 5;
-  } else score-=15;
-
-
-  const isGeocodable = await checkGeocodableAddress(gmapsService,address);
-
-  if (!isGeocodable) {
-    return 0;
+  
+  calculatePhotoScore(photo:string):number{
+    let rating = 0;
+    this.getImageDimensions(this.convertBlobUrlToNormalUrl(photo))
+    .then(({ width, height }) => {
+      rating = 5 * (this.min(width, height) / this.max(width, height));
+      return rating;
+    })
+    .catch((error) => {
+      console.error(error.message);
+    });
+      
+    return -1;
   }
-
-  return score;
-}
-
-function calculatePhotoScore(photo:string):number{
-
-let rating = 0;
-
-getImageDimensions(convertBlobUrlToNormalUrl(photo))
-.then(({ width, height }) => {
-  rating = 5 * (min(width, height) / max(width, height));
-  return rating;
-})
-.catch((error) => {
-  console.error(error.message);
-});
-
-// getImageDimensions( this.convertBlobUrlToNormalUrl(photo));  
-
-return -1;
-}
-
-function min(first:number,second:number):number{
-
-const ret = first < second ? first : second;
-return ret;
-}
-
-function max(first:number,second:number){
-return first > second ? first : second;
-}
-
-function convertBlobUrlToNormalUrl(blobUrl: string): string {
-const img = new Image();
-img.src = blobUrl;
-const canvas = document.createElement("canvas");
-const ctx = canvas.getContext("2d");
-if (!ctx) {
-throw new Error("Canvas context is not available.");
-}
-ctx.drawImage(img, 0, 0);
-// URL.revokeObjectURL(blobUrl); // Revoke the blob URL
-return canvas.toDataURL(); // Convert to a regular data URL
-}
-
-//   getImageDimensions(imageUrl: string): void {
-//     const image = new Image();
-//     image.src = imageUrl;
-
-//     image.onload = () => {
-//       const width = image.naturalWidth;
-//       const height = image.naturalHeight;
-
-//       console.log(`Image dimensions: ${width} x ${height} pixels`);
-//     };
-//   }
-
-async function checkGeocodableAddress(gmapsService: GmapsService,address: string): Promise<boolean> {
-
-try {
-
-const geocoderResult = await gmapsService.geocodeAddress(address);
-// If the address is geocodable, the geocoderResult will not be null
-return geocoderResult !== null;
-} catch (error) {
-console.error(error);
-return false;
-}
-}
-
-
-function getImageDimensions(imageUrl: string): Promise<{ width: number; height: number }> {
-return new Promise((resolve, reject) => {
-const image = new Image();
-image.src = imageUrl;
-
-image.onload = () => {
-const width = image.naturalWidth;
-const height = image.naturalHeight;
-
-resolve({ width, height });
-};
-
-image.onerror = () => {
-reject(new Error("Failed to load the image."));
-};
-});
-}
-
-function isNumericInput(input: string): boolean {
-// Regular expression to check if the input contains only numeric characters
-const numericRegex = /^[0-9,]+$/;
-return numericRegex.test(input);
-}
-
-function isNonEmptyStringInput(input: string): boolean {
-return input.trim() !== "";
+  
+  min(first:number,second:number):number{
+    const ret = first < second ? first : second;
+    return ret;
+  }
+  
+  max(first:number,second:number){
+  return first > second ? first : second;
+  }
+  
+  convertBlobUrlToNormalUrl(blobUrl: string): string {
+    const img = new Image();
+    img.src = blobUrl;
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      throw new Error("Canvas context is not available.");
+    }
+    ctx.drawImage(img, 0, 0);
+    // URL.revokeObjectURL(blobUrl); // Revoke the blob URL
+    return canvas.toDataURL(); // Convert to a regular data URL
+  }
+  
+  //   getImageDimensions(imageUrl: string): void {
+  //     const image = new Image();
+  //     image.src = imageUrl;
+  
+  //     image.onload = () => {
+  //       const width = image.naturalWidth;
+  //       const height = image.naturalHeight;
+  
+  //       console.log(`Image dimensions: ${width} x ${height} pixels`);
+  //     };
+  //   }
+  
+  async checkGeocodableAddress(address: string) {
+    try {
+      const geocoderResult = await this.gmapsService.geocodeAddress(address);
+      return geocoderResult;
+    } 
+    catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+  
+  
+  getImageDimensions(imageUrl: string): Promise<{ width: number; height: number }> {
+    return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.src = imageUrl;
+    
+    image.onload = () => {
+    const width = image.naturalWidth;
+    const height = image.naturalHeight;
+    
+    resolve({ width, height });
+    };
+    
+    image.onerror = () => {
+    reject(new Error("Failed to load the image."));
+    };
+    });
+  }
+  
+  isNumericInput(input: string): boolean {
+    // Regular expression to check if the input contains only numeric characters
+    const numericRegex = /^[0-9,]+$/;
+    return numericRegex.test(input);
+  }
+  
+  isNonEmptyStringInput(input: string): boolean {
+    return input.trim() !== "";
+  }
 }
 

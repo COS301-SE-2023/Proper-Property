@@ -1,6 +1,4 @@
-export interface ChangeStatusRequest{
-  listingId: string;
-  adminId: string;
+export interface areaScore{
   crimeScore: number;
   schoolScore: number;
   waterScore: number;
