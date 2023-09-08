@@ -1,5 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Listing, CreateListingRequest, CreateListingResponse, GetListingsRequest, GetListingsResponse, ChangeStatusResponse, ChangeStatusRequest, GetApprovedListingsResponse, EditListingRequest, EditListingResponse } from '@properproperty/api/listings/util';
+import { Listing,
+  CreateListingRequest,
+  CreateListingResponse,
+  GetListingsRequest,
+  GetListingsResponse,
+  ChangeStatusResponse,
+  ChangeStatusRequest,
+  GetApprovedListingsResponse,
+  EditListingRequest,
+  EditListingResponse } from '@properproperty/api/listings/util';
+import { GetLocInfoDataRequest,
+  GetLocInfoDataResponse } from '@properproperty/api/loc-info/util';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
 import { characteristics } from '@properproperty/api/listings/util';
 import { Storage, deleteObject, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
@@ -39,7 +50,7 @@ export class ListingsService {
       this.uploadImages(response.message, list.photos);
     }
   }
-
+  
   async uploadImages(listingID : string, input: string[]) {
     const photoURLs : string[] = [];
     for(let i = 0; i < input.length; i++){
@@ -100,15 +111,22 @@ export class ListingsService {
     return null;
   }
 
-  async changeStatus(listingId : string, admin : string){
+  async changeStatus(listingId : string, admin : string, crimeScore: number, waterScore: number, sanitationScore: number, schoolScore: number){
     const response: ChangeStatusResponse = (await httpsCallable<
       ChangeStatusRequest,
       ChangeStatusResponse
     >(
       this.functions,
       'changeStatus'
-    )({listingId : listingId, adminId : admin})).data;
-    
+    )(
+      {
+        listingId : listingId,
+        adminId : admin, 
+        crimeScore: crimeScore, 
+        schoolScore: schoolScore, 
+        waterScore: waterScore, 
+        sanitationScore: sanitationScore
+      })).data;
 
     return response;
   }
@@ -178,5 +196,35 @@ export class ListingsService {
 
     ans= "false";
     return ans;
+  }
+  
+  async getSanitationScore(district : string){
+    const response: GetLocInfoDataResponse = (await httpsCallable<
+      GetLocInfoDataRequest,
+      GetLocInfoDataResponse
+    >(this.functions, 'getLocInfoData')({type: "sanitation", district: district})).data;
+
+    console.log("Listing services", response);
+    return response;
+  }
+
+  async getWaterScore(district : string, listingAreaType: string, listingType: string, coordinates: {lat: number, long: number}){
+    const response: GetLocInfoDataResponse = (await httpsCallable<
+      GetLocInfoDataRequest,
+      GetLocInfoDataResponse
+    >(this.functions, 'getLocInfoData')({type: "water", district: district, listingAreaType: listingAreaType, listingType: listingType, latlong: coordinates})).data;
+
+    console.log("Listing services", response);
+    return response;
+  }
+
+  async getCrimeScore(coordinates: {lat: number, long: number}){
+    const response: GetLocInfoDataResponse = (await httpsCallable<
+      GetLocInfoDataRequest,
+      GetLocInfoDataResponse
+    >(this.functions, 'getLocInfoData')({type: "crime", latlong: coordinates})).data;
+
+    console.log("Listing services", response);
+    return response;
   }
 }

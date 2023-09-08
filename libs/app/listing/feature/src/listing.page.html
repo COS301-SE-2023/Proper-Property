@@ -1,4 +1,4 @@
-<ion-template *ngIf="list&&!isMobile" >
+<ion-template *ngIf="list&&!isMobile">
   <script>
     console.log("Desktop view")
   </script>
@@ -12,17 +12,19 @@
       <ion-title>Listing</ion-title>
     </ion-toolbar>
   </ion-header>
-  
-  
+
+
   <ion-content [fullscreen]="true">
     <div *ngIf="admin" id="approvalBox">
       <ion-grid>
         <ion-row>
           <ion-col id="approvalCol">
-            <ion-button class="approveBut" [attr.disabled]="this.list.approved ? '' : null" (click)="changeStatus()">Approve</ion-button>
+            <ion-button class="approveBut" [attr.disabled]="this.list.approved ? '' : null"
+              (click)="changeStatus()">Approve</ion-button>
           </ion-col>
           <ion-col id="rejectionCol">
-            <ion-button [attr.disabled]="!this.list.approved ? '' : null" class="rejectBut" (click)="changeStatus()">Reject</ion-button>
+            <ion-button [attr.disabled]="!this.list.approved ? '' : null" class="rejectBut"
+              (click)="changeStatus()">Reject</ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -33,8 +35,8 @@
           <img src="assets/icon/arrow1.svg" #back>
         </ion-button>
       </ion-buttons>
-      <swiper-container #swiper
-        (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true" slides-per-view="1" class="swiper-container">
+      <swiper-container #swiper (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true"
+        slides-per-view="1" class="swiper-container">
         <swiper-slide *ngFor="let picture of list.photos">
           <img alt="img" src="{{picture}}" />
         </swiper-slide>
@@ -45,7 +47,7 @@
         </ion-button>
       </ion-buttons>
     </div>
-  
+
     <ion-grid style="width:80%;">
       <ion-row style="height:550px">
         <ion-col>
@@ -53,7 +55,8 @@
             <ion-grid style="padding-top: 20px; padding-left:20px;">
               <ion-row>
                 <ion-card-title class="house-titles">House</ion-card-title>
-                <ion-button class="save-button" (click)="saveListing()" [ngClass]="{'red': isRed}" (click)="toggleColor()" ion-tooltip="Save Listing">
+                <ion-button class="save-button" (click)="saveListing()" [ngClass]="{'red': isRed}"
+                  (click)="toggleColor()" ion-tooltip="Save Listing">
                   <ion-icon name="save" ion-tooltip="Save Listing"></ion-icon>
                 </ion-button>
 
@@ -61,25 +64,30 @@
               </ion-row>
               <ion-row>
                 <ion-card-subtitle class="house-subtitles">by {{lister_name}}</ion-card-subtitle>
-              
-                
+
+
               </ion-row>
               <ion-row>
-                <ion-card-title class="house-titles" style="margin-top:8px; font-size: 25px;">{{list.bed}} Bedroom House</ion-card-title>
+                <ion-card-title class="house-titles" style="margin-top:8px; font-size: 25px;">{{list.bed}} Bedroom
+                  House</ion-card-title>
               </ion-row>
               <ion-row>
                 <ion-card-subtitle class="house-subtitles">{{list.address}}</ion-card-subtitle>
               </ion-row>
               <ng-template [ngIf]="list.let_sell === 'Sell'">
-                <ion-row >
+                <ion-row>
                   <ion-card-title class="house-titles" style="margin-top:8px;">R {{list.price}}</ion-card-title>
-                  <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/ m<sup>2</sup></ion-card-subtitle>
+                  <ion-card-subtitle class="house-subtitles"
+                    style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/
+                    m<sup>2</sup></ion-card-subtitle>
                 </ion-row>
               </ng-template>
               <ng-template [ngIf]="list.let_sell === 'Rent'">
                 <ion-row>
                   <ion-card-title class="house-titles" style="margin-top:8px;">R {{list.price}}/pm</ion-card-title>
-                  <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/ m<sup>2</sup></ion-card-subtitle>
+                  <ion-card-subtitle class="house-subtitles"
+                    style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/
+                    m<sup>2</sup></ion-card-subtitle>
                 </ion-row>
               </ng-template>
               <ion-row style="margin-top: 10px;">
@@ -90,7 +98,7 @@
                 </ion-col>
               </ion-row>
             </ion-grid>
-            <ion-card-title id="greenbox-title">Developement Highlights</ion-card-title>
+            <ion-card-title id="greenbox-title" style="padding:10px">Developement Highlights</ion-card-title>
             <ion-card-content style="padding:0;">
               <ion-grid style="z-index:1;">
                 <ion-row>
@@ -144,42 +152,48 @@
                     </ion-row>
                   </ion-grid>
                 </ion-card-content>
-                  
+
               </ion-card-header>
             </ion-card>
           </ion-row>
           <ion-row>
-            <ion-card class="quarter-container" style="margin-top:20px">
+            <ion-card class="quarter-container-loc-info" style="margin-top:20px">
               <ion-card-header style="padding-bottom: 1px">
-                <ion-card-title class="house-titles" style="font-size: 25px;">Area Score: 4.3</ion-card-title>
+                <ion-card-title class="house-titles" style="font-size: 25px;">Area Score: <span id="areaScore">{{areaScore}} / 100</span></ion-card-title>
               </ion-card-header>
               <ion-card-content>
                 <ion-grid style="z-index:1;">
                   <ion-row>
                     <div class="white-text">Water</div>
                     <div class="slider">
-                      <div class="progress" style="width: 80%"></div>
+                      <div id="waterProgress" class="progress"></div>
                     </div>
                   </ion-row>
-                  <ion-row>
+                  <!-- <ion-row>
                     <div class="white-text">Power</div>
                     <div class="slider">
                       <div class="progress" style="width: 30%"></div>
                     </div>
-                  </ion-row>
+                  </ion-row> -->
                   <ion-row>
                     <div class="white-text">Crime</div>
                     <div class="slider">
-                      <div class="progress" style="width: 60%"></div>
+                      <div id="crimeProgress" class="progress"></div>
                     </div>
                   </ion-row>
                   <ion-row>
-                    <div class="white-text">Pollution</div>
+                    <div class="white-text">Sanitation</div>
                     <div class="slider">
-                      <div class="progress" style="width: 50%"></div>
+                      <div id="sanitationProgress" class="progress"></div>
                     </div>
                   </ion-row>
-  
+                  <ion-row>
+                    <div class="white-text">School Quality</div>
+                    <div class="slider">
+                      <div id="schoolProgress" class="progress"></div>
+                    </div>
+                  </ion-row>
+                  
                 </ion-grid>
               </ion-card-content>
             </ion-card>
@@ -193,7 +207,7 @@
               Unlock the Potential of this Large Family Property - Ideal for Investment, Subdivision!
             </ion-card-title>
           </ion-card-header>
-  
+
           <ion-card-content style="background: var(--light-grey, #EDEDED);">
             <p>
               {{list.desc}}
@@ -225,7 +239,7 @@
                         </ion-toolbar>
                       </ion-header>
                       <ion-content class="ion-padding">
-                        <ion-grid> 
+                        <ion-grid>
                           <ion-row class="lister-row" style="margin-top:1%;">
                             <ion-col>
                               <ion-avatar>
@@ -236,7 +250,7 @@
                           </ion-row>
                           <ion-row class="lister-row">
                             <ion-col style="border-right: 1px solid #0DAE4F">
-                                Email:
+                              Email:
                             </ion-col>
                             <ion-col style="border-left: 1px solid #0DAE4F">
                               {{lister?.email}}
@@ -244,7 +258,7 @@
                           </ion-row>
                           <ion-row class="lister-row">
                             <ion-col style="border-right: 1px solid #0DAE4F">
-                                Phone:
+                              Phone:
                             </ion-col>
                             <ion-col style="border-left: 1px solid #0DAE4F">
                               {{lister?.phoneNumber}}
@@ -266,48 +280,52 @@
             <ion-label position="floating" style="color: #0DAE4F;">Loan Amount (R)</ion-label>
             <ion-input type="number" [(ngModel)]="loanAmount"></ion-input>
           </ion-item>
-  
+
           <ion-item>
             <ion-label position="floating" style="color: #0DAE4F;">Interest Rate (%)</ion-label>
             <ion-input type="number" [(ngModel)]="interestRate"></ion-input>
           </ion-item>
-  
+
           <ion-item>
             <ion-label position="floating" style="color: #0DAE4F;">Loan Term (Years)</ion-label>
             <ion-input type="number" [(ngModel)]="loanTerm"></ion-input>
           </ion-item>
-  
+
           <ion-button style="border-radius: 30px; width: 100%; margin: 0 auto;"
             (click)="calculateMortgage()">Calculate</ion-button>
-  
+
           <ion-item>
             <ion-label>Monthly Payment:</ion-label>
             <ion-text>{{ monthlyPayment | currency: 'R' }}</ion-text>
           </ion-item>
-  
+
           <ion-item>
             <ion-label>Total Once-off Costs:</ion-label>
             <ion-text>{{ totalOnceOffCosts | currency: 'R' }}</ion-text>
           </ion-item>
-  
+
           <ion-item>
             <ion-label>Min Gross Monthly Income:</ion-label>
             <ion-text>{{ minGrossMonthlyIncome | currency: 'R' }}</ion-text>
           </ion-item>
-  
+
         </ion-card>
       </ion-row>
       <ion-row *ngIf="(ownerViewing$ | async)">
-          <div style="align-content: space-evenly; margin-top:1%;">
-            <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
-            <ion-button (click)="editListing()">Edit Listing</ion-button>
-          </div>
-          <canvas id="lineGraph"></canvas>
-          <div *ngIf="showData">
+        <div style="align-content: space-evenly; margin-top:1%;">
+          <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
+          <ion-button (click)="editListing()">Edit Listing</ion-button>
+        </div>
+        <div class="graph-animation">
+          <img src="assets/loader1.gif">
+        </div>
+          <canvas id="lineGraph" class="graph"></canvas>
+          <div class="data-calc" *ngIf="showData">
             <h3>Average engagement per user: </h3>
             <ion-input type="string" [(ngModel)]="avgEnagement"></ion-input>
           </div>
       </ion-row>
+      <properproperty-footer></properproperty-footer>
     </ion-grid>
   </ion-content>
 </ion-template>
@@ -326,17 +344,19 @@
       <ion-title>Listing</ion-title>
     </ion-toolbar>
   </ion-header>
-  
-  
+
+
   <ion-content [fullscreen]="true">
     <div *ngIf="admin" id="approvalBox">
       <ion-grid>
         <ion-col>
           <ion-col id="approvalCol">
-            <ion-button class="approveBut" [attr.disabled]="this.list.approved ? '' : null" (click)="changeStatus()">Approve</ion-button>
+            <ion-button class="approveBut" [attr.disabled]="this.list.approved ? '' : null"
+              (click)="changeStatus()">Approve</ion-button>
           </ion-col>
           <ion-col id="rejectionCol">
-            <ion-button [attr.disabled]="!this.list.approved ? '' : null" class="rejectBut" (click)="changeStatus()">Reject</ion-button>
+            <ion-button [attr.disabled]="!this.list.approved ? '' : null" class="rejectBut"
+              (click)="changeStatus()">Reject</ion-button>
           </ion-col>
         </ion-col>
       </ion-grid>
@@ -347,8 +367,8 @@
           <img src="assets/icon/arrow1.svg" #back>
         </ion-button>
       </ion-buttons>
-      <swiper-container #swiper
-        (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true" slides-per-view="1" class="swiper-container">
+      <swiper-container #swiper (slidechange)="swiperSlideChanged($event)" [loop]="true" [pagination]="true"
+        slides-per-view="1" class="swiper-container">
         <swiper-slide *ngFor="let picture of list.photos">
           <img alt="img" src="{{picture}}" />
         </swiper-slide>
@@ -368,8 +388,8 @@
     <!-- <div class="image-gallery">
       <img *ngFor="let picture of list.photos" [src]="picture">
     </div> -->
-    
-  
+
+
     <ion-grid style="width:80%;">
       <ion-col style="height:550px">
         <ion-row>
@@ -377,7 +397,8 @@
             <ion-grid style="padding-top: 20px; padding-left:20px;">
               <ion-row>
                 <ion-card-title class="house-titles">House</ion-card-title>
-                <ion-button class="save-button" (click)="saveListing()" [ngClass]="{'red': isRed}" (click)="toggleColor()" ion-tooltip="Save Listing">
+                <ion-button class="save-button" (click)="saveListing()" [ngClass]="{'red': isRed}"
+                  (click)="toggleColor()" ion-tooltip="Save Listing">
                   <ion-icon name="save" ion-tooltip="Save Listing"></ion-icon>
                 </ion-button>
 
@@ -385,25 +406,30 @@
               </ion-row>
               <ion-row>
                 <ion-card-subtitle class="house-subtitles">by {{lister_name}}</ion-card-subtitle>
-              
-                
+
+
               </ion-row>
               <ion-row>
-                <ion-card-title class="house-titles" style="margin-top:8px; font-size: 25px;">{{list.bed}} Bedroom House</ion-card-title>
+                <ion-card-title class="house-titles" style="margin-top:8px; font-size: 25px;">{{list.bed}} Bedroom
+                  House</ion-card-title>
               </ion-row>
               <ion-row>
                 <ion-card-subtitle class="house-subtitles">{{list.address}}</ion-card-subtitle>
               </ion-row>
               <ng-template [ngIf]="list.let_sell === 'Sell'">
-                <ion-row >
+                <ion-row>
                   <ion-card-title class="house-titles" style="margin-top:8px;">R {{list.price}}</ion-card-title>
-                  <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/ m<sup>2</sup></ion-card-subtitle>
+                  <ion-card-subtitle class="house-subtitles"
+                    style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/
+                    m<sup>2</sup></ion-card-subtitle>
                 </ion-row>
               </ng-template>
               <ng-template [ngIf]="list.let_sell === 'Rent'">
                 <ion-row>
                   <ion-card-title class="house-titles" style="margin-top:8px;">R {{list.price}}/pm</ion-card-title>
-                  <ion-card-subtitle class="house-subtitles" style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/ m<sup>2</sup></ion-card-subtitle>
+                  <ion-card-subtitle class="house-subtitles"
+                    style="margin-top:25px; margin-bottom:0; margin-left:10px;">R {{price_per_sm}}/
+                    m<sup>2</sup></ion-card-subtitle>
                 </ion-row>
               </ng-template>
               <ion-row style="margin-top: 10px;">
@@ -468,7 +494,7 @@
                     </ion-row>
                   </ion-grid>
                 </ion-card-content>
-                  
+
               </ion-card-header>
             </ion-card>
           </ion-col>
@@ -503,7 +529,7 @@
                       <div class="progress" style="width: 50%"></div>
                     </div>
                   </ion-row>
-  
+
                 </ion-grid>
               </ion-card-content>
             </ion-card>
@@ -517,7 +543,7 @@
               Unlock the Potential of this Large Family Property - Ideal for Investment, Subdivision!
             </ion-card-title>
           </ion-card-header>
-  
+
           <ion-card-content style="background: var(--light-grey, #EDEDED);">
             <p>
               {{list.desc}}
@@ -549,7 +575,7 @@
                         </ion-toolbar>
                       </ion-header>
                       <ion-content class="ion-padding">
-                        <ion-grid> 
+                        <ion-grid>
                           <ion-row class="lister-row" style="margin-top:1%;">
                             <ion-col>
                               <ion-avatar>
@@ -560,7 +586,7 @@
                           </ion-row>
                           <ion-row class="lister-row">
                             <ion-col style="border-right: 1px solid #0DAE4F">
-                                Email:
+                              Email:
                             </ion-col>
                             <ion-col style="border-left: 1px solid #0DAE4F">
                               {{lister?.email}}
@@ -568,7 +594,7 @@
                           </ion-row>
                           <ion-row class="lister-row">
                             <ion-col style="border-right: 1px solid #0DAE4F">
-                                Phone:
+                              Phone:
                             </ion-col>
                             <ion-col style="border-left: 1px solid #0DAE4F">
                               {{lister?.phoneNumber}}
@@ -590,44 +616,47 @@
             <ion-label position="floating" style="color: #0DAE4F;">Loan Amount (R)</ion-label>
             <ion-input type="number" [(ngModel)]="loanAmount"></ion-input>
           </ion-item>
-  
+
           <ion-item>
             <ion-label position="floating" style="color: #0DAE4F;">Interest Rate (%)</ion-label>
             <ion-input type="number" [(ngModel)]="interestRate"></ion-input>
           </ion-item>
-  
+
           <ion-item>
             <ion-label position="floating" style="color: #0DAE4F;">Loan Term (Years)</ion-label>
             <ion-input type="number" [(ngModel)]="loanTerm"></ion-input>
           </ion-item>
-  
+
           <ion-button style="border-radius: 30px; width: 100%; margin: 0 auto;"
             (click)="calculateMortgage()">Calculate</ion-button>
-  
+
           <ion-item>
             <ion-label>Monthly Payment:</ion-label>
             <ion-text>{{ monthlyPayment | currency: 'R' }}</ion-text>
           </ion-item>
-  
+
           <ion-item>
             <ion-label>Total Once-off Costs:</ion-label>
             <ion-text>{{ totalOnceOffCosts | currency: 'R' }}</ion-text>
           </ion-item>
-  
+
           <ion-item>
             <ion-label>Min Gross Monthly Income:</ion-label>
             <ion-text>{{ minGrossMonthlyIncome | currency: 'R' }}</ion-text>
           </ion-item>
-  
+
         </ion-card>
       </ion-row>
       <ion-row *ngIf="(ownerViewing$ | async)">
-          <div style="align-content: space-evenly; margin-top:1%;">
-            <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
-            <ion-button (click)="editListing()">Edit Listing</ion-button>
-          </div>
-          <canvas id="lineGraph"></canvas>
-          <div *ngIf="showData">
+        <div style="align-content: space-evenly; margin-top:1%;">
+          <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
+          <ion-button (click)="editListing()">Edit Listing</ion-button>
+        </div>
+        <div class="graph-animation">
+          <img src="assets/loader1.gif">
+        </div>
+          <canvas id="lineGraph" class="graph"></canvas>
+          <div class="data-calc" *ngIf="showData">
             <h3>Average engagement per user: </h3>
             <ion-input type="string" [(ngModel)]="avgEnagement"></ion-input>
           </div>

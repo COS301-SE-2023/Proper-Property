@@ -206,6 +206,16 @@ swiper-slide img {
   left: 1%;
 }
 
+.quarter-container-loc-info {
+  border-radius: 25px;
+  background: var(--light-grey, #EDEDED);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  width: 99%;
+  margin: 0 auto;
+  height: 280px;
+  left: 1%;
+}
+
 .half-green-container {
   border-radius: 25px;
   background: var(--light-grey, #EDEDED);
@@ -214,7 +224,7 @@ swiper-slide img {
   width: 99%;
   right: 1%;
   margin: 0 auto;
-  height: 100%;
+  height: 98%;
   z-index: 1;
   overflow: hidden;
 }
@@ -311,6 +321,26 @@ ion-item {
   transition: width 0.3s ease-in-out;
 }
 
+.errorProgressBar{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: red;
+  border-radius: 5px;
+  transition: width 0.3s ease-in-out;
+}
+
+.warningProgressBar{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #ffcc00;
+  border-radius: 5px;
+  transition: width 0.3s ease-in-out;
+}
+
 .house-titles {
   font-size: 30px;
   font-weight: 400;
@@ -370,4 +400,44 @@ ion-item {
   margin-top: 3%;
   border-radius: 30px;
   padding: 5px;
+}
+
+.data-calc h3{
+  display: inline-block;
+  width: auto;
+  border-bottom: 2px solid #0DAE4F;
+}
+
+.data-calc ion-input{
+  display: inline-block;
+  width: auto;
+  font-size: larger;
+  margin-left: 1%;
+  font-weight:600;
+}
+
+.data-calc{
+  width: 100%;
+}
+
+.graph{
+  margin-top: 2%;
+  border-radius: 30px;
+  padding:2%;
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.3);
+  display:none;
+}
+
+.graph-animation{
+  width:100%;
+  height:auto;
+  display:none;
+}
+
+.graph-animation img{
+  width: 100px;
+  height: 100px;
+  display: flex;
+  margin: auto;
+  margin-top: 10%;
 }

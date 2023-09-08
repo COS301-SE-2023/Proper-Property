@@ -1,38 +1,5 @@
 <ion-header [translucent]="true">
 
-  <ion-toolbar class="first-toolbar">
-
-
-    <ion-buttons slot="end">
-      <ion-button routerLink="/home" routerDirection="root">
-        <ion-icon slot="icon-only" name="home"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/listings" routerDirection="root">
-        <ion-icon slot="icon-only" name="list"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/search" routerDirection="root">
-        <ion-icon slot="icon-only" name="search"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/profile" routerDirection="root">
-        <ion-icon slot="icon-only" name="person"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-
-    <ion-buttons id="login-button" slot="end">
-      <ion-button routerLink="/login" routerDirection="root">
-        Login
-      </ion-button>
-
-    </ion-buttons>
-
-  </ion-toolbar>
-
   <ion-toolbar class="profile-nav">
 
     <ion-tabs>
@@ -96,26 +63,45 @@
 
     <ion-row id="house-details">
       <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
+        <ion-col>
         <ion-item class="ion-container">
           <div class="container">
             <div class="searchInput">
               <label position="floating" class="house-text">Property Residential Address<span class="required-indicator"
                   *ngIf="!address">*</span></label>
-              <input style="font-weight: 500; padding-left:1%" type="text" class="house-text" id="address"
-                [(ngModel)]="address" placeholder="Enter an address" (input)="handleInputChange($event)"
-                (ionChange)="handleInputChange($event)">
-              <div class="resultBox">
-                <ion-list *ngFor="let prediction of predictions"
-                  (click)="replaceInputText($event,prediction.description)">
-                  <a href="#" class="prediction-button">
-                    {{ prediction.description }}
-                  </a>
-                </ion-list>
-              </div>
+              <ion-input (ionInput)="handleInputChange($event)" type="text" class="house-text" id="address"
+              [(ngModel)]="address" placeholder="Enter an address" ></ion-input>
+              <ion-list [hidden]="predictions.length <= 0">
+       
+               <ion-item (click)="replaceInputText($event,prediction.description)" *ngFor="let prediction of predictions">
+                <!-- <a href="#" class="prediction-button"> -->
+                  {{ prediction.description }}
+                <!-- </a> -->
+               </ion-item>
+              </ion-list>
+
               <div class="icon"><i class="fas fa-search"></i></div>
             </div>
           </div>
         </ion-item>
+      </ion-col>
+      <ion-col>
+          <ion-item class="ion-container">
+            <div class="container">
+              <div class="searchInput">
+                <label position="floating" class="house-text">Property District Municipality<span class="required-indicator"
+                  *ngIf="!address">*</span>
+                    <div id="districtHelp">
+                      ?
+                    </div>
+                    <span id="districtHelpSpan">Follow <a href="https://www.dws.gov.za/niwis2/dwq2" target="_blank" rel="noopener">this</a> link an determine your district by zooming into the map</span>
+                </label>
+                <input style="font-weight: 500; padding-left:1%" type="text" class="house-text" id="address"
+                  [(ngModel)]="district" placeholder="Enter the district of you listing">
+              </div>
+            </div>
+          </ion-item>
+        </ion-col>
       </ion-row>
 
       <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
@@ -134,7 +120,7 @@
               <label position="floating" class="house-text">Possession Type:</label>
             </ion-col>
             <ion-col>
-              <select class="house-dropdown" aria-label="pos-type">
+              <select  [(ngModel)]="pos_type" class="house-dropdown" aria-label="pos-type">
                 <option value="Leasehold">Leasehold</option>
                 <option value="Freehold">Freehold</option>
                 <option value="Condominium">Condominium</option>
@@ -265,54 +251,40 @@
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <ion-label class="house-text">Sell</ion-label>
             </ion-item>
+            <ion-item>
+              <ion-label class="house-text">Urban</ion-label>
+              <ion-toggle style="padding: 10px;" [checked]="false" (click)="changeListingAreaType()"
+                [(ngModel)]="listingAreaTypeSlider"></ion-toggle>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <ion-label class="house-text">Rural</ion-label>
+            </ion-item>
           </ion-list>
         </ion-col>
       </ion-row>
 
       <ion-row style="width: 100%; margin-top: 1.5%;">
         <ion-col size="6">
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                <ion-checkbox id="Pets"  labelPlacement="end">Pets</ion-checkbox>
-              </ion-col>
-              <ion-col>
-                <ion-checkbox id="Garden"  labelPlacement="end">Garden</ion-checkbox>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-checkbox id="Wifi"  labelPlacement="end">Wifi</ion-checkbox>
-              </ion-col>
-              <ion-col>
-                <ion-checkbox id="Pool"  labelPlacement="end">Pool</ion-checkbox>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-checkbox id="Accessible"  labelPlacement="end">Accessible</ion-checkbox>
-              </ion-col>
-              <ion-col>
-                <ion-checkbox id="Solar Panels"  labelPlacement="end">Solar Panels</ion-checkbox>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-label class="house-text">Add Property Features:</ion-label>
-              <input id="feat-in" type="text" placeholder="Feature" class="addFeat house-text"
-                (keydown.enter)="addFeature()">&nbsp;<ion-button (click)="addFeature()" class="addButt">Add</ion-button><br>
-              <ion-item class="ion-container" *ngFor="let feat of features,; let i = index">
-                <ion-label>
-                  <ion-chip>
-                    &nbsp;
-                    {{feat}}
-                    &nbsp;
-                    <ion-icon name="close-circle" (click)="removeFeature(i)"></ion-icon>
-                    <ion-icon name="close" slot="end"></ion-icon>
-                  </ion-chip>
-                </ion-label>
-              </ion-item>
-            </ion-row>
-          </ion-grid>
+          <ion-label class="house-text">Add Property Features:</ion-label>
+  
+          <ion-input (ionInput)="handleAmenityInputChange($event)" id="feat-in" class="feat-in" type="text"
+          placeholder="Feature"  class="addFeat house-text"
+          [(ngModel)]="selectedAmenity" placeholder="Search amenities" (keydown.enter)="addFeature()"></ion-input>
+          <ion-list [hidden]="filteredAmenities.length === 0">
+            <ion-item (click)="selectAmenity(amenity)" *ngFor="let amenity of filteredAmenities">
+              {{ amenity }}
+            </ion-item>
+</ion-list> &nbsp;<ion-button (click)="addFeature()" class="addButt">Add</ion-button><br>
+          <ion-item class="ion-container" *ngFor="let feat of features,; let i = index">
+            <ion-label>
+              <ion-chip>
+                &nbsp;
+                {{feat}}
+                &nbsp;
+                <ion-icon name="close-circle" (click)="removeFeature(i)"></ion-icon>
+                <ion-icon name="close" slot="end"></ion-icon>
+              </ion-chip>
+            </ion-label>
+          </ion-item>
         </ion-col>
         <ion-col size="6">
           <ion-label class="house-text">Property Description</ion-label>
@@ -377,17 +349,16 @@
             <div class="searchInput">
               <label position="floating" class="house-text">Property Residential Address<span class="required-indicator"
                   *ngIf="!address">*</span></label>
-              <input style="font-weight: 500; padding-left:1%" type="text" class="house-text" id="address"
-                [(ngModel)]="address" placeholder="Enter an address" (input)="handleInputChange($event)"
-                (ionChange)="handleInputChange($event)">
-              <div class="resultBox">
-                <ion-list *ngFor="let prediction of predictions"
-                  (click)="replaceInputText($event,prediction.description)">
-                  <a href="#" class="prediction-button">
-                    {{ prediction.description }}
-                  </a>
-                </ion-list>
-              </div>
+                  <ion-input (ionInput)="handleInputChange($event)" type="text" class="house-text" id="address"
+                  [(ngModel)]="address" placeholder="Enter an address" ></ion-input>
+                  <ion-list [hidden]="predictions.length <= 0">
+           
+                   <ion-item (click)="replaceInputText($event,prediction.description)" *ngFor="let prediction of predictions">
+                    <!-- <a href="#" class="prediction-button"> -->
+                      {{ prediction.description }}
+                    <!-- </a> -->
+                   </ion-item>
+                  </ion-list>
               <div class="icon"><i class="fas fa-search"></i></div>
             </div>
           </div>
@@ -424,7 +395,7 @@
               <label position="floating" class="house-text">Possession Type:</label>
             </ion-col>
             <ion-col>
-              <select class="house-dropdown" aria-label="pos-type">
+              <select [(ngModel)]="pos_type" class="house-dropdown" aria-label="pos-type" id="pos-type">
                 <option value="Leasehold">Leasehold</option>
                 <option value="Freehold">Freehold</option>
                 <option value="Condominium">Condominium</option>
@@ -555,6 +526,13 @@
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <ion-label class="house-text">Sell</ion-label>
             </ion-item>
+            <ion-item>
+              <ion-label class="house-text">Urban</ion-label>
+              <ion-toggle style="padding: 10px;" [checked]="false" (click)="changeListingAreaType()"
+                [(ngModel)]="listingAreaTypeSlider"></ion-toggle>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <ion-label class="house-text">Rural</ion-label>
+            </ion-item>
           </ion-list>
         </ion-col>
       </ion-row>
@@ -562,8 +540,16 @@
       <ion-row style="width: 100%; margin-top: 1.5%;">
         <ion-col size="8">
           <ion-label class="house-text">Add Property Features:</ion-label>
-          <input id="feat-in" type="text" placeholder="Feature" class="addFeat house-text"
-            (keydown.enter)="addFeature()">&nbsp;<ion-button (click)="addFeature()" class="addButt">Add</ion-button><br>
+          <ion-input (ionInput)="handleAmenityInputChange($event)" id="feat-in" class="feat-in" type="text"
+          placeholder="Feature"  class="addFeat house-text"
+          [(ngModel)]="selectedAmenity" placeholder="Search amenities" (keydown.enter)="addFeature()"></ion-input>
+         
+          <ion-list [hidden]="filteredAmenities.length === 0">
+            <ion-item (click)="selectAmenity(amenity)" *ngFor="let amenity of filteredAmenities">
+              {{ amenity }}
+            </ion-item>
+          </ion-list>
+             &nbsp;<ion-button (click)="addFeature()" class="addButt">Add</ion-button><br>
           <ion-item class="ion-container" *ngFor="let feat of features,; let i = index">
             <ion-label>
               <ion-chip>

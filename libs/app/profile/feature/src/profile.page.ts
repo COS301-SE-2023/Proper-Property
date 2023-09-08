@@ -73,6 +73,7 @@ export class ProfilePage implements OnInit {
       private readonly store: Store
     ) {
 
+      
       this.isMobile = isMobile();
     // default value cus ngModel cries when the user is null
     this.interests = {

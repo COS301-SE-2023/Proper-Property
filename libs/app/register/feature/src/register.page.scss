@@ -30,6 +30,7 @@ ion-content
 
 .container
 {
+
   align-items: center;
   justify-content: center;
   width: 50%;
@@ -38,16 +39,18 @@ ion-content
   min-width: 240px;
   padding: 0 10px;
   z-index: 1;
+  
 }
 
 .reg
 {
-  top: 15%;
+  top: 0%;
   justify-content: center;
   position: absolute;
   align-items: center;
   display: flex;
   width: 40%;
+  height: auto;
   
 }
 
@@ -136,7 +139,7 @@ ion-input
 
 .button-centerer2 {
   margin-bottom: 10%;
-  width: 100%;
+  width: 95%;
   height: 50%;
   border: 2px solid var(--ion-color-primary);
   border-radius: 80px !important;
@@ -148,7 +151,6 @@ ion-input
   margin-right: 5%;
   margin-left: 5%;
 }
-
 .Member
 {
   align-items: center;
@@ -219,6 +221,10 @@ a
 .text-centrer-inator {
   text-align: center;
 }
+ .or-text {
+  text-align: center;
+}
+
 }
 
 .Mobile {
