@@ -1,4 +1,4 @@
-import { Component, OnInit , ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit , ViewChild, ElementRef,HostListener} from '@angular/core';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { Listing } from '@properproperty/api/listings/util';
 // import { profile } from '@properproperty/api/profile/util';
@@ -21,13 +21,13 @@ import { GmapsService } from '@properproperty/app/google-maps/data-access';
 })
 export class CreateListingPage implements OnInit {
 
-  @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('address', { static: false }) addressInput!: ElementRef<HTMLInputElement>;
 
   @Select(AuthState.user) user$!: Observable<User | null>;
   // autocomplete: any;
   defaultBounds: google.maps.LatLngBounds;
   predictions: google.maps.places.AutocompletePrediction[] = [];
-
+  isMobile = false;
   currentUser: User | null = null;
   description = "";
   heading = "";
@@ -56,6 +56,8 @@ export class CreateListingPage implements OnInit {
     private readonly store: Store,
     private route: ActivatedRoute,
   ) {
+    this.isMobile = isMobile();
+    
     this.address="";
     this.floor_size=this.price=this.erf_size=this.bathrooms=this.bedrooms=this.parking=0;
     this.predictions = [];
@@ -108,6 +110,11 @@ export class CreateListingPage implements OnInit {
       }
     });
   }
+@HostListener('window:resize', ['$event'])
+onResize(event: Event) {
+  console.log(event);
+  this.isMobile = window.innerWidth <= 576;
+}
 
   features: string[] = [];
   selectedValue = true;
@@ -538,3 +545,6 @@ function isNonEmptyStringInput(input: string): boolean {
 return input.trim() !== "";
 }
 
+function isMobile(): boolean {
+  return window.innerWidth <= 576;
+}

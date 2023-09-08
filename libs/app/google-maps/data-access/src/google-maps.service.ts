@@ -19,32 +19,34 @@ export class GmapsService {
   //for create-listing
   setupSearchBox(elementId: string): Promise<any> {
     
-    return this.loadGoogleMaps().then((maps) => {
+    return this.loadGooglePlaces().then((maps) => {
       const defaultBounds = new maps.LatLngBounds();
-
+  
       const input = document.getElementById(elementId) as HTMLInputElement;
-
-      const searchBox = new maps.places.SearchBox(input, {
-        bounds: defaultBounds
-      });
-
+  
+      const options = {
+        bounds: defaultBounds,
+        types: ['address'],
+        componentRestrictions: { country: 'ZA' },
+      };
+  
       this.autocompleteService = new maps.places.AutocompleteService();
-
-      input.addEventListener('input', () => {
-        this.handleInput(input,defaultBounds);
-      });
-
+  
+      const searchBox = new maps.places.Autocomplete(input, options);
+  
       searchBox.addListener('places_changed', () => {
+        
         const places = searchBox.getPlaces();
+
         if (places.length === 0) {
           return;
         }
+  
         const selectedPlace = places[0];
         input.value = selectedPlace.formatted_address;
-        
+  
         // Handle the selected place(s) here
         console.log('Selected place:', places[0]);
-        
       });
     });
   }
@@ -95,23 +97,34 @@ export class GmapsService {
   //for create-listing
   handleInput(input: HTMLInputElement, defaultBounds: google.maps.LatLngBounds): void {
     
+    
     if (!this.autocompleteService) {
       return;
     }
     this.autocompleteService.getPlacePredictions(
       {
+
         input: input.value,
-        bounds: defaultBounds
+        bounds: defaultBounds,
+        types: ['address'],
+        componentRestrictions: { country: 'ZA' }
       },
       (predictions: google.maps.places.AutocompletePrediction[] | null, status: google.maps.places.PlacesServiceStatus) => {
         if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
           // Process the predictions here
-          console.log('Autocomplete predictions:', predictions);
-          this.predictions = predictions;
+          
+          this.predictions = predictions.filter((prediction) => !prediction.types.includes('street_address'));
+          console.log('Autocomplete predictions:', this.predictions);
+        } else {
+          this.predictions = [];
         }
       }
     );
+
+
   }
+
+  
 
   //for create-listing
   getPlacePredictions(input: string, bounds: google.maps.LatLngBounds): void {
@@ -308,7 +321,6 @@ export class GmapsService {
       return maps;
     });
   }
-
 
   getNearbyPlaces(latitude: number, longitude: number): Promise<google.maps.places.PlaceResult[]> {
     return this.loadGoogleMaps().then((maps) => {
