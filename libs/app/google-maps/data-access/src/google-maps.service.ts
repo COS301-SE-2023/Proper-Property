@@ -159,7 +159,7 @@ export class GmapsService {
   
 
   //for search
-  setupRegionSearchBox(elementId: string): Promise<any> {
+  async setupRegionSearchBox(elementId: string): Promise<any> {
     return this.loadGooglePlaces().then((maps) => {
       const defaultBounds = new maps.LatLngBounds();
   

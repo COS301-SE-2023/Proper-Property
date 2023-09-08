@@ -126,6 +126,9 @@ export class CreateListingPage implements OnInit {
 @HostListener('window:resize', ['$event'])
 onResize(event: Event) {
   this.isMobile = window.innerWidth <= 576;
+
+  if(!event)
+    console.log(event);
 }
 
   features: string[] = [];

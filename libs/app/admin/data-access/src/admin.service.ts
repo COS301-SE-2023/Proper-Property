@@ -139,7 +139,7 @@ export class AdminService {
     let districtCount = 0;
     const encounteredDistricts : string[] = [];
     const districts : District[] = [];
-    let re = /,/gi;
+    const re = /,/gi;
 
     for(let i = 0; i < muniData.length; i++){
       if(muniData[i]['District'] == ""){
