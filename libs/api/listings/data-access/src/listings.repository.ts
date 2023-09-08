@@ -103,7 +103,6 @@ export class ListingsRepository {
   }
 
   async changeStatus(req : ChangeStatusRequest): Promise<ChangeStatusResponse>{
-    console.log("Its show time");
     const listingDoc = admin
     .firestore()
     .doc(`listings/${req.listingId}`)
@@ -121,7 +120,9 @@ export class ListingsRepository {
         tempStatusChanges = [{adminId : req.adminId, status : !doc.data()?.approved, date : new Date().toISOString()}];
       }
 
-      admin.firestore().doc(`listings/${req.listingId}`).update({approved : !doc.data()?.approved, statusChanges : tempStatusChanges});
+      const tempAreaScores = {crimeScore: req.crimeScore, waterScore: req.waterScore, sanitationScore: req.sanitationScore, schoolScore: req.schoolScore};
+
+      admin.firestore().doc(`listings/${req.listingId}`).update({approved : !doc.data()?.approved, statusChanges : tempStatusChanges, areaScore: tempAreaScores});
       return {statusChange : tempStatusChanges[tempStatusChanges.length - 1]};
     })
 

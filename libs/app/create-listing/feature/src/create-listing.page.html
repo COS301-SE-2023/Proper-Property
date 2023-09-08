@@ -63,6 +63,7 @@
 
     <ion-row id="house-details">
       <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
+        <ion-col>
         <ion-item class="ion-container">
           <div class="container">
             <div class="searchInput">
@@ -83,6 +84,24 @@
             </div>
           </div>
         </ion-item>
+      </ion-col>
+      <ion-col>
+          <ion-item class="ion-container">
+            <div class="container">
+              <div class="searchInput">
+                <label position="floating" class="house-text">Property District Municipality<span class="required-indicator"
+                  *ngIf="!address">*</span>
+                    <div id="districtHelp">
+                      ?
+                    </div>
+                    <span id="districtHelpSpan">Follow <a href="https://www.dws.gov.za/niwis2/dwq2" target="_blank" rel="noopener">this</a> link an determine your district by zooming into the map</span>
+                </label>
+                <input style="font-weight: 500; padding-left:1%" type="text" class="house-text" id="address"
+                  [(ngModel)]="district" placeholder="Enter the district of you listing">
+              </div>
+            </div>
+          </ion-item>
+        </ion-col>
       </ion-row>
 
       <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
@@ -231,6 +250,13 @@
                 [(ngModel)]="selectedValue"></ion-toggle>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <ion-label class="house-text">Sell</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label class="house-text">Urban</ion-label>
+              <ion-toggle style="padding: 10px;" [checked]="false" (click)="changeListingAreaType()"
+                [(ngModel)]="listingAreaTypeSlider"></ion-toggle>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <ion-label class="house-text">Rural</ion-label>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -499,6 +525,13 @@
                 [(ngModel)]="selectedValue"></ion-toggle>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <ion-label class="house-text">Sell</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label class="house-text">Urban</ion-label>
+              <ion-toggle style="padding: 10px;" [checked]="false" (click)="changeListingAreaType()"
+                [(ngModel)]="listingAreaTypeSlider"></ion-toggle>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <ion-label class="house-text">Rural</ion-label>
             </ion-item>
           </ion-list>
         </ion-col>

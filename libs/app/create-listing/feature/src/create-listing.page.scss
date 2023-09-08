@@ -327,6 +327,30 @@
     border: none;
   }
   
+#districtHelp + #districtHelpSpan{
+  display: none;
+}
+
+#districtHelp:hover + #districtHelpSpan{
+  display: block;
+  animation-name: districtAni;
+  animation-duration: 10s;
+}
+
+#districtHelp + #districtHelpSpan:hover{
+  display:block;
+}
+
+@keyframes districtAni {
+  0%{
+    display: block;
+    color:red
+  }
+  100%{
+    display: block;
+  }
+}
+
 
 }
 
@@ -662,6 +686,6 @@
   }
   
   // ::ng-deep ion-footer{
-  //   margin-top: -80px; 
-  // }
+  //   margin-top: -80px;   // }
+
 }

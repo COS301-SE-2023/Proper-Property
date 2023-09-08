@@ -56,26 +56,19 @@ export class CoreShellComponent implements OnInit, OnDestroy {
     this.userProfile$.subscribe((profile) => {
       this.userProfile = profile;
       this.loggedIn = this.userProfile != null && this.userProfile != undefined;
-        if(profile !== undefined && profile){
-          if(profile.admin){
-            this.admin = true;
-          }
-          else{
-            router.navigate(['/home']);
-          }
-        }
+      this.admin = (profile && profile.admin) ?? false;
     });
 
-      this.isMobile = window.innerWidth <= 576;
-      this.router.events.subscribe((event) => {
-        if (event instanceof NavigationEnd) {
-          gtag('event', 'page_view', {
-            'page_path': event.urlAfterRedirects,
-            'page_location': this.document.location.href,
-            'is_mobile': this.isMobile ? 'yes' : 'no',
-          });
-        }
-      });
+    this.isMobile = window.innerWidth <= 576;
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        gtag('event', 'page_view', {
+          'page_path': event.urlAfterRedirects,
+          'page_location': this.document.location.href,
+          'is_mobile': this.isMobile ? 'yes' : 'no',
+        });
+      }
+    });
       
   }
   

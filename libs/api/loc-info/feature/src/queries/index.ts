@@ -1,0 +1,1 @@
+export * from './get-locInfo-data.handler';
