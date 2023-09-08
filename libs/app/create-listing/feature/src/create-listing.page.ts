@@ -48,6 +48,12 @@ export class CreateListingPage implements OnInit {
   furnish_type = "";
   orientation = "";
   count = 0;
+  geometry = {
+    lat: 0,
+    lng: 0
+  };
+  pointsOfInterest: google.maps.places.PlaceResult[] = [];
+
   constructor(
     private readonly router: Router, 
     private readonly userService: UserProfileService, 
@@ -105,6 +111,8 @@ export class CreateListingPage implements OnInit {
             this.features = listing.features;
             this.photos = listing.photos;
             this.listingType = listing.let_sell;
+            this.geometry = listing.geometry;
+            this.pointsOfInterest = listing.pointsOfInterest;
           }
         });
       }
@@ -337,7 +345,12 @@ handleAddressChange(address: string): void {
         let_sell: this.listingType,
         approved: false,
         quality_rating: score,
-        listingDate: "" + new Date()
+        listingDate: "" + new Date(),
+        geometry: {
+          lat: 0,
+          lng: 0
+        },
+        pointsOfInterest: []
       }
 
       console.log(list);
@@ -374,7 +387,12 @@ handleAddressChange(address: string): void {
         heading: this.heading,
         let_sell: this.listingType,
         approved: false,
-        listingDate: "" + new Date()
+        listingDate: "" + new Date(),
+        geometry: {
+          lat: this.geometry.lat,
+          lng: this.geometry.lng
+        },
+        pointsOfInterest: this.pointsOfInterest
       }
 
       const resp = await this.listingService.editListing(list);

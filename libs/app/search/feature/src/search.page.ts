@@ -222,7 +222,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       }
       this.predictions = [];
 
-
+    }
 
   ngAfterViewInit() {
     if(!this.isMobile ||this.MapView) {
@@ -286,7 +286,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   //     console.log(e);
   //   }
   // }
-
+  
 async loadMap() {
   try {
   

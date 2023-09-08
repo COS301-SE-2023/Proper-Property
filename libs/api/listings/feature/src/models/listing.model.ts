@@ -1,3 +1,5 @@
+// eslint-disable-next-line
+/// <reference types="@types/google.maps" />
 import { AggregateRoot } from '@nestjs/cqrs';
 import { ListingEditedEvent, Listing, StatusChange } from '@properproperty/api/listings/util';
 
@@ -23,6 +25,11 @@ export class listingModel extends AggregateRoot implements Listing {
     public heading: string,
     public approved: boolean,
     public listingDate: string,
+    public geometry: {
+      lat: number,
+      lng: number
+    },
+    public pointsOfInterest: google.maps.places.PlaceResult[],
     public listing_id?: string,
     public statusChanges?: StatusChange[],
     public quality_rating?: number,
@@ -52,6 +59,8 @@ export class listingModel extends AggregateRoot implements Listing {
         listing.heading,
         listing.approved,
         listing.listingDate,
+        listing.geometry,
+        listing.pointsOfInterest,
         listing.listing_id,
         listing.statusChanges,
         listing.quality_rating,
@@ -80,6 +89,8 @@ export class listingModel extends AggregateRoot implements Listing {
     this.heading = listing.heading;
     this.approved = listing.approved;
     this.listingDate = listing.listingDate;
+    this.geometry = listing.geometry;
+    this.pointsOfInterest = listing.pointsOfInterest;
     this.listing_id = listing.listing_id;
     this.statusChanges = listing.statusChanges;
     this.quality_rating = listing.quality_rating;
@@ -112,6 +123,8 @@ export class listingModel extends AggregateRoot implements Listing {
         listing_id: this.listing_id,
         statusChanges: this.statusChanges,
         quality_rating: this.quality_rating,
+        geometry: this.geometry,
+        pointsOfInterest: this.pointsOfInterest,
     };
   }
 }
