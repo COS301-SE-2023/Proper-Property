@@ -50,6 +50,12 @@ ion-icon {
   color: var(--ion-color-primary);
 }
 
+.iconic
+{
+  background-color:rgb(243, 243, 243);
+  position: absolute;
+}
+
 h1
 {
   top: 5%;
@@ -358,7 +364,7 @@ h3
 
 ion-label
 {
-  margin-left: 3%;
+  margin-left: 3%;;
   color: var(--ion-color-primary);
 }
 
