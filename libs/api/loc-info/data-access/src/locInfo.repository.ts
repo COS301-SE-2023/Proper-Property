@@ -118,9 +118,11 @@ export class LocInfoRepository {
               .firestore()
               .doc('DistrictData/metro municipalities').get()).data();
 
-              for(let muni of metroMunis?.['municipalities']){
-                if(muni.name.toLowerCase().includes(correctDistrict.toLowerCase())){
-                  districtData = muni;
+              if(metroMunis){
+                for(let muni of metroMunis['municipalities']){
+                  if(muni.name.toLowerCase().includes(correctDistrict.toLowerCase())){
+                    districtData = muni;
+                  }
                 }
               }
 
@@ -137,9 +139,15 @@ export class LocInfoRepository {
         station.weightedTotal = 0;
         stations.push(station.stationName.toLowerCase());
         for(let crime of station.crimeStats){
-          crime.perHunThou = (crime.quarterCount/(metroMuni ? districtData?.['population'] : districtData?.['totalPopulation']) ?? 1) * 100000;
-          
-          station.weightedTotal += ((crime.quarterCount/districtData?.['totalPopulation'] ?? 1) * 100000) * this.crimeWeights[crime.category];
+          let totalPop = 1, pop = 1;
+          if (districtData) {
+            if (districtData['totalPopulation'])
+              totalPop = districtData['totalPopulation'];
+            if (districtData['population'])
+              pop = districtData['population'];
+          }
+          crime.perHunThou = crime.quarterCount/(metroMuni ? pop : totalPop) * 100000;
+          station.weightedTotal += ((crime.quarterCount/totalPop) * 100000) * this.crimeWeights[crime.category];
         }   
       }
 
@@ -390,7 +398,11 @@ export class LocInfoRepository {
       doc('SaniStats-Sanitation/metadata').
       get().
       then((response) =>{
-        for(let res of response.data()?.['WSAs']){
+        const data = response.data();
+        if (!data?.['WSAs']) {
+          throw new Error("No sanitation stats metadata");
+        }
+        for(let res of data['WSAs']){
           saniWSAs.push(res);
         }
       })
@@ -400,7 +412,11 @@ export class LocInfoRepository {
       doc('SaniStats-WWQ/metadata').
       get().
       then((response) =>{
-        for(let res of response.data()?.['WSAs']){
+        const data = response.data();
+        if (!data?.['WSAs']) {
+          throw new Error("No wwq stats metadata");
+        }
+        for(let res of data['WSAs']){
           wwqWSAs.push(res);
         }
       })
@@ -469,7 +485,11 @@ export class LocInfoRepository {
         doc('WaterStats-Access/metadata').
         get().
         then((response) =>{
-          for(let res of response.data()?.['WSAs']){
+          const data = response.data();
+          if (!data?.['WSAs']) {
+            throw new Error("No water stats access metadata");
+          }
+          for(let res of data['WSAs']){
             accessWSAs.push(res);
           }
         })
@@ -481,7 +501,11 @@ export class LocInfoRepository {
       doc('WaterStats-Quality/metadata').
       get().
       then((response) =>{
-        for(let res of response.data()?.['WSAs']){
+        const data = response.data();
+        if (!data?.['WSAs']) {
+          throw new Error("No quality stats metadata");
+        }
+        for(let res of data['WSAs']){
           qualityWSAs.push(res);
         }
       })
@@ -493,7 +517,11 @@ export class LocInfoRepository {
       doc('WaterStats-Reliability/metadata').
       get().
       then((response) =>{
-        for(let res of response.data()?.['WSAs']){
+        const data = response.data();
+        if (!data?.['WSAs']) {
+          throw new Error("No reliability stats metadata");
+        }
+        for(let res of data['WSAs']){
           reliabilityWSAs.push(res);
         }
       })
@@ -506,16 +534,19 @@ export class LocInfoRepository {
       for(let wsa of accessWSAs){
         if(wsa.toLowerCase().includes("" + req.district?.toLowerCase())){
           accessWSA = wsa;
+          break;
         }
       }
       for(let wsa of qualityWSAs){
         if(wsa.toLowerCase().includes("" + req.district?.toLowerCase())){
           qualityWSA = wsa;
+          break;
         }
       }
       for(let wsa of reliabilityWSAs){
         if(wsa.toLowerCase().includes("" + req.district?.toLowerCase())){
           reliabilityWSA = wsa;
+          break;
         }
       }
 
@@ -554,7 +585,6 @@ export class LocInfoRepository {
 
       console.log(count++)
 
-      //TODO - fix reliability score - returning 0 each time
       await admin.
       firestore().
       doc('WaterStats-Reliability/' + reliabilityWSA).
@@ -613,7 +643,11 @@ export class LocInfoRepository {
         .then((response) => {
           avgDomesticTariff = response.data()?.['avgDomesticTariff'];
           avgIrrigationTariff = response.data()?.['avgIrrigationTariff'];
-          for(let wma of response.data()?.['WMAs']){
+          const data = response.data();
+          if (!data?.['WMAs']) {
+            throw new Error("No wma stats metadata");
+          }
+          for(let wma of data['WMAs']){
             WMAs.push(wma);
           }
         })
@@ -632,13 +666,17 @@ export class LocInfoRepository {
         .doc("WaterStats-Tariffs/" + tariffWMA)
         .get()
         .then((response) => {
-          if(req.listingType == "Commercial Property"){
-            tariffScore = 1 - (response.data()?.['irrigationTariff'] + response.data()?.['domesticTariff']) 
-            / (avgDomesticTariff + avgIrrigationTariff);
+          const data = response.data();
+          if (!data?.['irrigationTariff'] && !data?.['domesticTariff']) {
+            throw new Error("No tariff stats metadata");
           }
-          else if(req.listingType == "House" || req.listingType =="Apartment"){
-            tariffScore = 1 - response.data()?.['domesticTariff'] / avgDomesticTariff;
-          }
+          // if(req.listingType == "Commercial Property"){
+            tariffScore = 1 - ((req.listingType == "Commercial Property" ? data['irrigationTariff'] : 0) + data['domesticTariff']) 
+            / ((req.listingType == "Commercial Property" ? avgDomesticTariff : 0) + avgIrrigationTariff);
+          // }
+          // else if(req.listingType == "House" || req.listingType =="Apartment"){
+          //   tariffScore = 1 - data['domesticTariff'] / avgDomesticTariff;
+          // }
         })
 
       const waterScore = (accessScore + qualityScore + reliabilityScore + tariffScore) / 4;
@@ -667,8 +705,13 @@ export class LocInfoRepository {
       .doc('crimeStats/metadata')
       .get()
       .then((response) => {
-        if(response.data()?.['stations']){
-          for(let station of response.data()?.['stations']){
+        const data = response.data();
+        if (!data || !data['stations']) {
+          throw new Error("No station metadata");
+        }
+
+        if(data['stations']){
+          for(let station of data['stations']){
             if(station.toLowerCase().includes("" + foundStation.toLowerCase()
              || ("" + foundStation.toLowerCase()).includes(station.toLowerCase()))){
               correctStation = station.toLowerCase();
