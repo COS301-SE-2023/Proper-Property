@@ -49,7 +49,7 @@ export class CreateListingPage implements OnInit {
     this.predictions = [];
     this.defaultBounds = new google.maps.LatLngBounds();
     if (isDevMode()) {
-      this.address = "123 Fake Street";
+      this.address = "378 Festival street, Hatfield, Pretoria";
       this.price = "1000000";
       this.floor_size = "100";
       this.erf_size = "100";
@@ -705,8 +705,6 @@ handleAddressChange(address: string): void {
       console.log("Error in create-lisitng.page.ts");
     }
   }
-
-
 
   async editListing(){
     if(this.currentUser != null && this.listingEditee != null){

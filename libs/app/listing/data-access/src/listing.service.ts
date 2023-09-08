@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Listing, CreateListingRequest, CreateListingResponse, GetListingsRequest, GetListingsResponse, ChangeStatusResponse, ChangeStatusRequest, GetApprovedListingsResponse, EditListingRequest, EditListingResponse } from '@properproperty/api/listings/util';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
+import { characteristics } from '@properproperty/api/listings/util';
 import { Storage, deleteObject, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
@@ -107,6 +108,7 @@ export class ListingsService {
       this.functions,
       'changeStatus'
     )({listingId : listingId, adminId : admin})).data;
+    
 
     return response;
   }
@@ -147,5 +149,34 @@ export class ListingsService {
     // TODO Add this via CQRS
     const listingRef = doc(this.firestore, `listings/${listingId}`);
       await updateDoc(listingRef, {photos: photoURLs});
+  }
+
+  recommendationMinimum = 100000;
+
+  async recommender(char: characteristics, userVector: number[])
+  {
+    let listVector: number[] = [+!!char.garden, +!!char.party, +!!char.mansion, +!!char.accessible, +!!char.foreign, +!!char.ecoWarrior, +!!char.family, +!!char.student, +!!char.lovinIt, +!!char.farm, +!!char.Gym, +!!char.owner];
+
+    for(let x=0; x<12; x++)
+    {
+      listVector[x]= listVector[x]*userVector[x];
+    }
+
+    let ans: string;
+    //dot product
+    let dotproduct=0;
+
+    for(let x=0; x< 12; x++)
+    {
+      dotproduct += listVector[x]*userVector[x];
+    }
+
+    if(dotproduct>=this.recommendationMinimum)
+    {
+      ans= "true";
+    }
+
+    ans= "false";
+    return ans;
   }
 }

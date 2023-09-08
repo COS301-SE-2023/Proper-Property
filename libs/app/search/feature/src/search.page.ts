@@ -3,10 +3,11 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, Vie
 import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
-import { Listing } from '@properproperty/api/listings/util';
+import { Listing, characteristics } from '@properproperty/api/listings/util';
+import { Recommend } from '@properproperty/api/listings/util';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { Unsubscribe, User } from '@angular/fire/auth';
+import { Unsubscribe, User, user } from '@angular/fire/auth';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
@@ -42,6 +43,11 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   markerClickListener: any;
   markers: any[] = [];
   listings: Listing[] = [];
+  recommends: Recommend[]=[];
+  userInterestVector: number[]=[];
+  recommendationMinimum = 100000;
+
+
 
   @Select(AuthState.user) user$!: Observable<User | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
@@ -122,7 +128,9 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       this.isMobile = window.innerWidth <= 576;
     }
     
+    
   async ngOnInit() {
+ 
     // await this.listingServices.getApprovedListings().then((listings) => {
     //   this.listings = listings;
     //   this.filterProperties();
@@ -130,6 +138,20 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
     await this.listingServices.getApprovedListings().then((listings) => {
       this.listings = listings;
+
+      if(this.profile)
+      {
+        this.userInterestVector = this.profileServices.getInterestArray(this.profile);
+      }
+
+      for(const list of listings)
+      {
+        this.listingServices.recommender(list.characteristics, this.userInterestVector).then((ans) => {
+          this.recommends.push({listingID: list.listing_id, recommended: ans })
+          console.log("!!!!!!!!!!!!!!!!", list.listing_id, ans);
+        })
+      }
+       
       this.filterProperties();
     });
 
@@ -184,10 +206,20 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   
       this.searchProperties();
     }
-
-
     
-    
+  }
+
+  getRecommendation(ID: string|undefined)
+  {
+    for(const list of this.recommends)
+    {
+      if(list.listingID==ID)
+      {
+        return list.recommended;
+      }
+    }
+
+    return "false";
   }
 
   handleInputChange(event: Event): void {

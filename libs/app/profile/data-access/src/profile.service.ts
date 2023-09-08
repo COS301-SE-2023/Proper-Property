@@ -48,22 +48,6 @@ export class UserProfileService {
   }
 
   vPotency = 0;
-  adjustment: Interests= {
-    garden: 0,
-    party: 0,
-    mansion: 0,
-    accessible: 0,
-    foreign: 0,
-    openConcept: 0,
-    ecoWarrior: 0,
-    family: 0,
-    student: 0,
-    lovinIt: 0,
-    farm: 0,
-    Gym: 0,
-    owner: 0,
-    leftUmbrella: 0
-  }
 
   temp: Interests={
     garden: 0,
@@ -86,6 +70,7 @@ export class UserProfileService {
   async updateInterests(characteristic : characteristics, userID: string)
   {
     const profile = this.getUser(userID);
+    console.log("old interests", profile);
     this.calculatePotency(characteristic);
 
     this.temp.Gym=(await profile).interests.Gym;
@@ -102,100 +87,101 @@ export class UserProfileService {
     this.temp.owner=(await profile).interests.owner;
 
     // garden
-    this.adjustment.garden +=this.mainIncrease(this.temp.garden,(+!!characteristic.garden));
+    this.temp.garden =this.mainIncrease(this.temp.garden,(+!!characteristic.garden));
 
-    this.adjustment.owner += this.allyIncrease(this.temp.owner, (+!!characteristic.garden));
-    this.adjustment.mansion += this.allyIncrease(this.temp.mansion, (+!!characteristic.garden));
-    this.adjustment.farm += this.allyIncrease(this.temp.farm, (+!!characteristic.garden));
-    this.adjustment.ecoWarrior += this.allyIncrease(this.temp.ecoWarrior, (+!!characteristic.garden));
+    this.temp.owner = this.allyIncrease(this.temp.owner, (+!!characteristic.garden));
+    this.temp.mansion = this.allyIncrease(this.temp.mansion, (+!!characteristic.garden));
+    this.temp.farm = this.allyIncrease(this.temp.farm, (+!!characteristic.garden));
+    this.temp.ecoWarrior = this.allyIncrease(this.temp.ecoWarrior, (+!!characteristic.garden));
 
     // party
-    this.adjustment.party +=this.mainIncrease(this.temp.party,(+!!characteristic.party));
+    this.temp.party =this.mainIncrease(this.temp.party,(+!!characteristic.party));
 
-    this.adjustment.student += this.allyIncrease(this.temp.student, (+!!characteristic.party));
-    this.adjustment.lovinIt += this.allyIncrease(this.temp.lovinIt,(+!!characteristic.party));
-    this.adjustment.foreign += this.allyIncrease(this.temp.foreign, (+!!characteristic.party))
+    this.temp.student = this.allyIncrease(this.temp.student, (+!!characteristic.party));
+    this.temp.lovinIt = this.allyIncrease(this.temp.lovinIt,(+!!characteristic.party));
+    this.temp.foreign = this.allyIncrease(this.temp.foreign, (+!!characteristic.party))
 
-    this.adjustment.farm += this.decay(this.temp.farm, (+!!characteristic.party));
-    this.adjustment.family += this.decay(this.temp.family, (+!!characteristic.party));
+    this.temp.farm = this.decay(this.temp.farm, (+!!characteristic.party));
+    this.temp.family = this.decay(this.temp.family, (+!!characteristic.party));
 
     // mansion
-    this.adjustment.mansion +=this.mainIncrease(this.temp.mansion,(+!!characteristic.mansion));
+    this.temp.mansion =this.mainIncrease(this.temp.mansion,(+!!characteristic.mansion));
 
-    this.adjustment.owner += this.allyIncrease(this.temp.owner, (+!!characteristic.mansion));
-    this.adjustment.farm += this.allyIncrease(this.temp.farm,(+!!characteristic.mansion));
-    this.adjustment.garden += this.allyIncrease(this.temp.garden, (+!!characteristic.mansion))
+    this.temp.owner = this.allyIncrease(this.temp.owner, (+!!characteristic.mansion));
+    this.temp.farm = this.allyIncrease(this.temp.farm,(+!!characteristic.mansion));
+    this.temp.garden = this.allyIncrease(this.temp.garden, (+!!characteristic.mansion))
 
-    this.adjustment.student += this.decay(this.temp.student, (+!!characteristic.mansion));
+    this.temp.student = this.decay(this.temp.student, (+!!characteristic.mansion));
 
     //Accessible
-    this.adjustment.accessible +=this.mainIncrease(this.temp.accessible,(+!!characteristic.accessible));
+    this.temp.accessible =this.mainIncrease(this.temp.accessible,(+!!characteristic.accessible));
 
     //Foreign
-    this.adjustment.foreign +=this.mainIncrease(this.temp.foreign,(+!!characteristic.foreign));
+    this.temp.foreign =this.mainIncrease(this.temp.foreign,(+!!characteristic.foreign));
 
-    this.adjustment.party += this.allyIncrease(this.temp.party, (+!!characteristic.foreign));
-    this.adjustment.lovinIt += this.allyIncrease(this.temp.lovinIt,(+!!characteristic.foreign));
+    this.temp.party = this.allyIncrease(this.temp.party, (+!!characteristic.foreign));
+    this.temp.lovinIt = this.allyIncrease(this.temp.lovinIt,(+!!characteristic.foreign));
 
     //Ecowarrior
-    this.adjustment.ecoWarrior +=this.mainIncrease(this.temp.ecoWarrior,(+!!characteristic.ecoWarrior));
+    this.temp.ecoWarrior =this.mainIncrease(this.temp.ecoWarrior,(+!!characteristic.ecoWarrior));
 
     //PG 13
-    this.adjustment.family +=this.mainIncrease(this.temp.family,(+!!characteristic.family));
+    this.temp.family =this.mainIncrease(this.temp.family,(+!!characteristic.family));
 
-    this.adjustment.party +=this.decay(this.temp.party,(+!!characteristic.family));
+    this.temp.party =this.decay(this.temp.party,(+!!characteristic.family));
 
     //Student
-    this.adjustment.student +=this.mainIncrease(this.temp.student,(+!!characteristic.student));
+    this.temp.student =this.mainIncrease(this.temp.student,(+!!characteristic.student));
 
-    this.adjustment.party +=this.allyIncrease(this.temp.party,(+!!characteristic.student));
-    this.adjustment.Gym +=this.allyIncrease(this.temp.Gym,(+!!characteristic.student));
-    this.adjustment.party +=this.allyIncrease(this.temp.party,(+!!characteristic.student));
+    this.temp.party =this.allyIncrease(this.temp.party,(+!!characteristic.student));
+    this.temp.Gym =this.allyIncrease(this.temp.Gym,(+!!characteristic.student));
+    this.temp.party =this.allyIncrease(this.temp.party,(+!!characteristic.student));
 
-    this.adjustment.farm +=this.decay(this.temp.family,(+!!characteristic.student));
+    this.temp.farm =this.decay(this.temp.family,(+!!characteristic.student));
 
     //Food
-    this.adjustment.lovinIt +=this.mainIncrease(this.temp.lovinIt,(+!!characteristic.lovinIt));
+    this.temp.lovinIt =this.mainIncrease(this.temp.lovinIt,(+!!characteristic.lovinIt));
 
-    this.adjustment.farm += this.decay(this.temp.farm, (+!!characteristic.lovinIt));
+    this.temp.farm = this.decay(this.temp.farm, (+!!characteristic.lovinIt));
 
     //Gym rats
-    this.adjustment.Gym +=this.mainIncrease(this.temp.Gym,(+!!characteristic.Gym));
+    this.temp.Gym =this.mainIncrease(this.temp.Gym,(+!!characteristic.Gym));
 
-    this.adjustment.farm += this.decay(this.temp.farm, (+!!characteristic.Gym));
+    this.temp.farm = this.decay(this.temp.farm, (+!!characteristic.Gym));
 
     //Owner
-    this.adjustment.owner +=this.mainIncrease(this.temp.owner,(+!!characteristic.owner));
+    this.temp.owner =this.mainIncrease(this.temp.owner,(+!!characteristic.owner));
 
-    this.adjustment.mansion +=this.allyIncrease(this.temp.mansion,(+!!characteristic.owner));
-    this.adjustment.garden +=this.allyIncrease(this.temp.garden,(+!!characteristic.owner));
+    this.temp.mansion =this.allyIncrease(this.temp.mansion,(+!!characteristic.owner));
+    this.temp.garden =this.allyIncrease(this.temp.garden,(+!!characteristic.owner));
 
-    this.adjustment.student += this.decay(this.temp.student, (+!!characteristic.owner));
+    this.temp.student = this.decay(this.temp.student, (+!!characteristic.owner));
 
     //farm
-    this.adjustment.farm +=this.mainIncrease(this.temp.farm,(+!!characteristic.farm));
+    this.temp.farm =this.mainIncrease(this.temp.farm,(+!!characteristic.farm));
 
-    this.adjustment.garden +=this.allyIncrease(this.temp.garden,(+!!characteristic.farm));
-    this.adjustment.mansion +=this.allyIncrease(this.temp.mansion,(+!!characteristic.farm));
+    this.temp.garden =this.allyIncrease(this.temp.garden,(+!!characteristic.farm));
+    this.temp.mansion =this.allyIncrease(this.temp.mansion,(+!!characteristic.farm));
 
-    this.adjustment.party +=this.decay(this.temp.party,(+!!characteristic.farm));
-    this.adjustment.student +=this.decay(this.temp.student,(+!!characteristic.farm));
-    this.adjustment.lovinIt +=this.decay(this.temp.lovinIt,(+!!characteristic.farm));
+    this.temp.party =this.decay(this.temp.party,(+!!characteristic.farm));
+    this.temp.student =this.decay(this.temp.student,(+!!characteristic.farm));
+    this.temp.lovinIt =this.decay(this.temp.lovinIt,(+!!characteristic.farm));
 
-    (await profile).interests.Gym = this.adjustment.Gym;
-    (await profile).interests.accessible = this.adjustment.accessible;
-    (await profile).interests.ecoWarrior = this.adjustment.ecoWarrior;
-    (await profile).interests.family = this.adjustment.family;
-    (await profile).interests.farm = this.adjustment.farm;
-    (await profile).interests.foreign= this.adjustment.foreign;
-    (await profile).interests.garden = this.adjustment.garden;
-    (await profile).interests.lovinIt = this.adjustment.lovinIt;
-    (await profile).interests.mansion = this.adjustment.mansion;
-    (await profile).interests.owner = this.adjustment.owner;
-    (await profile).interests.party = this.adjustment.party;
-    (await profile).interests.student = this.adjustment.student;
-
+    (await profile).interests.Gym = this.temp.Gym;
+    (await profile).interests.accessible = this.temp.accessible;
+    (await profile).interests.ecoWarrior = this.temp.ecoWarrior;
+    (await profile).interests.family = this.temp.family;
+    (await profile).interests.farm = this.temp.farm;
+    (await profile).interests.foreign= this.temp.foreign;
+    (await profile).interests.garden = this.temp.garden;
+    (await profile).interests.lovinIt = this.temp.lovinIt;
+    (await profile).interests.mansion = this.temp.mansion;
+    (await profile).interests.owner = this.temp.owner;
+    (await profile).interests.party = this.temp.party;
+    (await profile).interests.student = this.temp.student;
+    console.log("new interest1", profile);
     this.updateUserProfile(await profile);
+    console.log("new interest2", profile);
   }
 
   mainIncrease(fixed: number, boolCharacteristic: number)
@@ -205,7 +191,7 @@ export class UserProfileService {
     {
       updates=100;
     }
-
+    console.log("after ", updates);
     return updates;
   }
 
@@ -216,6 +202,8 @@ export class UserProfileService {
     {
       ally=100;
     }
+
+    console.log("after ", ally);
     
     return ally;
   }
@@ -227,7 +215,7 @@ export class UserProfileService {
     {
       enemy=0;
     }
-    
+    console.log("after ", enemy);
     return enemy;
   }
 
@@ -243,6 +231,13 @@ export class UserProfileService {
         this.vPotency++;
       }
     }
+  }
+
+  getInterestArray(profile: UserProfile)
+  {
+    const inter = profile.interests;
+    const arr: number[] = [inter.garden, inter.party, inter.mansion, inter.accessible, inter.foreign, inter.ecoWarrior, inter.family, inter.student, inter.lovinIt, inter.farm, inter.Gym, inter.owner];
+    return arr;
   }
 }
 

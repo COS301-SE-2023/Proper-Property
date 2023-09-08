@@ -44,4 +44,5 @@ export class ListingsService {
   async editListing(req: EditListingRequest): Promise<EditListingResponse>{
     return this.commandBus.execute(new EditListingCommand(req.listing))
   }
+  
 }
