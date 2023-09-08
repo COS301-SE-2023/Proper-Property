@@ -1,4 +1,4 @@
-import { Component, OnInit , ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit , ViewChild, ElementRef,HostListener} from '@angular/core';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { Listing } from '@properproperty/api/listings/util';
 import { ListingsService } from '@properproperty/app/listing/data-access';
@@ -12,20 +12,35 @@ import { Store } from '@ngxs/store';
 import { isDevMode } from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 
+import { FormControl } from '@angular/forms';
+
+import { map, startWith } from 'rxjs/operators'
+
+
 @Component({
   selector: 'app-create-listing',
   templateUrl: './create-listing.page.html',
   styleUrls: ['./create-listing.page.scss'],
+  
 })
 export class CreateListingPage implements OnInit {
 
-  @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
+
+  @ViewChild('inputElement', { static: false }) inputElement!: ElementRef;
+
+  myControl = new FormControl();
+  options: string[] = ['Angular', 'React', 'Vue', 'Ionic', 'TypeScript'];
+  filteredOptions: Observable<string[]>;
+
+  items: any[] = [];
+  
+  @ViewChild('address', { static: false }) addressInput!: ElementRef<HTMLInputElement>;
 
   @Select(AuthState.user) user$!: Observable<User | null>;
   // autocomplete: any;
   defaultBounds: google.maps.LatLngBounds;
   predictions: google.maps.places.AutocompletePrediction[] = [];
-
+  isMobile = false;
   currentUser: User | null = null;
   description = "";
   heading = "";
@@ -41,12 +56,19 @@ export class CreateListingPage implements OnInit {
     private readonly store: Store,
     private route: ActivatedRoute,
   ) {
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map((value) => this._filter(value))
+    );
+
+
+    this.isMobile = window.innerWidth <= 576;
+    
     this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
     this.predictions = [];
     this.defaultBounds = new google.maps.LatLngBounds();
     if (isDevMode()) {
       this.address = "123 Fake Street";
-      this.district = "temp";
       this.price = "1000000";
       this.floor_size = "100";
       this.erf_size = "100";
@@ -54,7 +76,7 @@ export class CreateListingPage implements OnInit {
       this.bedrooms = "3";
       this.parking = "1";
       this.pos_type = "Leasehold";
-      this.env_type = "Urban";
+      this.env_type = "Gated Community";
       this.prop_type = "House";
       this.furnish_type = "Furnished";
       this.orientation = "North";
@@ -94,6 +116,18 @@ export class CreateListingPage implements OnInit {
     });
   }
 
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.options.filter((option) =>
+      option.toLowerCase().includes(filterValue)
+    );
+  }
+
+@HostListener('window:resize', ['$event'])
+onResize(event: Event) {
+  this.isMobile = window.innerWidth <= 576;
+}
+
   features: string[] = [];
 
   async ngOnInit() {
@@ -101,13 +135,19 @@ export class CreateListingPage implements OnInit {
     // this.currentUser = this.userService.getCurrentUser();
     const inputElementId = 'address';
 
-    this.gmapsService.setupSearchBox(inputElementId);
+    // this.gmapsService.setupSearchBox(inputElementId);
   }
 
-  handleInputChange(event: Event): void {
+  async handleInputChange(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
-    this.gmapsService.handleInput(input, this.defaultBounds);
+
+    if(input.value.length <=0){
+      this.predictions = [];
+      return;
+    }
+    await this.gmapsService.handleInput(input, this.defaultBounds);
     this.predictions = this.gmapsService.predictions;
+    console.log("predictions: ", this.predictions);
     this.address= input.value;
     
     this.handleAddressChange(input.value);
@@ -130,6 +170,7 @@ export class CreateListingPage implements OnInit {
 
   replaceInputText(event: MouseEvent | undefined, prediction: string) {
     console.log("your prediction: ",prediction);
+    
     if (event) {
       event.preventDefault(); // Prevent the default behavior of the <a> tag
     }
@@ -240,13 +281,17 @@ handleAddressChange(address: string): void {
     const bath_in = document.getElementById('bath') as HTMLInputElement;
     const bed_in = document.getElementById('bed') as HTMLInputElement;
     const parking_in = document.getElementById('parking') as HTMLInputElement;
+
+
     
     let feats = "";
     for(let i = 0; i < this.features.length; i++){
       feats += this.features[i] + ", ";
     }
 
-    if(add_in && price_in && pos_type_in && env_type_in && prop_type_in && furnish_type_in && orientation_in && floor_size_in && property_size_in && bath_in && bed_in && parking_in){
+    if(this.address && this.price && this.pos_type && this.env_type && this.prop_type 
+      && this.furnish_type && this.orientation && this.floor_size && this.erf_size 
+      && this.bathrooms && this.bedrooms && this.parking){
       const info = "Address: " + add_in.value + "\n" 
       + "Price: " + price_in.value + "\n"
       + "Possession type: " + pos_type_in.value + "\n"
@@ -318,7 +363,9 @@ handleAddressChange(address: string): void {
 
   async addListing(){
     this.address = (document.getElementById("address") as HTMLInputElement).value;
-    const score = await this.calculateQualityScore(this.photos,this.address,this.price,this.bedrooms,this.bathrooms,this.parking,this.floor_size,this.erf_size,this.pos_type,this.env_type,this.prop_type,this.furnish_type,this.orientation);
+    const score = await this.calculateQualityScore(this.photos,this.address,this.price,this.bedrooms,
+      this.bathrooms,this.parking,this.floor_size,this.erf_size,this.pos_type,this.env_type,
+      this.prop_type,this.furnish_type,this.orientation);
   
     if(this.currentUser != null){
       const list : Listing = {
@@ -406,7 +453,51 @@ handleAddressChange(address: string): void {
     return false
   }
 
-  async calculateQualityScore(photos: string[],address:string,price:string,bedrooms:string,bathrooms:string,parking:string,floor_size:string,erf_size:string,pos_type:string,env_type:string,prop_type:string,furnish_type:string,orientation:string): Promise<number>{
+
+  selectedAmenity = '';
+  amenities: string[] = [
+    'Pool',
+    'Security Estate',
+    'Solar panels',
+    'Flatlet',
+    'Garden',
+    'Pet-Friendly',
+  ];
+  filteredAmenities: string[] = [];
+
+  handleAmenityInputChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const inputValue = input.value.toLowerCase();
+
+    if (inputValue.length <= 0) {
+      this.filteredAmenities = [];
+      return;
+    }
+
+    this.filteredAmenities = this.amenities.filter((amenity) =>
+      amenity.toLowerCase().includes(inputValue)
+    );
+  }
+
+  selectAmenity(amenity: string): void {
+    this.selectedAmenity = amenity;
+    this.filteredAmenities = [];
+  }
+
+
+async calculateQualityScore(photos: string[],
+  address:string,
+  price:string,
+  bedrooms:string,
+  bathrooms:string,
+  parking:string,
+  floor_size:string,
+  erf_size:string,
+  pos_type:string,
+  env_type:string,
+  prop_type:string,
+  furnish_type:string,
+  orientation:string): Promise<number>{
             
     let score = 0;
   
@@ -430,31 +521,31 @@ handleAddressChange(address: string): void {
         score+= 5;
     } else score-=20;
   
-    if(this.isNonEmptyStringInput(floor_size)){
+    if(this.isNonEmptyStringInput("" + floor_size)){
         score+= 5;
     } else score-=15;
   
-    if(this.isNonEmptyStringInput(erf_size)){
+    if(this.isNonEmptyStringInput("" + erf_size)){
         score+= 5;
     } else score-=15;
   
-    if(this.isNonEmptyStringInput(pos_type)){
+    if(this.isNonEmptyStringInput("" + pos_type)){
         score+= 5;
     } else score-=15;
   
-    if(this.isNonEmptyStringInput(env_type)){
+    if(this.isNonEmptyStringInput("" + env_type)){
         score+= 5;
     } else score-=15;
   
-    if(this.isNonEmptyStringInput(prop_type)){
+    if(this.isNonEmptyStringInput("" + prop_type)){
         score+= 5;
     } else score-=15;
   
-    if(this.isNonEmptyStringInput(furnish_type)){
+    if(this.isNonEmptyStringInput("" + furnish_type)){
         score+= 5;
     } else score-=15;
   
-    if(this.isNonEmptyStringInput(orientation)){
+    if(this.isNonEmptyStringInput("" + orientation)){
         score+= 5;
     } else score-=15;
   
@@ -553,7 +644,15 @@ handleAddressChange(address: string): void {
   }
   
   isNonEmptyStringInput(input: string): boolean {
-    return input.trim() !== "";
+    if(input){
+      return input.trim() !== "";
+    }
+    
+    return false;
   }
-}
 
+
+  // isMobile(): boolean {
+  //   return window.innerWidth <= 576;
+  // }
+}

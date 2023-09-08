@@ -2,9 +2,8 @@ import { Component, OnDestroy, OnInit,Inject,HostListener, inject } from '@angul
 import { Store } from '@ngxs/store';
 import { SubscribeToAuthState } from '@properproperty/app/auth/util';
 import { Select } from '@ngxs/store';
-import { AuthState } from '@properproperty/app/auth/data-access';
 import { Observable } from 'rxjs';
-import { Unsubscribe, User } from 'firebase/auth';
+import { Unsubscribe } from 'firebase/auth';
 // import { SubscribeToUserProfile, UnsubscribeFromUserProfile } from '@properproperty/app/user/util';
 import { UserProfileState,UserProfileService } from '@properproperty/app/profile/data-access';
 
@@ -17,6 +16,7 @@ import { isDevMode } from '@angular/core';
 
 import { DOCUMENT } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
+import { UserProfile } from '@properproperty/api/profile/util';
 
 declare const gtag: any;
 
@@ -28,11 +28,11 @@ declare const gtag: any;
 export class CoreShellComponent implements OnInit, OnDestroy {
   
   isMobile: boolean;
-  @Select(AuthState.user) user$!: Observable<User | null>;
+  @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
   public loggedIn = false;
   public admin = false;
-  private user: User | null = null;
+  private userProfile: UserProfile | null = null;
   dev: boolean;
   private userProfileListener: Unsubscribe | null = null;
 
@@ -40,11 +40,12 @@ export class CoreShellComponent implements OnInit, OnDestroy {
 
   constructor(private readonly router: Router, private readonly store: Store, private readonly functions: Functions, @Inject(DOCUMENT) private document: Document,private profileServices : UserProfileService) {
     this.dev = isDevMode();
-    this.loggedIn = this.user$ != null && this.user$ != undefined;
+    this.loggedIn = this.userProfile$ != null && this.userProfile$ != undefined;
 
-    this.user$.subscribe((user) => {
-      this.user = user;
+    this.userProfile$.subscribe((user) => {
+      this.userProfile = user;
       this.loggedIn = user != null && user != undefined;
+      
     });
     // Update listener whenever is changes such that it can be unsubscribed from
     // when the window is unloaded
@@ -52,31 +53,23 @@ export class CoreShellComponent implements OnInit, OnDestroy {
       this.userProfileListener = listener;
     });
 
-    this.user$.subscribe((user) => {
-      this.user = user;
-      this.profileServices.getUser("" + user?.uid).then((profile) => {
-        if(profile !== undefined && profile){
-          if(profile.admin){
-            this.admin = true;
-          }
-          else{
-            router.navigate(['/home']);
-          }
-        }
-      });
+    this.userProfile$.subscribe((profile) => {
+      this.userProfile = profile;
+      this.loggedIn = this.userProfile != null && this.userProfile != undefined;
+      this.admin = (profile && profile.admin) ?? false;
     });
 
-      this.isMobile = window.innerWidth <= 576;
-      this.router.events.subscribe((event) => {
-        if (event instanceof NavigationEnd) {
-          gtag('event', 'page_view', {
-            'page_path': event.urlAfterRedirects,
-            'page_location': this.document.location.href,
-            'is_mobile': this.isMobile ? 'yes' : 'no',
-          });
-        }
-      });
-      console.log("indeed ",this.isMobile);
+    this.isMobile = window.innerWidth <= 576;
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        gtag('event', 'page_view', {
+          'page_path': event.urlAfterRedirects,
+          'page_location': this.document.location.href,
+          'is_mobile': this.isMobile ? 'yes' : 'no',
+        });
+      }
+    });
+      
   }
   
   ngOnInit() {

@@ -6,9 +6,8 @@ import { Router } from '@angular/router';
 import { Listing } from '@properproperty/api/listings/util';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { Unsubscribe, User } from '@angular/fire/auth';
+import { Unsubscribe } from '@angular/fire/auth';
 import { UserProfile } from '@properproperty/api/profile/util';
-import { AuthState } from '@properproperty/app/auth/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { ActivatedRoute } from '@angular/router';
 import { IonContent } from '@ionic/angular';
@@ -42,10 +41,9 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   markers: any[] = [];
   listings: Listing[] = [];
 
-  @Select(AuthState.user) user$!: Observable<User | null>;
+  @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
-  private user: User | null = null;
-  private profile : UserProfile | null = null;
+  private userProfile : UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
 
 
@@ -85,13 +83,8 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       this.predictions = [];
       this.defaultBounds = new google.maps.LatLngBounds();
 
-      this.user$.subscribe((user) => {
-        this.user = user;
-        if(this.user){
-          this.profileServices.getUser(this.user.uid).then((profile) =>{
-            this.profile = profile;
-          });
-        }
+      this.userProfile$.subscribe((profile) => {
+        this.userProfile = profile;
       });
       // Update listener whenever is changes such that it can be unsubscribed from
       // when the window is unloaded
@@ -131,6 +124,20 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       this.listings = listings;
       this.filterProperties();
     });
+
+    setTimeout(function () {
+      // Hide the loader
+      const load=document.querySelector('.loading-animation') as HTMLElement;
+      const footerGap=document.querySelector('.footer-gap') as HTMLElement;
+      // load.style.display="none";
+      load.style.opacity="0";
+      footerGap.style.display="none";
+
+      // Display the map listing
+      const maplisting=document.querySelector('#listings-and-map') as HTMLElement;
+      // maplisting.style.display="block";
+      maplisting.style.display="block";
+  }, 2000);
 
     console.log(this.listings);
 
@@ -509,6 +516,8 @@ toggleColor() {
     
   // });
 
+  this.showAdditionalFilters = false;
+
   this.listingServices.getApprovedListings().then(async (listings) => {
     this.listings = listings;
     this.filterProperties();
@@ -814,9 +823,9 @@ toggleSelection(amenity: string): void {
 
 //Save listing
 isSaved(listing_id : string){
-  if(this.profile){
-    if(this.profile.savedListings){
-      if(this.profile.savedListings.includes(listing_id)){
+  if(this.userProfile){
+    if(this.userProfile.savedListings){
+      if(this.userProfile.savedListings.includes(listing_id)){
         return true;
       }
     }
@@ -830,15 +839,15 @@ saveListing($event : any, listing_id : string) {
     const heartBut = $event.target as HTMLButtonElement;
     heartBut.style.color = "red";
     
-    if(this.profile){
-        if(this.profile.savedListings){
-          this.profile.savedListings.push(listing_id);
+    if(this.userProfile){
+        if(this.userProfile.savedListings){
+          this.userProfile.savedListings.push(listing_id);
         }
         else{
-          this.profile.savedListings = [listing_id];
+          this.userProfile.savedListings = [listing_id];
         }
 
-        this.profileServices.updateUserProfile(this.profile);
+        this.profileServices.updateUserProfile(this.userProfile);
     }
   } 
 }
@@ -848,12 +857,12 @@ unsaveListing($event : any, listing_id : string){
     const heartBut = $event.target as HTMLButtonElement;
     heartBut.style.color = "red";
     
-    if(this.profile){
-        if(this.profile.savedListings){
-          this.profile.savedListings.splice(this.profile.savedListings.indexOf(listing_id), 1);
+    if(this.userProfile){
+        if(this.userProfile.savedListings){
+          this.userProfile.savedListings.splice(this.userProfile.savedListings.indexOf(listing_id), 1);
         }
 
-        this.profileServices.updateUserProfile(this.profile);
+        this.profileServices.updateUserProfile(this.userProfile);
     }
   } 
 }

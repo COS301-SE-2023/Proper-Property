@@ -139,6 +139,8 @@ export class AdminService {
     let districtCount = 0;
     const encounteredDistricts : string[] = [];
     const districts : District[] = [];
+    let re = /,/gi;
+
     for(let i = 0; i < muniData.length; i++){
       if(muniData[i]['District'] == ""){
         muniData[i]['District'] = "Metro Municipalities";
@@ -149,20 +151,19 @@ export class AdminService {
         districts[encounteredDistricts.indexOf(muniData[i]['District'])].municipalities.push({
           name: muniData[i]['Name'] as string,
           province: muniData[i]['Province'] as string,
-          population: parseFloat(("" + muniData[i]['Population (2016)[3]']).replace(",", "")),
-          popDensity: parseFloat(("" + muniData[i]['Pop. Density (per km2)']).replace(",", "")),
+          population: parseFloat(("" + muniData[i]['Population (2016)[3]']).replace(re, "")),
+          popDensity: parseFloat(("" +  muniData[i]['Pop. Density (per km2)']).replace(re, "")),
         })
       }
       else{
-          encounteredDistricts.push(muniData[i]['District']);
-
+          encounteredDistricts.push(muniData[i]['District']);          
           districts[districtCount++] = {
             name: muniData[i]['District'],
             municipalities: [{
               name: muniData[i]['Name'],
               province: muniData[i]['Province'],
-              population: parseFloat(("" + muniData[i]['Population (2016)[3]']).replace(",", "")),
-              popDensity: parseFloat(("" + muniData[i]['Pop. Density (per km2)']).replace(",", "")),
+              population: parseFloat(("" + muniData[i]['Population (2016)[3]']).replace(re, "")),
+              popDensity: parseFloat(("" +  muniData[i]['Pop. Density (per km2)']).replace(re, "")),
             }]
           }       
       }

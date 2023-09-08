@@ -111,17 +111,33 @@ export class LocInfoRepository {
         }
 
         let districtData;
+        let metroMuni = false;
         try {
-          districtData = (await admin
-            .firestore()
-            .doc('DistrictData/' + correctDistrict.toLowerCase()).get()).data();
-        } catch (error) {
-          throw new Error("yError when trying to find district: " + correctDistrict);
+          if(correctDistrict.includes("Metropolitan Municipality")){
+            let metroMunis = (await admin
+              .firestore()
+              .doc('DistrictData/metro municipalities').get()).data();
+
+              for(let muni of metroMunis?.['municipalities']){
+                if(muni.name.toLowerCase().includes(correctDistrict.toLowerCase())){
+                  districtData = muni;
+                }
+              }
+
+              metroMuni = true;
+          }
+          else{
+            districtData = (await admin
+              .firestore()
+              .doc('DistrictData/' + correctDistrict.toLowerCase()).get()).data();
+          }
+        } catch (error : any) {
+          throw new Error("Error when trying to find district: " + correctDistrict + "\nerror:" + error.message);
         }
         station.weightedTotal = 0;
         stations.push(station.stationName.toLowerCase());
         for(let crime of station.crimeStats){
-          crime.perHunThou = (crime.quarterCount/districtData?.['totalPopulation'] ?? 1) * 100000;
+          crime.perHunThou = (crime.quarterCount/(metroMuni ? districtData?.['population'] : districtData?.['totalPopulation']) ?? 1) * 100000;
           
           station.weightedTotal += ((crime.quarterCount/districtData?.['totalPopulation'] ?? 1) * 100000) * this.crimeWeights[crime.category];
         }   
@@ -217,6 +233,12 @@ export class LocInfoRepository {
   async uploadDistrictData(req : UploadDistrictDataRequest): Promise<UploadLocInfoDataResponse>{
     try{  
       for(let district of req.districts){
+        if(district.name == "Metro Municipalities"){
+          for(let muni of district.municipalities){
+            req.metadata.push(muni.name);
+          }
+        }
+
         let totalPopulation = 0;
         for(let muni of district.municipalities){
           totalPopulation += muni.population
@@ -441,6 +463,7 @@ export class LocInfoRepository {
       const accessWSAs : string[] = [];
       const qualityWSAs : string[] = [];
       const reliabilityWSAs : string[] = [];
+      let count = 0;
       await admin.
         firestore().
         doc('WaterStats-Access/metadata').
@@ -450,6 +473,8 @@ export class LocInfoRepository {
             accessWSAs.push(res);
           }
         })
+
+      console.log(count++)
 
       await admin.
       firestore().
@@ -461,6 +486,7 @@ export class LocInfoRepository {
         }
       })
 
+      console.log(count++)
       
       await admin.
       firestore().
@@ -471,6 +497,8 @@ export class LocInfoRepository {
           reliabilityWSAs.push(res);
         }
       })
+
+      console.log(count++)
 
       let accessWSA = "";
       let qualityWSA = "";
@@ -491,6 +519,8 @@ export class LocInfoRepository {
         }
       }
 
+      console.log(count++)
+
       let accessScore = 0;
       let qualityScore = 0;
       let reliabilityScore = 0;
@@ -504,6 +534,8 @@ export class LocInfoRepository {
       then((response) =>{
         accessScore += response.data()?.['accessPercentage'];
       })
+
+      console.log(count++)
 
       await admin.
       firestore().
@@ -519,6 +551,8 @@ export class LocInfoRepository {
           (response.data()?.['chemicalOperational'] != null ? response.data()?.['chemicalOperational'] : 0);
         qualityScore = totalQ / 6;
       })
+
+      console.log(count++)
 
       //TODO - fix reliability score - returning 0 each time
       await admin.
@@ -549,6 +583,8 @@ export class LocInfoRepository {
         }
       })
 
+      console.log(count++)
+
       //WMA tariff calculations
       let WMA = "";
       let url = "https://services3.arcgis.com/QdLJLZBqzVAhCil8/arcgis/rest/services/WMA_2012/FeatureServer/0/query?where=1%3D1&outFields=WMA_NAME&geometry=" 
@@ -562,6 +598,8 @@ export class LocInfoRepository {
       .then((response) => {
         WMA = response.data?.['features']?.[0]?.['attributes']?.['WMA_NAME'];
       });
+
+      console.log(count++)
 
       let avgDomesticTariff = 0;
       let avgIrrigationTariff = 0;
@@ -579,6 +617,8 @@ export class LocInfoRepository {
             WMAs.push(wma);
           }
         })
+
+        console.log(count++)
 
       let tariffWMA = "";
       for(let wma of WMAs){
