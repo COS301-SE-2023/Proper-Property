@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { GetUserProfileRequest, GetUserProfileResponse, UpdateUserProfileRequest, UpdateUserProfileResponse, UserProfile } from '@properproperty/api/profile/util';
 import { Firestore, doc, deleteDoc, updateDoc } from '@angular/fire/firestore';
 import { httpsCallable, Functions, HttpsCallableResult } from '@angular/fire/functions';
-import { Storage, deleteObject, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
+import { Storage, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +48,7 @@ export class UserProfileService {
   }
 
   async uploadProfilePic(userID : string, input: string) {
-    let photoURL : string = "";
+    let photoURL = "";
     const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + "/" + userID + "/profilePic");
     await fetch("" + input).then(res => res.blob())
     .then(async (blob : Blob) => {

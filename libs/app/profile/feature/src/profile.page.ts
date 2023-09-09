@@ -3,7 +3,7 @@ import { Component, OnInit,HostListener } from '@angular/core';
 import { UserProfileState, UserProfileService } from '@properproperty/app/profile/data-access';
 import {AuthService} from '@properproperty/app/auth/data-access';
 import { Logout } from '@properproperty/app/auth/util';
-import { AlertController, IonIcon } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
@@ -29,7 +29,7 @@ export class ProfilePage implements OnInit {
   newFirstName: string;
   newLastName: string;
   newPhoneNumber: string;
-  profilePic : string = "";
+  profilePic = "";
   saveProfile = false;
   // appPages = [
   //   { title: 'Saved Listings', url: '/saved-listings', icon: 'bookmark' },
