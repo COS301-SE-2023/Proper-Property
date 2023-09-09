@@ -16,7 +16,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  @ViewChild('address', { static: true }) addressInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('query', { static: false }) queryInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('query1', { static: false }) queryInput1!: ElementRef<HTMLInputElement>;
 
   isMobile:boolean;
   // public autocomplete: any;
@@ -58,12 +59,19 @@ export class HomePage implements OnInit {
         signupBut.style.visibility = 'hidden';
       }
     }
-    
-    const inputElementId = 'address';
+  
+    let inputElementId = '';
+
+    if(!this.isMobile) {
+      inputElementId = 'query';
+      this.gmapsService.setupRegionSearchBox(inputElementId);
+    } else {
+      inputElementId = 'query1';
+      this.gmapsService.setupRegionSearchBox(inputElementId);
+    }
 
     
-    
-    this.gmapsService.setupRegionSearchBox(inputElementId);
+
   }
 
   @HostListener('window:resize', ['$event'])
@@ -76,7 +84,12 @@ export class HomePage implements OnInit {
   //to be implemented
   searchProperties() {
     // Get the search query from the input field
-    this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
+    if(!this.isMobile){
+      this.searchQuery = (document.getElementById("query") as HTMLInputElement).value;
+    }
+    else {
+      this.searchQuery = (document.getElementById("query1") as HTMLInputElement).value;
+    }
 
     // Redirect to the search page with the search query as a parameter
     this.router.navigate(['/search'], { queryParams: { q: this.searchQuery } });

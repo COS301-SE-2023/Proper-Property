@@ -95,12 +95,14 @@ export class ListingPage{
         
         // TODO
         console.log(this.list);
-        this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
 
-        this.profileServices.getUser("" + this.list?.user_id).then((lister) => {
-          this.lister = lister;
-          this.lister_name = lister?.firstName + " " + lister?.lastName;
-        })
+       
+        this.price_per_sm = Number( this.list?.price.replace(/,/g, '')) / Number(this.list?.property_size);
+  
+        this.userServices.getUser("" + this.list?.user_id).then((user : UserProfile) => {
+          this.lister = user;
+          this.lister_name = user.firstName + " " + user.lastName;
+        });
 
         this.userProfile$.subscribe((profile) => {
           this.userProfile = profile;
