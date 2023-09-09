@@ -123,22 +123,6 @@ export class ProfilePage implements OnInit {
    
   ngOnInit() {
     console.log ("Linter: Lifecycle methods should not be empty");
-
-    // if(!this.user?.profilePicture){
-    //   console.log("There is no profilePicture")
-    //   document.getElementById("profilePic2")?.setAttribute("style", "margin: 10px; border-radius: 50%; border: 1px solid black; width: 100px; height: 100px; background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2t2r3zx8jVPz6isicXtXbueLZFfWIuRMkW8X6KQ3_&s'); background-size: cover; background-position-x: center; background-position-y: center;")
-    //   return;
-    // }
-
-    // this.profilePic = this.user.profilePicture;
-    // console.log(this.profilePic);
-    // console.log("Profile Pic found");
-    // const image = document.getElementById("profilePic2") as HTMLDivElement;
-    // if (!image) {
-    //   console.error("I want to end it all istg");
-    //   return;
-    // }
-    // image.setAttribute('style', "margin: 10px; border-radius: 50%; border: 1px solid black; width: 100px; height: 100px; background-image: url('" + (this.user.profilePicture ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2t2r3zx8jVPz6isicXtXbueLZFfWIuRMkW8X6KQ3_&s') + "'); background-size: cover; background-position-x: center; background-position-y: center;") 
   }
 
   async confirmDeleteAccount() {
@@ -167,12 +151,15 @@ export class ProfilePage implements OnInit {
     await alert.present();
   }
 
-  deleteAccount() {
+  async deleteAccount() {
     // Perform validation or additional logic here if needed
-    this.userProfileService.deleteUser(this.userProfileService.currentUser?.userId ?? '');
-    this.authServices.deleteCurrentUser();
-    //redirect to login
-    this.router.navigate(['/register']);
+    if(this.user)
+    {
+      await this.userProfileService.deleteUser(this.user?.userId);
+      this.authServices.deleteCurrentUser();
+      //redirect to login
+      this.router.navigate(['/register']);
+    }
   }
 
   logout(){

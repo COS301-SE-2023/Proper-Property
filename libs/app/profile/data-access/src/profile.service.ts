@@ -21,8 +21,10 @@ export class UserProfileService {
   }
 
   async deleteUser(uid: string) {
+    console.log("Deleting doc")
     const userRef = doc(this.firestore, `users/${uid}`);
-    await deleteDoc(userRef);
+    const response = await deleteDoc(userRef);
+    console.log(response);
   }
 
   async getUser(uid: string) : Promise<UserProfile>{
@@ -32,9 +34,9 @@ export class UserProfileService {
     >(
       this.functions, 
       'getUserProfile'
-    )({userId: uid})).data as GetUserProfileResponse;
+    )({userId: uid})).data;
     console.log(resp);
-    return resp.user as UserProfile;
+    return resp.user as UserProfile;  
   }
 
   async updateUserProfile(uProfile: UserProfile) {
