@@ -3,7 +3,7 @@ import { Component, OnInit,HostListener } from '@angular/core';
 import { UserProfileState, UserProfileService } from '@properproperty/app/profile/data-access';
 import {AuthService} from '@properproperty/app/auth/data-access';
 import { Logout } from '@properproperty/app/auth/util';
-import { AlertController } from '@ionic/angular';
+import { AlertController, IonIcon } from '@ionic/angular';
 
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
@@ -24,10 +24,13 @@ export class ProfilePage implements OnInit {
   isEditingEmail: boolean;
   isEditingName: boolean;
   isEditingPhoneNumber: boolean;
+  isEditingProfilePicture: boolean;
   newEmail: string;
   newFirstName: string;
   newLastName: string;
   newPhoneNumber: string;
+  profilePic : string = "";
+  saveProfile = false;
   // appPages = [
   //   { title: 'Saved Listings', url: '/saved-listings', icon: 'bookmark' },
   //   { title: 'My Listings', url: '/my-listings', icon: 'list' },
@@ -74,7 +77,7 @@ export class ProfilePage implements OnInit {
     ) {
 
       
-      this.isMobile = isMobile();
+      this.isMobile = window.innerWidth <= 576;
     // default value cus ngModel cries when the user is null
     this.interests = {
       garden: 0,
@@ -118,6 +121,7 @@ export class ProfilePage implements OnInit {
     this.isEditingEmail = false;
     this.isEditingName = false;
     this.isEditingPhoneNumber = false;
+    this.isEditingProfilePicture = false;
     this.newEmail = '';
     this.newFirstName = '';
     this.newLastName = '';
@@ -222,7 +226,36 @@ export class ProfilePage implements OnInit {
     this.newPhoneNumber = '';
     this.isEditingPhoneNumber = false;
   }
-}
-function isMobile(): boolean {
-  return window.innerWidth <= 576;
+
+  editProfilePicture(){
+    if(!this.user){
+      return;
+    }
+
+    this.isEditingProfilePicture = true;
+  }
+
+  handleFileInput(event: Event) {
+    if (!event.currentTarget) {
+      return;
+    }
+    const files: FileList | null = (event.currentTarget as HTMLInputElement).files;
+    if (files) {
+      for (let index = 0; index < files.length; index++) {
+        if (files.item(index)){
+          this.profilePic = URL.createObjectURL(files.item(index) as Blob);
+          console.log("brooo ",URL.createObjectURL(files.item(index) as Blob));
+        }
+      }
+
+      document.getElementById("profileIcon")?.setAttribute("src", this.profilePic);
+      this.saveProfile = true;
+    }
+  }
+
+  saveProfilePic(){
+    if(this.user){
+      this.userProfileService.uploadProfilePic(this.user.userId, this.profilePic)
+    }
+  }
 }

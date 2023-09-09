@@ -4,7 +4,8 @@
     <ion-grid>
       <ion-row class="profilePic">
         <ion-col>
-          <ion-icon name="person-outline"></ion-icon>
+          <ion-icon id="profileIcon" name="person-outline" (click)="fileInput.click()"></ion-icon>
+          <input type="file" accept="image/*" (change)="handleFileInput($event)" hidden #fileInput>
           <h1>{{ user?.firstName }} {{ user?.lastName }}</h1>
       
             <ion-grid class="Userlabels">
@@ -41,6 +42,11 @@
               </ion-row>
             </ion-grid>
         </ion-col>
+      </ion-row>
+      <ion-row>
+        <ng-template *ngIf="saveProfile">
+          <ion-button expand="full" color="primary" (click)="saveProfilePic()">Save</ion-button>
+        </ng-template>
       </ion-row>
 
       <ion-row class="utils">
@@ -162,7 +168,8 @@
     <ion-grid>
       <ion-row class="profilePic">
         <ion-col>
-          <ion-icon name="person-outline"></ion-icon>
+          <ion-icon id="profileIcon" name="person-outline" (click)="fileInput.click()"></ion-icon>
+          <input type="file" accept="image/*" (change)="handleFileInput($event)" hidden #fileInput>
           <h1>{{ user?.firstName }} {{ user?.lastName }}</h1>
         </ion-col>
       </ion-row>

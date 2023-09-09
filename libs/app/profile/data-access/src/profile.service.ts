@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { GetUserProfileRequest, GetUserProfileResponse, UpdateUserProfileRequest, UpdateUserProfileResponse, UserProfile } from '@properproperty/api/profile/util';
-import { Firestore, doc, deleteDoc } from '@angular/fire/firestore';
+import { Firestore, doc, deleteDoc, updateDoc } from '@angular/fire/firestore';
 import { httpsCallable, Functions, HttpsCallableResult } from '@angular/fire/functions';
+import { Storage, deleteObject, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { httpsCallable, Functions, HttpsCallableResult } from '@angular/fire/fun
 export class UserProfileService {
   currentUser: UserProfile | null = null;
 
-  constructor(private firestore: Firestore, private readonly functions: Functions) {}
+  constructor(private firestore: Firestore, private readonly functions: Functions, private storage: Storage) {}
   // TODO: Replace with state management
   getCurrentUser() {
     return this.currentUser;
@@ -42,6 +43,19 @@ export class UserProfileService {
       UpdateUserProfileResponse
     >(this.functions, 'updateUserProfile')({user: uProfile});
     console.log(resp);
+  }
+
+  async uploadProfilePic(userID : string, input: string) {
+    let photoURL : string = "";
+    const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + "/" + userID + "/profilePic");
+    await fetch("" + input).then(res => res.blob())
+    .then(async (blob : Blob) => {
+      photoURL = await getDownloadURL((await uploadBytes(storageRef, blob)).ref);
+    })
+
+    // TODO Add this via CQRS
+    const userRef = doc(this.firestore, `users/${userID}`);
+      await updateDoc(userRef, {photos: photoURL});
   }
 }
 
