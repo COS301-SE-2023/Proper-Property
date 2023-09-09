@@ -405,6 +405,7 @@ handleAddressChange(address: string): void {
 
       console.log(list);
       await this.listingService.createListing(list);
+    
       this.router.navigate(['/home']);
     }
     else{
