@@ -8,6 +8,6 @@ export class StatusChangedHandler implements IEventHandler<StatusChangedEvent> {
 
   async handle(event: StatusChangedEvent) {
     console.log(StatusChangedHandler.name);
-    await this.listingRepo.changeStatus(event.listingId, event.change);
+    await this.listingRepo.changeStatus(event.listingId, event.change, event.req);
   }
 }

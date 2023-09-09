@@ -36,6 +36,15 @@
       "@properproperty/api/notifications/util": [
         "libs/api/notifications/util/src/index.ts"
       ],
+      "@properproperty/api/loc-info/data-access": [
+        "libs/api/loc-info/data-access/src/index.ts"
+      ],
+      "@properproperty/api/loc-info/feature": [
+        "libs/api/loc-info/feature/src/index.ts"
+      ],
+      "@properproperty/api/loc-info/util": [
+        "libs/api/loc-info/util/src/index.ts"
+      ],
       "@properproperty/api/profile/data-access": [
         "libs/api/profile/data-access/src/index.ts"
       ],

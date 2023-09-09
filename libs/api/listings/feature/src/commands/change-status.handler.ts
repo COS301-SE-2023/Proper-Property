@@ -20,11 +20,11 @@ implements ICommandHandler<
     let response;
 
     try {
-      response = listingModel.changeStatus(command.req.adminId);
+      response = listingModel.changeStatus(command.req);
       listingModel.commit();
     } catch (error) {
       console.log(error);
-      response = {success: false, ApprovalChange: undefined}; 
+      response = {success: false, approvalChange: undefined}; 
     }
     
     return response;

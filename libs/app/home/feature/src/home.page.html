@@ -16,7 +16,7 @@ core.shell.html
         <h1 id="caption">Discover Your Dream Home: Where Living Extends Beyond Walls</h1>
       </div>
       <div class="search-container">
-        <input type="text" id="address" [(ngModel)]="searchQuery" placeholder="Property Location Search">
+        <input type="text" id="query" class="query" [(ngModel)]="searchQuery" placeholder="Property Location Search">
         <ion-button id="search-button" (click)="searchProperties()">
           <h1 class="search-button-text" style="margin-top: 10px;">Search</h1>
         </ion-button>
@@ -97,7 +97,7 @@ core.shell.html
         </ion-col>
 
         <ion-col class="image-col" size="4">
-          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 678 834" fill="none">
+          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 678 834" fill="none" style="margin-top: 10%;">
             <!-- Define a clipPath with the same path data -->
             <clipPath id="house-clip-path">
               <path
@@ -168,7 +168,7 @@ core.shell.html
       <h1 class="mainHeading">Proper Properties For You</h1>
       <h1 id="caption">Discover Your Dream Home</h1>
       <div class="search-container">
-        <input type="text" id="address" [(ngModel)]="searchQuery" placeholder="Property Location Search">
+        <input type="text" id="query1"  class="query1" [(ngModel)]="searchQuery" placeholder="Property Location Search">
         <ion-button id="search-button" (click)="searchProperties()">
           <ion-icon name="search" class="search-icon"></ion-icon>
         </ion-button>

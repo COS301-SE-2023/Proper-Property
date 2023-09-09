@@ -12,7 +12,7 @@ import { Select } from '@ngxs/store';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { NotificationsState } from '@properproperty/app/notifications/data-access';
 import { Observable } from 'rxjs';
-import { Unsubscribe, User } from 'firebase/auth';
+import { Unsubscribe } from 'firebase/auth';
 // import { SubscribeToUserProfile, UnsubscribeFromUserProfile } from '@properproperty/app/user/util';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { UserProfileState,UserProfileService } from '@properproperty/app/profile/data-access';
@@ -24,6 +24,7 @@ import { NotificationsService } from 'libs/app/notifications/data-access/src/not
 
 import { DOCUMENT } from '@angular/common';
 import { Notification } from '@properproperty/api/notifications/util';
+import { UserProfile } from '@properproperty/api/profile/util';
 
 declare const gtag: any;
 
@@ -35,14 +36,14 @@ declare const gtag: any;
 export class CoreShellComponent implements OnInit, OnDestroy {
   
   isMobile: boolean;
-  @Select(AuthState.user) user$!: Observable<User | null>;
+  @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
   @Select(NotificationsState.notifications) notifications$!: Observable<Notification[] | null>;
   @Select(NotificationsState.notificationsListener) notificationsListener$!: Observable<Unsubscribe | null>;
   public loggedIn = false;
   public admin = false;
-  private user: User | null = null;
   public dev: boolean;
+  private userProfile: UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
   private notificationsListener: Unsubscribe | null = null;
   public notifications: Notification[] = [];
@@ -58,16 +59,12 @@ export class CoreShellComponent implements OnInit, OnDestroy {
     private readonly notificationsService: NotificationsService
   ) {
     this.dev = isDevMode();
-    this.loggedIn = this.user$ != null && this.user$ != undefined;
+    this.loggedIn = this.userProfile$ != null && this.userProfile$ != undefined;
 
-    this.user$.subscribe((user) => {
-      this.user = user;
+    this.userProfile$.subscribe((user) => {
+      this.userProfile = user;
       this.loggedIn = user != null && user != undefined;
-      if (this.user) {
-        this.notificationsService.registerNotifications(this.user.uid).then(tkn => {
-          this.NotificationToken = tkn;
-        });
-      }
+      
     });
     // Update listener whenever is changes such that it can be unsubscribed from
     // when the window is unloaded
@@ -83,32 +80,23 @@ export class CoreShellComponent implements OnInit, OnDestroy {
       console.log("notifications", notifications);
       this.notifications = notifications ?? [];
     });
-
-    this.user$.subscribe((user) => {
-      this.user = user;
-      this.profileServices.getUser("" + user?.uid).then((profile) => {
-        if(profile !== undefined && profile){
-          if(profile.admin){
-            this.admin = true;
-          }
-          else{
-            router.navigate(['/home']);
-          }
-        }
-      });
+    this.userProfile$.subscribe((profile) => {
+      this.userProfile = profile;
+      this.loggedIn = this.userProfile != null && this.userProfile != undefined;
+      this.admin = (profile && profile.admin) ?? false;
     });
 
-      this.isMobile = window.innerWidth <= 576;
-      this.router.events.subscribe((event) => {
-        if (event instanceof NavigationEnd) {
-          gtag('event', 'page_view', {
-            'page_path': event.urlAfterRedirects,
-            'page_location': this.document.location.href,
-            'is_mobile': this.isMobile ? 'yes' : 'no',
-          });
-        }
-      });
-      console.log("indeed ",this.isMobile);
+    this.isMobile = window.innerWidth <= 576;
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        gtag('event', 'page_view', {
+          'page_path': event.urlAfterRedirects,
+          'page_location': this.document.location.href,
+          'is_mobile': this.isMobile ? 'yes' : 'no',
+        });
+      }
+    });
+      
   }
   
   ngOnInit() {

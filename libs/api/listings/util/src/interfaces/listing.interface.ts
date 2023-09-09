@@ -1,9 +1,10 @@
-import { ApprovalChange } from './index';
+import { ApprovalChange, areaScore } from './index';
 
 export interface Listing{
   listing_id?: string;
   user_id: string;
   address: string;
+  district: string;
   price: string;
   pos_type: string;
   env_type: string;
@@ -19,9 +20,11 @@ export interface Listing{
   photos: string[];
   desc: string;
   let_sell: string;
+  listingAreaType: string;
   heading: string;
   approved: boolean;
   approvalChanges?: ApprovalChange[];
   listingDate: string;
   quality_rating?: number;
+  areaScore: areaScore;
 }

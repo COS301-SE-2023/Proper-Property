@@ -1,10 +1,19 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { ListingEditedEvent, Listing, ApprovalChange, StatusChangedEvent, ChangeStatusResponse } from '@properproperty/api/listings/util';
+import { 
+  ListingEditedEvent, 
+  Listing, 
+  ApprovalChange, 
+  StatusChangedEvent, 
+  ChangeStatusResponse, 
+  areaScore, 
+  ChangeStatusRequest 
+} from '@properproperty/api/listings/util';
 
 export class ListingModel extends AggregateRoot implements Listing {
   constructor(
     public user_id: string,
     public address: string,
+    public district: string,
     public price: string,
     public pos_type: string,
     public env_type: string,
@@ -20,9 +29,11 @@ export class ListingModel extends AggregateRoot implements Listing {
     public photos: string[],
     public desc: string,
     public let_sell: string,
+    public listingAreaType: string,
     public heading: string,
     public approved: boolean,
     public listingDate: string,
+    public areaScore: areaScore,
     public listing_id?: string,
     public approvalChanges?: ApprovalChange[],
     public quality_rating?: number,
@@ -34,6 +45,7 @@ export class ListingModel extends AggregateRoot implements Listing {
     const model = new ListingModel(
       listing.user_id,
       listing.address,
+      listing.district,
       listing.price,
       listing.pos_type,
       listing.env_type,
@@ -49,9 +61,11 @@ export class ListingModel extends AggregateRoot implements Listing {
       listing.photos,
       listing.desc,
       listing.let_sell,
+      listing.listingAreaType,
       listing.heading,
       listing.approved,
       listing.listingDate,
+      listing.areaScore,
       listing.listing_id,
       listing.approvalChanges,
       listing.quality_rating,
@@ -62,6 +76,7 @@ export class ListingModel extends AggregateRoot implements Listing {
   editListing(listing: Listing) {
     this.user_id = listing.user_id;
     this.address = listing.address;
+    this.district = listing.district;
     this.price = listing.price;
     this.pos_type = listing.pos_type;
     this.env_type = listing.env_type;
@@ -77,6 +92,7 @@ export class ListingModel extends AggregateRoot implements Listing {
     this.photos = listing.photos;
     this.desc = listing.desc;
     this.let_sell = listing.let_sell;
+    this.listingAreaType = listing.listingAreaType;
     this.heading = listing.heading;
     this.approved = listing.approved;
     this.listingDate = listing.listingDate;
@@ -92,10 +108,10 @@ export class ListingModel extends AggregateRoot implements Listing {
     this.apply(new ListingEditedEvent(listing));
   }
 
-  changeStatus(adminId: string): ChangeStatusResponse {
+  changeStatus(req: ChangeStatusRequest): ChangeStatusResponse {
     this.approved = !this.approved;
     const change: ApprovalChange = {
-      adminId: adminId,
+      adminId: req.adminId,
       status: this.approved,
       date: new Date().toISOString(),
     };
@@ -105,15 +121,16 @@ export class ListingModel extends AggregateRoot implements Listing {
     if (!this.listing_id) {
       throw new Error('yeah idk fam. this should never happen. the listing has no listing_id');
     }
-    this.apply(new StatusChangedEvent(this.listing_id, change, this.user_id));
+    this.apply(new StatusChangedEvent(this.listing_id, change, this.user_id, req));
 
-    return {success: true, ApprovalChange: change};
+    return {success: true, approvalChange: change};
   }
 
   toJSON(): Listing {
     return {
       user_id: this.user_id,
       address: this.address,
+      district: this.district,
       price: this.price,
       pos_type: this.pos_type,
       env_type: this.env_type,
@@ -132,9 +149,11 @@ export class ListingModel extends AggregateRoot implements Listing {
       heading: this.heading,
       approved: this.approved,
       listingDate: this.listingDate,
+      areaScore: this.areaScore,
       listing_id: this.listing_id,
       approvalChanges: this.approvalChanges,
       quality_rating: this.quality_rating,
+      listingAreaType: this.listingAreaType,
     };
   }
 }
