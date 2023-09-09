@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-import { GetUserProfileRequest, GetUserProfileResponse, UpdateUserProfileRequest, UpdateUserProfileResponse, UserProfile } from '@properproperty/api/profile/util';
+import { GetUserProfileRequest,
+   GetUserProfileResponse,
+   UpdateUserProfileRequest, 
+   UpdateUserProfileResponse, 
+   UserProfile, 
+   Interests } from '@properproperty/api/profile/util';
 import { characteristics } from '@properproperty/api/listings/util';
-import { Interests } from '@properproperty/api/profile/util';
 import { Firestore, doc, deleteDoc } from '@angular/fire/firestore';
 import { httpsCallable, Functions, HttpsCallableResult } from '@angular/fire/functions';
-import { UpdateUserProfile } from '../../util/src/profile.actions';
 
 @Injectable({
   providedIn: 'root'
