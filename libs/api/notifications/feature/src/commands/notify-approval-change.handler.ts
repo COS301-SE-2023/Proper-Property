@@ -3,9 +3,8 @@ import { NotifyApprovalChangeCommand } from '@properproperty/api/notifications/u
 import { Notification } from '@properproperty/api/notifications/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { NotificationsDocModel } from '../models/notifications.model';
-import { NotificationsDoc } from '@properproperty/api/notifications/util';
+// import { NotificationsDoc } from '@properproperty/api/notifications/util';
 import { NotificationsRepository } from '@properproperty/api/notifications/data-access';
-import { MailerService } from '@nestjs-modules/mailer';
 import  * as nodemailer  from 'nodemailer';
 import * as fs from 'fs';
 import * as path from 'path';
