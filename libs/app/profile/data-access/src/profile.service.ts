@@ -53,9 +53,12 @@ export class UserProfileService {
       photoURL = await getDownloadURL((await uploadBytes(storageRef, blob)).ref);
     })
 
+    console.log(photoURL)
+
     // TODO Add this via CQRS
     const userRef = doc(this.firestore, `users/${userID}`);
-      await updateDoc(userRef, {photos: photoURL});
+    await updateDoc(userRef, {profilePicture: photoURL});
+    return photoURL;
   }
 }
 
