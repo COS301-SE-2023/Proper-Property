@@ -63,6 +63,7 @@
 
     <ion-row id="house-details">
       <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
+        <ion-col>
         <ion-item class="ion-container">
           <div class="container">
             <div class="searchInput">
@@ -83,6 +84,24 @@
             </div>
           </div>
         </ion-item>
+      </ion-col>
+      <ion-col>
+          <ion-item class="ion-container">
+            <div class="container">
+              <div class="searchInput">
+                <label position="floating" class="house-text">Property District Municipality<span class="required-indicator"
+                  *ngIf="!address">*</span>
+                    <div id="districtHelp">
+                      ?
+                    </div>
+                    <span id="districtHelpSpan">Follow <a href="https://www.dws.gov.za/niwis2/dwq2" target="_blank" rel="noopener">this</a> link an determine your district by zooming into the map</span>
+                </label>
+                <input style="font-weight: 500; padding-left:1%" type="text" class="house-text" id="address"
+                  [(ngModel)]="district" placeholder="Enter the district of you listing">
+              </div>
+            </div>
+          </ion-item>
+        </ion-col>
       </ion-row>
 
       <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
@@ -101,7 +120,7 @@
               <label position="floating" class="house-text">Possession Type:</label>
             </ion-col>
             <ion-col>
-              <select class="house-dropdown" aria-label="pos-type">
+              <select  [(ngModel)]="pos_type" class="house-dropdown" aria-label="pos-type">
                 <option value="Leasehold">Leasehold</option>
                 <option value="Freehold">Freehold</option>
                 <option value="Condominium">Condominium</option>
@@ -118,7 +137,7 @@
               <label position="floating" class="house-text" style="margin-left: 3%">Property Type:</label>
             </ion-col>
             <ion-col>
-              <select class="house-dropdown" aria-label="prop-type" id="prop-type">
+              <select [(ngModel)]="prop_type" class="house-dropdown" aria-label="prop-type" id="prop-type">
                 <option value="House">House</option>
                 <option value="Apartment">Apartment</option>
                 <option value="Commercial">Commercial Property</option>
@@ -132,7 +151,7 @@
               <label position="floating" class="house-text">Community Environment:</label>
             </ion-col>
             <ion-col>
-              <select class="house-dropdown" aria-label="env-type">
+              <select [(ngModel)]="env_type" class="house-dropdown" aria-label="env-type">
                 <option value="Gated Community">Gated Community</option>
                 <option value="Complex">Complex</option>
                 <option value="Standalone House">Standalone House</option>
@@ -149,7 +168,7 @@
               <label position="floating" class="house-text" style="margin-left: 3%">Furnishing:</label>
             </ion-col>
             <ion-col>
-              <select class="house-dropdown" aria-label="furnishing">
+              <select [(ngModel)]="furnish_type" class="house-dropdown" aria-label="furnishing">
                 <option value="Furnished">Furnished</option>
                 <option value="Partly Furnished">Partly Furnished</option>
                 <option value="Not Furnished">Not Furnished</option>
@@ -163,7 +182,7 @@
               <label position="floating" class="house-text">Orientation:</label>
             </ion-col>
             <ion-col>
-              <select class="house-dropdown" aria-label="orientation">
+              <select [(ngModel)]="orientation" class="house-dropdown" aria-label="orientation">
                 <option value="North">North</option>
                 <option value="East">East</option>
                 <option value="West">West</option>
@@ -232,6 +251,13 @@
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <ion-label class="house-text">Sell</ion-label>
             </ion-item>
+            <ion-item>
+              <ion-label class="house-text">Urban</ion-label>
+              <ion-toggle style="padding: 10px;" [checked]="false" (click)="changeListingAreaType()"
+                [(ngModel)]="listingAreaTypeSlider"></ion-toggle>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <ion-label class="house-text">Rural</ion-label>
+            </ion-item>
           </ion-list>
         </ion-col>
       </ion-row>
@@ -262,7 +288,7 @@
         </ion-col>
         <ion-col size="6">
           <ion-label class="house-text">Property Description</ion-label>
-          <textarea id="desc" rows="10" cols="50">{{description}}</textarea><br>
+          <textarea [(ngModel)]="description" id="desc" rows="10" cols="50">{{description}}</textarea><br>
           <ion-button (click)="generateDesc()">AI Generated Description</ion-button>
         </ion-col>
       </ion-row>
@@ -369,7 +395,7 @@
               <label position="floating" class="house-text">Possession Type:</label>
             </ion-col>
             <ion-col>
-              <select class="house-dropdown" aria-label="pos-type">
+              <select [(ngModel)]="pos_type" class="house-dropdown" aria-label="pos-type" id="pos-type">
                 <option value="Leasehold">Leasehold</option>
                 <option value="Freehold">Freehold</option>
                 <option value="Condominium">Condominium</option>
@@ -386,7 +412,7 @@
               <label position="floating" class="house-text" style="margin-left: 3%">Property Type:</label>
             </ion-col>
             <ion-col>
-              <select class="house-dropdown" aria-label="prop-type" id="prop-type">
+              <select [(ngModel)]="prop_type" class="house-dropdown" aria-label="prop-type" id="prop-type">
                 <option value="House">House</option>
                 <option value="Apartment">Apartment</option>
                 <option value="Commercial">Commercial Property</option>
@@ -397,7 +423,7 @@
         <ion-col>
           <ion-row class="dropdown">
             <ion-col>
-              <label position="floating" class="house-text">Community Environment:</label>
+              <label [(ngModel)]="env_type" position="floating" class="house-text">Community Environment:</label>
             </ion-col>
             <ion-col>
               <select class="house-dropdown" aria-label="env-type">
@@ -417,7 +443,7 @@
               <label position="floating" class="house-text" style="margin-left: 3%">Furnishing:</label>
             </ion-col>
             <ion-col>
-              <select class="house-dropdown" aria-label="furnishing">
+              <select [(ngModel)]="furnish_type" class="house-dropdown" aria-label="furnishing">
                 <option value="Furnished">Furnished</option>
                 <option value="Partly Furnished">Partly Furnished</option>
                 <option value="Not Furnished">Not Furnished</option>
@@ -431,7 +457,7 @@
               <label position="floating" class="house-text">Orientation:</label>
             </ion-col>
             <ion-col>
-              <select class="house-dropdown" aria-label="orientation">
+              <select [(ngModel)]="orientation" class="house-dropdown" aria-label="orientation">
                 <option value="North">North</option>
                 <option value="East">East</option>
                 <option value="West">West</option>
@@ -500,6 +526,13 @@
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <ion-label class="house-text">Sell</ion-label>
             </ion-item>
+            <ion-item>
+              <ion-label class="house-text">Urban</ion-label>
+              <ion-toggle style="padding: 10px;" [checked]="false" (click)="changeListingAreaType()"
+                [(ngModel)]="listingAreaTypeSlider"></ion-toggle>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <ion-label class="house-text">Rural</ion-label>
+            </ion-item>
           </ion-list>
         </ion-col>
       </ion-row>
@@ -534,7 +567,7 @@
       <ion-row style="width: 100%; margin-top: 1.5%;">
       <ion-col size="12">
         <ion-label class="house-text">Property Description</ion-label>
-        <textarea id="desc" rows="10" cols="50">{{description}}</textarea><br>
+        <textarea [(ngModel)]="description" id="desc" rows="10" cols="50">{{description}}</textarea><br>
         <ion-button (click)="generateDesc()">AI Generated Description</ion-button>
       </ion-col>
     </ion-row>

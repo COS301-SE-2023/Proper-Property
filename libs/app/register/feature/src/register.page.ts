@@ -8,7 +8,6 @@ import { Register } from '@properproperty/app/auth/util';
 
 import { UserProfile } from '@properproperty/api/profile/util';
 import { Observable } from 'rxjs';
-import { UpdateUserProfile } from '@properproperty/app/profile/util';
 import { Unsubscribe, User } from 'firebase/auth';
 
 import { AuthState } from '@properproperty/app/auth/data-access';
