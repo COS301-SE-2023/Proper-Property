@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild,HostListener} from '@angular/core';
+import { Component, ElementRef, ViewChild,HostListener, OnDestroy} from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { Listing } from '@properproperty/api/listings/util';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,7 +6,6 @@ import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { Observable, of } from 'rxjs';
-// import { Unsubscribe } from '@angular/fire/firestore';
 import { Select } from '@ngxs/store';
 import { httpsCallable, Functions } from '@angular/fire/functions';
 import { Chart, registerables } from 'chart.js';
@@ -22,7 +21,7 @@ register();
   templateUrl: './listing.page.html',
   styleUrls: ['./listing.page.scss'],
 })
-export class ListingPage{
+export class ListingPage implements OnDestroy{
   @ViewChild(IonContent) content: IonContent | undefined;
   // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
 
@@ -42,6 +41,7 @@ export class ListingPage{
   adminId = "";
   public ownerViewing$ : Observable<boolean> = of(false);
   coordinates: {latitude: number, longitude: number} | null = null;
+  profilePic = "";
 
   price_per_sm = 0;
   lister_name = "";
@@ -109,6 +109,7 @@ export class ListingPage{
           this.isRed = this.isSaved(this.listingId);
           if(profile && this.list && this.userProfile?.userId == this.list?.user_id){
             this.ownerViewing$ = of(true);
+            this.profilePic = this.userProfile?.profilePicture ?? "";
           }
         });
 
@@ -267,12 +268,6 @@ export class ListingPage{
           );
           
           this.processPointsOfInterestResults(results,coordinates.latitude, coordinates.longitude);
-          // const testing = await this.gmapsService.getLatLongFromAddress("Durban, South Africa");
-
-          // await this.gmapsService.calculateDistanceInMeters(coordinates.latitude,coordinates.longitude,testing.latitude,testing.longitude).then((distanceInMeters) => {
-          //   console.log('Distance between the two coordinates:', distanceInMeters, 'meters');
-          // });
-
         }
       } catch (error) {
         console.error('Error retrieving nearby places:', error);
@@ -495,7 +490,7 @@ export class ListingPage{
   }
   goPrev() {
     if(this.swiperRef){
-      this.swiperRef.nativeElement.swiper.slideNext();
+      this.swiperRef.nativeElement.swiper.slidePrev();
     }
     else{
       console.log("Swiper undefined");
@@ -607,8 +602,14 @@ export class ListingPage{
   }
 
   //editing listing
-  editListing(){
+  async editListing(){
     this.router.navigate(['/create-listing', {listingId : this.listingId}]);
+    this.ngOnDestroy();
+  }
+
+  ngOnDestroy() {
+    console.log("Listing page being destroyed");
+    this.list = null;
   }
 }
 function isMobile(): boolean {
