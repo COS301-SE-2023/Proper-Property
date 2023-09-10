@@ -12,7 +12,7 @@ import { Listing,
 import { GetLocInfoDataRequest,
   GetLocInfoDataResponse } from '@properproperty/api/loc-info/util';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
-import { Storage, deleteObject, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
+import { Storage, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { Observable } from 'rxjs';
@@ -153,7 +153,7 @@ export class ListingsService {
   async updateImages(listingId : string, images : string[]){
     const photoURLs : string[] = [];
     const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId);
-    deleteObject(storageRef);
+    console.log(storageRef.toString());
 
     for(let i = 0; i < images.length; i++){
       const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId + "/image" + i);
