@@ -82,7 +82,7 @@ export class ListingsService {
 
   async getApprovedListings(){
     const response = (await httpsCallable<
-      null,
+      undefined,
       GetApprovedListingsResponse
     >(
       this.functions, 

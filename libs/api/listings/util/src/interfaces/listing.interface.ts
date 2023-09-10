@@ -1,9 +1,8 @@
-import { StatusChange } from './index';
-import { areaScore } from './index';
+import { ApprovalChange, areaScore } from './index';
 
 export interface Listing{
   listing_id?: string;
-  user_id: string | undefined;
+  user_id: string;
   address: string;
   district: string;
   price: string;
@@ -24,7 +23,7 @@ export interface Listing{
   listingAreaType: string;
   heading: string;
   approved: boolean;
-  statusChanges?: StatusChange[];
+  approvalChanges?: ApprovalChange[];
   listingDate: string;
   quality_rating?: number;
   areaScore: areaScore;

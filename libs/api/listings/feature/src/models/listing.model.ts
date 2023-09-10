@@ -1,9 +1,17 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { ListingEditedEvent, Listing, StatusChange, areaScore } from '@properproperty/api/listings/util';
+import { 
+  ListingEditedEvent, 
+  Listing, 
+  ApprovalChange, 
+  StatusChangedEvent, 
+  ChangeStatusResponse, 
+  areaScore, 
+  ChangeStatusRequest 
+} from '@properproperty/api/listings/util';
 
-export class listingModel extends AggregateRoot implements Listing {
+export class ListingModel extends AggregateRoot implements Listing {
   constructor(
-    public user_id: string | undefined,
+    public user_id: string,
     public address: string,
     public district: string,
     public price: string,
@@ -27,40 +35,40 @@ export class listingModel extends AggregateRoot implements Listing {
     public listingDate: string,
     public areaScore: areaScore,
     public listing_id?: string,
-    public statusChanges?: StatusChange[],
-    public quality_rating?: number
+    public approvalChanges?: ApprovalChange[],
+    public quality_rating?: number,
   ) {
     super();
   }
 
   static createListing(listing: Listing) {
-    const model = new listingModel(
-        listing.user_id,
-        listing.address,
-        listing.district,
-        listing.price,
-        listing.pos_type,
-        listing.env_type,
-        listing.prop_type,
-        listing.furnish_type,
-        listing.orientation,
-        listing.floor_size,
-        listing.property_size,
-        listing.bath,
-        listing.bed,
-        listing.parking,
-        listing.features,
-        listing.photos,
-        listing.desc,
-        listing.let_sell,
-        listing.listingAreaType,
-        listing.heading,
-        listing.approved,
-        listing.listingDate,
-        listing.areaScore,
-        listing.listing_id,
-        listing.statusChanges,
-        listing.quality_rating,
+    const model = new ListingModel(
+      listing.user_id,
+      listing.address,
+      listing.district,
+      listing.price,
+      listing.pos_type,
+      listing.env_type,
+      listing.prop_type,
+      listing.furnish_type,
+      listing.orientation,
+      listing.floor_size,
+      listing.property_size,
+      listing.bath,
+      listing.bed,
+      listing.parking,
+      listing.features,
+      listing.photos,
+      listing.desc,
+      listing.let_sell,
+      listing.listingAreaType,
+      listing.heading,
+      listing.approved,
+      listing.listingDate,
+      listing.areaScore,
+      listing.listing_id,
+      listing.approvalChanges,
+      listing.quality_rating,
     );
     return model;
   }
@@ -89,40 +97,63 @@ export class listingModel extends AggregateRoot implements Listing {
     this.approved = listing.approved;
     this.listingDate = listing.listingDate;
     this.listing_id = listing.listing_id;
-    this.statusChanges = listing.statusChanges;
+    this.approvalChanges = listing.approvalChanges;
     this.quality_rating = listing.quality_rating;
-
+    this.approvalChanges = this.approvalChanges ?? [];
+    this.approvalChanges.push({
+      adminId: 'SYSTEM',
+      status: false,
+      date: new Date().toISOString(),
+    });
     this.apply(new ListingEditedEvent(listing));
+  }
+
+  changeStatus(req: ChangeStatusRequest): ChangeStatusResponse {
+    this.approved = !this.approved;
+    const change: ApprovalChange = {
+      adminId: req.adminId,
+      status: this.approved,
+      date: new Date().toISOString(),
+    };
+    console.log(change);
+    this.approvalChanges = this.approvalChanges ?? [];
+    this.approvalChanges.push(change);
+    if (!this.listing_id) {
+      throw new Error('yeah idk fam. this should never happen. the listing has no listing_id');
+    }
+    this.apply(new StatusChangedEvent(this.listing_id, change, this.user_id, req));
+
+    return {success: true, approvalChange: change};
   }
 
   toJSON(): Listing {
     return {
-        user_id: this.user_id,
-        address: this.address,
-        district: this.district,
-        price: this.price,
-        pos_type: this.pos_type,
-        env_type: this.env_type,
-        prop_type: this.prop_type,
-        furnish_type: this.furnish_type,
-        orientation: this.orientation,
-        floor_size: this.floor_size,
-        property_size: this.property_size,
-        bath: this.bath,
-        bed: this.bed,
-        parking: this.parking,
-        features: this.features,
-        photos: this.photos,
-        desc: this.desc,
-        let_sell: this.let_sell,
-        listingAreaType: this.listingAreaType,
-        heading: this.heading,
-        approved: this.approved,
-        listingDate: this.listingDate,
-        areaScore: this.areaScore,
-        listing_id: this.listing_id,
-        statusChanges: this.statusChanges,
-        quality_rating: this.quality_rating,
+      user_id: this.user_id,
+      address: this.address,
+      district: this.district,
+      price: this.price,
+      pos_type: this.pos_type,
+      env_type: this.env_type,
+      prop_type: this.prop_type,
+      furnish_type: this.furnish_type,
+      orientation: this.orientation,
+      floor_size: this.floor_size,
+      property_size: this.property_size,
+      bath: this.bath,
+      bed: this.bed,
+      parking: this.parking,
+      features: this.features,
+      photos: this.photos,
+      desc: this.desc,
+      let_sell: this.let_sell,
+      heading: this.heading,
+      approved: this.approved,
+      listingDate: this.listingDate,
+      areaScore: this.areaScore,
+      listing_id: this.listing_id,
+      approvalChanges: this.approvalChanges,
+      quality_rating: this.quality_rating,
+      listingAreaType: this.listingAreaType,
     };
   }
 }

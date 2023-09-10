@@ -366,9 +366,20 @@ handleAddressChange(address: string): void {
 
   async addListing(){
     this.address = (document.getElementById("address") as HTMLInputElement).value;
-    const score = await this.calculateQualityScore(this.photos,this.address,this.price,this.bedrooms,
-      this.bathrooms,this.parking,this.floor_size,this.erf_size,this.pos_type,this.env_type,
-      this.prop_type,this.furnish_type,this.orientation);
+    const score = await this.calculateQualityScore(
+      this.photos,
+      this.address,
+      this.price,
+      this.bedrooms,
+      this.bathrooms,
+      this.parking,
+      this.floor_size,
+      this.erf_size,
+      this.pos_type,
+      this.env_type,
+      this.prop_type,
+      this.furnish_type,
+      this.orientation);
   
     if(this.currentUser != null){
       const list : Listing = {
@@ -393,6 +404,7 @@ handleAddressChange(address: string): void {
         let_sell: this.listingType,
         listingAreaType: this.listingAreaType,
         approved: false,
+        approvalChanges: [],
         quality_rating: score,
         listingDate: "" + new Date(),
         areaScore: {
@@ -417,7 +429,7 @@ handleAddressChange(address: string): void {
     if(this.currentUser != null && this.listingEditee != null){
       const list : Listing = {
         listing_id: this.listingEditee.listing_id,
-        statusChanges: this.listingEditee.statusChanges,
+        approvalChanges: this.listingEditee.approvalChanges,
         quality_rating: this.listingEditee.quality_rating,
         user_id: this.currentUser.uid,
         address: this.address,

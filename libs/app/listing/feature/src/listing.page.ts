@@ -9,13 +9,14 @@ import { Observable, of } from 'rxjs';
 import { Select } from '@ngxs/store';
 import { httpsCallable, Functions } from '@angular/fire/functions';
 import { Chart, registerables } from 'chart.js';
-import { GetAnalyticsDataRequest } from '@properproperty/api/core/feature';
 import { Unsubscribe } from 'firebase/auth';
 import { IonContent } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
 
 register();
-
+export interface GetAnalyticsDataRequest {
+  listingId: string;
+}
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.page.html',
@@ -238,24 +239,34 @@ export class ListingPage implements OnDestroy{
 
   async changeStatus(){
     if(this.list && this.adminId != ""){
-      const crimeScore = await this.getCrimeScore();
-      const schoolScore = await this.getSchoolRating(this.coordinates);
-      const waterScore = await this.getWaterScore();
-      const sanitationScore = await this.getSanitationScore();
+      let crimeScore;
+      let schoolScore;
+      let waterScore;
+      let sanitationScore;
 
-      console.log(crimeScore, schoolScore, waterScore, sanitationScore);
-
-
-      if(crimeScore && schoolScore && waterScore && sanitationScore){
-        console.log("Changing status");
-        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, crimeScore, waterScore, sanitationScore, schoolScore);
-        this.router.navigate(['/admin']);
+      if (!this.list.approved) {
+        crimeScore = await this.getCrimeScore();
+        schoolScore = await this.getSchoolRating(this.coordinates);
+        waterScore = await this.getWaterScore();
+        sanitationScore = await this.getSanitationScore();
+        console.log(crimeScore, schoolScore, waterScore, sanitationScore);
       }
 
-      return false;
-    }
 
-    return;
+      console.log("Changing status");
+      if(
+        !this.list.approved 
+        && crimeScore != undefined 
+        && schoolScore != undefined 
+        && waterScore != undefined
+        && sanitationScore != undefined
+      ){
+        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, crimeScore, waterScore, sanitationScore, schoolScore);
+      } else if (this.list.approved){
+        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, 0, 0, 0, 0);
+      }
+      this.router.navigate(['/admin']);
+    }
   }
 
   async getNearbyPointsOfInterest(coordinates: {latitude: number, longitude: number}) {
