@@ -8,7 +8,8 @@ import { Listing,
   ChangeStatusRequest,
   GetApprovedListingsResponse,
   EditListingRequest,
-  EditListingResponse } from '@properproperty/api/listings/util';
+  EditListingResponse, 
+  GetUnapprovedListingsResponse} from '@properproperty/api/listings/util';
 import { GetLocInfoDataRequest,
   GetLocInfoDataResponse } from '@properproperty/api/loc-info/util';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
@@ -91,6 +92,22 @@ export class ListingsService {
 
     if(response.approvedListings.length > 0){
       return response.approvedListings;
+    }
+
+    return [];
+  }
+
+  async getUnapprovedListings(){
+    const response = (await httpsCallable<
+      undefined,
+      GetUnapprovedListingsResponse
+    >(
+      this.functions,
+      'getUnapprovedListings'
+    )()).data;
+  
+    if(response.unapprovedListings.length > 0){
+      return response.unapprovedListings;
     }
 
     return [];

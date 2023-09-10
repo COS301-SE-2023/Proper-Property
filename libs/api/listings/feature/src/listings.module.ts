@@ -16,11 +16,13 @@ const CommandHandlers = [
 
 import { 
   GetListingsHandler, 
-  GetApprovedListingsHandler 
+  GetApprovedListingsHandler,
+  GetUnapprovedListingsHandler
 } from './queries';
 const QueryHandlers = [
   GetListingsHandler, 
-  GetApprovedListingsHandler
+  GetApprovedListingsHandler,
+  GetUnapprovedListingsHandler
 ];
 
 import { 

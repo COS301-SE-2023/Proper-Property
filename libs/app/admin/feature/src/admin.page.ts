@@ -30,6 +30,7 @@ export class AdminPage{
   waterReliabilityFiles: FileList | null = null;
   waterTariffsFiles: FileList | null = null;
   muniFiles: FileList | null = null;
+  muniUploaded = false;
 
 
   nonAppListings : Listing[] = [];
@@ -63,35 +64,8 @@ export class AdminPage{
     this.appListings = [];
     this.nonAppListings = [];
     let listings : Listing[] = [];
-    this.listingServices.getListings().then((response) => {
-      listings = response;
-
-      for(const listing of listings){
-        if(listing.approved){
-          this.appListings.push(listing);
-        }
-        else if(!listing.approved){
-          this.nonAppListings.push(listing);
-        }
-      }
-
-      //sorting listings by date created
-      this.appListings = this.appListings.sort((a, b) => {
-        const tempA2 = a.approvalChanges?.[a.approvalChanges.length - 1].date ?? "";
-        const tempB2 = b.approvalChanges?.[b.approvalChanges.length - 1].date ?? "";
-
-        const tempA = new Date(tempA2);
-        const tempB = new Date(tempB2);
-        if(tempA > tempB){
-          return -1
-        }
-        else if(tempA < tempB){
-          return 1;
-        }
-        else{
-          return 0;
-        }
-      })
+    this.listingServices.getUnapprovedListings().then((response) => {
+      this.nonAppListings = response;
 
       this.nonAppListings = this.nonAppListings.sort((a, b) => {
         const tempA = new Date(a.listingDate);
@@ -165,6 +139,7 @@ export class AdminPage{
     }
     else if(type == "muni"){
       this.muniFiles = (event.currentTarget as HTMLInputElement).files;
+      this.muniUploaded = true;
     } 
     else if(type == "WWQ"){
       this.WWQ = (event.currentTarget as HTMLInputElement).files;
@@ -172,6 +147,22 @@ export class AdminPage{
   }
 
   async processData(){
+    if(this.muniFiles && this.muniFiles.length > 0){
+      for (let index = 0; index < this.muniFiles.length; index++) {
+        if (this.muniFiles.item(index)){
+          const response = await fetch(URL.createObjectURL(this.muniFiles.item(index) as Blob));
+          const jsonResponse = await response.json();
+          const muniData : any[] = [];
+          await jsonResponse.forEach((element : any) => {
+            muniData.push(element);  
+          });
+
+          console.log(muniData);
+          await this.adminServices.uploadMuniData(muniData);
+        }
+      }
+    }
+
     console.log("Processing data");
     if (this.crimeFiles && this.crimeFiles.length > 0) {
       for (let index = 0; index < this.crimeFiles.length; index++) {
@@ -211,20 +202,6 @@ export class AdminPage{
             console.log(response);
           })
         });
-      }
-    }
-
-    if(this.muniFiles && this.muniFiles.length > 0){
-      for (let index = 0; index < this.muniFiles.length; index++) {
-        if (this.muniFiles.item(index))
-          fetch(URL.createObjectURL(this.muniFiles.item(index) as Blob)).then((response) => response.json()).then(async (response) =>{
-              const muniData : any = [];
-              response.forEach((element : any) => {
-              muniData.push(element);
-            });
-            console.log(muniData);
-            await this.adminServices.uploadMuniData(muniData);
-          });
       }
     }
 
