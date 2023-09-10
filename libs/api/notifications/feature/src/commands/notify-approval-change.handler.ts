@@ -1,9 +1,7 @@
 import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { NotifyApprovalChangeCommand } from '@properproperty/api/notifications/util';
-import { Notification } from '@properproperty/api/notifications/util';
+import { NotifyApprovalChangeCommand, Notification } from '@properproperty/api/notifications/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { NotificationsDocModel } from '../models/notifications.model';
-// import { NotificationsDoc } from '@properproperty/api/notifications/util';
 import { NotificationsRepository } from '@properproperty/api/notifications/data-access';
 import  * as nodemailer  from 'nodemailer';
 import * as fs from 'fs';

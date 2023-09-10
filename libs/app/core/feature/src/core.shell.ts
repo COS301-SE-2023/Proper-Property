@@ -4,22 +4,18 @@ import {
   OnInit,
   Inject,
   HostListener, 
-  inject 
+  inject,
+  isDevMode
 } from '@angular/core';
-import { Store } from '@ngxs/store';
+import { Store, Select } from '@ngxs/store';
 import { SubscribeToAuthState } from '@properproperty/app/auth/util';
-import { Select } from '@ngxs/store';
-// import { AuthState } from '@properproperty/app/auth/data-access';
 import { NotificationsState } from '@properproperty/app/notifications/data-access';
 import { Observable } from 'rxjs';
 import { Unsubscribe } from 'firebase/auth';
-// import { SubscribeToUserProfile, UnsubscribeFromUserProfile } from '@properproperty/app/user/util';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { UserProfileState,UserProfileService } from '@properproperty/app/profile/data-access';
 import { Functions } from '@angular/fire/functions';
-import { isDevMode } from '@angular/core';
 import { NotificationsService } from 'libs/app/notifications/data-access/src/notifications.service';
-// import { GetUserProfileRequest, GetUserProfileResponse, UpdateUserProfileRequest, UpdateUserProfileResponse, profile } from '@properproperty/api/profile/util';
 
 
 import { DOCUMENT } from '@angular/common';

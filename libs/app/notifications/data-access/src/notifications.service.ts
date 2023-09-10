@@ -16,7 +16,6 @@ export class NotificationsService {
       token = await getToken(this.messaging, {vapidKey: process.env['NX_FCM_VAPID_KEY']});
       console.log(token);
     }
-    // TODO: send token to server
     console.log(userId); //log for linter
     return token;
   }

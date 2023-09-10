@@ -1,10 +1,10 @@
-import { NotificationsDoc, Notification } from '@properproperty/api/notifications/util';
 import { AggregateRoot } from '@nestjs/cqrs';
-// import { Timestamp } from '@firebase/firestore';
 import { 
   ApprovalChangeNotifiedEvent,
   StatusChangeNotifiedEvent,
   ViewDropNotifiedEvent,
+  NotificationsDoc, 
+  Notification 
 } from '@properproperty/api/notifications/util';
 export class NotificationsDocModel extends AggregateRoot implements NotificationsDoc {
   constructor(
