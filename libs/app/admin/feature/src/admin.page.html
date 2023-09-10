@@ -2,21 +2,6 @@
 
 <ion-content id="content" [fullscreen]="true">
   <div *ngIf="adminLogged">
-    <ion-toolbar class = "profile-nav" >
-
-    <ion-popover id="popover" [isOpen]="isPopoverOpen">
-      <ng-template>
-        
-        <!-- <ion-grid>
-          <ion-row>
-            
-          </ion-row>
-        </ion-grid> -->
-        <ion-button (click)="processData()">Process Data</ion-button>
-      </ng-template>
-    </ion-popover>
-  
-  </ion-toolbar>
     <ion-grid>
       <ion-row>
         <ion-col id="notApprovedHeadCol">
@@ -61,11 +46,16 @@
           <ion-grid>
             <ion-row class="file-upload">
               <div id="popoverHeading"><h3>Import Municipal Data</h3></div><br>
-              <div class="drag-drop-area-muni" (click)="muniFileInput.click()">
-                <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
-                <ion-label class="imageText">Click here or drag and drop a file</ion-label>
-                <input type="file" accept="file/*" (change)="handleFileInput($event, 'muni')" hidden #muniFileInput>
-              </div>
+              <ng-container *ngIf="!muniUploaded; else showMuniFiles">
+                  <div class="drag-drop-area-muni" (click)="muniFileInput.click()">
+                    <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
+                    <ion-label class="imageText">Click here or drag and drop a file</ion-label>
+                    <input type="file" accept="file/*" (change)="handleFileInput($event, 'muni')" hidden #muniFileInput>
+                  </div>
+              </ng-container>
+              <ng-template #showMuniFiles>
+                
+              </ng-template>
             </ion-row>
               <ion-row class="file-upload">
                 <div id="popoverHeading"><h3>Import Crime Data</h3></div><br>
@@ -137,7 +127,15 @@
                   </div>
                 </ng-template>
               </ion-row>
-
+              <ion-row class="file-upload">
+                <div id="popoverHeading"><h3>Selected Files</h3></div><br>
+                <ion-list *ngFor="let file of selectedFiles">
+                  <ion-item class="file-name">
+                    <ion-icon size="large" name="document-outline"></ion-icon>
+                    <ion-label>{{file}}</ion-label>
+                  </ion-item>
+                </ion-list>
+              </ion-row>
               <ion-button style="width: 100%" (click)="processData()">Process Data</ion-button>
           </ion-grid>
         </ion-col>

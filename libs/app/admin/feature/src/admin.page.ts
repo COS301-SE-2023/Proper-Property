@@ -31,7 +31,7 @@ export class AdminPage{
   waterTariffsFiles: FileList | null = null;
   muniFiles: FileList | null = null;
   muniUploaded = false;
-
+  selectedFiles: string[] = [];
 
   nonAppListings : Listing[] = [];
   appListings : Listing[] = [];
@@ -95,54 +95,60 @@ export class AdminPage{
     this.router.navigate(['/listing', {list : listing.listing_id, admin : this.userProfile?.userId}]);
   }
 
-  addData(){
-    this.crimeFiles = null;
-    this.sanitationFiles = null;
-    this.waterAccessFiles = null;
-    this.waterQualityFiles = null;
-    this.waterReliabilityFiles = null;
-    this.waterTariffsFiles = null;
-    this.muniFiles = null;
-    this.WWQ = null;
-    this.isPopoverOpen = true;
-    console.log("Adding data");
-  }
-
   handleFileInput(event: Event, type: string) {
     if (!event.currentTarget) {
       return;
     }
+    const files: FileList | null = (event.currentTarget as HTMLInputElement).files;
+    if (!files) {
+      return;
+    }
 
     console.log(type)
+    // console.log(this.selectedFiles)
 
-    if(type == "crime"){
-      this.crimeFiles = (event.currentTarget as HTMLInputElement).files;
+    if(type == "crime" && files[0]['name'].toLowerCase().includes("crime")){
+      this.crimeFiles = files;
       console.log("Crime files uploaded");
     }
-    else if(type == "sanitation"){
-      this.sanitationFiles = (event.currentTarget as HTMLInputElement).files;
+    else if(type == "sanitation" && files[0]['name'].toLowerCase().includes("sanitation")){
+      this.sanitationFiles = files;
       console.log("Sanitation files uploaded");
     }
-    else if(type == "waterAccess"){
-      this.waterAccessFiles = (event.currentTarget as HTMLInputElement).files;
+    else if(type == "waterAccess" && files[0]['name'].toLowerCase().includes("access")){
+      this.waterAccessFiles = files;
       console.log("Water Access files uploaded");
     }
-    else if(type == "waterQuality"){
-      this.waterQualityFiles = (event.currentTarget as HTMLInputElement).files;
+    else if (type == "waterQuality" && files[0]['name'].toLowerCase().includes("quality")){
+      this.waterQualityFiles = files;
       console.log("Water Quality files uploaded");
     }
-    else if(type == "waterReliability"){
-      this.waterReliabilityFiles = (event.currentTarget as HTMLInputElement).files;
+    else if (type == "waterReliability" && files[0]['name'].toLowerCase().includes("reliability")){
+      this.waterReliabilityFiles = files;
+      console.log("Water Reliability files uploaded")
     }
-    else if(type == "waterTariffs"){
-      this.waterTariffsFiles = (event.currentTarget as HTMLInputElement).files;
+    else if (type == "waterTariffs" && files[0]['name'].toLowerCase().includes("tariffs")){
+      this.waterTariffsFiles = files;
+      console.log("Water Tariffs files uploaded")
     }
-    else if(type == "muni"){
-      this.muniFiles = (event.currentTarget as HTMLInputElement).files;
+    else if (type == "muni" && files[0]['name'].toLowerCase().includes("municipality")){
+      this.muniFiles = files;
       this.muniUploaded = true;
+      console.log("Municipality files uploaded")
     } 
-    else if(type == "WWQ"){
-      this.WWQ = (event.currentTarget as HTMLInputElement).files;
+    else if(type == "WWQ" && files[0]['name'].toLowerCase().includes("wwq")){
+      this.WWQ = files;
+      console.log("WWQ files uploaded")
+    }
+    else{
+      return;
+    }
+    const pos = this.selectedFiles.indexOf(files[0]['name']);
+    if (pos > -1) {
+      this.selectedFiles.splice(pos,1, files[0]['name']);
+    }
+    else {
+      this.selectedFiles.push(files[0]['name']);
     }
   }
 

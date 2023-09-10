@@ -24,10 +24,6 @@
   min-height: 84vh;
 }
 
-#approvedHeadCol {
-  // outline: 1px solid black;
-}
-
 #approvedHead {
   width: 35%;
   height: auto;
@@ -131,4 +127,10 @@ ion-card {
   margin: 2px 4px;
   border-radius: 10px;
   overflow: hidden;
+}
+
+.file-name{
+  height: 40px;
+  width: 100%;
+  display: block;
 }
