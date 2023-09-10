@@ -65,7 +65,6 @@ export class LocInfoRepository {
   async uploadCrimeStats(req : UploadCrimeStatsRequest): Promise<UploadLocInfoDataResponse>{
     var natural = require('natural');
     try{
-
       const stations : string[] = [];
       // const crimeTotal : {
       //   category: string,

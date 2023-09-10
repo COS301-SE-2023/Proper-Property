@@ -24,10 +24,6 @@
   min-height: 84vh;
 }
 
-#approvedHeadCol {
-  // outline: 1px solid black;
-}
-
 #approvedHead {
   width: 35%;
   height: auto;
@@ -93,6 +89,18 @@ ion-card {
   border-bottom: 1px dashed #000000;
   padding: 16px;
   cursor: pointer;
+  width: 100%;
+}
+
+.drag-drop-area-muni{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px dashed #000000;
+  padding: 16px;
+  cursor: pointer;
+  width: 100%;
 }
 
 #content{
@@ -110,5 +118,19 @@ ion-card {
   align-items: center;
   display: flex;
   flex-direction: column;
-  background-color: #94d2ae
+  background-color: #94d2ae;
+  width: 100%;
+}
+
+.file-upload {
+  border: 2px solid #94d2ae;
+  margin: 2px 4px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.file-name{
+  height: 40px;
+  width: 100%;
+  display: block;
 }

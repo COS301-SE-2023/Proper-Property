@@ -30,7 +30,8 @@ export class AdminPage{
   waterReliabilityFiles: FileList | null = null;
   waterTariffsFiles: FileList | null = null;
   muniFiles: FileList | null = null;
-
+  muniUploaded = false;
+  selectedFiles: string[] = [];
 
   nonAppListings : Listing[] = [];
   appListings : Listing[] = [];
@@ -62,36 +63,8 @@ export class AdminPage{
 
     this.appListings = [];
     this.nonAppListings = [];
-    let listings : Listing[] = [];
-    this.listingServices.getListings().then((response) => {
-      listings = response;
-
-      for(const listing of listings){
-        if(listing.approved){
-          this.appListings.push(listing);
-        }
-        else if(!listing.approved){
-          this.nonAppListings.push(listing);
-        }
-      }
-
-      //sorting listings by date created
-      this.appListings = this.appListings.sort((a, b) => {
-        const tempA2 = a.approvalChanges?.[a.approvalChanges.length - 1].date ?? "";
-        const tempB2 = b.approvalChanges?.[b.approvalChanges.length - 1].date ?? "";
-
-        const tempA = new Date(tempA2);
-        const tempB = new Date(tempB2);
-        if(tempA > tempB){
-          return -1
-        }
-        else if(tempA < tempB){
-          return 1;
-        }
-        else{
-          return 0;
-        }
-      })
+    this.listingServices.getUnapprovedListings().then((response) => {
+      this.nonAppListings = response;
 
       this.nonAppListings = this.nonAppListings.sort((a, b) => {
         const tempA = new Date(a.listingDate);
@@ -121,57 +94,80 @@ export class AdminPage{
     this.router.navigate(['/listing', {list : listing.listing_id, admin : this.userProfile?.userId}]);
   }
 
-  addData(){
-    this.crimeFiles = null;
-    this.sanitationFiles = null;
-    this.waterAccessFiles = null;
-    this.waterQualityFiles = null;
-    this.waterReliabilityFiles = null;
-    this.waterTariffsFiles = null;
-    this.muniFiles = null;
-    this.WWQ = null;
-    this.isPopoverOpen = true;
-    console.log("Adding data");
-  }
-
   handleFileInput(event: Event, type: string) {
     if (!event.currentTarget) {
       return;
     }
+    const files: FileList | null = (event.currentTarget as HTMLInputElement).files;
+    if (!files) {
+      return;
+    }
 
     console.log(type)
+    // console.log(this.selectedFiles)
 
-    if(type == "crime"){
-      this.crimeFiles = (event.currentTarget as HTMLInputElement).files;
+    if(type == "crime" && files[0]['name'].toLowerCase().includes("crime")){
+      this.crimeFiles = files;
       console.log("Crime files uploaded");
     }
-    else if(type == "sanitation"){
-      this.sanitationFiles = (event.currentTarget as HTMLInputElement).files;
+    else if(type == "sanitation" && files[0]['name'].toLowerCase().includes("sanitation")){
+      this.sanitationFiles = files;
       console.log("Sanitation files uploaded");
     }
-    else if(type == "waterAccess"){
-      this.waterAccessFiles = (event.currentTarget as HTMLInputElement).files;
+    else if(type == "waterAccess" && files[0]['name'].toLowerCase().includes("access")){
+      this.waterAccessFiles = files;
       console.log("Water Access files uploaded");
     }
-    else if(type == "waterQuality"){
-      this.waterQualityFiles = (event.currentTarget as HTMLInputElement).files;
+    else if (type == "waterQuality" && files[0]['name'].toLowerCase().includes("quality")){
+      this.waterQualityFiles = files;
       console.log("Water Quality files uploaded");
     }
-    else if(type == "waterReliability"){
-      this.waterReliabilityFiles = (event.currentTarget as HTMLInputElement).files;
+    else if (type == "waterReliability" && files[0]['name'].toLowerCase().includes("reliability")){
+      this.waterReliabilityFiles = files;
+      console.log("Water Reliability files uploaded")
     }
-    else if(type == "waterTariffs"){
-      this.waterTariffsFiles = (event.currentTarget as HTMLInputElement).files;
+    else if (type == "waterTariffs" && files[0]['name'].toLowerCase().includes("tariffs")){
+      this.waterTariffsFiles = files;
+      console.log("Water Tariffs files uploaded")
     }
-    else if(type == "muni"){
-      this.muniFiles = (event.currentTarget as HTMLInputElement).files;
+    else if (type == "muni" && files[0]['name'].toLowerCase().includes("municipality")){
+      this.muniFiles = files;
+      this.muniUploaded = true;
+      console.log("Municipality files uploaded")
     } 
-    else if(type == "WWQ"){
-      this.WWQ = (event.currentTarget as HTMLInputElement).files;
+    else if(type == "WWQ" && files[0]['name'].toLowerCase().includes("wwq")){
+      this.WWQ = files;
+      console.log("WWQ files uploaded")
+    }
+    else{
+      return;
+    }
+    const pos = this.selectedFiles.indexOf(files[0]['name']);
+    if (pos > -1) {
+      this.selectedFiles.splice(pos,1, files[0]['name']);
+    }
+    else {
+      this.selectedFiles.push(files[0]['name']);
     }
   }
 
   async processData(){
+    if(this.muniFiles && this.muniFiles.length > 0){
+      for (let index = 0; index < this.muniFiles.length; index++) {
+        if (this.muniFiles.item(index)){
+          const response = await fetch(URL.createObjectURL(this.muniFiles.item(index) as Blob));
+          const jsonResponse = await response.json();
+          const muniData : any[] = [];
+          await jsonResponse.forEach((element : any) => {
+            muniData.push(element);  
+          });
+
+          console.log(muniData);
+          await this.adminServices.uploadMuniData(muniData);
+        }
+      }
+    }
+
     console.log("Processing data");
     if (this.crimeFiles && this.crimeFiles.length > 0) {
       for (let index = 0; index < this.crimeFiles.length; index++) {
@@ -211,20 +207,6 @@ export class AdminPage{
             console.log(response);
           })
         });
-      }
-    }
-
-    if(this.muniFiles && this.muniFiles.length > 0){
-      for (let index = 0; index < this.muniFiles.length; index++) {
-        if (this.muniFiles.item(index))
-          fetch(URL.createObjectURL(this.muniFiles.item(index) as Blob)).then((response) => response.json()).then(async (response) =>{
-              const muniData : any = [];
-              response.forEach((element : any) => {
-              muniData.push(element);
-            });
-            console.log(muniData);
-            await this.adminServices.uploadMuniData(muniData);
-          });
       }
     }
 
