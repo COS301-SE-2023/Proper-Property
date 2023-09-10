@@ -11,7 +11,7 @@ export class GetUnapprovedListingsHandler implements IQueryHandler<
   
   async execute(query: GetUnapprovedListingsQuery) {
     console.log(GetUnapprovedListingsHandler.name);
-
+    console.log(query);
     return this.listingsRepository.getUnapprovedListings();
   }
 }

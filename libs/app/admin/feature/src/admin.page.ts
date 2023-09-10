@@ -63,7 +63,6 @@ export class AdminPage{
 
     this.appListings = [];
     this.nonAppListings = [];
-    let listings : Listing[] = [];
     this.listingServices.getUnapprovedListings().then((response) => {
       this.nonAppListings = response;
 
