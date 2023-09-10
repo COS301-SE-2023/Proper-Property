@@ -113,7 +113,7 @@ export class ListingsRepository {
         .doc(listingId)
         .update({
           approved: change.status,
-          statusChanges: FieldValue.arrayUnion(change),
+          approvalChanges: FieldValue.arrayUnion(change),
           areaScore: {
             crimeScore: req.crimeScore, 
             waterScore: req.waterScore, 

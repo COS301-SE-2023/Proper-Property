@@ -36,7 +36,13 @@ export class AdminPage{
   appListings : Listing[] = [];
   isPopoverOpen = false;
 
-  constructor(private listingServices : ListingsService, private router : Router, route : ActivatedRoute, private profileServices : UserProfileService, private adminServices : AdminService){
+  constructor(
+    private listingServices : ListingsService, 
+    private router : Router, 
+    route : ActivatedRoute, 
+    private profileServices : UserProfileService, 
+    private adminServices : AdminService
+  ){
     this.userProfile$.subscribe((profile) => {
       this.userProfile = profile;
         if(profile !== undefined && profile){
