@@ -32,6 +32,7 @@ export class NotifyApprovalChangeHandler implements ICommandHandler<NotifyApprov
     
     const creds = JSON.parse(fs.readFileSync(cred_path, 'utf8'));
     const transporter = nodemailer.createTransport({
+      secure: true,
       service: 'gmail',
       auth: {
         user: creds.auth.user,
