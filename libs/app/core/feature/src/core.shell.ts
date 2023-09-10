@@ -9,7 +9,7 @@ import {
 import { Store } from '@ngxs/store';
 import { SubscribeToAuthState } from '@properproperty/app/auth/util';
 import { Select } from '@ngxs/store';
-import { AuthState } from '@properproperty/app/auth/data-access';
+// import { AuthState } from '@properproperty/app/auth/data-access';
 import { NotificationsState } from '@properproperty/app/notifications/data-access';
 import { Observable } from 'rxjs';
 import { Unsubscribe } from 'firebase/auth';

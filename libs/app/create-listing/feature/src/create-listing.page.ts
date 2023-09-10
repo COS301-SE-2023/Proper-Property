@@ -136,7 +136,7 @@ onResize(event: Event) {
   async ngOnInit() {
     this.listingType = "Sell";
     // this.currentUser = this.userService.getCurrentUser();
-    const inputElementId = 'address';
+    // const inputElementId = 'address';
 
     // this.gmapsService.setupSearchBox(inputElementId);
   }

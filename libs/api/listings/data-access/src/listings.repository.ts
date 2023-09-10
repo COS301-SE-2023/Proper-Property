@@ -127,7 +127,7 @@ export class ListingsRepository {
         success: true,
         approvalChange: change
       }
-    };
+    }
 
     return {
       success: true,

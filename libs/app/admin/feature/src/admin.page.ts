@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Listing, ApprovalChange } from '@properproperty/api/listings/util';
-import { AuthState } from '@properproperty/app/auth/data-access';
+// import { AuthState } from '@properproperty/app/auth/data-access';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { AdminService } from '@properproperty/app/admin/data-access';
