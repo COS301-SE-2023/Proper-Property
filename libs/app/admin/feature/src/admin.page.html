@@ -1,6 +1,10 @@
 <p>admin-page works!</p>
 
 <ion-content id="content" [fullscreen]="true">
+  <div id="loader">
+    <img src="assets/500.gif">
+  </div>
+  <div id="show">
   <div *ngIf="adminLogged">
     <ion-grid>
       <ion-row>
@@ -141,5 +145,6 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+  </div>
   </div>
 </ion-content>

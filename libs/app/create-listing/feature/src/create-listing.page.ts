@@ -34,6 +34,7 @@ export class CreateListingPage implements OnInit {
 
   items: any[] = [];
   
+  @ViewChild('loader') scrollToElement: ElementRef | undefined;
   @ViewChild('address', { static: false }) addressInput!: ElementRef<HTMLInputElement>;
 
   @Select(AuthState.user) user$!: Observable<User | null>;
@@ -365,6 +366,13 @@ handleAddressChange(address: string): void {
   }
 
   async addListing(){
+    const property=document.querySelector('.add-property') as HTMLElement;
+    const loader=document.querySelector('#loader') as HTMLElement;
+    property.style.opacity="0";
+    loader.style.opacity="1";
+    if (this.scrollToElement && this.scrollToElement.nativeElement) {
+      this.scrollToElement.nativeElement.scrollIntoView({ block: 'center' });
+    }
     this.address = (document.getElementById("address") as HTMLInputElement).value;
     const score = await this.calculateQualityScore(
       this.photos,
@@ -417,7 +425,8 @@ handleAddressChange(address: string): void {
 
       console.log(list);
       await this.listingService.createListing(list);
-    
+      loader.style.opacity="0";
+      property.style.opacity="1";
       this.router.navigate(['/home']);
     }
     else{
@@ -426,6 +435,13 @@ handleAddressChange(address: string): void {
   }
 
   async editListing(){
+    const property=document.querySelector('.add-property') as HTMLElement;
+    const loader=document.querySelector('#loader') as HTMLElement;
+    property.style.opacity="0";
+    loader.style.opacity="1";
+    if (this.scrollToElement && this.scrollToElement.nativeElement) {
+      this.scrollToElement.nativeElement.scrollIntoView({ block: 'center' });
+    }
     if(this.currentUser != null && this.listingEditee != null){
       const list : Listing = {
         listing_id: this.listingEditee.listing_id,
@@ -462,6 +478,8 @@ handleAddressChange(address: string): void {
       }
 
       const resp = await this.listingService.editListing(list);
+      loader.style.opacity="0";
+      property.style.opacity="1";
       if(resp){
         this.router.navigate(['/listing', {list : this.listingEditee.listing_id}]);
       }

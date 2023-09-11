@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Listing, ApprovalChange } from '@properproperty/api/listings/util';
@@ -60,7 +60,25 @@ export class AdminPage{
     this.userProfileListener$.subscribe((listener) => {
       this.userProfileListener = listener;
     });
+    
 
+    route.params.subscribe((params) => {
+      const ApprovalChange : ApprovalChange = params['ApprovalChange'];
+      if(ApprovalChange?.adminId){
+        router.navigate(['/admin']);
+      }
+    });
+  }
+
+  async redirectToPage(listing : Listing) {
+    this.router.navigate(['/listing', {list : listing.listing_id, admin : this.userProfile?.userId}]);
+  }
+
+  async ngOnInit() {
+    const show=document.querySelector('#show') as HTMLDivElement;
+    show.style.opacity="0";
+    const load=document.querySelector('#loader') as HTMLElement;
+    load.style.opacity="1";
     this.appListings = [];
     this.nonAppListings = [];
     this.listingServices.getUnapprovedListings().then((response) => {
@@ -80,18 +98,15 @@ export class AdminPage{
         }
       })
     });
-    
-
-    route.params.subscribe((params) => {
-      const ApprovalChange : ApprovalChange = params['ApprovalChange'];
-      if(ApprovalChange?.adminId){
-        router.navigate(['/admin']);
+    setTimeout( function finishLoading(){
+      const show=document.querySelector('#show') as HTMLDivElement;
+      const load=document.querySelector('#loader') as HTMLElement;
+      if(!show){
+        console.log("Show does not exist");
       }
-    });
-  }
-
-  async redirectToPage(listing : Listing) {
-    this.router.navigate(['/listing', {list : listing.listing_id, admin : this.userProfile?.userId}]);
+      load.style.opacity="0";
+      show.style.opacity="1";
+    }, 1000)
   }
 
   handleFileInput(event: Event, type: string) {
