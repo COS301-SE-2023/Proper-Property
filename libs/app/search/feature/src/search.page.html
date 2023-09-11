@@ -6,10 +6,16 @@
   </ion-toolbar>
 </ion-header>
 
+
+
+
 <ion-content *ngIf="!this.isMobile" class="Desktop">
   <ion-segment [(ngModel)]="activeTab" (ionChange)="changeTab()">
     <ion-segment-button value="buying">
       <ion-label>buy</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="all">
+      <ion-label>All</ion-label>
     </ion-segment-button>
     <ion-segment-button value="renting">
       <ion-label>Rent</ion-label>
