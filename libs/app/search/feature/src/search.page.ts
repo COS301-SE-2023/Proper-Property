@@ -883,24 +883,14 @@ dropDown(){
 
   const sec = document.getElementById("sandf") as HTMLInputElement;
   const sec2 = document.getElementById("iconic") as HTMLInputElement;
-  const sec3 = document.getElementById("listings-and-map") as HTMLInputElement;
-  const sec4 = document.getElementById("map") as HTMLInputElement;
+
   if (sec && !this.clicked) {
     sec.classList.toggle("show");
     if(sec2)
     {
       sec2.name = "chevron-up-outline";
     }
-    if(sec3)
-    {
-      sec3.classList.toggle("lower");
-      sec3.classList.remove("upper");
-    }
-    if(sec4)
-    {
-      sec4.classList.toggle("topping");
-      sec4.classList.remove("dropping");
-    }
+    
     this.clicked=true;
   }
   else
@@ -910,16 +900,7 @@ dropDown(){
     {
       sec2.name = "chevron-down-outline";
     }
-    if(sec3)
-    {
-      sec3.classList.remove("lower");
-      sec3.classList.toggle("upper");
-    }
-    if(sec4)
-    {
-      sec4.classList.remove("topping");
-      sec4.classList.toggle("dropping");
-    }
+
     this.clicked=false;
   }
 

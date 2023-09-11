@@ -387,163 +387,79 @@
     border: none;
   }
   
-  // .search-button
-  // {
-  //   position: relative;
-  //   --border-radius: 20px;
-  //   width: 75px;
-  //   height: 33px;
-  //   left: -56px;
-  //   top: -6px;
-  // }
   
-  // /* Sort and Filter section*/
-  // .sandf
-  // {
-  //   position: fixed;
-  //   overflow: hidden;
-  //   top: 14%;
-  //   width: 100%;
-  //   display: none;
-  //   z-index: 6;
-  //   background: white;
-  // }
+  /* Sort and Filter section*/
+  .sandf
+  {
+    position:inherit;
+    overflow: hidden;
+    top: 35%;
+    width: 100%;
+    display: none;
+    z-index: 5;
+    background: white;
+  }
   
-  // .Amenities
-  // {
-  //    text-align: center;
-  // }
-  // .show
-  // {
-  //   display:inline-block;
-  // }
-  // .lower
-  // {
-  //   position: relative;
-  //   top: 60%;
-  // }
+  .Amenities
+  {
+     text-align: center;
+  }
+  .show
+  {
+    display:inline-block;
+  }
+ 
   
-  // .topping
-  // {
-  //   top: 400px !important;
-  // }
+  .wrapper
+  {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 120px;
   
-  // .dropping
-  // {
-  //   top: 85px !important;
-  // }
+  }
   
-  // .upper
-  // {
-  //   top: 15%;
-  //   position: relative;
-  // }
+  .inputPrice
+  {
+    display: flex;
+    margin: 30px 0 35px;
+  }
   
-  // .wrapper
-  // {
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: center;
-  //   height: 120px;
+  .inputPrice .field
+  {
+    height: 45px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
   
-  // }
+  .field input
+  {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    font-size: 19px;
+    text-align: center;
+    margin-left: 12px;
+    border-radius: 5px;
+    border: 1px solid rgb(223, 223, 223);
+  }
   
-  // .inputPrice
-  // {
-  //   display: flex;
-  //   margin: 30px 0 35px;
-  // }
-  
-  // .inputPrice .field
-  // {
-  //   height: 45px;
-  //   width: 100%;
-  //   display: flex;
-  //   align-items: center;
-  // }
-  
-  // .field input
-  // {
-  //   width: 100%;
-  //   height: 100%;
-  //   outline: none;
-  //   font-size: 19px;
-  //   text-align: center;
-  //   margin-left: 12px;
-  //   border-radius: 5px;
-  //   border: 1px solid rgb(223, 223, 223);
-  // }
-  
-  // .inputPrice .dash
-  // {
-  //   width: 130px;
-  //   display: flex;
-  //   font-size: 19px;
-  //   align-items: center;
-  //   justify-content: center;
-  // }
-  
-  // .slides
-  // {
-  //   top: 297px;
-  //   position: absolute;
-  //   height: 9px;
-  //   width: 35%;
-  //   border-radius: 5px;
-  //   background: rgb(204, 204, 204);
-  // }
-  
-  // .slides .bar
-  // {
-  //   height: 8px;
-  //   left: 10%;
-  //   right: 55%;
-  //   position: absolute ;
-  //   border-radius: 5px;
-  //   background: var(--ion-color-primary);
-  // }
-  
-  // .theranges
-  // {
-  //   position: absolute;
-  //   width: 35%;
-  // }
-  
-  // .theranges input
-  // {
-  //   position: absolute;
-  //   top: 42px;
-  //   height: 8px;
-  //   width: 100%;
-  //   background: none;
-  //   pointer-events: none;
-  //   -webkit-appearance: none;
-  // }
-  
-  // input[type="range"]::-webkit-slider-thumb{
-  //   height:17px;
-  //   width: 17px;
-  //   pointer-events: auto;
-  //   border-radius: 50%;
-  //   -webkit-appearance: none;
-  //   background: var(--ion-color-primary);
-  // }
-  
-  // input[type="range"]::-moz-range-thumb{
-  //   height:17px;
-  //   width: 17px;
-  //   pointer-events: auto;
-  //   border-radius: 50%;
-  //   -moz-appearance: none;
-  //   border: none;
-  //   background: var(--ion-color-primary);
-  // }
+  .inputPrice .dash
+  {
+    width: 130px;
+    display: flex;
+    font-size: 19px;
+    align-items: center;
+    justify-content: center;
+  }
   
   
-  // .btnFilters {
-  //   width: 15%;
+  
+  .btnFilters {
+    width: 15%;
    
-  // }
+  }
   
   
   // /* Listings Section */
@@ -647,17 +563,6 @@
   //   //set image size
   //   width: 15px;
   //   height: 15px;
-  // }
-  
-  
-  // .map.visible {
-  //   opacity: 1;
-  // }
-  
-  // #map {
-  //   width: 50%;
-  //   margin-left: 2%;
-  //   border-radius: 10px;
   // }
   
   
