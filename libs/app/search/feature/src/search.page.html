@@ -133,6 +133,23 @@
 
         </div>
       </ion-col>
+      
+    </ion-row>
+
+
+
+    <ion-row>
+      <div style="background-color: #f7f7f7; border: 1px solid #ccc; border-radius: 5px; padding: 10px; margin-bottom: 10px;margin-left: 4%; margin-bottom: 1%; padding-left: 18px;">
+        <label class="filter-text" for="selectedSortOption">Order by:</label>
+      
+        <select [(ngModel)]="selectedSortOption" class="dropdown" (ionChange)="sortListings()">
+          <option value="default">default</option>
+          <option value="priceLowToHigh">price - low to high</option>
+          <option value="priceHighToLow">price - high to low</option>
+          <option value="propertyType">property type</option>
+          <option value="size">size</option>
+        </select>
+      </div>
     </ion-row>
   </div>
 
@@ -334,6 +351,21 @@
         </div>
       </ion-col>
     </ion-row>
+
+    <ion-row>
+      <div style="background-color: #f7f7f7; border: 1px solid #ccc; border-radius: 5px; padding: 10px; margin-bottom: 10px;margin-left: 4%; margin-bottom: 1%; padding-left: 18px; width:90%;">
+        <label class="filter-text" for="selectedSortOption">Order by:</label>
+      
+        <select [(ngModel)]="selectedSortOption" class="dropdown" (ionChange)="sortListings()">
+          <option value="default">default</option>
+          <option value="priceLowToHigh">price - low to high</option>
+          <option value="priceHighToLow">price - high to low</option>
+          <option value="propertyType">property type</option>
+          <option value="size">size</option>
+        </select>
+      </div>
+    </ion-row>
+    
   </div>
 
 
