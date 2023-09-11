@@ -9,10 +9,9 @@ import { GetListingsRequest,
   GetListingsResponse, 
   GetApprovedListingsResponse,
   EditListingResponse,
-  ApprovalChange
+  ApprovalChange,
+  GetUnapprovedListingsResponse
 } from '@properproperty/api/listings/util';
-// import { FieldValue, FieldPath } from 'firebase-admin/firestore';
-// import { areaScore } from '@properproperty/api/listings/util';
 @Injectable()
 export class ListingsRepository {
 
@@ -161,5 +160,19 @@ export class ListingsRepository {
     }
 
     return {listingId : "FAILIRE"}
+  }
+
+  async getUnapprovedListings(): Promise<GetUnapprovedListingsResponse>{
+    const query = admin
+    .firestore()
+    .collection('listings').where("approved", "==", false);
+    
+    const listings : Listing[] = [];
+    (await query.get()).docs.forEach((doc) => {
+      doc.data() as Listing;
+      listings.push(doc.data() as Listing);
+    })
+
+    return {unapprovedListings : listings};
   }
 }

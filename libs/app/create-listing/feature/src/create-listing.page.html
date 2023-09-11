@@ -32,6 +32,11 @@
 
 
 <ion-content [fullscreen]="true" *ngIf="!isMobile" class="Desktop">
+  <div id="loader" #loader>
+    <div id="approval-message">Sent for Approval</div>
+    <img src="assets/500.gif">
+  </div>
+  <div class="add-property">
   <ion-grid [fixed]="false" id="full-grid">
     <ion-label class="imageText" id="photoHeading">Add Photos of your Property</ion-label>
     <span class="required-indicator" *ngIf="!photos.length">*</span>
@@ -306,6 +311,7 @@
     </ion-row>
     <div style="height:200px;"></div>
   </ion-grid>
+  </div>
   <properproperty-footer></properproperty-footer>
 
 
@@ -313,6 +319,11 @@
 </ion-content>
 
 <ion-content [fullscreen]="true" *ngIf="isMobile" class="Mobile">
+  <div id="loader" #loader>
+    <div id="approval-message">Sent for Approval</div>
+    <img src="assets/500.gif">
+  </div>
+  <div class="add-property">
   <ion-grid [fixed]="false" id="full-grid">
     <ion-label class="imageText" id="photoHeading">Add Photos of your Property</ion-label>
     <span class="required-indicator" *ngIf="!photos.length">*</span>
@@ -585,6 +596,7 @@
     </ion-row>
     <div style="height:200px;"></div>
   </ion-grid>
+  </div>
   <properproperty-footer></properproperty-footer>
 
 

@@ -108,8 +108,8 @@ export class ListingModel extends AggregateRoot implements Listing {
     this.geometry = listing.geometry;
     this.pointsOfInterest = listing.pointsOfInterest;
     this.listing_id = listing.listing_id;
-    this.quality_rating = listing.quality_rating;
     this.approvalChanges = listing.approvalChanges ?? [];
+    this.quality_rating = listing.quality_rating;
     this.approvalChanges.push({
       adminId: 'SYSTEM',
       status: false,
