@@ -704,7 +704,7 @@ resetFilters() {
 }
 
 
-activeTab = 'buying';
+activeTab = 'all';
 searchQuery = '';
 selectedPropertyType = '';
 selectedMinPrice = 0;
@@ -878,9 +878,82 @@ unsaveListing($event : any, listing_id : string){
     }
   } 
 }
+clicked = false;
+dropDown(){
+
+  const sec = document.getElementById("sandf") as HTMLInputElement;
+  const sec2 = document.getElementById("iconic") as HTMLInputElement;
+  const sec3 = document.getElementById("listings-and-map") as HTMLInputElement;
+  const sec4 = document.getElementById("map") as HTMLInputElement;
+  if (sec && !this.clicked) {
+    sec.classList.toggle("show");
+    if(sec2)
+    {
+      sec2.name = "chevron-up-outline";
+    }
+    if(sec3)
+    {
+      sec3.classList.toggle("lower");
+      sec3.classList.remove("upper");
+    }
+    if(sec4)
+    {
+      sec4.classList.toggle("topping");
+      sec4.classList.remove("dropping");
+    }
+    this.clicked=true;
+  }
+  else
+  {
+    sec.classList.remove("show");
+    if(sec2)
+    {
+      sec2.name = "chevron-down-outline";
+    }
+    if(sec3)
+    {
+      sec3.classList.remove("lower");
+      sec3.classList.toggle("upper");
+    }
+    if(sec4)
+    {
+      sec4.classList.remove("topping");
+      sec4.classList.toggle("dropping");
+    }
+    this.clicked=false;
+  }
+
+}
+
+status=true;
+
+onChange()
+{
+  const tog1 = document.getElementById("lists") as HTMLInputElement;
+  const tog2 = document.getElementById("lists2") as HTMLInputElement;
+
+  if(this.status)
+  {
+    if(tog1 && tog2)
+    {
+      tog1.style.display= 'block';
+      tog2.style.display = 'none';
+    }
+  }
+  else
+  {
+    if(tog1 && tog2)
+    {
+      tog1.style.display= 'none';
+      tog2.style.display = 'block';
+    }
+  }
+
+}
 
 
 }
 function isMobile(): boolean {
   return window.innerWidth <= 576;
 }
+

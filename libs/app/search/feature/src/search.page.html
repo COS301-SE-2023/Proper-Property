@@ -22,7 +22,40 @@
     </ion-segment-button>
   </ion-segment>
 
-  <div [ngSwitch]="activeTab">
+  <section class="sortFilter">
+
+    <ion-grid class="grid1">
+      <ion-row >
+        <ion-col size="8">
+          <!-- Search bar-->
+          <div class="search-container">
+              <ion-col size="10">
+                <input type="text" id="address" class="address" [(ngModel)]="searchQuery" placeholder="Property Location Search">
+              </ion-col>
+              <ion-col>
+                <ion-button class="search-button" (click)="searchProperties()">Search</ion-button>
+              </ion-col>
+          </div>
+        </ion-col>
+        <ion-col>
+          <!-- Filters and Sorts -->
+            <ion-button class="butDown" (click)="dropDown()">
+              Filter and Sort<ion-icon class="fil" id="iconic" name="chevron-down-outline" size="large" color="medium"></ion-icon>
+            </ion-button>
+        </ion-col>
+        <ion-col>
+           <!-- View Type Toggle -->
+
+           <div class="dropDown">
+            <ion-toggle [checked]="true" [(ngModel)]="status" (ionChange)="onChange()"></ion-toggle>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </section>
+
+  <!-- <div [ngSwitch]="activeTab">
 
     <ion-row style="width: 100%; margin-top: 1%;">
       <ion-row style="width: 100%;">
@@ -99,8 +132,8 @@
 
     <ion-row style="width: 100%;">
       <ion-col size="10">
-        <!-- Additional Filters -->
-        <div *ngIf="showAdditionalFilters" id="additional-features">
+        -- Additional Filters -->
+        <!-- <div *ngIf="showAdditionalFilters" id="additional-features">
           <ion-item>
             <ion-label class="filter-text">Bathrooms</ion-label>
             <select class="dropdown" [(ngModel)]="selectedBathrooms" (ionChange)="filterProperties()">
@@ -142,7 +175,7 @@
         </div>
       </ion-col>
     </ion-row>
-  </div>
+  </div> -->
 
 
 

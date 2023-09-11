@@ -66,12 +66,14 @@
   }
   
   .dropdown {
-    color: rgb(68, 68, 68);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    background-color: transparent;
+    width: 90%;
+    height: 70%;
+    margin-right: 10%;
+    color: white;
     border: none;
+    --border-radius: 30px;
+    cursor: pointer;
+    margin-top: 1%;
   }
   
   .filter-button {
@@ -82,7 +84,7 @@
     margin-top: 1%;
   }
   
-  .search-button {
+  .search-button{
     width: 90%;
     height: 70%;
     margin-right: 10%;
@@ -308,6 +310,395 @@
     color: #644bff;
     cursor: pointer;
   }
+
+  //////////////////////////////////////////////////////////
+
+  
+  /* search and button section*/
+  
+  .grid1
+  {
+    padding-top: 35px;
+  }
+
+
+  ion-toggle {
+    padding: 12px;
+    width: 90%;
+    height: 70%;
+    margin-right: 10%;
+    color: white;
+    border: none;
+    --border-radius: 30px;
+    cursor: pointer;
+    margin-top: 1%;
+  
+    --track-background: #ddd;
+    --track-background-checked: var(--ion-color-primary);
+  
+    --handle-background: var(--ion-color-primary);
+    --handle-background-checked: #ddd;
+  
+    --handle-width: 25px;
+    --handle-height: 28px;
+    --handle-max-height: auto;
+    --handle-spacing: 1px;
+  
+    --handle-border-radius: 50%;
+  }
+  
+  ion-toggle::part(track) {
+    top: -10px;
+    height: 35px;
+    width: 65px;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px;
+  
+  
+    /* Required for iOS handle to overflow the height of the track */
+    overflow: visible;
+  }
+
+  .butDown
+  {
+    width: 90%;
+    height: 30%;
+    margin-right: 10%;
+    color: white;
+    border: none;
+    --border-radius: 30px;
+    cursor: pointer;
+    margin-top: 1%;
+
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px;
+  }
+  #address
+  {
+    position: relative;
+    width: 85%;
+    height: 35px;
+    left: 20px;
+    padding-left: 10px;
+    border-radius: 20px;
+    background: rgba(226, 226, 226, 0.7); 
+    border: none;
+  }
+  
+  // .search-button
+  // {
+  //   position: relative;
+  //   --border-radius: 20px;
+  //   width: 75px;
+  //   height: 33px;
+  //   left: -56px;
+  //   top: -6px;
+  // }
+  
+  // /* Sort and Filter section*/
+  // .sandf
+  // {
+  //   position: fixed;
+  //   overflow: hidden;
+  //   top: 14%;
+  //   width: 100%;
+  //   display: none;
+  //   z-index: 6;
+  //   background: white;
+  // }
+  
+  // .Amenities
+  // {
+  //    text-align: center;
+  // }
+  // .show
+  // {
+  //   display:inline-block;
+  // }
+  // .lower
+  // {
+  //   position: relative;
+  //   top: 60%;
+  // }
+  
+  // .topping
+  // {
+  //   top: 400px !important;
+  // }
+  
+  // .dropping
+  // {
+  //   top: 85px !important;
+  // }
+  
+  // .upper
+  // {
+  //   top: 15%;
+  //   position: relative;
+  // }
+  
+  // .wrapper
+  // {
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   height: 120px;
+  
+  // }
+  
+  // .inputPrice
+  // {
+  //   display: flex;
+  //   margin: 30px 0 35px;
+  // }
+  
+  // .inputPrice .field
+  // {
+  //   height: 45px;
+  //   width: 100%;
+  //   display: flex;
+  //   align-items: center;
+  // }
+  
+  // .field input
+  // {
+  //   width: 100%;
+  //   height: 100%;
+  //   outline: none;
+  //   font-size: 19px;
+  //   text-align: center;
+  //   margin-left: 12px;
+  //   border-radius: 5px;
+  //   border: 1px solid rgb(223, 223, 223);
+  // }
+  
+  // .inputPrice .dash
+  // {
+  //   width: 130px;
+  //   display: flex;
+  //   font-size: 19px;
+  //   align-items: center;
+  //   justify-content: center;
+  // }
+  
+  // .slides
+  // {
+  //   top: 297px;
+  //   position: absolute;
+  //   height: 9px;
+  //   width: 35%;
+  //   border-radius: 5px;
+  //   background: rgb(204, 204, 204);
+  // }
+  
+  // .slides .bar
+  // {
+  //   height: 8px;
+  //   left: 10%;
+  //   right: 55%;
+  //   position: absolute ;
+  //   border-radius: 5px;
+  //   background: var(--ion-color-primary);
+  // }
+  
+  // .theranges
+  // {
+  //   position: absolute;
+  //   width: 35%;
+  // }
+  
+  // .theranges input
+  // {
+  //   position: absolute;
+  //   top: 42px;
+  //   height: 8px;
+  //   width: 100%;
+  //   background: none;
+  //   pointer-events: none;
+  //   -webkit-appearance: none;
+  // }
+  
+  // input[type="range"]::-webkit-slider-thumb{
+  //   height:17px;
+  //   width: 17px;
+  //   pointer-events: auto;
+  //   border-radius: 50%;
+  //   -webkit-appearance: none;
+  //   background: var(--ion-color-primary);
+  // }
+  
+  // input[type="range"]::-moz-range-thumb{
+  //   height:17px;
+  //   width: 17px;
+  //   pointer-events: auto;
+  //   border-radius: 50%;
+  //   -moz-appearance: none;
+  //   border: none;
+  //   background: var(--ion-color-primary);
+  // }
+  
+  
+  // .btnFilters {
+  //   width: 15%;
+   
+  // }
+  
+  
+  // /* Listings Section */
+  
+  // .lists
+  // {
+  //   width: 50%;
+  //   position: absolute;
+  //   overflow: auto;
+  //   top: -8px;
+  
+  // }
+  
+  // .lists2
+  // {
+  //   width: 50%;
+  //   position: absolute;
+  //   overflow: auto;
+  //   top: -8px;
+  //   display: none;
+  
+  // }
+  
+  // .map {
+  
+  //   padding-top: 10px;
+  //   left:0;
+  //   position:fixed !important;
+  //   width: 40%;
+  //   margin-left: 55%;
+  //   overflow: hidden;
+  
+  //   height: 80%;
+  //   border-radius: 10px;
+  //   background-color: transparent;
+  //   opacity: 0;
+  //   transition: opacity 150ms ease-in;
+  // }
+  
+  // ion-card {
+  //   width: 90%;
+  //   height: 180px;
+  //   margin-left: 2%;
+  //   margin-top: 15px;
+  //   margin-bottom: 10px;
+  //   border-radius: 10px;
+  // }
+  
+  // ion-card-header{
+  
+  //   width: 70%;
+  
+  // }
+  
+  // //make the img in ion-card-header smaller
+  // ion-card-header img {
+  //   width: 50%;
+  //   height: 200px;
+  //   position: relative;
+  //   top: -10px;
+  //   //rounded edges
+  //   border-radius: 10px;
+  // }
+  
+  // //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
+  // ion-card-header ion-card-title {
+  //   margin-left: 55%;
+  //   padding-top: 10px;
+  //   //move ths up
+  //   margin-top: -200px;
+  // }
+  
+  // ion-card-header ion-card-subtitle {
+  //   margin-left: 220px;
+  // }
+  
+  // ion-card ion-card-content {
+  //   margin-left: 39%;
+  //   margin-right: 5%;
+  //   width: 65%;
+  // }
+  
+  // .pin {
+  //   --background: transparent;
+  //   --border-radius: 50%;
+  //   --border: none;
+  //   padding: 0;
+  //   cursor: pointer;
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   width: 50px;
+  //   height: 50px;
+  //   //move it to right hand corner
+  //   margin-left: 90%;
+  //   margin-top: -30px;
+  // }
+  
+  // //styling for div with id="house_details"
+  // #house_details img {
+  //   //set image size
+  //   width: 15px;
+  //   height: 15px;
+  // }
+  
+  
+  // .map.visible {
+  //   opacity: 1;
+  // }
+  
+  // #map {
+  //   width: 50%;
+  //   margin-left: 2%;
+  //   border-radius: 10px;
+  // }
+  
+  
+  
+  // #back-arrow {
+  //   color: #0DAE4F;
+  // }
+  
+  // #listings-and-map {
+  //   transition: transform 0.3s ease-in-out;
+  // }
+  
+  
+  
+  // ::selection {
+  //   color: #fff;
+  //   background: #664AFF;
+  // }
+  
+  // .slider {
+  //   position: relative;
+  //   width: 80%;
+  //   height: 13px;
+  //   background-color: rgb(150, 150, 150);
+  //   border-radius: 5px;
+  //   margin-bottom: 5px;
+  //   margin-right: 5%;
+  //   padding-right: 50px;
+  // }
+  
+  // .progress {
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   height: 100%;
+  //   background-color: green;
+  //   border-radius: 5px;
+  //   transition: width 0.3s ease-in-out;
+  // }
+  
+
 }
   
 
