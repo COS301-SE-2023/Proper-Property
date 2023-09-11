@@ -1,0 +1,26 @@
+{
+  "name": "api-loc-info-feature",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/loc-info/feature/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/api/loc-info/feature",
+        "main": "libs/api/loc-info/feature/src/index.ts",
+        "tsConfig": "libs/api/loc-info/feature/tsconfig.lib.json",
+        "assets": ["libs/api/loc-info/feature/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/api/loc-info/feature/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

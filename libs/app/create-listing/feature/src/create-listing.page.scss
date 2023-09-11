@@ -327,9 +327,31 @@
     border: none;
   }
   
-  // ::ng-deep ion-footer{
-  //   margin-top: -80px; 
-  // }
+#districtHelp + #districtHelpSpan{
+  display: none;
+}
+
+#districtHelp:hover + #districtHelpSpan{
+  display: block;
+  animation-name: districtAni;
+  animation-duration: 10s;
+}
+
+#districtHelp + #districtHelpSpan:hover{
+  display:block;
+}
+
+@keyframes districtAni {
+  0%{
+    display: block;
+    color:red
+  }
+  100%{
+    display: block;
+  }
+}
+
+
 }
 
 .Mobile {
@@ -630,6 +652,8 @@
     font-style: normal;
     font-weight: 600;
   }
+
+  
   
   #desc {
     border-radius: 10px;
@@ -662,6 +686,6 @@
   }
   
   // ::ng-deep ion-footer{
-  //   margin-top: -80px; 
-  // }
+  //   margin-top: -80px;   // }
+
 }

@@ -158,7 +158,7 @@ h2
 .but2
 {
   margin-left: 55%;
-  height: 40%;
+  // height: 40%;
   --background: transparent;
   --box-shadow: none;
 }
@@ -247,6 +247,14 @@ ion-content
 {
   height: 30vh;
   background: rgb(243, 243, 243);
+}
+
+#profilePic2{
+  margin: 10px !important; 
+  border-radius: 50% !important; 
+  border: 1px solid black !important; 
+  width: 100px !important; 
+  height: 100px !important;
 }
 
 .utils

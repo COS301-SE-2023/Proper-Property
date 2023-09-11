@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { AuthState } from '@properproperty/app/auth/data-access';
-import { Unsubscribe, User } from '@angular/fire/auth';
+import { Unsubscribe } from '@angular/fire/auth';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Listing } from '@properproperty/api/listings/util';
@@ -17,10 +16,9 @@ import { Router } from '@angular/router';
 })
 export class SavedListingsPage implements OnInit {
 
-  @Select(AuthState.user) user$!: Observable<User | null>;
+  @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
-  private user: User | null = null;
-  private profile : UserProfile | null = null;
+  private userProfile : UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
 
   isMobile = false;
@@ -32,22 +30,20 @@ export class SavedListingsPage implements OnInit {
     private listingServices : ListingsService,
     private router : Router
     ) {
-    this.user$.subscribe((user) => {
-      this.user = user;
-      if(this.user){
-        this.profileServices.getUser(this.user.uid).then((profile) =>{
-          this.profile = profile;
-          //Todo - Change this to send an array of IDs
-          if(this.profile && this.profile.savedListings){
-            for(const listing of this.profile.savedListings){
-              this.listingServices.getListing(listing).then((listing) => {
-                if(listing){
-                  this.savedListings.push(listing);
-                }
-              });
-            }
+      this.savedListings = [];
+    this.userProfile$.subscribe((profile) => {
+      this.userProfile = profile;
+      if(this.userProfile){
+        //Todo - Change this to send an array of IDs
+        if(this.userProfile && this.userProfile.savedListings){
+          for(const listing of this.userProfile.savedListings){
+            this.listingServices.getListing(listing).then((listing) => {
+              if(listing){
+                this.savedListings.push(listing);
+              }
+            });
           }
-        });
+        }
       }
     });
     // Update listener whenever is changes such that it can be unsubscribed from
@@ -68,10 +64,9 @@ export class SavedListingsPage implements OnInit {
   }
 
   isSaved(listing_id : string){
-    if(this.profile){
-      if(this.profile.savedListings){
-        if(this.profile.savedListings.includes(listing_id)){
-          console.log("Listing found in saved: " + listing_id);
+    if(this.userProfile){
+      if(this.userProfile.savedListings){
+        if(this.userProfile.savedListings.includes(listing_id)){
           return true;
         }
       }
@@ -80,39 +75,43 @@ export class SavedListingsPage implements OnInit {
       console.log("Profile not found");
     }
 
-    console.log("Not found");
     return false;
   }
 
-  saveListing($event : any, listing_id : string) {
+  saveListing($event : Event, listing_id : string) {
     if(listing_id != ''){
       const heartBut = $event.target as HTMLButtonElement;
       heartBut.style.color = "red";
       
-      if(this.profile){
-          if(this.profile.savedListings){
-            this.profile.savedListings.push(listing_id);
+      if(this.userProfile){
+          if(this.userProfile.savedListings){
+            this.userProfile.savedListings.push(listing_id);
           }
           else{
-            this.profile.savedListings = [listing_id];
+            this.userProfile.savedListings = [listing_id];
           }
   
-          this.profileServices.updateUserProfile(this.profile);
+          this.profileServices.updateUserProfile(this.userProfile);
       }
     } 
   }
 
-  unsaveListing($event : any, listing_id : string){
+  unsaveListing($event : Event, listing_id : string){
     if(listing_id != ''){
       const heartBut = $event.target as HTMLButtonElement;
       heartBut.style.color = "red";
       
-      if(this.profile){
-          if(this.profile.savedListings){
-            this.profile.savedListings.splice(this.profile.savedListings.indexOf(listing_id), 1);
+      if(this.userProfile){
+          if(this.userProfile.savedListings){
+            this.userProfile.savedListings.splice(this.userProfile.savedListings.indexOf(listing_id), 1);
+            for(const listing of this.savedListings){
+              if(listing.listing_id == listing_id){
+                this.savedListings.splice(this.savedListings.indexOf(listing), 1);
+              }
+            }
           }
   
-          this.profileServices.updateUserProfile(this.profile);
+          this.profileServices.updateUserProfile(this.userProfile);
       }
     } 
   } 

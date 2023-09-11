@@ -8,6 +8,7 @@
         "project": ["apps/app/tsconfig.*?.json"]
       },
       "rules": {
+        "@typescript-eslint/no-explicit-any": 0,
         "@angular-eslint/directive-selector": [
           "error",
           {
@@ -22,6 +23,12 @@
             "type": "element",
             "prefix": "app",
             "style": "kebab-case"
+          }
+        ],
+        "@typescript-eslint/no-explicit-any": [
+          "off",
+          {
+            "ignoreRestArgs": true
           }
         ]
       },

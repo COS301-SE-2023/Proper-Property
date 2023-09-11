@@ -27,6 +27,24 @@
       "@properproperty/api/listings/util": [
         "libs/api/listings/util/src/index.ts"
       ],
+      "@properproperty/api/notifications/data-access": [
+        "libs/api/notifications/data-access/src/index.ts"
+      ],
+      "@properproperty/api/notifications/feature": [
+        "libs/api/notifications/feature/src/index.ts"
+      ],
+      "@properproperty/api/notifications/util": [
+        "libs/api/notifications/util/src/index.ts"
+      ],
+      "@properproperty/api/loc-info/data-access": [
+        "libs/api/loc-info/data-access/src/index.ts"
+      ],
+      "@properproperty/api/loc-info/feature": [
+        "libs/api/loc-info/feature/src/index.ts"
+      ],
+      "@properproperty/api/loc-info/util": [
+        "libs/api/loc-info/util/src/index.ts"
+      ],
       "@properproperty/api/profile/data-access": [
         "libs/api/profile/data-access/src/index.ts"
       ],
@@ -92,6 +110,12 @@
       ],
       "@properproperty/app/my-listings/feature": [
         "libs/app/my-listings/feature/src/index.ts"
+      ],
+      "@properproperty/app/notifications/data-access": [
+        "libs/app/notifications/data-access/src/index.ts"
+      ],
+      "@properproperty/app/notifications/util": [
+        "libs/app/notifications/util/src/index.ts"
       ],
       "@properproperty/app/open-ai/data-access": [
         "libs/app/open-ai/data-access/src/index.ts"

@@ -1,15 +1,18 @@
 import * as admin from 'firebase-admin';
+import { FieldValue } from 'firebase-admin/firestore';
 import { Injectable } from '@nestjs/common';
 import { GetListingsRequest,
   Listing,
   CreateListingResponse,
+  ChangeStatusRequest,
+  ChangeStatusResponse,
   GetListingsResponse, 
-  ChangeStatusRequest, 
-  ChangeStatusResponse, 
   GetApprovedListingsResponse,
-  EditListingResponse
+  EditListingResponse,
+  ApprovalChange
 } from '@properproperty/api/listings/util';
 // import { FieldValue, FieldPath } from 'firebase-admin/firestore';
+// import { areaScore } from '@properproperty/api/listings/util';
 @Injectable()
 export class ListingsRepository {
 
@@ -29,7 +32,7 @@ export class ListingsRepository {
   }
 
   async getListings(req: GetListingsRequest): Promise<GetListingsResponse>{
-    let collection = admin.firestore().collection('listings');
+    const collection = admin.firestore().collection('listings');
     let query: admin.firestore.Query;
 
     if(req.userId){
@@ -76,7 +79,7 @@ export class ListingsRepository {
     //   });
 
     // you
-    let listingRef = admin
+    const listingRef = admin
       .firestore()
       .collection('listings')
       .withConverter<Listing>({
@@ -102,38 +105,42 @@ export class ListingsRepository {
     });
   }
 
-  async changeStatus(req : ChangeStatusRequest): Promise<ChangeStatusResponse>{
-    console.log("Its show time");
-    const listingDoc = admin
-    .firestore()
-    .doc(`listings/${req.listingId}`)
-    .withConverter<Listing>({
-      fromFirestore: (snapshot) => snapshot.data() as Listing,
-      toFirestore: (listing: Listing) => listing
-    }).get();
-
-    listingDoc.then((doc) => {
-      let tempStatusChanges = doc.data()?.statusChanges;
-      if(tempStatusChanges){
-        tempStatusChanges.push({adminId : req.adminId, status : !doc.data()?.approved, date : new Date().toISOString()});
+  async changeStatus(listingId: string, change: ApprovalChange, req : ChangeStatusRequest): Promise<ChangeStatusResponse>{
+    try {
+      await admin
+        .firestore()
+        .collection('listings')
+        .doc(listingId)
+        .update({
+          approved: change.status,
+          approvalChanges: FieldValue.arrayUnion(change),
+          areaScore: {
+            crimeScore: req.crimeScore, 
+            waterScore: req.waterScore, 
+            sanitationScore: req.sanitationScore, 
+            schoolScore: req.schoolScore
+          }
+        });
+    } catch(error) {
+      console.log(error);
+      return {
+        success: true,
+        approvalChange: change
       }
-      else{
-        tempStatusChanges = [{adminId : req.adminId, status : !doc.data()?.approved, date : new Date().toISOString()}];
-      }
+    }
 
-      admin.firestore().doc(`listings/${req.listingId}`).update({approved : !doc.data()?.approved, statusChanges : tempStatusChanges});
-      return {statusChange : tempStatusChanges[tempStatusChanges.length - 1]};
-    })
-
-    return {statusChange : {adminId : "", status : false, date : ""}};
+    return {
+      success: true,
+      approvalChange: change
+    };
   }
 
   async getApprovedListings(): Promise<GetApprovedListingsResponse>{
-    let query = admin
+    const query = admin
     .firestore()
     .collection('listings').where("approved", "==", true);
     
-    let listings : Listing[] = [];
+    const listings : Listing[] = [];
     (await query.get()).docs.map((doc) => {
       doc.data() as Listing;
       listings.push(doc.data() as Listing);

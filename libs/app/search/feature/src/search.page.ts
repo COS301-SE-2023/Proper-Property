@@ -17,13 +17,11 @@ import { Router } from '@angular/router';
 import { Listing } from '@properproperty/api/listings/util';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { Unsubscribe, User } from '@angular/fire/auth';
+import { Unsubscribe } from '@angular/fire/auth';
 import { UserProfile } from '@properproperty/api/profile/util';
-import { AuthState } from '@properproperty/app/auth/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { ActivatedRoute } from '@angular/router';
 import { IonContent } from '@ionic/angular';
-import { Console } from 'console';
 
 @Component({
   selector: 'app-search',
@@ -63,11 +61,10 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   public selectedParking = 0;
   public selectedAmenities: string[] = [];
 
-  @Select(AuthState.user) user$!: Observable<User | null>;
-  @Select(UserProfileState.userProfileListener)
-  private userProfileListener$!: Observable<Unsubscribe | null>;
-  private user: User | null = null;
   private profile: UserProfile | null = null;
+  @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
+  @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
+  private userProfile : UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
 
   async setCentre() {
@@ -94,24 +91,20 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     private router: Router,
     private listingServices: ListingsService,
     public gmapsService: GmapsService,
-    private profileServices: UserProfileService
-  ) {
-    this.predictions = [];
-    this.defaultBounds = new google.maps.LatLngBounds();
-    // TODO unscuff this.
-    this.user$.subscribe((user) => {
-      this.user = user;
-      if (this.user) {
-        this.profileServices.getUser(this.user.uid).then((profile) => {
-          this.profile = profile;
-        });
-      }
-    });
-    // Update listener whenever is changes such that it can be unsubscribed from
-    // when the window is unloaded
-    this.userProfileListener$.subscribe((listener) => {
-      this.userProfileListener = listener;
-    });
+    private profileServices : UserProfileService
+    ) {
+      this.predictions = [];
+      this.defaultBounds = new google.maps.LatLngBounds();
+
+      this.userProfile$.subscribe((profile) => {
+        this.userProfile = profile;
+      });
+      // Update listener whenever is changes such that it can be unsubscribed from
+      // when the window is unloaded
+      this.userProfileListener$.subscribe((listener) => {
+        this.userProfileListener = listener;
+      });
+      
       this.isMobile = isMobile();
       this.MapView = false;
     }
@@ -157,7 +150,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       const maplisting=document.querySelector('#listings-and-map') as HTMLElement;
       // maplisting.style.display="block";
       maplisting.style.display="block";
-  }, 2000);
+    }, 2000);
 
     console.log(this.listings);
 

@@ -91,3 +91,5 @@ src/environments/environment.prod.ts
 src/environments/environment.ts
 victorias-secret-google-credentials
 .angular
+#nx is dumb and "doesn't support linux/windows/macos" if we install with package lock
+package-lock.json

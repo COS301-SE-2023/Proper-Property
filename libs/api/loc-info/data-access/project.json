@@ -1,0 +1,26 @@
+{
+  "name": "api-loc-info-data-access",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/loc-info/data-access/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/api/loc-info/data-access",
+        "main": "libs/api/loc-info/data-access/src/index.ts",
+        "tsConfig": "libs/api/loc-info/data-access/tsconfig.lib.json",
+        "assets": ["libs/api/loc-info/data-access/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/api/loc-info/data-access/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
