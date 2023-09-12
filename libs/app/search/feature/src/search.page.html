@@ -158,9 +158,16 @@
             <img src="{{listing.photos[0]}}" alt="house1">
             <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
           </ion-card-header>
-          <ion-button class="pin" (click)="centerMap(listing)">
-            <ion-icon name="location-outline" size="large" color="primary"></ion-icon>
-          </ion-button>
+          <ng-template [ngIf]="isSaved(listing.listing_id ?? '')" [ngIfElse]="notSaved">
+            <button style=" margin-left: 95%; margin-top: 0%; background: transparent;" (click)="unsaveListing($event, listing.listing_id ?? '')">
+              <ion-icon name="heart-outline"  style="color: #0DAE4F"></ion-icon>
+            </button>
+          </ng-template>
+          <ng-template #notSaved>
+            <button style=" margin-left: 95%; margin-top: 0%; background: transparent;"  (click)="saveListing($event, listing.listing_id ?? '')">
+              <ion-icon name="heart-outline" style="color: black"></ion-icon>
+            </button>
+          </ng-template>
           <ion-card-content (click)="redirectToPage(listing)">
           
             <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
@@ -195,12 +202,12 @@
       </div>
 
       <div class="lists2" id="lists2">
-        <ion-card *ngFor="let listing of listings" >
+        <ion-card *ngFor="let listing of listings">
           <ion-card-header (click)="redirectToPage(listing)">
 
           <img src="{{listing.photos[0]}}" alt="house1">
             
-            <ion-card-title style="color: #0DAE4F;">Area Rating {{listing.}}</ion-card-title>
+            <ion-card-title style="color: #0DAE4F;">Area Rating </ion-card-title>
           </ion-card-header>
           <ion-button class="pin" (click)="centerMap(listing)">
             <ion-icon name="location-outline" size="large" color="primary"></ion-icon>
@@ -212,13 +219,13 @@
                 <ion-col>
                   <div class="white-text">Water</div>
                     <div class="slider">
-                      <div class="progress" style="width: 80%"></div>
+                      <div id="waterProgress" class="progress"></div>
                     </div>
                 </ion-col>
                 <ion-col>
                 <div class="white-text">Sanitation</div>
                 <div class="slider">
-                  <div class="progress" style="width: 30%"></div>
+                  <div id="sanitationProgress" calss="progress"></div>
                 </div>
                 </ion-col>
               </ion-row>
@@ -227,13 +234,13 @@
                 <ion-col>
                 <div class="white-text">Crime</div>
                 <div class="slider">
-                  <div class="progress" style="width: 60%"></div>
+                  <div id="crimeProgress" class="progress" ></div>
                 </div>
                 </ion-col>
                 <ion-col>
                 <div class="white-text">School Quality</div>
                 <div class="slider">
-                  <div class="progress" style="width: 50%"></div>
+                  <div id="schoolProgress" class="progress" ></div>
                 </div>                  
                 </ion-col>
               </ion-row>

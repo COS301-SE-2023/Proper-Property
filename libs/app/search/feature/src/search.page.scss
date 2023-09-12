@@ -108,28 +108,28 @@
   }
   
   
-  //make the img in ion-card-header smaller
-  ion-card-header img {
-    width: 200px;
-    height: 130px;
-    //rounded edges
-    border-radius: 10px;
-  }
+  // //make the img in ion-card-header smaller
+  // ion-card-header img {
+  //   width: 100%;
+  //   height: 130px;
+  //   //rounded edges
+  //   border-radius: 10px;
+  // }
   
-  //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
-  ion-card-header ion-card-title {
-    margin-left: 220px;
-    //move ths up
-    margin-top: -130px;
-  }
+  // //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
+  // ion-card-header ion-card-title {
+  //   margin-left: 220px;
+  //   //move ths up
+  //   margin-top: -130px;
+  // }
   
-  ion-card-header ion-card-subtitle {
-    margin-left: 220px;
-  }
+  // ion-card-header ion-card-subtitle {
+  //   margin-left: 220px;
+  // }
   
-  ion-card ion-card-content {
-    margin-left: 220px;
-  }
+  // ion-card ion-card-content {
+  //   margin-left: 220px;
+  // }
   
   //make the ion-card take only half of the page
   ion-card {
@@ -174,37 +174,11 @@
     color: grey;
   }
   
-  // .map {
-  //   // margin-left: 50%;
-  //   // width: 40%;
-  //   // margin-left: 55%;
-  //   position: fixed;
-  //   margin-top: -10px;
-  //   width: 95%;
-  //   margin-left: 2%;
-  //   margin-right: 3%;
-  //   height: 600px;
-  //   border-radius: 10px;
-  //   background-color: transparent;
-  //   opacity: 0;
-  //   transition: opacity 150ms ease-in;
-  // }
   
   .map.visible {
     opacity: 1;
   }
   
-  // #map {
-  //   width: 50%;
-  //   margin-left: 2%;
-  //   margin-top: 10px;
-  //   border-radius: 10px;
-  // }
-  
-  // #login-button{
-  //   background-color: #0DAE4F;
-  //   color: white;
-  // }
   
   #back-arrow {
     color: #0DAE4F;
@@ -613,6 +587,26 @@
     border-radius: 5px;
     transition: width 0.3s ease-in-out;
   }
+
+  .errorProgressBar{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: red;
+    border-radius: 5px;
+    transition: width 0.3s ease-in-out;
+  }
+
+  .warningProgressBar{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #ffcc00;
+    border-radius: 5px;
+    transition: width 0.3s ease-in-out;
+  }
   
 
 }
@@ -755,22 +749,25 @@ ion-card {
     height: 15px;
   }
   
-  .heart-button {
-    background-color: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    //move it to right hand corner
-    margin-left: 90%;
-    margin-top: -30px;
-  }
+  // .heart-button {
+  //   --background: transparent;
+  //   --border-radius: 50%;
+  //   --border: none;
+  //   padding: 0;
+  //   cursor: pointer;
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   width: 50px;
+  //   height: 50px;
+  //   //move it to right hand corner
+  //   margin-left: 90%;
+  //   // float: right;
+  //   // margin-top: -30px;
+  // }
   
   // .heart-icon {
+    
   //   color: red;
   //   font-size: 24px;
   // }
