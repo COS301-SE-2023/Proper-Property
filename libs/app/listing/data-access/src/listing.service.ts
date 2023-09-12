@@ -165,7 +165,8 @@ export class ListingsService {
       request = {
         listingId : listingId,
         adminId : admin,
-        status: status
+        status: status,
+        reason: "git gud"
       }
     }
     const response: ChangeStatusResponse = (await httpsCallable<

@@ -460,7 +460,7 @@ handleAddressChange(address: string): void {
         heading: this.heading,
         let_sell: this.listingType,
         listingAreaType: this.listingAreaType,
-        status: StatusEnum.PENDING_APPROVAL,
+        status: this.listingEditee.status === StatusEnum.SAVED ? StatusEnum.PENDING_APPROVAL : StatusEnum.EDITED,
         listingDate: "" + new Date(),
         areaScore: {
           crimeScore: 0,

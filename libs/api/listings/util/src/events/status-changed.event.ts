@@ -6,6 +6,7 @@ export class StatusChangedEvent {
     public readonly listingId: string,
     public readonly change: StatusChange,
     public readonly userId: string,
-    public readonly req: ChangeStatusRequest
+    public readonly req: ChangeStatusRequest,
+    public readonly address: string
   ){}
 }

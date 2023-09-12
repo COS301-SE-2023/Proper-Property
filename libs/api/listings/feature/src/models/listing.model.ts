@@ -7,7 +7,8 @@ import {
   ChangeStatusResponse, 
   areaScore, 
   ChangeStatusRequest,
-  StatusEnum
+  StatusEnum,
+  ListingCreatedEvent
 } from '@properproperty/api/listings/util';
 
 export class ListingModel extends AggregateRoot implements Listing {
@@ -130,7 +131,7 @@ export class ListingModel extends AggregateRoot implements Listing {
     if (!this.listing_id) {
       throw new Error('yeah idk fam. this should never happen. the listing has no listing_id');
     }
-    this.apply(new StatusChangedEvent(this.listing_id, change, this.user_id, req));
+    this.apply(new StatusChangedEvent(this.listing_id, change, this.user_id, req, this.address));
 
     return {success: true, statusChange: change};
   }
@@ -164,5 +165,9 @@ export class ListingModel extends AggregateRoot implements Listing {
       quality_rating: this.quality_rating,
       listingAreaType: this.listingAreaType,
     };
+  }
+
+  notifyCreation() {
+    this.apply(new ListingCreatedEvent(this.toJSON()));
   }
 }

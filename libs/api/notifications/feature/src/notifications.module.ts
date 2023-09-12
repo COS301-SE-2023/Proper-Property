@@ -5,7 +5,9 @@ import { NotificationSagas } from './notifications.sagas';
 import { 
   NotifyApprovalChangeHandler,
   NotifyStatusChangeHandler,
-  NotifyViewDropHandler
+  NotifyViewDropHandler,
+  NotifyListingCreatedHandler,
+  NotifyListingEditedHandler
 } from './commands';
 import { 
   ApprovalChangeNotifiedHandler,
@@ -16,7 +18,9 @@ import {
 const commandHandlers = [
   NotifyApprovalChangeHandler,
   NotifyStatusChangeHandler,
-  NotifyViewDropHandler
+  NotifyViewDropHandler,
+  NotifyListingCreatedHandler,
+  NotifyListingEditedHandler
 ];
 const eventHandlers = [
   ApprovalChangeNotifiedHandler,

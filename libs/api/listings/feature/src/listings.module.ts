@@ -7,7 +7,7 @@ import {
   CreateListingHandler, 
   ChangeStatusHandler, 
   EditListingHandler,
-  SaveListingHandler
+  SaveListingHandler,
 } from './commands';
 const CommandHandlers = [
   CreateListingHandler, 
@@ -29,11 +29,13 @@ const QueryHandlers = [
 
 import { 
   ListingEditedHandler, 
-  StatusChangedHandler 
+  StatusChangedHandler,
+  ListingCreatedHandler
 } from './events';
 const EventHandlers = [
   ListingEditedHandler, 
-  StatusChangedHandler
+  StatusChangedHandler,
+  ListingCreatedHandler
 ];
 @Module({
   imports: [

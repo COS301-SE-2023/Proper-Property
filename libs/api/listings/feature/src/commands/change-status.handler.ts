@@ -24,7 +24,7 @@ implements ICommandHandler<
       listingModel.commit();
     } catch (error) {
       console.log(error);
-      response = {success: false, approvalChange: undefined}; 
+      response = {success: false, statusChange: undefined}; 
     }
     
     return response;
