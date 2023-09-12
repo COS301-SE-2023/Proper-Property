@@ -219,13 +219,13 @@
                 <ion-col>
                   <div class="white-text">Water</div>
                     <div class="slider">
-                      <div id="waterProgress" class="progress"></div>
+                      <div id="waterProgress" class="progress" [style.width]="listing.areaScore.waterScore+'%'"></div>
                     </div>
                 </ion-col>
                 <ion-col>
                 <div class="white-text">Sanitation</div>
                 <div class="slider">
-                  <div id="sanitationProgress" calss="progress"></div>
+                  <div id="sanitationProgress" class="progress" [style.width]="listing.areaScore.sanitationScore+'%'"></div>
                 </div>
                 </ion-col>
               </ion-row>
@@ -234,13 +234,13 @@
                 <ion-col>
                 <div class="white-text">Crime</div>
                 <div class="slider">
-                  <div id="crimeProgress" class="progress" ></div>
+                  <div id="crimeProgress" class="progress" [style.width]="listing.areaScore.crimeScore+'%'"></div>
                 </div>
                 </ion-col>
                 <ion-col>
                 <div class="white-text">School Quality</div>
                 <div class="slider">
-                  <div id="schoolProgress" class="progress" ></div>
+                  <div id="schoolProgress" class="progress" [style.width]="listing.areaScore.schoolScore+'%'"></div>
                 </div>                  
                 </ion-col>
               </ion-row>
