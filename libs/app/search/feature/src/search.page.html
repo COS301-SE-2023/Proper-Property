@@ -7,21 +7,7 @@
 </ion-header>
 
 
-
-
 <ion-content *ngIf="!this.isMobile" class="Desktop">
-  <ion-segment [(ngModel)]="activeTab" (ionChange)="changeTab()">
-    <ion-segment-button value="buying">
-      <ion-label>buy</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="all">
-      <ion-label>All</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="renting">
-      <ion-label>Rent</ion-label>
-    </ion-segment-button>
-  </ion-segment>
-
   <section class="sortFilter">
     <ion-grid class="grid1">
       <ion-row >
@@ -38,6 +24,7 @@
         </ion-col>
         <ion-col>
           <!-- Filters and Sorts -->
+          
             <ion-button class="butDown" (click)="dropDown()">
               Filter and Sort<ion-icon class="fil" id="iconic" name="chevron-down-outline" size="large" color="light"></ion-icon>
             </ion-button>
@@ -55,6 +42,17 @@
   </section>
 
    <section class="sandf" id="sandf">
+    <ion-segment [(ngModel)]="activeTab" (ionChange)="changeTab()">
+      <ion-segment-button value="buying">
+        <ion-label>buy</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="all">
+        <ion-label>All</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="renting">
+        <ion-label>Rent</ion-label>
+      </ion-segment-button>
+    </ion-segment>
     <!-- Property Type and  Rooms -->
     <div [ngSwitch]="activeTab">
 
@@ -151,60 +149,110 @@
   <div class="loading-animation">
     <img src="assets/500.gif">
   </div>
-  <div class="footer-gap"></div>
 
-  <div id="listings-and-map">
-    <ion-grid>
-      <ion-row>
-        <ion-col size="6">
-          <ion-card *ngFor="let listing of listings">
-            <div (click)="redirectToPage(listing)">
-              <ion-card-header>
-                <img src="{{listing.photos[0]}}" alt="house1">
-                <ion-card-title>House</ion-card-title>
-                <ion-card-subtitle style="color: #94d2ae;">R {{listing.price}}</ion-card-subtitle>
-              </ion-card-header>
+    <section id="listings-and-map" class="upper">
 
-              <ion-card-content>
-                <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-                  {{listing.desc}}
-                </p>
-                <br>
-                <br>
-                <div id="house_details">
-                  <img src="assets/icon/bedrooms.png">
-                  {{listing.bed}}
-                  &nbsp; &nbsp;&nbsp;
-                  <img src="assets/icon/bathrooms.png">
-                  {{listing.bath}}
-                  &nbsp; &nbsp;&nbsp;
-                  <img src="assets/icon/floorplan.png">
-                  {{listing.floor_size}} m<sup>2</sup>
-                  &nbsp; &nbsp;&nbsp;
-                  <img src="assets/icon/erf.png">
-                  {{listing.property_size}} m<sup>2</sup>
-                </div>
-              </ion-card-content>
+      <div class="lists" id="lists">
+        <ion-card *ngFor="let listing of listings" >
+          <ion-card-header (click)="redirectToPage(listing)">
+            <img src="{{listing.photos[0]}}" alt="house1">
+            <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
+          </ion-card-header>
+          <ion-button class="pin" (click)="centerMap(listing)">
+            <ion-icon name="location-outline" size="large" color="primary"></ion-icon>
+          </ion-button>
+          <ion-card-content (click)="redirectToPage(listing)">
+          
+            <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+              {{listing.bed}} bedroom/{{listing.prop_type}}
+            </p>
+            <ng-template [ngIf] ="listing.let_sell === 'Sell'">
+              <p>For Sale!</p>
+            </ng-template>
+            <ng-template [ngIf] ="listing.let_sell === 'Rent'">
+              <p>To Let!</p>
+            </ng-template>
+            <p>
+            In {{listing.address}}
+            </p>
+            <br>
+            <div id="house_details">
+              <img src="assets/icon/bedrooms.png">
+              {{listing.bed}}
+              &nbsp; &nbsp;&nbsp;
+              <img src="assets/icon/bathrooms.png">
+              {{listing.bath}}
+              &nbsp; &nbsp;&nbsp;
+              <img src="assets/icon/floorplan.png">
+              {{listing.floor_size}} m<sup>2</sup>
+              &nbsp; &nbsp;&nbsp;
+              <img src="assets/icon/erf.png">
+              {{listing.property_size}} m<sup>2</sup>
             </div>
-            <ng-template [ngIf]="isSaved(listing.listing_id ?? '')" [ngIfElse]="notSaved">
-              <button style="float: right; margin-right: 1%" (click)="unsaveListing($event, listing.listing_id ?? '')">
-                <ion-icon name="heart" class="heart-icon" style="color: red"></ion-icon>
-              </button>
-            </ng-template>
-            <ng-template #notSaved>
-              <button style="float: right; margin-right: 1%" (click)="saveListing($event, listing.listing_id ?? '')">
-                <ion-icon name="heart" class="heart-icon" style="color: black"></ion-icon>
-              </button>
-            </ng-template>
-          </ion-card>
-      </ion-col>
-      <ion-col size="6">
-        <div class="map" #map></div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  </div>
-  <properproperty-footer style="margin-top: 2%;"></properproperty-footer>
+          </ion-card-content>
+        </ion-card>
+
+      </div>
+
+      <div class="lists2" id="lists2">
+        <ion-card *ngFor="let listing of listings" >
+          <ion-card-header (click)="redirectToPage(listing)">
+
+          <img src="{{listing.photos[0]}}" alt="house1">
+            
+            <ion-card-title style="color: #0DAE4F;">Area Rating {{listing.}}</ion-card-title>
+          </ion-card-header>
+          <ion-button class="pin" (click)="centerMap(listing)">
+            <ion-icon name="location-outline" size="large" color="primary"></ion-icon>
+          </ion-button>
+          <ion-card-content (click)="redirectToPage(listing)">
+          
+            <ion-grid style="z-index:1;">
+              <ion-row>
+                <ion-col>
+                  <div class="white-text">Water</div>
+                    <div class="slider">
+                      <div class="progress" style="width: 80%"></div>
+                    </div>
+                </ion-col>
+                <ion-col>
+                <div class="white-text">Sanitation</div>
+                <div class="slider">
+                  <div class="progress" style="width: 30%"></div>
+                </div>
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+                <ion-col>
+                <div class="white-text">Crime</div>
+                <div class="slider">
+                  <div class="progress" style="width: 60%"></div>
+                </div>
+                </ion-col>
+                <ion-col>
+                <div class="white-text">School Quality</div>
+                <div class="slider">
+                  <div class="progress" style="width: 50%"></div>
+                </div>                  
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            <br>
+            <div id="house_details">
+              {{listing.address}}
+            </div>
+          </ion-card-content>
+        </ion-card>
+
+      </div>
+      <div slot="fixed" class="map" #map></div>
+     
+  </section>
+
+  <div class="footer-gap"></div>
+   <!-- <properproperty-footer style="margin-top: 2%; position: sticky;"></properproperty-footer>  -->
+  
 
 </ion-content>
 

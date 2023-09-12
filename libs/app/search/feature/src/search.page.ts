@@ -931,6 +931,30 @@ onChange()
   }
 
 }
+async centerMap(listing : Listing)
+{
+  
+    this.listingServices.getListings().then(async (listings) => {
+    this.filterProperties();
+
+    this.searchQuery = listing.address;
+    this.setCentre();
+
+  });
+
+  await this.addOneMarkersToMap(listing) ;
+ 
+}
+
+async addOneMarkersToMap(listing : Listing) {
+  
+  const coordinates = await this.gmapsService.geocodeAddress(listing.address);
+  if (coordinates) {
+    console.log("my coordinates ",coordinates);
+    this.addMarker(coordinates, listing);
+    
+  }
+}
 
 
 }
