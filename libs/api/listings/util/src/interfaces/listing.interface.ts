@@ -1,4 +1,5 @@
-import { ApprovalChange, areaScore } from './index';
+import { StatusChange, areaScore } from './index';
+import { StatusEnum } from '../enums/status.enum';
 
 export interface Listing{
   listing_id?: string;
@@ -22,8 +23,8 @@ export interface Listing{
   let_sell: string;
   listingAreaType: string;
   heading: string;
-  approved: boolean;
-  approvalChanges?: ApprovalChange[];
+  statusChanges?: StatusChange[];
+  status: StatusEnum;
   listingDate: string;
   quality_rating?: number;
   areaScore: areaScore;

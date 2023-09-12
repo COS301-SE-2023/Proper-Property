@@ -1,8 +1,11 @@
+import { StatusEnum } from "../enums";
+
 export interface ChangeStatusRequest{
   listingId: string;
-  adminId: string;
-  crimeScore: number;
-  schoolScore: number;
-  waterScore: number;
-  sanitationScore: number;
+  adminId?: string;
+  status: StatusEnum;
+  crimeScore?: number;
+  schoolScore?: number;
+  waterScore?: number;
+  sanitationScore?: number;
 }

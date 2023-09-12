@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Select } from '@ngxs/store';
-import { Listing, ApprovalChange } from '@properproperty/api/listings/util';
+import { Listing, StatusChange } from '@properproperty/api/listings/util';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { AdminService } from '@properproperty/app/admin/data-access';
@@ -83,7 +83,7 @@ export class AdminPage{
     
 
     route.params.subscribe((params) => {
-      const ApprovalChange : ApprovalChange = params['ApprovalChange'];
+      const ApprovalChange : StatusChange = params['ApprovalChange'];
       if(ApprovalChange?.adminId){
         router.navigate(['/admin']);
       }

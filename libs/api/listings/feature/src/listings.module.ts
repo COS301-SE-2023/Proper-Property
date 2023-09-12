@@ -6,12 +6,14 @@ import { ListingsModule as ListingsDataAccessModule } from '@properproperty/api/
 import { 
   CreateListingHandler, 
   ChangeStatusHandler, 
-  EditListingHandler 
+  EditListingHandler,
+  SaveListingHandler
 } from './commands';
 const CommandHandlers = [
   CreateListingHandler, 
   ChangeStatusHandler, 
-  EditListingHandler
+  EditListingHandler,
+  SaveListingHandler
 ];
 
 import { 

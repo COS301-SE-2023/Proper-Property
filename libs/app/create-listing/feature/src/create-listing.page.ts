@@ -1,17 +1,14 @@
-import { Component, OnInit , ViewChild, ElementRef,HostListener} from '@angular/core';
+import { Component, OnInit , ViewChild, ElementRef,HostListener, isDevMode} from '@angular/core';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
-import { Listing } from '@properproperty/api/listings/util';
+import { Listing, StatusEnum } from '@properproperty/api/listings/util';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OpenAIService } from '@properproperty/app/open-ai/data-access';
-import { Select} from '@ngxs/store';
+import { Select, Store} from '@ngxs/store';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { User } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
-import { Store } from '@ngxs/store';
-import { isDevMode } from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-
 import { FormControl } from '@angular/forms';
 
 import { map, startWith } from 'rxjs/operators'
@@ -343,8 +340,8 @@ handleAddressChange(address: string): void {
 
   selectedValue = true;
   listingAreaTypeSlider = true;
-  listingAreaType = "";
-  listingType = "";
+  listingAreaType = "Rural";
+  listingType = "Sell";
 
   changeListingType(){
     if(this.selectedValue){
@@ -364,7 +361,7 @@ handleAddressChange(address: string): void {
     }
   }
 
-  async addListing(){
+  async addListing(creationType : string){
     this.address = (document.getElementById("address") as HTMLInputElement).value;
     const score = await this.calculateQualityScore(
       this.photos,
@@ -403,9 +400,9 @@ handleAddressChange(address: string): void {
         heading: this.heading,
         let_sell: this.listingType,
         listingAreaType: this.listingAreaType,
-        approved: false,
-        approvalChanges: [],
+        statusChanges: [],
         quality_rating: score,
+        status: creationType == "save" ? StatusEnum.SAVED : StatusEnum.PENDING_APPROVAL,
         listingDate: "" + new Date(),
         areaScore: {
           crimeScore: 0,
@@ -416,7 +413,19 @@ handleAddressChange(address: string): void {
       }
 
       console.log(list);
-      await this.listingService.createListing(list);
+
+      if(creationType == "create"){
+        console.log("Creating listing")
+        await this.listingService.createListing(list);
+      }
+      else if(creationType == "save"){
+        console.log("Saving listing")
+        if(this.listingEditee)
+          list.listing_id = this.listingEditee.listing_id;
+
+        const response = await this.listingService.saveListing(list);
+        console.log(response);
+      }
     
       this.router.navigate(['/home']);
     }
@@ -429,7 +438,7 @@ handleAddressChange(address: string): void {
     if(this.currentUser != null && this.listingEditee != null){
       const list : Listing = {
         listing_id: this.listingEditee.listing_id,
-        approvalChanges: this.listingEditee.approvalChanges,
+        statusChanges: this.listingEditee.statusChanges,
         quality_rating: this.listingEditee.quality_rating,
         user_id: this.currentUser.uid,
         address: this.address,
@@ -451,7 +460,7 @@ handleAddressChange(address: string): void {
         heading: this.heading,
         let_sell: this.listingType,
         listingAreaType: this.listingAreaType,
-        approved: false,
+        status: StatusEnum.PENDING_APPROVAL,
         listingDate: "" + new Date(),
         areaScore: {
           crimeScore: 0,
@@ -600,6 +609,7 @@ async calculateQualityScore(photos: string[],
   
   convertBlobUrlToNormalUrl(blobUrl: string): string {
     const img = new Image();
+    img.crossOrigin = "Anonymous";
     img.src = blobUrl;
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");

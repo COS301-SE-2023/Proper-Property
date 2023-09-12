@@ -16,7 +16,8 @@ import {
   EditListingCommand,
   EditListingResponse,
   GetUnapprovedListingsResponse,
-  GetUnapprovedListingsQuery
+  GetUnapprovedListingsQuery,
+  SaveListingCommand
 } from '@properproperty/api/listings/util';
 
 @Injectable()
@@ -49,5 +50,9 @@ export class ListingsService {
 
   async editListing(req: EditListingRequest): Promise<EditListingResponse>{
     return this.commandBus.execute(new EditListingCommand(req.listing))
+  }
+
+  async saveListing(req: CreateListingRequest): Promise<CreateListingResponse>{
+    return this.commandBus.execute(new SaveListingCommand(req.listing));
   }
 }
