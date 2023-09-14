@@ -299,14 +299,19 @@
       </ion-row>
 
       <ion-row style="width:100%">
-        <ion-button *ngIf="!ownerViewing; else ownerView" (click)="addListing()"
-          [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">ADD
+        <ng-container *ngIf="!ownerViewing; else ownerView">
+          <ion-button (click)="addListing('create')"
+          [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">SUBMIT
           LISTING</ion-button>
+        </ng-container>
         <ng-template #ownerView>
           <ion-button (click)="editListing()"
-            [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">Edit
-            Listing</ion-button>
-        </ng-template>
+          [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">SUBMIT EDITS
+          </ion-button>
+        </ng-template>&nbsp;&nbsp;
+        <ion-button (click)="addListing('save')"
+        [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">DRAFT
+        LISTING</ion-button>
       </ion-row>
     </ion-row>
     <div style="height:200px;"></div>
@@ -584,14 +589,19 @@
     </ion-row>
 
       <ion-row style="width:100%">
-        <ion-button *ngIf="!ownerViewing; else ownerView" (click)="addListing()"
-          [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">ADD
+        <ng-container *ngIf="!ownerViewing; else ownerView">
+          <ion-button (click)="addListing('create')"
+          [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">SUBMIT
           LISTING</ion-button>
+        </ng-container>
         <ng-template #ownerView>
           <ion-button (click)="editListing()"
-            [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">Edit
-            Listing</ion-button>
-        </ng-template>
+          [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">SUBMIT EDITS
+          </ion-button>
+        </ng-template>&nbsp;&nbsp;
+        <ion-button (click)="addListing('save')"
+        [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">DRAFT
+        LISTING</ion-button>
       </ion-row>
     </ion-row>
     <div style="height:200px;"></div>

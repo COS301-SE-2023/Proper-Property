@@ -1,6 +1,6 @@
-import { Component, ElementRef, ViewChild,HostListener, OnDestroy} from '@angular/core';
+import { Component, ElementRef, ViewChild, HostListener, OnDestroy } from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { Listing } from '@properproperty/api/listings/util';
+import { Listing, StatusEnum } from '@properproperty/api/listings/util';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
@@ -22,26 +22,26 @@ export interface GetAnalyticsDataRequest {
   templateUrl: './listing.page.html',
   styleUrls: ['./listing.page.scss'],
 })
-export class ListingPage implements OnDestroy{
+export class ListingPage implements OnDestroy {
   @ViewChild(IonContent) content: IonContent | undefined;
   // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
 
   isMobile: boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
-  private userProfile : UserProfile | null = null;
+  private userProfile: UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
   @ViewChild('swiper')
   swiperRef: ElementRef | undefined;
-  list : Listing | null = null;
+  list: Listing | null = null;
   lister: UserProfile | null = null
-  listerId  = "";
+  listerId = "";
   listingId = "";
   pointsOfInterest: { photo: string | undefined, name: string }[] = [];
   admin = false;
   adminId = "";
-  public ownerViewing$ : Observable<boolean> = of(false);
-  coordinates: {latitude: number, longitude: number} | null = null;
+  public ownerViewing$: Observable<boolean> = of(false);
+  coordinates: { latitude: number, longitude: number } | null = null;
   profilePic = "";
 
   price_per_sm = 0;
@@ -70,32 +70,28 @@ export class ListingPage implements OnDestroy{
 
   constructor(private router: Router,
     private route: ActivatedRoute,
-    private listingServices : ListingsService,
-    private userServices : UserProfileService,
+    private listingServices: ListingsService,
+    private userServices: UserProfileService,
     public gmapsService: GmapsService,
     private functions: Functions,
-    private profileServices : UserProfileService) {
+    private profileServices: UserProfileService) {
     let list_id = "";
     let admin = "";
-   
+
     this.route.params.subscribe((params) => {
-      console.warn(params); 
+      console.warn(params);
       list_id = params['list'];
       admin = params['admin'];
       this.listingId = list_id;
-      
+
       this.listingServices.getListing(list_id).then((list) => {
         console.warn(list);
         this.list = list;
       }).then(() => {
-        if(admin){
+        if (admin) {
           this.admin = true;
           this.adminId = admin;
         }
-
-        
-        // TODO
-        console.log(this.list);
 
        
         this.price_per_sm = Number( this.list?.price.replace(/,/g, '')) / Number(this.list?.property_size);
@@ -108,25 +104,25 @@ export class ListingPage implements OnDestroy{
         this.userProfile$.subscribe((profile) => {
           this.userProfile = profile;
           this.isRed = this.isSaved(this.listingId);
-          if(profile && this.list && this.userProfile?.userId == this.list?.user_id){
+          if (profile && this.list && this.userProfile?.userId == this.list?.user_id) {
             this.ownerViewing$ = of(true);
             this.profilePic = this.userProfile?.profilePicture ?? "";
           }
         });
 
-              // when the window is unloaded
-      this.userProfileListener$.subscribe((listener) => {
-        this.userProfileListener = listener;
-      });
+        // when the window is unloaded
+        this.userProfileListener$.subscribe((listener) => {
+          this.userProfileListener = listener;
+        });
 
-      this.gmapsService.getLatLongFromAddress("" + this.list?.address).then((coordinates) => {
-        this.coordinates = coordinates;
-        this.getNearbyPointsOfInterest(coordinates);
-        this.setCrimeScore();
-        this.setSanitationScore();
-        this.setSchoolRating();
-        this.setWaterScore();
-      })
+        this.gmapsService.getLatLongFromAddress("" + this.list?.address).then((coordinates) => {
+          this.coordinates = coordinates;
+          this.getNearbyPointsOfInterest(coordinates);
+          this.setCrimeScore();
+          this.setSanitationScore();
+          this.setSchoolRating();
+          this.setWaterScore();
+        })
       });
     });
 
@@ -144,7 +140,7 @@ export class ListingPage implements OnDestroy{
       this.userProfileListener = listener;
     });
 
-    this.isMobile = isMobile(); 
+    this.isMobile = isMobile();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -153,12 +149,12 @@ export class ListingPage implements OnDestroy{
     this.isMobile = window.innerWidth <= 576;
   }
 
-  async showAnalytics(){
-    const loader=document.querySelector(".graph-animation") as HTMLElement;
-    loader.style.display="block";
-    const request : GetAnalyticsDataRequest = {listingId : this.list?.listing_id ?? ""};
+  async showAnalytics() {
+    const loader = document.querySelector(".graph-animation") as HTMLElement;
+    loader.style.display = "block";
+    const request: GetAnalyticsDataRequest = { listingId: this.list?.listing_id ?? "" };
     const analyticsData = JSON.parse((await httpsCallable(this.functions, 'getAnalyticsData')(request)).data as string);
-    if(analyticsData == null){
+    if (analyticsData == null) {
       return;
     }
 
@@ -166,18 +162,18 @@ export class ListingPage implements OnDestroy{
     let totEngagement = 0;
 
     console.log(analyticsData);
-    let dates : string[] = [];
-    let pageViews : number[] = [];
+    let dates: string[] = [];
+    let pageViews: number[] = [];
 
     const rows = analyticsData.rows ?? [];
-    for(let i = 0; rows && i < rows.length; i++){
+    for (let i = 0; rows && i < rows.length; i++) {
       if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
         const dimensionValue = rows[i].dimensionValues[1].value;
-        const year  = Number(dimensionValue.substring(0,4));
-        const month  = Number(dimensionValue.substring(4,6));
-        const day  = Number(dimensionValue.substring(6,8));
-      
-      
+        const year = Number(dimensionValue.substring(0, 4));
+        const month = Number(dimensionValue.substring(4, 6));
+        const day = Number(dimensionValue.substring(6, 8));
+
+
         const tempDate = new Date(year, month, day)
 
         dates[i] = tempDate.getDate() + " " + this.Months[tempDate.getMonth() - 1];
@@ -192,7 +188,7 @@ export class ListingPage implements OnDestroy{
 
     dates = dates.reverse();
     pageViews = pageViews.reverse();
-    
+
     const data = {
       labels: dates,
       datasets: [{
@@ -204,7 +200,7 @@ export class ListingPage implements OnDestroy{
         options: {
           scales: {
             y: {
-              ticks:{
+              ticks: {
                 stepSize: 10,
               }
             }
@@ -215,13 +211,13 @@ export class ListingPage implements OnDestroy{
 
     const canvas = document.getElementById('lineGraph');
 
-    if(canvas){
+    if (canvas) {
       const chart = new Chart(canvas as HTMLCanvasElement, {
         type: 'line',
         data: data,
       });
 
-      if(chart){
+      if (chart) {
         console.log("Chart created")
       }
     }
@@ -232,19 +228,23 @@ export class ListingPage implements OnDestroy{
     this.avgEnagement = minutes + " min " + seconds + " sec";
     this.showData = true;
     const element = document.querySelector(".graph") as HTMLElement;
-    loader.style.display="none";
-    element.style.display="block";
+    loader.style.display = "none";
+    element.style.display = "block";
     return;
   }
 
-  async changeStatus(){
+  async changeStatus(approved : boolean){
     if(this.list && this.adminId != ""){
       let crimeScore;
       let schoolScore;
       let waterScore;
       let sanitationScore;
+      const show = document.querySelector('#show') as HTMLDivElement;
+      show.style.opacity = "0";
+      const load = document.querySelector('#loader') as HTMLElement;
+      load.style.opacity = "1";
 
-      if (!this.list.approved) {
+      if ((this.list.status == StatusEnum.PENDING_APPROVAL || this.list.status == StatusEnum.EDITED) && approved) {
         crimeScore = await this.getCrimeScore();
         schoolScore = await this.getSchoolRating(this.coordinates);
         waterScore = await this.getWaterScore();
@@ -255,21 +255,36 @@ export class ListingPage implements OnDestroy{
 
       console.log("Changing status");
       if(
-        !this.list.approved 
+        approved
+        && (this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED)
         && crimeScore != undefined 
         && schoolScore != undefined 
         && waterScore != undefined
         && sanitationScore != undefined
       ){
-        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, crimeScore, waterScore, sanitationScore, schoolScore);
-      } else if (this.list.approved){
-        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, 0, 0, 0, 0);
+        console.log("Adding to market")
+        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, crimeScore, waterScore, sanitationScore, schoolScore);
+      } 
+      else if((this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED) && approved){
+        console.log("Adding to market")
+        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, 0, 0, 0, 0);
       }
+      else{
+        console.log("Denied")
+        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.DENIED, 0, 0, 0, 0);
+      }
+      setTimeout( function finishLoading(){
+        if(!show){
+          console.log("Show does not exist");
+        }
+        load.style.opacity="0";
+        show.style.opacity="1";
+      }, 500)
       this.router.navigate(['/admin']);
     }
   }
 
-  async getNearbyPointsOfInterest(coordinates: {latitude: number, longitude: number}) {
+  async getNearbyPointsOfInterest(coordinates: { latitude: number, longitude: number }) {
     if (this.list && this.list.address) {
       try {
         if (coordinates) {
@@ -277,8 +292,8 @@ export class ListingPage implements OnDestroy{
             coordinates.latitude,
             coordinates.longitude
           );
-          
-          this.processPointsOfInterestResults(results,coordinates.latitude, coordinates.longitude);
+
+          this.processPointsOfInterestResults(results, coordinates.latitude, coordinates.longitude);
         }
       } catch (error) {
         console.error('Error retrieving nearby places:', error);
@@ -286,22 +301,22 @@ export class ListingPage implements OnDestroy{
     }
   }
 
-  async getSchoolRating(coordinates: {latitude: number, longitude: number} | null): Promise<number>{
-    if(this.list && this.list.address){
-      try{
-        if(coordinates){
+  async getSchoolRating(coordinates: { latitude: number, longitude: number } | null): Promise<number> {
+    if (this.list && this.list.address) {
+      try {
+        if (coordinates) {
           const response = await this.gmapsService.getNearbySchools(coordinates.latitude, coordinates.longitude);
-            // console.log("schools: " + schools);
-            if(response.length > 0){
-              let totalRating = 0;
-              for(let i = 0; i < response.length; i++){
-                totalRating += response[i].rating ?? 0;
-              }
-              console.log("School is here bitch");
-              return (totalRating / response.length) * 20;
+          // console.log("schools: " + schools);
+          if (response.length > 0) {
+            let totalRating = 0;
+            for (let i = 0; i < response.length; i++) {
+              totalRating += response[i].rating ?? 0;
             }
-              
-            return 0;
+            console.log("School is here bitch");
+            return (totalRating / response.length) * 20;
+          }
+
+          return 0;
         }
       }
       catch (error) {
@@ -312,96 +327,96 @@ export class ListingPage implements OnDestroy{
     return 0;
   }
 
-  setSchoolRating(){
-    if(this.list){
-      if(this.list?.areaScore.schoolScore < 25){
+  setSchoolRating() {
+    if (this.list) {
+      if (this.list?.areaScore.schoolScore < 25) {
         document.getElementById("schoolProgress")?.setAttribute("style", "width: " + this.list?.areaScore.schoolScore + "%;");
         document.getElementById("schoolProgress")?.setAttribute("class", "errorProgressBar");
       }
-      else if(this.list?.areaScore.schoolScore < 60){
+      else if (this.list?.areaScore.schoolScore < 60) {
         document.getElementById("schoolProgress")?.setAttribute("style", "width: " + this.list?.areaScore.schoolScore + "%;");
         document.getElementById("schoolProgress")?.setAttribute("class", "warningProgressBar");
       }
-      else{
+      else {
         document.getElementById("schoolProgress")?.setAttribute("style", "width: " + this.list?.areaScore.schoolScore + "%");
       }
-  
+
       this.areaScore = parseInt(((this.areaScore + this.list?.areaScore.schoolScore) / 2).toFixed(2));
     }
   }
 
-  async getSanitationScore():Promise<number>{
-    if(this.list){
+  async getSanitationScore(): Promise<number> {
+    if (this.list) {
       const response = await this.listingServices.getSanitationScore(this.list.district)
-        console.log("SANITATION SCORE:", (response.percentage? response.percentage : 0) * 100);
-        console.log("Sanitation is here bitch");
-        return (response.percentage ? response.percentage : 0) * 100;
+      console.log("SANITATION SCORE:", (response.percentage ? response.percentage : 0) * 100);
+      console.log("Sanitation is here bitch");
+      return (response.percentage ? response.percentage : 0) * 100;
     }
 
     return 0;
   }
 
-  setSanitationScore(){
-    if(this.list){
-      if(this.list?.areaScore.sanitationScore < 25){
+  setSanitationScore() {
+    if (this.list) {
+      if (this.list?.areaScore.sanitationScore < 25) {
         document.getElementById("sanitationProgress")?.setAttribute("style", "width: " + this.list?.areaScore.sanitationScore + "%;");
         document.getElementById("sanitationProgress")?.setAttribute("class", "errorProgressBar");
       }
-      else if(this.list?.areaScore.sanitationScore < 60){
+      else if (this.list?.areaScore.sanitationScore < 60) {
         document.getElementById("sanitationProgress")?.setAttribute("style", "width: " + this.list?.areaScore.sanitationScore + "%;");
         document.getElementById("sanitationProgress")?.setAttribute("class", "warningProgressBar");
       }
-      else{
+      else {
         document.getElementById("sanitationProgress")?.setAttribute("style", "width: " + this.list?.areaScore.sanitationScore + "%");
       }
-  
+
       this.areaScore = parseInt(((this.areaScore + this.list?.areaScore.sanitationScore) / 2).toFixed(2));
     }
   }
 
-  async getWaterScore(): Promise<number>{
-    if(this.list && this.coordinates){
+  async getWaterScore(): Promise<number> {
+    if (this.list && this.coordinates) {
       console.log("Calculating water score")
       const response = await this.listingServices.getWaterScore(this.list.district
-        ,this.list.listingAreaType
-        ,this.list.prop_type
-        ,{lat: this.coordinates?.latitude, long: this.coordinates?.longitude})
-        console.log("Water is here bitch");
-        return (response.percentage ? response.percentage : 0) * 100;
-      }
-
-      return 0;
+        , this.list.listingAreaType
+        , this.list.prop_type
+        , { lat: this.coordinates?.latitude, long: this.coordinates?.longitude })
+      console.log("Water is here bitch");
+      return (response.percentage ? response.percentage : 0) * 100;
     }
 
-  setWaterScore(){
-    if(this.list){
-      if(this.list?.areaScore.waterScore < 25){
+    return 0;
+  }
+
+  setWaterScore() {
+    if (this.list) {
+      if (this.list?.areaScore.waterScore < 25) {
         document.getElementById("waterProgress")?.setAttribute("style", "width: " + this.list?.areaScore.waterScore + "%;");
         document.getElementById("waterProgress")?.setAttribute("class", "errorProgressBar");
       }
-      else if(this.list?.areaScore.waterScore < 60){
+      else if (this.list?.areaScore.waterScore < 60) {
         document.getElementById("waterProgress")?.setAttribute("style", "width: " + this.list?.areaScore.waterScore + "%;");
         document.getElementById("waterProgress")?.setAttribute("class", "warningProgressBar");
       }
-      else{
+      else {
         document.getElementById("waterProgress")?.setAttribute("style", "width: " + this.list?.areaScore.waterScore + "%");
       }
 
-      this.areaScore = parseInt(((this.areaScore +this.list?.areaScore.waterScore) / 2).toFixed(2));
+      this.areaScore = parseInt(((this.areaScore + this.list?.areaScore.waterScore) / 2).toFixed(2));
     }
   }
 
 
-  async getCrimeScore(): Promise<number>{
-  if(this.list && this.coordinates){
-    try{
-        const response = await this.listingServices.getCrimeScore({lat: this.coordinates?.latitude, long: this.coordinates.longitude});
-        console.log("CRIME SCORE:", response.percentage? response.percentage * 100 : "error");
+  async getCrimeScore(): Promise<number> {
+    if (this.list && this.coordinates) {
+      try {
+        const response = await this.listingServices.getCrimeScore({ lat: this.coordinates?.latitude, long: this.coordinates.longitude });
+        console.log("CRIME SCORE:", response.percentage ? response.percentage * 100 : "error");
         console.log(response);
         console.log("Crime is here bitch");
-        return (response.percentage? response.percentage : 0) * 100;
+        return (response.percentage ? response.percentage : 0) * 100;
       }
-      catch(error){
+      catch (error) {
         console.error('Error retrieving nearby places:', error);
       }
     }
@@ -409,29 +424,29 @@ export class ListingPage implements OnDestroy{
     return 0;
   }
 
-  setCrimeScore(){
-    if(this.list){
-      if(this.list?.areaScore.crimeScore < 25){
+  setCrimeScore() {
+    if (this.list) {
+      if (this.list?.areaScore.crimeScore < 25) {
         document.getElementById("crimeProgress")?.setAttribute("style", "width: " + this.list?.areaScore.crimeScore + "%;");
         document.getElementById("crimeProgress")?.setAttribute("class", "errorProgressBar");
       }
-      else if(this.list?.areaScore.crimeScore < 60){
+      else if (this.list?.areaScore.crimeScore < 60) {
         document.getElementById("crimeProgress")?.setAttribute("style", "width: " + this.list?.areaScore.crimeScore + "%;");
         document.getElementById("crimeProgress")?.setAttribute("class", "warningProgressBar");
       }
-      else{
+      else {
         document.getElementById("crimeProgress")?.setAttribute("style", "width: " + this.list?.areaScore.crimeScore + "%");
       }
-  
+
       this.areaScore = parseInt(((this.areaScore + this.list?.areaScore.crimeScore) / 2).toFixed(2));
     }
   }
-  
+
   //TODO - move to listing.service.ts
-  async processPointsOfInterestResults(results: google.maps.places.PlaceResult[], address_lat:number, address_lng:number) {
+  async processPointsOfInterestResults(results: google.maps.places.PlaceResult[], address_lat: number, address_lng: number) {
     // Clear the existing points of interest
     this.pointsOfInterest = [];
-    const wantedTypes : string[] = [
+    const wantedTypes: string[] = [
       "airport",
       "school",
       "liquor_store",
@@ -459,28 +474,28 @@ export class ListingPage implements OnDestroy{
 
     // Iterate over the results and extract the icons and names of the places
     for (const result of results) {
-      if(result.photos && result.photos.length > 0 && result.name && result.types){
-        for(const type of result.types){
-          if(wantedTypes.includes(type)){
+      if (result.photos && result.photos.length > 0 && result.name && result.types) {
+        for (const type of result.types) {
+          if (wantedTypes.includes(type)) {
             let dist = 0;
 
-            await this.gmapsService.getLatLongFromAddress(result.vicinity+"").then((coord)=> {
-              console.log("these are the coords ",coord);
-  
-  
-                this.gmapsService.calculateDistanceInMeters(
-                  address_lat,
-                  address_lng,
-                  coord.latitude,
-                  coord.longitude
-                ).then((distanceInMeters) => {
+            await this.gmapsService.getLatLongFromAddress(result.vicinity + "").then((coord) => {
+              console.log("these are the coords ", coord);
+
+
+              this.gmapsService.calculateDistanceInMeters(
+                address_lat,
+                address_lng,
+                coord.latitude,
+                coord.longitude
+              ).then((distanceInMeters) => {
                 console.log('Distance between the two coordinates:', distanceInMeters, 'meters');
                 dist = distanceInMeters;
               });
             });
 
-            const naam = result.name + " ("+ (dist / 1000).toFixed(2)+"km)";
-            this.pointsOfInterest.push({ photo : result.photos[0].getUrl(), name : naam });
+            const naam = result.name + " (" + (dist / 1000).toFixed(2) + "km)";
+            this.pointsOfInterest.push({ photo: result.photos[0].getUrl(), name: naam });
             break;
           }
         }
@@ -492,23 +507,23 @@ export class ListingPage implements OnDestroy{
 
   goNext(event: Event) {
     console.log(event)
-    if(this.swiperRef){
+    if (this.swiperRef) {
       this.swiperRef.nativeElement.swiper.slideNext();
     }
-    else{
+    else {
       console.log("Swiper undefined");
     }
   }
   goPrev() {
-    if(this.swiperRef){
+    if (this.swiperRef) {
       this.swiperRef.nativeElement.swiper.slidePrev();
     }
-    else{
+    else {
       console.log("Swiper undefined");
     }
   }
 
-  swiperSlideChanged(e:Event) {
+  swiperSlideChanged(e: Event) {
     console.log('changed', e)
   }
 
@@ -550,7 +565,7 @@ export class ListingPage implements OnDestroy{
   }
 
   toggleColor() {
-    if(this.isRed)
+    if (this.isRed)
       this.unsaveListing();
     else
       this.saveListing();
@@ -559,10 +574,10 @@ export class ListingPage implements OnDestroy{
     this.isRed = !this.isRed;
   }
 
-  isSaved(listing_id : string){
-    if(this.userProfile){
-      if(this.userProfile.savedListings){
-        if(this.userProfile.savedListings.includes(listing_id)){
+  isSaved(listing_id: string) {
+    if (this.userProfile) {
+      if (this.userProfile.savedListings) {
+        if (this.userProfile.savedListings.includes(listing_id)) {
           console.log("Listing found in saved: " + listing_id);
           return true;
         }
@@ -573,12 +588,12 @@ export class ListingPage implements OnDestroy{
   }
 
   saveListing() {
-    if(!this.isSaved(this.listingId)){
-      if(this.userProfile){
-        if(this.userProfile.savedListings){
+    if (!this.isSaved(this.listingId)) {
+      if (this.userProfile) {
+        if (this.userProfile.savedListings) {
           this.userProfile.savedListings.push(this.listingId);
         }
-        else{
+        else {
           this.userProfile.savedListings = [this.listingId];
         }
 
@@ -587,13 +602,13 @@ export class ListingPage implements OnDestroy{
     }
   }
 
-  unsaveListing(){
-    if(this.isSaved(this.listingId)){
-        if(this.userProfile){
-          if(this.userProfile.savedListings){
-            this.userProfile.savedListings.splice(this.userProfile.savedListings.indexOf(this.listingId), 1);
-          }
-          this.profileServices.updateUserProfile(this.userProfile);
+  unsaveListing() {
+    if (this.isSaved(this.listingId)) {
+      if (this.userProfile) {
+        if (this.userProfile.savedListings) {
+          this.userProfile.savedListings.splice(this.userProfile.savedListings.indexOf(this.listingId), 1);
+        }
+        this.profileServices.updateUserProfile(this.userProfile);
       }
     }
   }
@@ -605,16 +620,16 @@ export class ListingPage implements OnDestroy{
   }
 
   scrollToBottom() {
-    if(this.content && document.getElementById('calculator')) {
+    if (this.content && document.getElementById('calculator')) {
       console.log(document.getElementById('calculator')?.getBoundingClientRect().top);
-      const calculatorRow =  document.getElementById('calculator')?.getBoundingClientRect().top;
+      const calculatorRow = document.getElementById('calculator')?.getBoundingClientRect().top;
       this.content.scrollToPoint(0, ((calculatorRow ?? 100)), 500);
     }
   }
 
   //editing listing
-  async editListing(){
-    this.router.navigate(['/create-listing', {listingId : this.listingId}]);
+  async editListing() {
+    this.router.navigate(['/create-listing', { listingId: this.listingId }]);
     this.ngOnDestroy();
   }
 

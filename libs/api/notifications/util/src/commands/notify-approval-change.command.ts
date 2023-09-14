@@ -1,8 +1,6 @@
+import { StatusChangedEvent } from '@properproperty/api/listings/util';
 export class NotifyApprovalChangeCommand {
   constructor(
-    public readonly userId: string,
-    public readonly listingId: string,
-    public readonly status: boolean,
-    public readonly reason: string,
+    public readonly event: StatusChangedEvent
   ) {}
 }
