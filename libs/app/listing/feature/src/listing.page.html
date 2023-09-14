@@ -19,12 +19,12 @@
       <ion-grid>
         <ion-row>
           <ion-col id="approvalCol">
-            <ion-button class="approveBut" [attr.disabled]="this.list.approved ? '' : null"
-              (click)="changeStatus()">Approve</ion-button>
+            <ion-button class="approveBut"
+              (click)="changeStatus(true)">Approve</ion-button>
           </ion-col>
           <ion-col id="rejectionCol">
-            <ion-button [attr.disabled]="!this.list.approved ? '' : null" class="rejectBut"
-              (click)="changeStatus()">Reject</ion-button>
+            <ion-button class="rejectBut"
+              (click)="changeStatus(false)">Reject</ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -353,12 +353,12 @@
       <ion-grid>
         <ion-col>
           <ion-col id="approvalCol">
-            <ion-button class="approveBut" [attr.disabled]="this.list.approved ? '' : null"
-              (click)="changeStatus()">Approve</ion-button>
+            <ion-button class="approveBut"
+              (click)="changeStatus(true)">Approve</ion-button>
           </ion-col>
           <ion-col id="rejectionCol">
-            <ion-button [attr.disabled]="!this.list.approved ? '' : null" class="rejectBut"
-              (click)="changeStatus()">Reject</ion-button>
+            <ion-button class="rejectBut"
+              (click)="changeStatus(false)">Reject</ion-button>
           </ion-col>
         </ion-col>
       </ion-grid>

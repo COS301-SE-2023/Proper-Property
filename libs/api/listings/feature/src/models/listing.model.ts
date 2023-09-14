@@ -2,11 +2,13 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import { 
   ListingEditedEvent, 
   Listing, 
-  ApprovalChange, 
+  StatusChange, 
   StatusChangedEvent, 
   ChangeStatusResponse, 
   areaScore, 
-  ChangeStatusRequest 
+  ChangeStatusRequest,
+  StatusEnum,
+  ListingCreatedEvent
 } from '@properproperty/api/listings/util';
 
 export class ListingModel extends AggregateRoot implements Listing {
@@ -31,11 +33,11 @@ export class ListingModel extends AggregateRoot implements Listing {
     public let_sell: string,
     public listingAreaType: string,
     public heading: string,
-    public approved: boolean,
     public listingDate: string,
     public areaScore: areaScore,
+    public status: StatusEnum,
     public listing_id?: string,
-    public approvalChanges?: ApprovalChange[],
+    public statusChanges?: StatusChange[],
     public quality_rating?: number,
   ) {
     super();
@@ -63,11 +65,11 @@ export class ListingModel extends AggregateRoot implements Listing {
       listing.let_sell,
       listing.listingAreaType,
       listing.heading,
-      listing.approved,
       listing.listingDate,
       listing.areaScore,
+      listing.status,
       listing.listing_id,
-      listing.approvalChanges,
+      listing.statusChanges,
       listing.quality_rating,
     );
     return model;
@@ -94,36 +96,44 @@ export class ListingModel extends AggregateRoot implements Listing {
     this.let_sell = listing.let_sell;
     this.listingAreaType = listing.listingAreaType;
     this.heading = listing.heading;
-    this.approved = listing.approved;
     this.listingDate = listing.listingDate;
     this.listing_id = listing.listing_id;
-    this.approvalChanges = listing.approvalChanges;
+    this.status = listing.status;
     this.quality_rating = listing.quality_rating;
-    this.approvalChanges = this.approvalChanges ?? [];
-    this.approvalChanges.push({
+    this.statusChanges = this.statusChanges ?? [];
+    this.statusChanges.push({
       adminId: 'SYSTEM',
-      status: false,
+      status: StatusEnum.PENDING_APPROVAL,
       date: new Date().toISOString(),
     });
     this.apply(new ListingEditedEvent(listing));
   }
 
   changeStatus(req: ChangeStatusRequest): ChangeStatusResponse {
-    this.approved = !this.approved;
-    const change: ApprovalChange = {
-      adminId: req.adminId,
-      status: this.approved,
-      date: new Date().toISOString(),
-    };
+    let change: StatusChange;
+    if(req.adminId){
+      change = {
+        adminId: req.adminId,
+        status: req.status,
+        date: new Date().toISOString(),
+      };
+    }
+    else{
+      change = {
+        status: req.status,
+        date: new Date().toISOString(),
+      }
+    }
+
     console.log(change);
-    this.approvalChanges = this.approvalChanges ?? [];
-    this.approvalChanges.push(change);
+    this.statusChanges = this.statusChanges ?? [];
+    this.statusChanges.push(change);
     if (!this.listing_id) {
       throw new Error('yeah idk fam. this should never happen. the listing has no listing_id');
     }
-    this.apply(new StatusChangedEvent(this.listing_id, change, this.user_id, req));
+    this.apply(new StatusChangedEvent(this.listing_id, change, this.user_id, req, this.address));
 
-    return {success: true, approvalChange: change};
+    return {success: true, statusChange: change};
   }
 
   toJSON(): Listing {
@@ -147,13 +157,17 @@ export class ListingModel extends AggregateRoot implements Listing {
       desc: this.desc,
       let_sell: this.let_sell,
       heading: this.heading,
-      approved: this.approved,
       listingDate: this.listingDate,
       areaScore: this.areaScore,
+      status: this.status,
       listing_id: this.listing_id,
-      approvalChanges: this.approvalChanges,
+      statusChanges: this.statusChanges,
       quality_rating: this.quality_rating,
       listingAreaType: this.listingAreaType,
     };
+  }
+
+  notifyCreation() {
+    this.apply(new ListingCreatedEvent(this.toJSON()));
   }
 }

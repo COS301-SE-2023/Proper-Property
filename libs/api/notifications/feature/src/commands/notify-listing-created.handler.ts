@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { NotifyApprovalChangeCommand, Notification } from '@properproperty/api/notifications/util';
+import { NotifyListingCreatedCommand, Notification } from '@properproperty/api/notifications/util';
 import { Timestamp } from 'firebase-admin/firestore';
 import { NotificationsDocModel } from '../models/notifications.model';
 import { NotificationsRepository } from '@properproperty/api/notifications/data-access';
@@ -8,16 +8,16 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { ProfileRepository } from '@properproperty/api/profile/data-access';
 import { StatusEnum } from '@properproperty/api/listings/util';
-@CommandHandler(NotifyApprovalChangeCommand)
-export class NotifyApprovalChangeHandler implements ICommandHandler<NotifyApprovalChangeCommand> {
+@CommandHandler(NotifyListingCreatedCommand)
+export class NotifyListingCreatedHandler implements ICommandHandler<NotifyListingCreatedCommand> {
   constructor(
     private readonly notifRepo: NotificationsRepository,
     private readonly eventPublisher: EventPublisher,
     private readonly profileRepo: ProfileRepository 
   ){}
-  async execute(command: NotifyApprovalChangeCommand) {
-    console.log('---NotifyApprovalChangeCommand: ' + command.event.change.status);
-    const profile = (await this.profileRepo.getUserProfile(command.event.userId)).user;
+  async execute(command: NotifyListingCreatedCommand) {
+    console.log('---NotifyListingCreatedCommand: ' + command.event.listing.status);
+    const profile = (await this.profileRepo.getUserProfile(command.event.listing.user_id)).user;
     if (!profile) {
       console.log('---User profile not found');
       return;
@@ -39,17 +39,17 @@ export class NotifyApprovalChangeHandler implements ICommandHandler<NotifyApprov
       }
     });
     
-    const headBody = this.generateHeadAndBody(command.event.change.status, command.event.address);
+    const headBody = this.generateHeadAndBody(command.event.listing.status, command.event.listing.address);
     if(!headBody){
       return;
     }
     
     const notification: Notification = {
-      userId: command.event.userId,
-      listingId: command.event.listingId,
+      userId: command.event.listing.user_id,
+      listingId: "" + command.event.listing.listing_id,
       head: headBody.head,
       body: headBody.body,
-      type: "ApprovalChange",
+      type: "ListingCreated",
       senderId: "system",
       date: Timestamp.fromDate(new Date())
     };
@@ -69,7 +69,7 @@ export class NotifyApprovalChangeHandler implements ICommandHandler<NotifyApprov
       }
     });
 
-    const notificationsDoc = await this.notifRepo.getNotifications(command.event.userId);
+    const notificationsDoc = await this.notifRepo.getNotifications(command.event.listing.user_id);
     const notifModel: NotificationsDocModel = this
       .eventPublisher
       .mergeObjectContext(
@@ -81,20 +81,20 @@ export class NotifyApprovalChangeHandler implements ICommandHandler<NotifyApprov
     notifModel.commit();
   }
 
-  generateHeadAndBody(status: StatusEnum, address : string){    
-    if(status == StatusEnum.ON_MARKET){
-      return {
-        head: "Your listing has been approved",
-        body: "Your listing  at " + address + " is now visible to other users and you will be able to review its engagement"
+  generateHeadAndBody(status: StatusEnum, address : string){
+    if(status == StatusEnum.PENDING_APPROVAL){
+      return{
+        head: "Listing approval is pending",
+        body: "Your listing  at " + address + " is currently pending approval and cannot be viewed by other users. You" 
+        + " will be notified when the approval status changes"
       }
     }
     
-    if(status == StatusEnum.DENIED){
+    if(status == StatusEnum.EDITED){
       return {
-        head: "Your listing has been rejected",
-        body: "Your listing  at " + address + " has been rejected and cannot be viewed by other users. This may have been" 
-        + " due to inappropriate or inaccurate content or information being present in the listing. Please review the"
-        + " listing and try again or contact us if you believe this was a mistake."
+        head: "You recently edited a listing",
+        body: "Your listing  at " + address + " was recently edited and is now pending approval. You will be notified"
+        + " when the approval status changes"
       }
     }
 
