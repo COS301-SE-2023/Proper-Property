@@ -24,6 +24,8 @@ export class SavedListingsPage implements OnInit {
   isMobile = false;
 
   public savedListings : Listing[] = [];
+  public savedListingsB : Listing[] = [];
+  public savedListingsR : Listing[] = [];
 
   constructor(
     private profileServices : UserProfileService,
@@ -40,6 +42,15 @@ export class SavedListingsPage implements OnInit {
             this.listingServices.getListing(listing).then((listing) => {
               if(listing){
                 this.savedListings.push(listing);
+
+                if(listing.let_sell=="Sell")
+                {
+                  this.savedListingsB.push(listing);
+                }
+                else
+                {
+                  this.savedListingsR.push(listing);
+                }
               }
             });
           }
