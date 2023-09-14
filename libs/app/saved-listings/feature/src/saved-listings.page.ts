@@ -126,6 +126,26 @@ export class SavedListingsPage implements OnInit {
       }
     } 
   } 
+
+  Change()
+  {
+    const tog1 = document.getElementById("first") as HTMLInputElement;
+    const tog2 = document.getElementById("second") as HTMLInputElement;
+
+    if(tog1.style.display=='block')
+    {
+      
+      tog1.style.display= 'none';
+      tog2.style.display = 'block';
+
+    }
+    else
+    {
+      tog1.style.display= 'block';
+      tog2.style.display = 'none';
+    }
+
+  }
 }
 function isMobile(): boolean {
   return window.innerWidth <= 576;

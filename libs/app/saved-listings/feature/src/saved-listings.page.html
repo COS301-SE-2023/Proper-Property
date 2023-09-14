@@ -19,7 +19,7 @@
     </ion-segment>
   </section>
 
-  <section>
+  <section id="first">
     <ion-grid>
       <ion-row>
         <ion-col class="rightBorder">
@@ -94,14 +94,120 @@
     </ion-grid>
   </section>
 
+  <section id="second">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-card *ngFor="let listing of savedListingsB">
+            <ion-card-header (click)="redirectToPage(listing)">
+  
+            <img src="{{listing.photos[0]}}" alt="house1">
+              
+              <ion-card-title style="color: #0DAE4F;">Area Ratings</ion-card-title>
+            </ion-card-header>
+            <ion-card-content (click)="redirectToPage(listing)">
+            
+              <ion-grid style="z-index:1;">
+                <ion-row>
+                  <ion-col>
+                    <div class="white-text">Water</div>
+                      <div class="slider">
+                        <div id="waterProgress" class="progress" [style.width]="listing.areaScore.waterScore+'%'"></div>
+                      </div>
+                  </ion-col>
+                  <ion-col>
+                  <div class="white-text">Sanitation</div>
+                  <div class="slider">
+                    <div id="sanitationProgress" class="progress" [style.width]="listing.areaScore.sanitationScore+'%'"></div>
+                  </div>
+                  </ion-col>
+                </ion-row>
+  
+                <ion-row>
+                  <ion-col>
+                  <div class="white-text">Crime</div>
+                  <div class="slider">
+                    <div id="crimeProgress" class="progress" [style.width]="listing.areaScore.crimeScore+'%'"></div>
+                  </div>
+                  </ion-col>
+                  <ion-col>
+                  <div class="white-text">School Quality</div>
+                  <div class="slider">
+                    <div id="schoolProgress" class="progress" [style.width]="listing.areaScore.schoolScore+'%'"></div>
+                  </div>                  
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <br>
+              <div id="house_details">
+                Address: {{listing.address}}
+              </div>
+            </ion-card-content>
+          </ion-card>
+
+        </ion-col>
+        <ion-col>
+          <ion-card *ngFor="let listing of savedListingsR">
+            <ion-card-header (click)="redirectToPage(listing)">
+  
+            <img src="{{listing.photos[0]}}" alt="house1">
+              
+              <ion-card-title style="color: #0DAE4F;">Area Ratings</ion-card-title>
+            </ion-card-header>
+            <ion-card-content (click)="redirectToPage(listing)">
+            
+              <ion-grid style="z-index:1;">
+                <ion-row>
+                  <ion-col>
+                    <div class="white-text">Water</div>
+                      <div class="slider">
+                        <div id="waterProgress" class="progress" [style.width]="listing.areaScore.waterScore+'%'"></div>
+                      </div>
+                  </ion-col>
+                  <ion-col>
+                  <div class="white-text">Sanitation</div>
+                  <div class="slider">
+                    <div id="sanitationProgress" class="progress" [style.width]="listing.areaScore.sanitationScore+'%'"></div>
+                  </div>
+                  </ion-col>
+                </ion-row>
+  
+                <ion-row>
+                  <ion-col>
+                  <div class="white-text">Crime</div>
+                  <div class="slider">
+                    <div id="crimeProgress" class="progress" [style.width]="listing.areaScore.crimeScore+'%'"></div>
+                  </div>
+                  </ion-col>
+                  <ion-col>
+                  <div class="white-text">School Quality</div>
+                  <div class="slider">
+                    <div id="schoolProgress" class="progress" [style.width]="listing.areaScore.schoolScore+'%'"></div>
+                  </div>                  
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <br>
+              <div id="house_details">
+                Address: {{listing.address}}
+              </div>
+            </ion-card-content>
+          </ion-card>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </section>
+
   <ion-button id="saved" routerLink="/my-listings" routerDirection="root">
     <ion-icon name="list-outline" size="large" color="primary"></ion-icon>
     <ion-label>My Listings</ion-label>
     <ion-icon name="chevron-forward-outline" size="large" color="primary"></ion-icon>
   </ion-button>
 
-  <ion-button id="swap">
+  <ion-button id="swap" (click)="Change()">
     <ion-icon name="swap-horizontal-outline"></ion-icon>
   </ion-button>
+
 
 </ion-content>
