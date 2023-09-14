@@ -1,111 +1,22 @@
-<ion-header [translucent]="true">
-  
-  <ion-toolbar class="first-toolbar">
-
-  
-    <ion-buttons slot="end">
-      <ion-button routerLink="/home" routerDirection="root">
-        <ion-icon slot="icon-only" name="home"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/listings" routerDirection="root">
-        <ion-icon slot="icon-only" name="list"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/search" routerDirection="root">
-        <ion-icon slot="icon-only" name="search"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/profile" routerDirection="root">
-        <ion-icon slot="icon-only" name="person"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-
-    <ion-buttons id="login-button" slot="end">
-      <ion-button routerLink="/login" routerDirection="root">
-       Login
-      </ion-button>
-
-    </ion-buttons>
-    
-  </ion-toolbar>
-
-  <ion-toolbar class = "profile-nav" >
-
-      <ion-tabs>
-        <ion-tab-bar slot="end">
-          <ion-tab-button tab="profile" routerLink="/profile" routerDirection="root">
-            <ion-icon name="person-circle-outline"></ion-icon>
-            <ion-label>Profile</ion-label>
-          </ion-tab-button>
-    
-          <ion-tab-button tab="create-listing" routerLink="/create-listing" routerDirection="root" >
-            <ion-icon name="add-circle-outline"></ion-icon>
-            <ion-label>Create Listing</ion-label>
-          </ion-tab-button>
-    
-          <ion-tab-button tab="saved-listings" routerLink="/saved-listings" routerDirection="root">
-            <ion-icon name="heart-outline"></ion-icon>
-            <ion-label>Saved Listings</ion-label>
-          </ion-tab-button>
-    
-          <ion-tab-button tab="my-listings" routerLink="/my-listings" routerDirection="root" class="green-tab">
-            <ion-icon name="list-outline"></ion-icon>
-            <ion-label>My Listings</ion-label>
-          </ion-tab-button>
-        </ion-tab-bar>
-      </ion-tabs>
-
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Property Listing App
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
+<ion-content>
 
-<ion-content [fullscreen]="true">
-  <ion-grid>
-    <ion-col>
-      <ion-row size="12" size-sm="6" size-md="4">
-
-  <ion-card *ngFor="let listing of listings" (click)="redirectToPage(listing)">
-  <ion-card-header>
-    <img src="{{listing.photos[0]}}" alt="house1">
-  </ion-card-header>
-    <ion-card-content>
-      <ion-card-title>House</ion-card-title>
-      <ion-card-subtitle style="color: #94d2ae;">R {{listing.price}}</ion-card-subtitle>
-      
-      <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-        {{listing.desc}}
-      </p>
-      <br>
-      <br>
-      <div id="house_details">
-        <img src="assets/icon/bedrooms.png">
-        {{listing.bed}}
-        &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/bathrooms.png">
-        {{listing.bath}}
-        &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/floorplan.png">
-        {{listing.floor_size}} m<sup>2</sup>
-        &nbsp; &nbsp;&nbsp;
-        <img src="assets/icon/erf.png">
-        {{listing.property_size}} m<sup>2</sup>
-      </div>
-    </ion-card-content>
-
-    <ion-button fill="clear" (click)="unlikeCard()" class="like-button" [ngClass]="{'red': isRed}" (click)="toggleColor()">
-      <ion-icon name="heart" [ngClass]="{ 'liked': isLiked }"></ion-icon>
-    </ion-button>
-
-  <!-- </ion-card-content> -->
-</ion-card>
-</ion-row>
-
-<!-- Add more ion-cols for additional cards -->
-</ion-col>
-</ion-grid>
+  <section class="sandf" id="sandf">
+    <ion-segment>
+      <ion-segment-button value="buying">
+        <ion-label>Buy</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="renting">
+        <ion-label>Rent</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </section>
 
 </ion-content>

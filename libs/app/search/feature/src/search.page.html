@@ -172,7 +172,7 @@
               <p>To Let!</p>
             </ng-template>
             <p>
-            In {{listing.address}}
+            {{listing.desc}}
             </p>
             <br>
             <div id="house_details">
@@ -199,7 +199,7 @@
 
           <img src="{{listing.photos[0]}}" alt="house1">
             
-            <ion-card-title style="color: #0DAE4F;">Area Rating </ion-card-title>
+            <ion-card-title style="color: #0DAE4F;">Area Ratings</ion-card-title>
           </ion-card-header>
           <ion-button class="pin" (click)="centerMap(listing)">
             <ion-icon name="location-outline" size="large" color="primary"></ion-icon>
