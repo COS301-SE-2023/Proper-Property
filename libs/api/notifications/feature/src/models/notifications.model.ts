@@ -21,7 +21,7 @@ export class NotificationsDocModel extends AggregateRoot implements Notification
     );
     return model;
   }
-  sendApprovalChangeNotification(notification: Notification) {
+  sendNotification(notification: Notification) {
     this.notifications.push(notification);
     this.apply(new ApprovalChangeNotifiedEvent(notification));
   }

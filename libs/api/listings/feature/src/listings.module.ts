@@ -6,12 +6,14 @@ import { ListingsModule as ListingsDataAccessModule } from '@properproperty/api/
 import { 
   CreateListingHandler, 
   ChangeStatusHandler, 
-  EditListingHandler 
+  EditListingHandler,
+  SaveListingHandler,
 } from './commands';
 const CommandHandlers = [
   CreateListingHandler, 
   ChangeStatusHandler, 
-  EditListingHandler
+  EditListingHandler,
+  SaveListingHandler
 ];
 
 import { 
@@ -27,11 +29,13 @@ const QueryHandlers = [
 
 import { 
   ListingEditedHandler, 
-  StatusChangedHandler 
+  StatusChangedHandler,
+  ListingCreatedHandler
 } from './events';
 const EventHandlers = [
   ListingEditedHandler, 
-  StatusChangedHandler
+  StatusChangedHandler,
+  ListingCreatedHandler
 ];
 @Module({
   imports: [

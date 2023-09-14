@@ -222,64 +222,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       this.setCentre();
       this.loadMap();
     }
-
   }
-
-  // async loadMap() {
-  //   try {
-  //     const googleMaps: any = await this.gmaps.loadGoogleMaps();
-  //     this.googleMaps = googleMaps;
-  //     const mapEl = this.mapElementRef.nativeElement;
-  //     const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
-  //     this.map = new googleMaps.Map(mapEl, {
-  //       center: location,
-  //       zoom: 12,
-  //     });
-  //     this.renderer.addClass(mapEl, 'visible');
-
-  //     // Generate info window content for each listing
-  //     const infoWindowContent = this.listings.map((listing) => this.createListingCard(listing));
-
-  //     // Iterate over each listing
-  //     for (let i = 0; i < this.listings.length; i++) {
-  //       // Retrieve the longitude and latitude for the address
-  //       const coordinates = await this.gmaps.geocodeAddress(this.listings[i].address);
-  //       if (
-  //         Array.isArray(coordinates) &&
-  //         coordinates.length > 0 &&
-  //         coordinates[0].geometry &&
-  //         coordinates[0].geometry.location
-  //       ) {
-  //         const position = coordinates[0].geometry.location;
-
-  //         // Create an info window for the marker
-  //         const infoWindow = new googleMaps.InfoWindow({
-  //           content: infoWindowContent[i],
-  //         });
-
-  //         // Create a marker without the icon
-  //         const marker = new googleMaps.Marker({
-  //           position: position,
-  //           map: this.map,
-  //           listing: this.listings[i], // Store the listing object in the marker for later use
-  //         });
-
-  //         // Add a click event listener to the marker
-  //         googleMaps.event.addListener(marker, 'click', () => {
-  //           infoWindow.open(this.map, marker);
-  //           this.navigateToPropertyListingPage(marker.listing);
-  //         });
-
-  //         this.markers.push(marker);
-  //       }
-  //     }
-
-  //     this.onMapClick();
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
-  
 async loadMap() {
   try {
   
@@ -487,25 +430,6 @@ async loadMap() {
   Templistings: Listing[] = [];
 
   async searchProperties() {
-    // const filteredListings = this.listings.filter(listing => {
-    //   const addressMatch = listing.address.toLowerCase().includes(this.searchQuery.toLowerCase());
-    //   const bedroomsMatch = this.selectedBedrooms === 0 || listing.bed === this.selectedBedrooms.toString();
-    //   const floorMatch = this.selectedFloorSize === 0 || parseInt(listing.floor_size) >= this.selectedFloorSize;
-    //   const minPriceMatch = this.selectedMinPrice === 0 || parseInt(listing.price) >= this.selectedMinPrice;
-    //   const maxPriceMatch = this.selectedMaxPrice === 0 || parseInt(listing.price) <= this.selectedMaxPrice;
-    //   const propertyTypeMatch = this.selectedPropertyType === '' || listing.prop_type.includes(this.selectedPropertyType);
-
-    //   return addressMatch && bedroomsMatch && floorMatch && minPriceMatch && maxPriceMatch && propertyTypeMatch;
-    // });
-
-    // this.listings = filteredListings;
-
-    // this.listingServices.getApprovedListings().then((listings) => {
-    //   this.listings = listings;
-    //   this.filterProperties();
-
-    // });
-
     const listings = await this.listingServices.getApprovedListings();
     this.listings = listings;
     this.filterProperties();
@@ -514,9 +438,6 @@ async loadMap() {
     else this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
    
     this.setCentre();
-    // this.center.lat = (await this.gmaps.getLatLongFromAddress(this.searchQuery)).latitude;
-    // console.log("beach");
-    // this.center.lng =  (await this.gmaps.getLatLongFromAddress(this.searchQuery)).longitude;
 
     if (this.searchQuery !== '') {
       for (let i = 0; i < this.listings.length; i++) {

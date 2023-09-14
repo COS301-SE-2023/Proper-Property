@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
+import { StatusChange, StatusEnum } from '@properproperty/api/listings/util';
 import {
   NotifyApprovalChangeCommand,
   NotifyStatusChangeCommand,
@@ -19,9 +20,9 @@ export class NotificationsService {
     ])
   }
 
-  async approvalChange(userId: string, listingId: string, status: boolean, reason: string) {
-    this.commandBus.execute(new NotifyApprovalChangeCommand(userId, listingId, status, reason));
-  } 
+  // async approvalChange(userId: string, listingId: string, status: StatusEnum, reason: string) {
+  //   // this.commandBus.execute(new NotifyApprovalChangeCommand(userId, listingId, status, reason));
+  // } 
 
   async ApprovalChange(listingId: string, status: string) {
     this.commandBus.execute(new NotifyStatusChangeCommand(listingId, status));

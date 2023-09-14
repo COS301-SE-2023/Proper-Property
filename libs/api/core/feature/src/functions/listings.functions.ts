@@ -69,4 +69,14 @@ export const editListing = functions.region('europe-west1').https.onCall(
     return listingService.editListing(request); 
   }
 );
+
+export const saveListing = functions.region('europe-west1').https.onCall(
+  async(
+    request: CreateListingRequest
+  ): Promise<CreateListingResponse> => {
+    const appContext = await NestFactory.createApplicationContext(CoreModule)
+    const listingService = appContext.get(ListingsService);
+    return listingService.saveListing(request); 
+  }
+);
   

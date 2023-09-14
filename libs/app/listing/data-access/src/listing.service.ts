@@ -9,8 +9,8 @@ import { Listing,
   GetApprovedListingsResponse,
   EditListingRequest,
   EditListingResponse, 
-  GetUnapprovedListingsResponse
-} from '@properproperty/api/listings/util';
+  GetUnapprovedListingsResponse,
+  StatusEnum} from '@properproperty/api/listings/util';
 import { GetLocInfoDataRequest,
   GetLocInfoDataResponse } from '@properproperty/api/loc-info/util';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
@@ -49,6 +49,26 @@ export class ListingsService {
     console.warn(response);
     if (response.status) {
       this.uploadImages(response.message, list.photos);
+    }
+  }
+
+  async saveListing(list : Listing){
+    console.log(list);
+    if(list.listing_id){
+      console.log(list.listing_id + " exists, now saving");
+      const request: CreateListingRequest = {listing: list};
+      const response: CreateListingResponse = (await httpsCallable<
+        CreateListingRequest,
+        CreateListingResponse
+      >(this.functions, 'saveListing')(request)).data;
+
+      console.warn(response);
+      if (response.status) {
+        this.updateImages(list.listing_id, list.photos);
+      }
+    }
+    else{
+      await this.createListing(list);
     }
   }
   
@@ -128,7 +148,27 @@ export class ListingsService {
     return null;
   }
 
-  async changeStatus(listingId : string, admin : string, crimeScore: number, waterScore: number, sanitationScore: number, schoolScore: number){
+  async changeStatus(listingId : string, admin : string, status: StatusEnum, crimeScore?: number, waterScore?: number, sanitationScore?: number, schoolScore?: number){
+    let request : ChangeStatusRequest;
+    if(crimeScore && waterScore && sanitationScore && schoolScore){
+      request = {
+        listingId : listingId,
+        adminId : admin,
+        status: status,
+        crimeScore: crimeScore,
+        schoolScore: schoolScore,
+        waterScore: waterScore,
+        sanitationScore: sanitationScore
+      }
+    }
+    else{
+      request = {
+        listingId : listingId,
+        adminId : admin,
+        status: status,
+        reason: "git gud"
+      }
+    }
     const response: ChangeStatusResponse = (await httpsCallable<
       ChangeStatusRequest,
       ChangeStatusResponse
@@ -136,14 +176,8 @@ export class ListingsService {
       this.functions,
       'changeStatus'
     )(
-      {
-        listingId : listingId,
-        adminId : admin, 
-        crimeScore: crimeScore, 
-        schoolScore: schoolScore, 
-        waterScore: waterScore, 
-        sanitationScore: sanitationScore
-      })).data;
+        request
+      )).data;
 
     return response;
   }

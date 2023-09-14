@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild,HostListener, OnDestroy} from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { Listing } from '@properproperty/api/listings/util';
+import { Listing, StatusEnum } from '@properproperty/api/listings/util';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
@@ -240,14 +240,14 @@ export class ListingPage implements OnDestroy{
     return;
   }
 
-  async changeStatus(){
+  async changeStatus(approved : boolean){
     if(this.list && this.adminId != ""){
       let crimeScore;
       let schoolScore;
       let waterScore;
       let sanitationScore;
-
-      if (!this.list.approved) {
+      
+      if ((this.list.status == StatusEnum.PENDING_APPROVAL || this.list.status == StatusEnum.EDITED) && approved) {
         crimeScore = await this.getCrimeScore();
         schoolScore = await this.getSchoolRating(this.coordinates);
         waterScore = await this.getWaterScore();
@@ -258,16 +258,25 @@ export class ListingPage implements OnDestroy{
 
       console.log("Changing status");
       if(
-        !this.list.approved 
+        approved
+        && (this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED)
         && crimeScore != undefined 
         && schoolScore != undefined 
         && waterScore != undefined
         && sanitationScore != undefined
       ){
-        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, crimeScore, waterScore, sanitationScore, schoolScore);
-      } else if (this.list.approved){
-        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, 0, 0, 0, 0);
+        console.log("Adding to market")
+        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, crimeScore, waterScore, sanitationScore, schoolScore);
+      } 
+      else if((this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED) && approved){
+        console.log("Adding to market")
+        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, 0, 0, 0, 0);
       }
+      else{
+        console.log("Denied")
+        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.DENIED, 0, 0, 0, 0);
+      }
+      
       this.router.navigate(['/admin']);
     }
   }
