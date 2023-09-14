@@ -62,3 +62,61 @@ ion-card ion-card-content {
   --background: rgba(13, 174, 79, 0.18);
   border-radius: 10px;
 }
+
+#swap
+{
+  position: fixed;
+  bottom: 5%;
+  left: 1%;
+}
+
+#first
+{
+  display: block;
+}
+
+#second
+{
+  display: none;
+}
+
+.slider {
+  position: relative;
+  width: 80%;
+  height: 13px;
+  background-color: rgb(150, 150, 150);
+  border-radius: 5px;
+  margin-bottom: 5px;
+  margin-right: 5%;
+  padding-right: 50px;
+}
+
+.progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: green;
+  border-radius: 5px;
+  transition: width 0.3s ease-in-out;
+}
+
+.errorProgressBar{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: red;
+  border-radius: 5px;
+  transition: width 0.3s ease-in-out;
+}
+
+.warningProgressBar{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #ffcc00;
+  border-radius: 5px;
+  transition: width 0.3s ease-in-out;
+}
