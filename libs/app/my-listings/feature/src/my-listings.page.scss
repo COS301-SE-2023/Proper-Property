@@ -52,3 +52,13 @@ ion-card ion-card-content {
   margin-right: 5%;
   width: 65%;
 }
+
+#saved
+{
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
+  width: 250px;
+  --background: rgba(13, 174, 79, 0.18);
+  border-radius: 10px;
+}

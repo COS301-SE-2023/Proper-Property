@@ -10,10 +10,10 @@
 
   <section id="category">
     <ion-segment>
-      <ion-segment-button value="buying" class="rightBorder">
+      <ion-segment-button class="rightBorder">
         <ion-label>Buy</ion-label>
       </ion-segment-button>
-      <ion-segment-button value="renting">
+      <ion-segment-button>
         <ion-label>Rent</ion-label>
       </ion-segment-button>
     </ion-segment>
@@ -22,7 +22,7 @@
   <section>
     <ion-grid>
       <ion-row>
-        <ion-col>
+        <ion-col class="rightBorder">
           <ion-card *ngFor="let listing of listingsB" >
             <ion-card-header (click)="redirectToPage(listing)">
               <img src="{{listing.photos[0]}}" alt="house1">
@@ -92,7 +92,12 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-
   </section>
+
+  <ion-button id="saved" routerLink="/saved-listings" routerDirection="root">
+    <ion-icon name="heart-outline" size="large" color="primary"></ion-icon>
+    <ion-label>Saved Listings</ion-label>
+    <ion-icon name="chevron-forward-outline" size="large" color="primary"></ion-icon>
+  </ion-button>
 
 </ion-content>
