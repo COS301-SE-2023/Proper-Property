@@ -15,6 +15,10 @@
 
 
   <ion-content [fullscreen]="true">
+    <div id="loader">
+    <img src="assets/500.gif">
+  </div>
+  <div id="show">
     <div *ngIf="admin" id="approvalBox">
       <ion-grid>
         <ion-row>
@@ -98,8 +102,8 @@
                 </ion-col>
               </ion-row>
             </ion-grid>
-            <ion-card-title id="greenbox-title" style="padding:10px">Developement Highlights</ion-card-title>
-            <ion-card-content style="padding:0;">
+            <ion-card-title id="greenbox-title" style="padding-top:4%; padding-left:5%;">Developement Highlights</ion-card-title>
+            <ion-card-content style="padding:0; padding-bottom:4%; padding-left: 3%;">
               <ion-grid style="z-index:1;">
                 <ion-row>
                   <ion-col>
@@ -329,6 +333,7 @@
       </ion-row>
       <properproperty-footer></properproperty-footer>
     </ion-grid>
+    </div>
   </ion-content>
 </ion-template>
 
@@ -349,6 +354,10 @@
 
 
   <ion-content [fullscreen]="true">
+    <div id="loader">
+      <img src="assets/500.gif">
+    </div>
+    <div id="show">
     <div *ngIf="admin" id="approvalBox">
       <ion-grid>
         <ion-col>
@@ -664,5 +673,6 @@
           </div>
       </ion-row>
     </ion-grid>
+    </div>
   </ion-content>
 </ion-template>
