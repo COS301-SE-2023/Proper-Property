@@ -442,6 +442,19 @@ ion-item {
   margin-top: 10%;
 }
 
+#loader{
+  position: absolute;
+  right: 50%;
+  text-align: center;
+  z-index: 1;
+  top: 40%;
+  opacity: 0;
+}
+
+#show{
+  opacity: 1;
+}
+
 @media (max-width: 800px){
   swiper-slide img {
     width: auto;

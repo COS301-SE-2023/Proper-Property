@@ -15,6 +15,10 @@
 
 
   <ion-content [fullscreen]="true">
+    <div id="loader">
+    <img src="assets/500.gif">
+  </div>
+  <div id="show">
     <div *ngIf="admin" id="approvalBox">
       <ion-grid>
         <ion-row>
@@ -329,6 +333,7 @@
       </ion-row>
       <properproperty-footer></properproperty-footer>
     </ion-grid>
+    </div>
   </ion-content>
 </ion-template>
 
@@ -349,6 +354,10 @@
 
 
   <ion-content [fullscreen]="true">
+    <div id="loader">
+      <img src="assets/500.gif">
+    </div>
+    <div id="show">
     <div *ngIf="admin" id="approvalBox">
       <ion-grid>
         <ion-col>
@@ -664,5 +673,6 @@
           </div>
       </ion-row>
     </ion-grid>
+    </div>
   </ion-content>
 </ion-template>
