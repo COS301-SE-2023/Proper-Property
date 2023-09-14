@@ -8,15 +8,91 @@
 
 <ion-content>
 
-  <section class="sandf" id="sandf">
+  <section id="category">
     <ion-segment>
-      <ion-segment-button value="buying">
+      <ion-segment-button value="buying" class="rightBorder">
         <ion-label>Buy</ion-label>
       </ion-segment-button>
       <ion-segment-button value="renting">
         <ion-label>Rent</ion-label>
       </ion-segment-button>
     </ion-segment>
+  </section>
+
+  <section>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-card *ngFor="let listing of listingsB" >
+            <ion-card-header (click)="redirectToPage(listing)">
+              <img src="{{listing.photos[0]}}" alt="house1">
+              <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content (click)="redirectToPage(listing)">
+            
+              <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+                {{listing.bed}} bedroom/{{listing.prop_type}}
+              </p>
+              <p>For Sale!</p>
+              <p>
+              {{listing.desc}}
+              </p>
+              <br>
+              <div id="house_details">
+                <img src="assets/icon/bedrooms.png">
+                {{listing.bed}}
+                &nbsp; &nbsp;&nbsp;
+                <img src="assets/icon/bathrooms.png">
+                {{listing.bath}}
+                &nbsp; &nbsp;&nbsp;
+                <img src="assets/icon/floorplan.png">
+                {{listing.floor_size}} m<sup>2</sup>
+                &nbsp; &nbsp;&nbsp;
+                <img src="assets/icon/erf.png">
+                {{listing.property_size}} m<sup>2</sup>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        
+        </ion-col>
+        <ion-col>
+          <ion-card *ngFor="let listing of listingsR" >
+            <ion-card-header (click)="redirectToPage(listing)">
+              <img src="{{listing.photos[0]}}" alt="house1">
+              <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content (click)="redirectToPage(listing)">
+            
+              <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+                {{listing.bed}} bedroom/{{listing.prop_type}}
+              </p>
+              <p>To Let!</p>
+              <p>
+              {{listing.desc}}
+              </p>
+              <br>
+              <div id="house_details">
+                <img src="assets/icon/bedrooms.png">
+                {{listing.bed}}
+                &nbsp; &nbsp;&nbsp;
+                <img src="assets/icon/bathrooms.png">
+                {{listing.bath}}
+                &nbsp; &nbsp;&nbsp;
+                <img src="assets/icon/floorplan.png">
+                {{listing.floor_size}} m<sup>2</sup>
+                &nbsp; &nbsp;&nbsp;
+                <img src="assets/icon/erf.png">
+                {{listing.property_size}} m<sup>2</sup>
+              </div>
+            </ion-card-content>
+          </ion-card>
+  
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
   </section>
 
 </ion-content>

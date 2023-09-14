@@ -31,7 +31,9 @@ export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
   mapClickListener: any;
   markerClickListener: any;
   markers: any[] = [];
-  listings: Listing[] = []
+  listings: Listing[] = [];
+  listingsB: Listing[]=[];
+  listingsR: Listing[]=[]
 
 
   constructor(
@@ -86,6 +88,15 @@ export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
 
       if (this.currentUser?.uid == user_ID) {
         user_listings.push(this.listings[i]);
+
+        if(this.listings[i].let_sell=="Sell")
+        {
+          this.listingsB.push(this.listings[i]);
+        }
+        else
+        {
+          this.listingsR.push(this.listings[i]);
+        }
       }
       
      }
