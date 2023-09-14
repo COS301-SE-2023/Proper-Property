@@ -240,7 +240,7 @@ export class ListingPage implements OnDestroy{
       let waterScore;
       let sanitationScore;
       
-      if (this.list.status == StatusEnum.PENDING_APPROVAL && approved) {
+      if ((this.list.status == StatusEnum.PENDING_APPROVAL || this.list.status == StatusEnum.EDITED) && approved) {
         crimeScore = await this.getCrimeScore();
         schoolScore = await this.getSchoolRating(this.coordinates);
         waterScore = await this.getWaterScore();
@@ -252,18 +252,21 @@ export class ListingPage implements OnDestroy{
       console.log("Changing status");
       if(
         approved
-        && this.list.status == StatusEnum.PENDING_APPROVAL
+        && (this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED)
         && crimeScore != undefined 
         && schoolScore != undefined 
         && waterScore != undefined
         && sanitationScore != undefined
       ){
+        console.log("Adding to market")
         await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, crimeScore, waterScore, sanitationScore, schoolScore);
       } 
-      else if(this.list.status == StatusEnum.PENDING_APPROVAL && approved){
+      else if((this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED) && approved){
+        console.log("Adding to market")
         await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, 0, 0, 0, 0);
       }
       else{
+        console.log("Denied")
         await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.DENIED, 0, 0, 0, 0);
       }
       
