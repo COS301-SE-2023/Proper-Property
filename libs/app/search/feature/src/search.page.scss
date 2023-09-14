@@ -59,7 +59,7 @@
     margin-left: 4%;
     margin-bottom: 1%;
     padding-left: 18px;
-    height: 50px;
+    height: 55%;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -86,7 +86,7 @@
   
   .search-button{
     width: 90%;
-    height: 70%;
+    height: 55%;
     margin-right: 10%;
     color: white;
     border: none;
@@ -199,12 +199,12 @@
     transform: translateY(100px);
   }
   
-  .search-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 10px;
-  }
+  // .search-container {
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: space-between;
+  //   margin: 10px;
+  // }
   
   //end of scss
   * {
@@ -306,12 +306,12 @@
     padding-top: 35px;
   }
 
+  
 
   ion-toggle {
-    padding: 12px;
-    width: 90%;
-    height: 70%;
-    margin-right: 10%;
+    padding: 1%;
+    margin-right: 5%;
+    margin-bottom: 5%;
     color: white;
     border: none;
     --border-radius: 30px;
@@ -348,28 +348,13 @@
   .butDown
   {
     width: 90%;
-    height: 30%;
+    height: 55%;
     margin-right: 10%;
     color: white;
     border: none;
     --border-radius: 30px;
     cursor: pointer;
     margin-top: 1%;
-
-    align-items: center;
-    justify-content: space-between;
-    margin: 10px;
-  }
-  #address
-  {
-    position: relative;
-    width: 85%;
-    height: 35px;
-    left: 20px;
-    padding-left: 10px;
-    border-radius: 20px;
-    background: rgba(226, 226, 226, 0.7); 
-    border: none;
   }
   
   
@@ -472,10 +457,9 @@
   
     padding-top: 10px;
     top: 20%;
-    left:0;
     position:fixed !important;
-    width: 40%;
-    margin-left: 55%;
+    width: 45%;
+    margin-left: 50%;
     overflow: hidden;
     height: 75%;
     border-radius: 10px;
@@ -678,6 +662,8 @@
     font-style: normal;
     font-weight: 400;
   }
+
+  
   
   .dropdown {
     color: rgb(68, 68, 68);
@@ -696,16 +682,7 @@
     margin-top: 1%;
   }
   
-  .search-button {
-    width: 90%;
-    height: 70%;
-    margin-right: 10%;
-    color: white;
-    border: none;
-    --border-radius: 30px;
-    cursor: pointer;
-    margin-top: 1%;
-  }
+
   
   .link {
     --color: var(--ion-color-primary-contrast);
@@ -720,28 +697,28 @@
   }
   
   
-  // //make the img in ion-card-header smaller
-  // ion-card-header img {
-  //   width: 200px;
-  //   height: 200px;
-  //   //rounded edges
-  //   border-radius: 10px;
-  // }
+  //make the img in ion-card-header smaller
+  ion-card-header img {
+    width: 200px;
+    height: 200px;
+    //rounded edges
+    border-radius: 10px;
+  }
   
-  // //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
-  // ion-card-header ion-card-title {
-  //   margin-left: 220px;
-  //   //move ths up
-  //   margin-top: -100px;
-  // }
+  //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
+  ion-card-header ion-card-title {
+    margin-left: 220px;
+    //move ths up
+    margin-top: -100px;
+  }
   
-  // ion-card-header ion-card-subtitle {
-  //   margin-left: 220px;
-  // }
+  ion-card-header ion-card-subtitle {
+    margin-left: 220px;
+  }
   
-  // ion-card ion-card-content {
-  //   margin-left: 220px;
-  // }
+  ion-card ion-card-content {
+    margin-left: 220px;
+  }
   
   //make the ion-card take only half of the page
 
@@ -763,28 +740,28 @@ ion-card {
     height: 15px;
   }
   
-  // .heart-button {
-  //   --background: transparent;
-  //   --border-radius: 50%;
-  //   --border: none;
-  //   padding: 0;
-  //   cursor: pointer;
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: center;
-  //   width: 50px;
-  //   height: 50px;
-  //   //move it to right hand corner
-  //   margin-left: 90%;
-  //   // float: right;
-  //   // margin-top: -30px;
-  // }
+  .heart-button {
+    --background: transparent;
+    --border-radius: 50%;
+    --border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    //move it to right hand corner
+    margin-left: 90%;
+    // float: right;
+    // margin-top: -30px;
+  }
   
-  // .heart-icon {
+  .heart-icon {
     
-  //   color: red;
-  //   font-size: 24px;
-  // }
+    color: red;
+    font-size: 24px;
+  }
   
   .red {
     color: red;
