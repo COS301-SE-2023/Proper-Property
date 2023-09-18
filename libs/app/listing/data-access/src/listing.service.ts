@@ -80,6 +80,21 @@ export class ListingsService {
    
   }
 
+  async getRecentListings(){
+    const response = (await httpsCallable<
+      GetListingsRequest,
+      GetListingsResponse
+    >(
+      this.functions, 
+      'getListings'
+    )({})).data;
+    if (response.listings.length > 0){
+      return response.listings.slice(0, 5);
+    }
+    return [];
+   
+  }
+
   async getApprovedListings(){
     const response = (await httpsCallable<
       null,
