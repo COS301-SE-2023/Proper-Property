@@ -40,7 +40,7 @@ export class ListingModel extends AggregateRoot implements Listing {
       lat: number,
       lng: number
     },
-    public pointsOfInterest: google.maps.places.PlaceResult[],
+    public pointsOfInterestIds: string[],
     public areaScore: areaScore,
     public status: StatusEnum,
     public listing_id?: string,
@@ -74,7 +74,7 @@ export class ListingModel extends AggregateRoot implements Listing {
       listing.heading,
       listing.listingDate,
       listing.geometry,
-      listing.pointsOfInterest,
+      listing.pointsOfInterestIds,
       listing.areaScore,
       listing.status,
       listing.listing_id,
@@ -107,7 +107,7 @@ export class ListingModel extends AggregateRoot implements Listing {
     this.heading = listing.heading;
     this.listingDate = listing.listingDate;
     this.geometry = listing.geometry;
-    this.pointsOfInterest = listing.pointsOfInterest;
+    this.pointsOfInterestIds = listing.pointsOfInterestIds;
     this.listing_id = listing.listing_id;
     this.status = listing.status;
     this.quality_rating = listing.quality_rating;
@@ -176,7 +176,7 @@ export class ListingModel extends AggregateRoot implements Listing {
       quality_rating: this.quality_rating,
       listingAreaType: this.listingAreaType,
       geometry: this.geometry,
-      pointsOfInterest: this.pointsOfInterest,
+      pointsOfInterestIds: this.pointsOfInterestIds,
     };
   }
 

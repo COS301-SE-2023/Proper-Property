@@ -122,14 +122,13 @@ export class ListingPage implements OnDestroy{
         this.userProfileListener = listener;
       });
 
-      this.gmapsService.getLatLongFromAddress("" + this.list?.address).then((coordinates) => {
-        this.coordinates = coordinates;
-        this.getNearbyPointsOfInterest(coordinates);
+      if(this.list?.geometry && this.list?.status == StatusEnum.ON_MARKET){
+        this.getNearbyPointsOfInterest();
         this.setCrimeScore();
         this.setSanitationScore();
         this.setSchoolRating();
         this.setWaterScore();
-      })
+      }
       });
     });
 
@@ -174,7 +173,7 @@ export class ListingPage implements OnDestroy{
 
     const rows = analyticsData.rows ?? [];
     for(let i = 0; rows && i < rows.length; i++){
-      if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
+      if (rows[i]?.dimensionValues[1] && rows[i]?.metricValues[0]) {
         const dimensionValue = rows[i].dimensionValues[1].value;
         const year  = Number(dimensionValue.substring(0,4));
         const month  = Number(dimensionValue.substring(4,6));
@@ -281,17 +280,23 @@ export class ListingPage implements OnDestroy{
     }
   }
 
-  async getNearbyPointsOfInterest(coordinates: {latitude: number, longitude: number}) {
-    if (this.list && this.list.address) {
+  async getNearbyPointsOfInterest() {
+    if (this.list?.listing_id) {
       try {
-        if (coordinates) {
-          const results = await this.gmapsService.getNearbyPlaces(
-            coordinates.latitude,
-            coordinates.longitude
-          );
-          
-          this.processPointsOfInterestResults(results,coordinates.latitude, coordinates.longitude);
-        }
+        const response = await this.gmapsService.getNearbyPlaces2(this.list.listing_id)
+        response.forEach((place) => {
+          let distance = -1;
+          if(this.list?.geometry.lat){
+            distance = this.gmapsService.calculateDistanceInMeters(
+              this.list?.geometry.lat,
+              this.list?.geometry.lng,
+              place.geometry.lat,
+              place.geometry.lng
+            );
+          }
+          const naam = place.name + " ("+ (distance / 1000).toFixed(2)+"km)";
+          this.pointsOfInterest.push({photo : place.photos, name : naam})
+        })
       } catch (error) {
         console.error('Error retrieving nearby places:', error);
       }
@@ -439,69 +444,6 @@ export class ListingPage implements OnDestroy{
     }
   }
   
-  //TODO - move to listing.service.ts
-  async processPointsOfInterestResults(results: google.maps.places.PlaceResult[], address_lat:number, address_lng:number) {
-    // Clear the existing points of interest
-    this.pointsOfInterest = [];
-    const wantedTypes : string[] = [
-      "airport",
-      "school",
-      "liquor_store",
-      "atm", // so I can pay for my liquor
-      "bar",
-      "casino",
-      "pharmacy", //for the hangover
-      "car_repair", // to deal with the consequences of my actions
-      "hospital", // for the liver poisoning I will have
-      "cemetary", // consequences of my actions
-      "laundry", // to clean up the mess
-      "bakery", // for those late night munchies
-      "bank", // to plead for a loan for liquour  
-      "bus_station",
-      "cafe",
-      "church",
-      "drugstore",
-      "gym",
-      "park",
-      "shopping_mall",
-      "tourist_attraction",
-      "train_station",
-      "university"
-    ]
-
-    // Iterate over the results and extract the icons and names of the places
-    for (const result of results) {
-      if(result.photos && result.photos.length > 0 && result.name && result.types){
-        for(const type of result.types){
-          if(wantedTypes.includes(type)){
-            let dist = 0;
-
-            await this.gmapsService.getLatLongFromAddress(result.vicinity+"").then((coord)=> {
-              console.log("these are the coords ",coord);
-  
-  
-                this.gmapsService.calculateDistanceInMeters(
-                  address_lat,
-                  address_lng,
-                  coord.latitude,
-                  coord.longitude
-                ).then((distanceInMeters) => {
-                console.log('Distance between the two coordinates:', distanceInMeters, 'meters');
-                dist = distanceInMeters;
-              });
-            });
-
-            const naam = result.name + " ("+ (dist / 1000).toFixed(2)+"km)";
-            this.pointsOfInterest.push({ photo : result.photos[0].getUrl(), name : naam });
-            break;
-          }
-        }
-      }
-    }
-
-    console.log("Accepted: ", this.pointsOfInterest);
-  }
-
   goNext(event: Event) {
     console.log(event)
     if(this.swiperRef){
@@ -545,21 +487,20 @@ export class ListingPage implements OnDestroy{
     this.minGrossMonthlyIncome = this.monthlyPayment * 3; // Assuming minimum income requirement is 3 times the monthly payment
   }
 
-  async getNearbyPlaces() {
-    try {
-      const coordinates = await this.gmapsService.getLatLongFromAddress(
-        this.list?.address + ""
-      );
-      const results = await this.gmapsService.getNearbyPlaces(
-        coordinates.latitude,
-        coordinates.longitude
-      );
-      // Process the nearby places results here
-      console.log('Nearby places:', results);
-    } catch (error) {
-      console.error('Error retrieving nearby places:', error);
-    }
-  }
+  // async getNearbyPlaces() {
+  //   try {
+  //     if(this.list?.geometry){
+  //       const results = await this.gmapsService.getNearbyPlaces(
+  //         this.list.geometry.lat,
+  //         this.list.geometry.lng
+  //       );
+  //       // Process the nearby places results here
+  //       console.log('Nearby places:', results);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error retrieving nearby places:', error);
+  //   }
+  // }
 
   toggleColor() {
     if(this.isRed)

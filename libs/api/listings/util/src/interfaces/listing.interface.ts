@@ -1,5 +1,3 @@
-// eslint-disable-next-line
-/// <reference types="@types/google.maps" />
 import { StatusChange, areaScore } from './index';
 import { StatusEnum } from '../enums/status.enum';
 
@@ -33,6 +31,6 @@ export interface Listing{
     lat: number,
     lng: number
   },
-  pointsOfInterest: google.maps.places.PlaceResult[];
+  pointsOfInterestIds: string[];
   areaScore: areaScore;
 }

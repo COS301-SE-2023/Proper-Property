@@ -20,7 +20,7 @@ import { map, startWith } from 'rxjs/operators'
   styleUrls: ['./create-listing.page.scss'],
   
 })
-export class CreateListingPage implements OnInit {
+export class CreateListingPage {
 
 
   @ViewChild('inputElement', { static: false }) inputElement!: ElementRef;
@@ -64,7 +64,10 @@ export class CreateListingPage implements OnInit {
     lat: 0,
     lng: 0
   };
-  pointsOfInterest: google.maps.places.PlaceResult[] = [];
+  pointsOfInterestIds: string[] = [];
+  listingType = "Sell";
+  listingAreaType = "Rural";
+
 
   constructor(
     private readonly router: Router, 
@@ -131,7 +134,7 @@ export class CreateListingPage implements OnInit {
             this.photos = listing.photos;
             this.listingType = listing.let_sell;
             this.geometry = listing.geometry;
-            this.pointsOfInterest = listing.pointsOfInterest;
+            this.pointsOfInterestIds = listing.pointsOfInterestIds;
           }
         });
       }
@@ -155,27 +158,30 @@ onResize(event: Event) {
 
   features: string[] = [];
 
-  async ngOnInit() {
-    this.listingType = "Sell";
-    // this.currentUser = this.userService.getCurrentUser();
-    // const inputElementId = 'address';
-
-    // this.gmapsService.setupSearchBox(inputElementId);
-  }
-
+  timeout : NodeJS.Timeout | undefined;
   async handleInputChange(event: Event): Promise<void> {
-    const input = event.target as HTMLInputElement;
-
-    if(input.value.length <=0){
-      this.predictions = [];
-      return;
-    }
-    await this.gmapsService.handleInput(input, this.defaultBounds);
-    this.predictions = this.gmapsService.predictions;
-    console.log("predictions: ", this.predictions);
-    this.address= input.value;
-    
-    this.handleAddressChange(input.value);
+    return;
+    // TODO uncomment
+    // if(this.timeout){
+    //   this.timeout.refresh();
+    //   return;
+    // }
+    // this.timeout = setTimeout(() => {
+    //   const input = event.target as HTMLInputElement;
+ 
+    //   if(input.value.length <=0){
+    //     this.predictions = [];
+    //   }
+    //   else {
+    //     this.gmapsService.handleInput(input, this.defaultBounds).then(() => {
+    //       this.predictions = this.gmapsService.predictions;
+    //       this.address = input.value;
+          
+    //       this.handleAddressChange(input.value);
+    //     });
+    //   }
+    //   this.timeout = undefined;
+    // }, 1500);
   }
   
   
@@ -350,8 +356,6 @@ handleAddressChange(address: string): void {
 
   selectedValue = true;
   listingAreaTypeSlider = true;
-  listingAreaType = "Rural";
-  listingType = "Sell";
 
   changeListingType(){
     if(this.selectedValue){
@@ -427,7 +431,7 @@ handleAddressChange(address: string): void {
           lat: 0,
           lng: 0
         },
-        pointsOfInterest: [],
+        pointsOfInterestIds: [],
         areaScore: {
           crimeScore: 0,
           schoolScore: 0,
@@ -498,7 +502,7 @@ handleAddressChange(address: string): void {
           lat: this.geometry.lat,
           lng: this.geometry.lng
         },
-        pointsOfInterest: this.pointsOfInterest,
+        pointsOfInterestIds: this.pointsOfInterestIds,
         areaScore: {
           crimeScore: 0,
           schoolScore: 0,
