@@ -568,16 +568,36 @@ addMMarker(coordinates: google.maps.GeocoderResult, listing: any) {
     this.selectedBathrooms = 0;
     this.selectedParking = 0;
 
-    this.selectedAmenities = [];
-  }
+  this.selectedAmenities= [];
+}
 
 
-  // properties: Property[] = [
-  //   { title: 'House 1', type: 'house', price: 100000, bedrooms: 3 },
-  //   { title: 'Apartment 1', type: 'apartment', price: 1500, bedrooms: 2 },
-  //   { title: 'Condo 1', type: 'condo', price: 2000, bedrooms: 1 },
-  //   // Add more properties here
-  // ];
+// activeTab = 'all';
+// searchQuery = '';
+// selectedPropertyType = '';
+// selectedMinPrice = 0;
+// selectedMaxPrice = 0;
+// selectedBedrooms = 0;
+// showAdditionalFilters = false;
+// selectedBathrooms = 0;
+// selectedParking = 0;
+// selectedAmenities: string[] = [];
+
+// properties: Property[] = [
+//   { title: 'House 1', type: 'house', price: 100000, bedrooms: 3 },
+//   { title: 'Apartment 1', type: 'apartment', price: 1500, bedrooms: 2 },
+//   { title: 'Condo 1', type: 'condo', price: 2000, bedrooms: 1 },
+//   // Add more properties here
+// ];
+
+get filteredAllProperties(): Listing[] {
+
+  this.listingServices.getApprovedListings().then((listings) => {
+    this.listings = listings;
+  
+  });
+  return this.listings;
+}
 
   get filteredBuyingProperties(): Listing[] {
     this.listingServices.getApprovedListings().then((listings) => {
@@ -611,14 +631,22 @@ addMMarker(coordinates: google.maps.GeocoderResult, listing: any) {
     return this.listings;
   }
 
-  filterProperties(): void {
-    // Update the filtered properties based on the selected filters and search query
-    if (this.activeTab === 'buying') {
-      this.listings = this.filteredBuyingProperties;
-    } else if (this.activeTab === 'renting') {
-      this.listings = this.filteredRentingProperties;
-    }
+filterProperties(): void {
+
+  // Update the filtered properties based on the selected filters and search query
+  if (this.activeTab === 'buying') {
+
+    this.listings = this.filteredBuyingProperties;
+
+  } else if (this.activeTab === 'renting') {
+
+    this.listings = this.filteredRentingProperties;
   }
+  else
+  {
+    this.listings = this.filteredAllProperties;
+  }
+}
 
   changeTab(): void {
     // Reset the selected filters and search query when changing tabs
@@ -711,11 +739,93 @@ addMMarker(coordinates: google.maps.GeocoderResult, listing: any) {
           );
         }
 
-        this.profileServices.updateUserProfile(this.profile);
+      if(this.userProfile){
+        this.profileServices.updateUserProfile(this.userProfile);
       }
     }
+  } 
+}
+clicked = false;
+dropDown(){
+
+  const sec = document.getElementById("sandf") as HTMLInputElement;
+  const sec2 = document.getElementById("iconic") as HTMLInputElement;
+
+  if (sec && !this.clicked) {
+    sec.classList.toggle("show");
+    if(sec2)
+    {
+      sec2.name = "chevron-up-outline";
+    }
+    
+    this.clicked=true;
   }
+  else
+  {
+    sec.classList.remove("show");
+    if(sec2)
+    {
+      sec2.name = "chevron-down-outline";
+    }
+
+    this.clicked=false;
+  }
+
+}
+
+status=true;
+
+onChange()
+{
+  const tog1 = document.getElementById("lists") as HTMLInputElement;
+  const tog2 = document.getElementById("lists2") as HTMLInputElement;
+
+  if(this.status)
+  {
+    if(tog1 && tog2)
+    {
+      tog1.style.display= 'block';
+      tog2.style.display = 'none';
+    }
+  }
+  else
+  {
+    if(tog1 && tog2)
+    {
+      tog1.style.display= 'none';
+      tog2.style.display = 'block';
+    }
+  }
+
+}
+async centerMap(listing : Listing)
+{
+  
+    this.listingServices.getListings().then(async (listings) => {
+    this.filterProperties();
+
+    this.searchQuery = listing.address;
+    this.setCentre();
+
+  });
+
+  await this.addOneMarkersToMap(listing) ;
+ 
+}
+
+async addOneMarkersToMap(listing : Listing) {
+  
+  const coordinates = await this.gmapsService.geocodeAddress(listing.address);
+  if (coordinates) {
+    console.log("my coordinates ",coordinates);
+    this.addMarker(coordinates, listing);
+    
+  }
+}
+
+
 }
 function isMobile(): boolean {
   return window.innerWidth <= 576;
 }
+

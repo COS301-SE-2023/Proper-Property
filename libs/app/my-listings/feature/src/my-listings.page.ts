@@ -31,7 +31,9 @@ export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
   mapClickListener: any;
   markerClickListener: any;
   markers: any[] = [];
-  listings: Listing[] = []
+  listings: Listing[] = [];
+  listingsB: Listing[]=[];
+  listingsR: Listing[]=[]
 
 
   constructor(
@@ -86,6 +88,15 @@ export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
 
       if (this.currentUser?.uid == user_ID) {
         user_listings.push(this.listings[i]);
+
+        if(this.listings[i].let_sell=="Sell")
+        {
+          this.listingsB.push(this.listings[i]);
+        }
+        else
+        {
+          this.listingsR.push(this.listings[i]);
+        }
       }
       
      }
@@ -210,6 +221,26 @@ export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
     // Handle unliking logic here
     this.isLiked = false;
   }
+
+Change()
+{
+  const tog1 = document.getElementById("first") as HTMLInputElement;
+  const tog2 = document.getElementById("second") as HTMLInputElement;
+
+  if(tog1.style.display=='block')
+  {
+    
+    tog1.style.display= 'none';
+    tog2.style.display = 'block';
+
+  }
+  else
+  {
+    tog1.style.display= 'block';
+    tog2.style.display = 'none';
+  }
+
+}
 
   
 }
