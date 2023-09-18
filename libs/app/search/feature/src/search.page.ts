@@ -80,7 +80,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       }
     }
 
-    await this.loadMap();
+    // await this.loadMap();
     await this.addMarkersToMap();
   }
   constructor(
@@ -133,11 +133,6 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     //   this.filterProperties();
     // });
 
-    await this.listingServices.getApprovedListings().then((listings) => {
-      this.listings = listings;
-      this.filterProperties();
-    });
-
     setTimeout(function () {
       // Hide the loader
       const load=document.querySelector('.loading-animation') as HTMLElement;
@@ -152,54 +147,19 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       maplisting.style.display="block";
     }, 2000);
 
-    console.log(this.listings);
 
-    if(!this.isMobile){
-      const inputElementId = 'address';
-
-    this.gmapsService.setupRegionSearchBox(inputElementId);
-
-    
-      this.gmapsService.setupRegionSearchBox(inputElementId);
-  
-      const queryParams = this.route.snapshot.queryParams;
-      this.searchQuery = queryParams['q'] || ''; // If 'q' parameter is not available, default to an empty string.
-  
-      const addressInput = document.getElementById("address") as HTMLInputElement;
-      if (this.searchQuery!='') {
-        addressInput.value = this.searchQuery;
-      }
-  
-      this.searchProperties();
-    }
-
-    else {
-      const inputElementId = 'address1';
-
-    
-    
-      this.gmapsService.setupRegionSearchBox(inputElementId);
-  
-      const queryParams = this.route.snapshot.queryParams;
-      this.searchQuery = queryParams['q'] || ''; // If 'q' parameter is not available, default to an empty string.
-  
-      const addressInput = document.getElementById("address1") as HTMLInputElement;
-      if (this.searchQuery!='') {
-        addressInput.value = this.searchQuery;
-      }
-  
-      this.searchProperties();
-    }
-
-
-    
+    await this.listingServices.getApprovedListings().then((listings) => {
+      this.listings = listings;
+      this.filterProperties();
+    });
     
   }
-
+  // TODO add input latency to reduce api calls
   handleInputChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.gmapsService.handleRegionInput(input, this.defaultBounds);
-    this.predictions = this.gmapsService.regionPredictions;
+    return;
+    // const input = event.target as HTMLInputElement;
+    // this.gmapsService.handleRegionInput(input, this.defaultBounds);
+    // this.predictions = this.gmapsService.regionPredictions;
   }
 
   replaceInputText(event: MouseEvent | undefined, prediction: string) {
@@ -218,10 +178,26 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     }
 
   ngAfterViewInit() {
+    
     if(!this.isMobile ||this.MapView) {
       this.setCentre();
       this.loadMap();
     }
+    console.log(this.listings);
+
+    const inputElementId = this.isMobile ? 'address1' : 'address';
+    this.gmapsService.setupRegionSearchBox(inputElementId);
+
+    const queryParams = this.route.snapshot.queryParams;
+    this.searchQuery = queryParams['q'] || ''; // If 'q' parameter is not available, default to an empty string.
+
+    const addressInput = document.getElementById(inputElementId) as HTMLInputElement;
+    if (this.searchQuery!='') {
+      addressInput.value = this.searchQuery;
+    }
+
+    this.searchProperties();
+    
   }
 async loadMap() {
   try {
@@ -430,14 +406,13 @@ async loadMap() {
   Templistings: Listing[] = [];
 
   async searchProperties() {
-    const listings = await this.listingServices.getApprovedListings();
-    this.listings = listings;
+    this.listings = await this.listingServices.getApprovedListings();
+    // TODO filter
     this.filterProperties();
 
     if(this.isMobile)this.searchQuery = (document.getElementById("address1") as HTMLInputElement).value;
     else this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
    
-    this.setCentre();
 
     if (this.searchQuery !== '') {
       for (let i = 0; i < this.listings.length; i++) {
@@ -462,16 +437,18 @@ async loadMap() {
 
     for (let i = 0; i < this.listings.length; i++) {
       if (
-        this.listings[i].prop_type != this.selectedPropertyType ||
-        (this.selectedBedrooms != 0 &&
-          this.listings[i].bed != this.selectedBedrooms) ||
-        (this.selectedBathrooms != 0 &&
-          this.listings[i].bath != this.selectedBathrooms) ||
-        (this.selectedMinPrice != 0 &&
-          this.listings[i].price < this.selectedMinPrice) ||
-        (this.selectedMaxPrice != 0 &&
-          this.listings[i].price > this.selectedMaxPrice)
+        (this.selectedPropertyType != '' && this.listings[i].prop_type != this.selectedPropertyType) ||
+        (this.selectedBedrooms != 0 && this.listings[i].bed != this.selectedBedrooms) ||
+        (this.selectedBathrooms != 0 && this.listings[i].bath != this.selectedBathrooms) ||
+        (this.selectedMinPrice != 0 && this.listings[i].price < this.selectedMinPrice) ||
+        (this.selectedMaxPrice != 0 && this.listings[i].price > this.selectedMaxPrice)
       ) {
+        console.log(this.selectedPropertyType);
+        console.log(this.selectedBedrooms);
+        console.log(this.selectedBathrooms);
+        console.log(this.selectedMinPrice);
+        console.log(this.selectedMaxPrice);
+        console.log("removing1");
         this.listings.splice(i, 1);
       }
 
@@ -480,8 +457,10 @@ async loadMap() {
           this.listings[i].parking != this.selectedParking &&
           this.listings[i].parking < 5
         ) {
+          console.log("removing parking");
           this.listings.splice(i, 1);
         } else if (this.listings[i].parking >= 5 && this.selectedParking != 5) {
+          console.log("removing parking");
           this.listings.splice(i, 1);
         }
       }
@@ -507,10 +486,12 @@ async loadMap() {
       // this.listings[i].price = this.listings[i].price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
-    await this.addMarkersToMap();
+    this.setCentre();
+    // await this.addMarkersToMap();
   }
 
   async addMarkersToMap() {
+    console.log(this.listings)
     for (let i = 0; i < this.listings.length; i++) {
       const coordinates = await this.gmapsService.geocodeAddress(
         this.listings[i].address
@@ -522,8 +503,8 @@ async loadMap() {
     }
   }
 
-addMMarker(coordinates: google.maps.GeocoderResult, listing: any) {
-
+addMMarker(coordinates: google.maps.GeocoderResult, listing: Listing) {
+  console.log(listing);
   const googleMaps: any = this.googleMaps;
   // const icon = {
   //   url: 'assets/icon/locationpin.png',
@@ -532,7 +513,7 @@ addMMarker(coordinates: google.maps.GeocoderResult, listing: any) {
   const marker = new google.maps.Marker({
     position: coordinates.geometry.location,
     map: this.map,
-    title: listing.title,
+    title: listing.address,
   });
 
     // Create an info window for the marker
@@ -590,61 +571,38 @@ addMMarker(coordinates: google.maps.GeocoderResult, listing: any) {
 //   // Add more properties here
 // ];
 
-get filteredAllProperties(): Listing[] {
-
-  this.listingServices.getApprovedListings().then((listings) => {
-    this.listings = listings;
-  
-  });
-  return this.listings;
-}
-
   get filteredBuyingProperties(): Listing[] {
-    this.listingServices.getApprovedListings().then((listings) => {
-      this.listings = listings;
-
-      for (let j = 0; j < this.listings.length; j++) {
-        for (let i = 0; i < this.listings.length; i++) {
-          if (this.listings[i].let_sell != 'Sell') {
-            this.listings.splice(i, 1);
-          }
-        }
+    const filteredListings: Listing[] = [];
+    for (let i = 0; i < this.listings.length; i++) {
+      if (this.listings[i].let_sell == 'Sell') {
+        filteredListings.push(this.listings[i])
       }
-    });
+    }
 
-    return this.listings;
+    return filteredListings;
   }
 
   get filteredRentingProperties(): Listing[] {
-    this.listingServices.getApprovedListings().then((listings) => {
-      this.listings = listings;
-
-      for (let j = 0; j < this.listings.length; j++) {
-        for (let i = 0; i < this.listings.length; i++) {
-          if (this.listings[i].let_sell != 'Rent') {
-            this.listings.splice(i, 1);
-          }
-        }
+    const filteredListings: Listing[] = [];
+    for (let i = 0; i < this.listings.length; i++) {
+      if (this.listings[i].let_sell == 'Rent') {
+        filteredListings.push(this.listings[i])
       }
-    });
+    }
 
-    return this.listings;
+    return filteredListings;
   }
 
 filterProperties(): void {
 
   // Update the filtered properties based on the selected filters and search query
   if (this.activeTab === 'buying') {
-
+    console.log("Buying");
     this.listings = this.filteredBuyingProperties;
 
   } else if (this.activeTab === 'renting') {
-
+    console.log("Renting");
     this.listings = this.filteredRentingProperties;
-  }
-  else
-  {
-    this.listings = this.filteredAllProperties;
   }
 }
 

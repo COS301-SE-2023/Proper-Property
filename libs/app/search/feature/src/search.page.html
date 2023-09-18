@@ -203,19 +203,19 @@
             <ion-icon name="location-outline" size="large" color="primary"></ion-icon>
           </ion-button>
           <ion-card-content (click)="redirectToPage(listing)">
-          
+          <!-- TODO: Add back percentages -->
             <ion-grid style="z-index:1;">
               <ion-row>
                 <ion-col>
                   <div class="white-text">Water</div>
                     <div class="slider">
-                      <div id="waterProgress" class="progress" [style.width]="listing.areaScore.waterScore+'%'"></div>
+                      <div id="waterProgress" class="progress" [style.width]="listing.areaScore.waterScore"></div>
                     </div>
                 </ion-col>
                 <ion-col>
                 <div class="white-text">Sanitation</div>
                 <div class="slider">
-                  <div id="sanitationProgress" class="progress" [style.width]="listing.areaScore.sanitationScore+'%'"></div>
+                  <div id="sanitationProgress" class="progress" [style.width]="listing.areaScore.sanitationScore"></div>
                 </div>
                 </ion-col>
               </ion-row>
@@ -224,13 +224,13 @@
                 <ion-col>
                 <div class="white-text">Crime</div>
                 <div class="slider">
-                  <div id="crimeProgress" class="progress" [style.width]="listing.areaScore.crimeScore+'%'"></div>
+                  <div id="crimeProgress" class="progress" [style.width]="listing.areaScore.crimeScore"></div>
                 </div>
                 </ion-col>
                 <ion-col>
                 <div class="white-text">School Quality</div>
                 <div class="slider">
-                  <div id="schoolProgress" class="progress" [style.width]="listing.areaScore.schoolScore+'%'"></div>
+                  <div id="schoolProgress" class="progress" [style.width]="listing.areaScore.schoolScore"></div>
                 </div>                  
                 </ion-col>
               </ion-row>
@@ -267,8 +267,15 @@
 
     <ion-row style="width: 100%; margin-top: 1%;">
       <ion-row style="width: 100%;">
-        <ion-col size="10">
-          <input type="text" id="address" class="address" [(ngModel)]="searchQuery" placeholder="search">
+        <ion-col size="9">
+          <input type="text" id="address1" class="address1" [(ngModel)]="searchQuery" placeholder="search">
+        </ion-col
+        >
+        <ion-col size="3">
+          <ion-button class="map-button" (click)="mapView()" [class.green-button]="MapView">
+
+            <ion-icon name="map"></ion-icon>
+          </ion-button>
         </ion-col>
 
         <ion-col>
