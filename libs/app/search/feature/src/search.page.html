@@ -281,6 +281,29 @@
                 <option value="4">4 Bedrooms</option>
               </select>
             </ion-item>
+
+            <ion-item class="filter" *ngIf="showAdditionalFilters">
+              <ion-label class="filter-text">Bathrooms</ion-label>
+              <select class="dropdown" [(ngModel)]="selectedBathrooms" (ionChange)="filterProperties()">
+                <option value="1">1 Bathroom</option>
+                <option value="2">2 Bathrooms</option>
+                <option value="3">3 Bathrooms</option>
+                <option value="4">4 Bathrooms</option>
+                <option value="5">5+ Bathrooms</option>
+              </select>
+            </ion-item>
+    
+            <ion-item class="filter" *ngIf="showAdditionalFilters">
+              <ion-label class="filter-text">Parking / Garages</ion-label>
+              <select class="dropdown" [(ngModel)]="selectedParking" (ionChange)="filterProperties()">
+                <option value="1">1 Garage</option>
+                <option value="2">2 Garages</option>
+                <option value="3">3 Garages</option>
+                <option value="4">4 Garages</option>
+                <option value="5">5+ Garages</option>
+                </select>
+              </ion-item>
+
           </div>
 
 
@@ -293,52 +316,6 @@
           </ion-button>
         </ion-col>
       </ion-row>
-    </ion-row>
-
-
-    <ion-row style="width: 100%;">
-      <ion-col size="10">
-        <!-- Additional Filters -->
-        <div *ngIf="showAdditionalFilters" id="additional-features">
-          <ion-item>
-            <ion-label class="filter-text">Bathrooms</ion-label>
-            <select class="dropdown" [(ngModel)]="selectedBathrooms" (ionChange)="filterProperties()">
-              <option value="1">1 Bathroom</option>
-              <option value="2">2 Bathrooms</option>
-              <option value="3">3 Bathrooms</option>
-              <option value="4">4 Bathrooms</option>
-              <option value="5">5+ Bathrooms</option>
-            </select>
-          </ion-item>
-
-          <ion-item>
-            <ion-label class="filter-text">Parking / Garage</ion-label>
-            <select class="dropdown" [(ngModel)]="selectedParking" (ionChange)="filterProperties()">
-              <option value="1">1 Garage</option>
-              <option value="2">2 Garages</option>
-              <option value="3">3 Garages</option>
-              <option value="4">4 Garages</option>
-              <option value="5">5+ Garages</option>
-            </select>
-          </ion-item>
-
-          <ion-item>
-            <div  class="filterCheckboxes">
-              <ion-label class="filter-text">Amenities: </ion-label>
-
-              <label *ngFor="let amenity of amenities" class="checkbox-label">
-                <input
-                  type="checkbox"
-                  [checked]="isSelected(amenity.value)"
-                  (change)="toggleSelection(amenity.value)"
-                />
-                {{ amenity.label }}
-              </label>
-            </div>
-          </ion-item>
-
-        </div>
-      </ion-col>
     </ion-row>
 
     <ion-row>
