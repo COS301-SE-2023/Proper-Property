@@ -60,6 +60,6 @@ export class ListingsService {
   }
 
   async filterListings(req: GetFilteredListingsRequest): Promise<GetFilteredListingsResponse>{
-    return this.commandBus.execute(new GetFilteredListingsQuery(req))
+    return this.queryBus.execute(new GetFilteredListingsQuery(req))
   }
 }

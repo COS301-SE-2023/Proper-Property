@@ -256,7 +256,7 @@ export class ListingsService {
     const response: GetFilteredListingsResponse = (await httpsCallable<
       GetFilteredListingsRequest,
       GetFilteredListingsResponse
-    >(this.functions, 'getFilteredListings')(req)).data;
+    >(this.functions, 'filterListings')(req)).data;
 
     return response;
   }

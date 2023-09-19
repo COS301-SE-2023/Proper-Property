@@ -49,6 +49,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   private markerClickListener: any;
   private markers: any[] = [];
   public listings: Listing[] = [];
+  public allListings: Listing[] = [];
   
   public activeTab = 'buying';
   public searchQuery = '';
@@ -153,8 +154,9 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     }, 2000);
 
 
-    this.searchProperties();
-    
+    this.listings = await this.listingServices.getApprovedListings();
+    this.allListings = this.listings;
+    this.filterProperties();
   }
 
   // TODO add input latency to reduce api calls
@@ -406,9 +408,8 @@ async loadMap() {
   Templistings: Listing[] = [];
 
   async searchProperties() {
-    this.listings = await this.listingServices.getApprovedListings();
-    // TODO filter
-    this.filterProperties();
+    // this.listings = await this.listingServices.getApprovedListings();
+    
 
     if(this.isMobile)this.searchQuery = (document.getElementById("address1") as HTMLInputElement).value;
     else this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
@@ -428,25 +429,10 @@ async loadMap() {
       areaScore : this.areaScore? this.areaScore : null
     } as GetFilteredListingsRequest
 
-    this.listings = (await this.listingServices.getFilteredListings(request)).listings;
+    this.allListings = (await this.listingServices.getFilteredListings(request)).listings;
 
-    // if (this.searchQuery !== '') {
-    //   for (let i = 0; i < this.listings.length; i++) {
-    //     try {
-    //       const isInArea = await this.gmaps.checkAddressInArea(
-    //         this.searchQuery,
-    //         this.listings[i].geometry
-    //       );
-    //       if (!isInArea) {
-    //         this.listings.splice(i, 1);
-    //       }
-    //     } catch (error) {
-    //       this.listings.splice(i, 1);
-    //       console.error('Error:', error);
-    //     }
-    //   }
-    // }
-
+    // TODO filter
+    this.filterProperties();
     this.setCentre();
     // await this.addMarkersToMap();
   }
@@ -556,12 +542,13 @@ filterProperties(): void {
 
   // Update the filtered properties based on the selected filters and search query
   if (this.activeTab === 'buying') {
-    console.log("Buying");
     this.listings = this.filteredBuyingProperties;
 
   } else if (this.activeTab === 'renting') {
-    console.log("Renting");
     this.listings = this.filteredRentingProperties;
+  }
+  else if(this.activeTab === "all"){
+    this.listings = this.allListings;
   }
 }
 
@@ -574,11 +561,13 @@ filterProperties(): void {
     this.searchQuery = '';
     this.features = [];
     this.filterProperties();
+
+    console.log(this.listings);
   }
 
   toggleAdditionalFilters(): void {
     this.showAdditionalFilters = !this.showAdditionalFilters;
-    this.filterProperties();
+    // this.filterProperties();
   }
 
   amenities = [
