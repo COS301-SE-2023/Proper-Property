@@ -704,7 +704,7 @@ resetFilters() {
 }
 
 
-activeTab = 'all';
+activeTab = 'buying';
 searchQuery = '';
 selectedPropertyType = '';
 selectedMinPrice = 0;
@@ -722,14 +722,7 @@ selectedAmenities: string[] = [];
 //   // Add more properties here
 // ];
 
-get filteredAllProperties(): Listing[] {
 
-  this.listingServices.getApprovedListings().then((listings) => {
-    this.listings = listings;
-  
-  });
-  return this.listings;
-}
 
 get filteredBuyingProperties(): Listing[] {
   this.listingServices.getApprovedListings().then((listings) => {
@@ -777,10 +770,6 @@ filterProperties(): void {
   } else if (this.activeTab === 'renting') {
 
     this.listings = this.filteredRentingProperties;
-  }
-  else
-  {
-    this.listings = this.filteredAllProperties;
   }
 }
 
