@@ -156,6 +156,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     this.searchProperties();
     
   }
+
   // TODO add input latency to reduce api calls
   handleInputChange(event: Event): void {
     return;
@@ -691,28 +692,7 @@ dropDown(){
 
 status=true;
 
-onChange()
-{
-  const tog1 = document.getElementById("lists") as HTMLInputElement;
-  const tog2 = document.getElementById("lists2") as HTMLInputElement;
 
-  if(this.status)
-  {
-    if(tog1 && tog2)
-    {
-      tog1.style.display= 'block';
-      tog2.style.display = 'none';
-    }
-  }
-  else
-  {
-    if(tog1 && tog2)
-    {
-      tog1.style.display= 'none';
-      tog2.style.display = 'block';
-    }
-  }
-}
 async centerMap(listing : Listing)
 {
   
@@ -737,10 +717,10 @@ async addOneMarkersToMap(listing : Listing) {
     
   }
 }
-
-
 }
+
 function isMobile(): boolean {
   return window.innerWidth <= 576;
 }
+
 

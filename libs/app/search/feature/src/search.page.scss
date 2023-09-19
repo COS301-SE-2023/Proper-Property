@@ -1,6 +1,7 @@
 .Desktop {
   .filter {
     border-radius: 10px;
+    width: 100%;
     //make it smaller so that 4 can fit in 1 line
     margin: 0 5px;
     //make all of them fit in 1 line
@@ -38,6 +39,11 @@
     font-style: normal;
     font-weight: 400;
   }
+
+  #searchBar{
+    width: 100%;
+    margin-bottom: 5px;
+  }
   
   #additional-features {
     width: 88%;
@@ -59,17 +65,17 @@
     margin-left: 4%;
     margin-bottom: 1%;
     padding-left: 18px;
-    height: 55%;
+    height: 100%;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
   }
   
   .dropdown {
-    width: 90%;
+    width: 50%;
     height: 70%;
     margin-right: 10%;
-    color: white;
+    // color: white;
     border: none;
     --border-radius: 30px;
     cursor: pointer;
@@ -86,7 +92,7 @@
   
   .search-button{
     width: 90%;
-    height: 55%;
+    height: 100%;
     margin-right: 10%;
     color: white;
     border: none;
@@ -383,10 +389,7 @@
   .wrapper
   {
     display: flex;
-    align-items: center;
-    justify-content: center;
     height: 120px;
-  
   }
   
   .inputPrice
@@ -436,11 +439,10 @@
   
   .lists
   {
-    width: 50%;
-    position: absolute;
+    // position: absolute;
     overflow: auto;
-    top: 13%;
-  
+    // top: 13%;
+    height: 50vw;
   }
   
   .lists2
@@ -454,14 +456,12 @@
   }
   
   .map {
-  
+    position:fixed; 
     padding-top: 10px;
+    padding-right: 1.5%;
     top: 20%;
-    position:fixed !important;
-    width: 45%;
-    margin-left: 50%;
     overflow: hidden;
-    height: 75%;
+    height: 40vw;
     border-radius: 10px;
     background-color: transparent;
     opacity: 0;
@@ -542,6 +542,7 @@
   
   #listings-and-map {
     transition: transform 0.3s ease-in-out;
+    height: 100vh;
   }
   
   
@@ -607,7 +608,7 @@
   }
 
   .footer-gap{
-    height:800px;
+    // height:200px;
     position:relative;
   }
 
@@ -792,6 +793,13 @@ ion-card {
   
   .map1.visible {
     opacity: 1;
+  }
+  
+  #map {
+    width: 50%;
+    margin-left: 2%;
+    margin-top: 10px;
+    border-radius: 10px;
   }
   
   #map1 {
