@@ -19,12 +19,14 @@ const CommandHandlers = [
 import { 
   GetListingsHandler, 
   GetApprovedListingsHandler,
-  GetUnapprovedListingsHandler
+  GetUnapprovedListingsHandler,
+  GetFilteredListingsHandler
 } from './queries';
 const QueryHandlers = [
   GetListingsHandler, 
   GetApprovedListingsHandler,
-  GetUnapprovedListingsHandler
+  GetUnapprovedListingsHandler,
+  GetFilteredListingsHandler
 ];
 
 import { 
@@ -32,6 +34,7 @@ import {
   StatusChangedHandler,
   ListingCreatedHandler
 } from './events';
+
 const EventHandlers = [
   ListingEditedHandler, 
   StatusChangedHandler,

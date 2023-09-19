@@ -43,9 +43,9 @@ export class ListingModel extends AggregateRoot implements Listing {
     public pointsOfInterestIds: string[],
     public areaScore: areaScore,
     public status: StatusEnum,
+    public quality_rating: number,
     public listing_id?: string,
     public statusChanges?: StatusChange[],
-    public quality_rating?: number,
   ) {
     super();
   }
@@ -77,9 +77,9 @@ export class ListingModel extends AggregateRoot implements Listing {
       listing.pointsOfInterestIds,
       listing.areaScore,
       listing.status,
+      listing.quality_rating,
       listing.listing_id,
       listing.statusChanges,
-      listing.quality_rating,
     );
     return model;
   }

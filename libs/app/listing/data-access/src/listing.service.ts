@@ -10,7 +10,9 @@ import { Listing,
   EditListingRequest,
   EditListingResponse, 
   GetUnapprovedListingsResponse,
-  StatusEnum} from '@properproperty/api/listings/util';
+  StatusEnum,
+  GetFilteredListingsResponse,
+  GetFilteredListingsRequest} from '@properproperty/api/listings/util';
 import { GetLocInfoDataRequest,
   GetLocInfoDataResponse } from '@properproperty/api/loc-info/util';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
@@ -247,6 +249,15 @@ export class ListingsService {
     >(this.functions, 'getLocInfoData')({type: "crime", latlong: coordinates})).data;
 
     console.log("Listing services", response);
+    return response;
+  }
+
+  async getFilteredListings(req : GetFilteredListingsRequest){
+    const response: GetFilteredListingsResponse = (await httpsCallable<
+      GetFilteredListingsRequest,
+      GetFilteredListingsResponse
+    >(this.functions, 'getFilteredListings')(req)).data;
+
     return response;
   }
 }

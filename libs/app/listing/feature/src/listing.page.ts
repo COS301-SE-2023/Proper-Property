@@ -252,7 +252,7 @@ export class ListingPage implements OnDestroy {
 
       if ((this.list.status == StatusEnum.PENDING_APPROVAL || this.list.status == StatusEnum.EDITED) && approved) {
         crimeScore = await this.getCrimeScore();
-        schoolScore = await this.getSchoolRating(this.coordinates);
+        schoolScore = await this.getSchoolRating(this.list.geometry);
         waterScore = await this.getWaterScore();
         sanitationScore = await this.getSanitationScore();
         console.log(crimeScore, schoolScore, waterScore, sanitationScore);
@@ -313,11 +313,11 @@ export class ListingPage implements OnDestroy {
     }
   }
 
-  async getSchoolRating(coordinates: { latitude: number, longitude: number } | null): Promise<number> {
-    if (this.list && this.list.address) {
+  async getSchoolRating(coordinates: { lat: number, lng: number }): Promise<number> {
+    if (this.list) {
       try {
         if (coordinates) {
-          const response = await this.gmapsService.getNearbySchools(coordinates.latitude, coordinates.longitude);
+          const response = await this.gmapsService.getNearbySchools(coordinates.lat, coordinates.lng);
           // console.log("schools: " + schools);
           if (response.length > 0) {
             let totalRating = 0;
@@ -387,12 +387,12 @@ export class ListingPage implements OnDestroy {
   }
 
   async getWaterScore(): Promise<number> {
-    if (this.list && this.coordinates) {
+    if (this.list) {
       console.log("Calculating water score")
       const response = await this.listingServices.getWaterScore(this.list.district
         , this.list.listingAreaType
         , this.list.prop_type
-        , { lat: this.coordinates?.latitude, long: this.coordinates?.longitude })
+        , { lat: this.list.geometry.lat , long: this.list.geometry.lng })
       console.log("Water is here bitch");
       return (response.percentage ? response.percentage : 0) * 100;
     }
@@ -420,9 +420,9 @@ export class ListingPage implements OnDestroy {
 
 
   async getCrimeScore(): Promise<number> {
-    if (this.list && this.coordinates) {
+    if (this.list) {
       try {
-        const response = await this.listingServices.getCrimeScore({ lat: this.coordinates?.latitude, long: this.coordinates.longitude });
+        const response = await this.listingServices.getCrimeScore({ lat: this.list.geometry.lat, long: this.list.geometry.lng });
         console.log("CRIME SCORE:", response.percentage ? response.percentage * 100 : "error");
         console.log(response);
         console.log("Crime is here bitch");

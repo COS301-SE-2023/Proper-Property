@@ -529,7 +529,7 @@ handleAddressChange(address: string): void {
     'Solar panels',
     'Flatlet',
     'Garden',
-    'Pet-Friendly',
+    'Pet Friendly',
   ];
   filteredAmenities: string[] = [];
 

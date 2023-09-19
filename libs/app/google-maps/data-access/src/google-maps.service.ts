@@ -65,14 +65,13 @@ export class GmapsService {
   }
 
   // TODO refactor into using radius
-  checkAddressInArea(address1: string, address2: string): Promise<boolean> {
+  async checkAddressInArea(address1: string, listingGeometry: google.maps.LatLngLiteral): Promise<boolean> {
     return Promise.all([
       this.geocodeAddress(address1),
-      this.geocodeAddress(address2)
-    ]).then(([location1, location2]) => {
-      if (location1 && location2) {
+    ]).then(([location1]) => {
+      if (location1) {
         const area1 = location1.geometry?.viewport;
-        const point2 = location2.geometry?.location;
+        const point2 = listingGeometry;
         if (area1 && point2) {
           return area1.contains(point2);
         }

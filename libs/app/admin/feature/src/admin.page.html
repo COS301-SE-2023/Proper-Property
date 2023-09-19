@@ -6,22 +6,6 @@
   </div>
   <div id="show">
   <div *ngIf="adminLogged">
-    <ion-toolbar class = "profile-nav" >
-
-    <ion-tabs>
-      <ion-tab-bar slot="end">
-        <ion-tab-button tab="admin" routerLink="/admin" routerDirection="root">
-          <ion-icon name="checkbox-outline"></ion-icon>            
-          <ion-label>Approval Page</ion-label>
-        </ion-tab-button>
-  
-        <ion-tab-button (click)="addData()">
-          <ion-icon name="add-circle-outline"></ion-icon>
-          <ion-label>Location Data</ion-label>
-        </ion-tab-button>
-      </ion-tab-bar>
-    </ion-tabs>
-
     <ion-popover id="popover" [isOpen]="isPopoverOpen">
       <ng-template>
         <ion-grid>
@@ -86,16 +70,10 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-        <!-- <ion-grid>
-          <ion-row>
-            
-          </ion-row>
-        </ion-grid> -->
         <ion-button (click)="processData()">Process Data</ion-button>
       </ng-template>
     </ion-popover>
   
-  </ion-toolbar>
     <ion-grid>
       <ion-row>
         <ion-col id="notApprovedHeadCol">

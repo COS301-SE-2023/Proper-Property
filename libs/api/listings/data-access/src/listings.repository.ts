@@ -11,7 +11,9 @@ import { GetListingsRequest,
   EditListingResponse,
   StatusChange,
   GetUnapprovedListingsResponse,
-  StatusEnum
+  StatusEnum,
+  GetFilteredListingsRequest,
+  GetFilteredListingsResponse
 } from '@properproperty/api/listings/util';
 @Injectable()
 export class ListingsRepository {
@@ -191,5 +193,75 @@ export class ListingsRepository {
     })
 
     return {unapprovedListings : listings};
+  }
+
+  async getFilteredListings(req: GetFilteredListingsRequest): Promise<GetFilteredListingsResponse>{
+    try{
+      let query = admin
+        .firestore()
+        .collection('listings')
+        .orderBy('quality_rating');
+
+      if(req.property_size_max){
+        query = query.where("floor_size", "<=", req.property_size_max);
+      }
+
+      if(req.property_size_min){
+        query.where("floor_size", ">=", req.property_size_min);
+      }
+
+      if(req.let_sell){
+        query.where("let_sell", "==", req.let_sell);
+      }
+
+      if(req.prop_type){
+        query.where("prop_type", "==", req.prop_type);
+      }
+
+      if(req.bath){query = 
+        query.where("bath", ">=", req.bath);
+      }
+
+      if(req.bed){
+        query.where("bed", ">=", req.bed);
+      }
+
+      if(req.parking){
+        query.where("parking", ">=", req.parking);
+      }
+
+      if(req.features){
+        query.where("features", "in", req.features);
+      }
+
+      if(req.price_min){
+        query.where("price", ">=", req.price_min);
+      }
+
+      if(req.price_max){
+        query.where("price", "<=", req.price_max);
+      }
+      
+      if (req.lastListingId) {
+        const lastListingDoc = (await admin
+          .firestore()
+          .collection('listings')
+          .doc(req.lastListingId)
+          .get()).data() as Listing;
+
+        query = query.startAfter(lastListingDoc);
+      }
+      query = query.limit(12);
+      const listings : Listing[] = [];
+      (await query.get()).docs.forEach((doc) => {
+        doc.data() as Listing;
+        listings.push(doc.data() as Listing);
+      })
+
+      return {status: true, listings: listings}
+    }
+    catch(e : any){
+      return {status: false, listings: [], error: e.message}
+    }
   }
 }

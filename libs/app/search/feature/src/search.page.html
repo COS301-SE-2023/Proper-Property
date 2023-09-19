@@ -61,7 +61,7 @@
           <ion-col>
             <ion-item class="filter">
               <ion-label>Number of Bedrooms</ion-label>
-              <ion-select [(ngModel)]="selectedBedrooms" (ionChange)="filterProperties()">
+              <ion-select [(ngModel)]="bed" (ionChange)="filterProperties()">
                 <ion-select-option value="1">1 Bedroom</ion-select-option>
                 <ion-select-option value="2">2 Bedrooms</ion-select-option>
                 <ion-select-option value="3">3 Bedrooms</ion-select-option>
@@ -74,7 +74,7 @@
           <ion-col>
             <ion-item>
               <ion-label>Bathrooms</ion-label>
-              <ion-select [(ngModel)]="selectedBathrooms" (ionChange)="filterProperties()">
+              <ion-select [(ngModel)]="bath" (ionChange)="filterProperties()">
                 <ion-select-option value="1">1 Bathroom</ion-select-option>
                 <ion-select-option value="2">2 Bathrooms</ion-select-option>
                 <ion-select-option value="3">3 Bathrooms</ion-select-option>
@@ -86,7 +86,7 @@
           <ion-col>
             <ion-item>
               <ion-label>Parking / Garage</ion-label>
-              <ion-select [(ngModel)]="selectedParking" (ionChange)="filterProperties()">
+              <ion-select [(ngModel)]="parking" (ionChange)="filterProperties()">
                 <ion-select-option value="1">1 Garage</ion-select-option>
                 <ion-select-option value="2">2 Garages</ion-select-option>
                 <ion-select-option value="3">3 Garages</ion-select-option>
@@ -100,7 +100,7 @@
           <ion-col>
             <ion-item>
               <ion-label class="Amenities">Amenities</ion-label>
-              <ion-select multiple="true" [(ngModel)]="selectedAmenities" (ionChange)="filterProperties()">
+              <ion-select multiple="true" [(ngModel)]="features" (ionChange)="filterProperties()">
                 <ion-select-option value="petFriendly">Pet Friendly</ion-select-option>
                 <ion-select-option value="garden">Garden</ion-select-option>
                 <ion-select-option value="pool">Pool</ion-select-option>
@@ -123,12 +123,12 @@
         <div class="inputPrice">
           <div class="field">
             <span>Min</span>
-            <input type="number" value="0" [(ngModel)]="selectedMinPrice" (ionChange)="filterProperties()">
+            <input type="number" value="0" [(ngModel)]="price_min" (ionChange)="filterProperties()">
           </div>
           <div class="dash">-</div>
           <div class="field">
             <span>Max</span>
-            <input type="number" [(ngModel)]="selectedMaxPrice" value="450000"  (ionChange)="filterProperties()">
+            <input type="number" [(ngModel)]="price_max" value="450000"  (ionChange)="filterProperties()">
           </div>
         </div>
       </div>
@@ -161,7 +161,7 @@
           <ion-card-content (click)="redirectToPage(listing)">
           
             <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-              {{listing.bed}} bedroom/{{listing.prop_type}}
+              {{listing.bed}} bedroom {{listing.prop_type}}
             </p>
             <ng-template [ngIf] ="listing.let_sell === 'Sell'">
               <p>For Sale!</p>
@@ -256,7 +256,7 @@
 <ion-content *ngIf="this.isMobile" class="Mobile">
   <ion-segment [(ngModel)]="activeTab" (ionChange)="changeTab()">
     <ion-segment-button value="buying">
-      <ion-label>buy</ion-label>
+      <ion-label>Buy</ion-label>
     </ion-segment-button>
     <ion-segment-button value="renting">
       <ion-label>Rent</ion-label>
@@ -288,7 +288,7 @@
           <div id="filter-container">
             <ion-item class="filter">
               <ion-label class="filter-text">Property Type</ion-label>
-              <select class="dropdown" [(ngModel)]="selectedPropertyType" (ionChange)="filterProperties()">
+              <select class="dropdown" [(ngModel)]="prop_type" (ionChange)="filterProperties()">
                 <option value="House">House</option>
                 <option value="Apartment">Apartment</option>
                 <option value="Commercial">Commercial Property</option>
@@ -297,7 +297,7 @@
 
             <ion-item class="filter">
               <label class="filter-text" for="minPrice">Min Price</label>
-              <select class="dropdown" [(ngModel)]="selectedMinPrice" (ionChange)="filterProperties()">
+              <select class="dropdown" [(ngModel)]="price_min" (ionChange)="filterProperties()">
                 <option value="0">R 0</option>
                 <option value="100000">R 100,000</option>
                 <option value="150000">R 150,000</option>
@@ -312,7 +312,7 @@
 
             <ion-item class="filter">
               <label class="filter-text" for="maxPrice">Max Price</label>
-              <select class="dropdown" [(ngModel)]="selectedMaxPrice" (ionChange)="filterProperties()">
+              <select class="dropdown" [(ngModel)]="price_max" (ionChange)="filterProperties()">
                 <option value="0">R 0</option>
                 <option value="100000">R 100,000</option>
                 <option value="150000">R 150,000</option>
@@ -326,7 +326,7 @@
 
             <ion-item class="filter">
               <ion-label class="filter-text">Number of Bedrooms</ion-label>
-              <select class="dropdown" [(ngModel)]="selectedBedrooms" (ionChange)="filterProperties()">
+              <select class="dropdown" [(ngModel)]="bed" (ionChange)="filterProperties()">
                 <option value="1">1 Bedroom</option>
                 <option value="2">2 Bedrooms</option>
                 <option value="3">3 Bedrooms</option>
@@ -352,7 +352,7 @@
         <div *ngIf="showAdditionalFilters" id="additional-features">
           <ion-item>
             <ion-label class="filter-text">Bathrooms</ion-label>
-            <select class="dropdown" [(ngModel)]="selectedBathrooms" (ionChange)="filterProperties()">
+            <select class="dropdown" [(ngModel)]="bath" (ionChange)="filterProperties()">
               <option value="1">1 Bathroom</option>
               <option value="2">2 Bathrooms</option>
               <option value="3">3 Bathrooms</option>
@@ -363,7 +363,7 @@
 
           <ion-item>
             <ion-label class="filter-text">Parking / Garage</ion-label>
-            <select class="dropdown" [(ngModel)]="selectedParking" (ionChange)="filterProperties()">
+            <select class="dropdown" [(ngModel)]="parking" (ionChange)="filterProperties()">
               <option value="1">1 Garage</option>
               <option value="2">2 Garages</option>
               <option value="3">3 Garages</option>
@@ -374,7 +374,7 @@
 
           <ion-item>
             <ion-label class="filter-text">Amenities</ion-label>
-            <select class="dropdown" multiple="true" [(ngModel)]="selectedAmenities" (ionChange)="filterProperties()">
+            <select class="dropdown" multiple="true" [(ngModel)]="features" (ionChange)="filterProperties()">
               <option value="petFriendly">Pet Friendly</option>
               <option value="garden">Garden</option>
               <option value="pool">Pool</option>

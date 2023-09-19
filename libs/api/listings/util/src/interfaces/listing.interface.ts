@@ -26,7 +26,7 @@ export interface Listing{
   statusChanges?: StatusChange[];
   status: StatusEnum;
   listingDate: string;
-  quality_rating?: number;
+  quality_rating: number;
   geometry: {
     lat: number,
     lng: number

@@ -14,7 +14,7 @@ import {
 import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
-import { Listing } from '@properproperty/api/listings/util';
+import { GetFilteredListingsRequest, Listing } from '@properproperty/api/listings/util';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Unsubscribe } from '@angular/fire/auth';
@@ -52,14 +52,19 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   
   public activeTab = 'buying';
   public searchQuery = '';
-  public selectedPropertyType = '';
-  public selectedMinPrice = 0;
-  public selectedMaxPrice = 0;
-  public selectedBedrooms = 0;
+  public env_type : string | null = null;
+  public prop_type : string | null = null;
+  public let_sell : string | null = null;
+  public price_min : number | null = null;
+  public price_max : number | null = null;
+  public prop_size_min : number | null = null;
+  public prop_size_max : number | null = null; 
+  public bed : number | null = null;
   public showAdditionalFilters = false;
-  public selectedBathrooms = 0;
-  public selectedParking = 0;
-  public selectedAmenities: string[] = [];
+  public bath : number | null = null;
+  public parking : number | null = null;
+  public features: string[] = [];
+  public areaScore : number | null = null;
 
   private profile: UserProfile | null = null;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
@@ -69,7 +74,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
   async setCentre() {
     if (this.searchQuery == '') {
-      this.center = { lat: -25.7477, lng: 28.2433 };
+      this.center = this.listings[0] ? this.listings[0].geometry : { lat: -25.7477, lng: 28.2433 };
     } else {
       const coord = await this.gmapsService.geocodeAddress(this.searchQuery);
 
@@ -148,10 +153,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     }, 2000);
 
 
-    await this.listingServices.getApprovedListings().then((listings) => {
-      this.listings = listings;
-      this.filterProperties();
-    });
+    this.searchProperties();
     
   }
   // TODO add input latency to reduce api calls
@@ -195,9 +197,6 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     if (this.searchQuery!='') {
       addressInput.value = this.searchQuery;
     }
-
-    this.searchProperties();
-    
   }
 async loadMap() {
   try {
@@ -412,79 +411,40 @@ async loadMap() {
 
     if(this.isMobile)this.searchQuery = (document.getElementById("address1") as HTMLInputElement).value;
     else this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
-   
 
-    if (this.searchQuery !== '') {
-      for (let i = 0; i < this.listings.length; i++) {
-        try {
-          const isInArea = await this.gmaps.checkAddressInArea(
-            this.searchQuery,
-            this.listings[i].address
-          );
-          if (!isInArea) {
-            this.listings.splice(i, 1);
-            console.log('Address 1 is not in the area of Address 2', i);
-          } else {
-            console.log('Address 1 is in the area of Address 2', i);
-      
-          }
-        } catch (error) {
-          this.listings.splice(i, 1);
-          console.error('Error:', error);
-        }
-      }
-    }
+    const request = {
+      env_type : this.env_type ? this.env_type : null,
+      prop_type : this.prop_type ? this.prop_type : null,
+      bath : this.bath ? this.bath : null,
+      bed : this.bed ? this.bed : null,
+      let_sell : this.let_sell ? this.let_sell : null,
+      parking : this.parking ? this.parking : null,
+      features : this.features.length > 0 ? this.features : null,
+      property_size_min : this.prop_size_min ? this.prop_size_min : null,
+      property_size_max : this.prop_size_max ? this.prop_size_max : null,
+      price_min : this.price_min ? this.price_min : null,
+      price_max : this.price_max ? this.price_max : null,
+      areaScore : this.areaScore? this.areaScore : null
+    } as GetFilteredListingsRequest
 
-    for (let i = 0; i < this.listings.length; i++) {
-      if (
-        (this.selectedPropertyType != '' && this.listings[i].prop_type != this.selectedPropertyType) ||
-        (this.selectedBedrooms != 0 && this.listings[i].bed != this.selectedBedrooms) ||
-        (this.selectedBathrooms != 0 && this.listings[i].bath != this.selectedBathrooms) ||
-        (this.selectedMinPrice != 0 && this.listings[i].price < this.selectedMinPrice) ||
-        (this.selectedMaxPrice != 0 && this.listings[i].price > this.selectedMaxPrice)
-      ) {
-        console.log(this.selectedPropertyType);
-        console.log(this.selectedBedrooms);
-        console.log(this.selectedBathrooms);
-        console.log(this.selectedMinPrice);
-        console.log(this.selectedMaxPrice);
-        console.log("removing1");
-        this.listings.splice(i, 1);
-      }
+    this.listings = (await this.listingServices.getFilteredListings(request)).listings;
 
-      if (this.selectedParking != 0) {
-        if (
-          this.listings[i].parking != this.selectedParking &&
-          this.listings[i].parking < 5
-        ) {
-          console.log("removing parking");
-          this.listings.splice(i, 1);
-        } else if (this.listings[i].parking >= 5 && this.selectedParking != 5) {
-          console.log("removing parking");
-          this.listings.splice(i, 1);
-        }
-      }
-
-      //checkAddressinArea(searchQuery, house address);
-
-      // this.gmaps.checkAddressInArea(this.searchQuery,"14 Umhlanga Rocks Dr, Umhlanga, uMhlanga, 4320, South Africa")
-      // .then((isInArea) => {
-      //   if (isInArea) {
-      //     console.log('hillcrest is in umhlanga');
-      //     console.log(this.listings[i].address,"eyy");
-      //   } else {
-      //     console.log('Address 1 is not in the area of Address 2');
-      //   }
-      // })
-      // .catch((error) => {
-      //   console.error('Error:', error);
-      // });
-
-      // this.listings[i].price = this.listings[i].price.replace(/,/g, '');
-
-      // Format the price with commas
-      // this.listings[i].price = this.listings[i].price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    }
+    // if (this.searchQuery !== '') {
+    //   for (let i = 0; i < this.listings.length; i++) {
+    //     try {
+    //       const isInArea = await this.gmaps.checkAddressInArea(
+    //         this.searchQuery,
+    //         this.listings[i].geometry
+    //       );
+    //       if (!isInArea) {
+    //         this.listings.splice(i, 1);
+    //       }
+    //     } catch (error) {
+    //       this.listings.splice(i, 1);
+    //       console.error('Error:', error);
+    //     }
+    //   }
+    // }
 
     this.setCentre();
     // await this.addMarkersToMap();
@@ -492,18 +452,15 @@ async loadMap() {
 
   async addMarkersToMap() {
     console.log(this.listings)
-    for (let i = 0; i < this.listings.length; i++) {
-      const coordinates = await this.gmapsService.geocodeAddress(
-        this.listings[i].address
-      );
+    for (let listing of this.listings) {
+      const coordinates = listing.geometry
       if (coordinates) {
-        console.log('my coordinates ', coordinates);
-        this.addMMarker(coordinates, this.listings[i]);
+        this.addMMarker(listing);
       }
     }
   }
 
-addMMarker(coordinates: google.maps.GeocoderResult, listing: Listing) {
+addMMarker(listing: Listing) {
   console.log(listing);
   const googleMaps: any = this.googleMaps;
   // const icon = {
@@ -511,7 +468,7 @@ addMMarker(coordinates: google.maps.GeocoderResult, listing: Listing) {
   //   scaledSize: new googleMaps.Size(40, 40), // Adjust the size of the marker icon as desired
   // };
   const marker = new google.maps.Marker({
-    position: coordinates.geometry.location,
+    position: listing.geometry,
     map: this.map,
     title: listing.address,
   });
@@ -542,14 +499,14 @@ addMMarker(coordinates: google.maps.GeocoderResult, listing: Listing) {
     this.listingServices.getApprovedListings().then((listings) => {
       this.listings = listings;
     });
-    this.selectedPropertyType = '';
-    this.selectedMinPrice = 0;
-    this.selectedMaxPrice = 0;
-    this.selectedBedrooms = 0;
-    this.selectedBathrooms = 0;
-    this.selectedParking = 0;
+    this.prop_type = '';
+    this.price_min = 0;
+    this.price_max = 0;
+    this.bed = 0;
+    this.bath = 0;
+    this.parking = 0;
 
-  this.selectedAmenities= [];
+  this.features= [];
 }
 
 
@@ -573,9 +530,9 @@ addMMarker(coordinates: google.maps.GeocoderResult, listing: Listing) {
 
   get filteredBuyingProperties(): Listing[] {
     const filteredListings: Listing[] = [];
-    for (let i = 0; i < this.listings.length; i++) {
-      if (this.listings[i].let_sell == 'Sell') {
-        filteredListings.push(this.listings[i])
+    for (let listing of this.listings) {
+      if (listing.let_sell == 'Sell') {
+        filteredListings.push(listing)
       }
     }
 
@@ -584,11 +541,12 @@ addMMarker(coordinates: google.maps.GeocoderResult, listing: Listing) {
 
   get filteredRentingProperties(): Listing[] {
     const filteredListings: Listing[] = [];
-    for (let i = 0; i < this.listings.length; i++) {
-      if (this.listings[i].let_sell == 'Rent') {
-        filteredListings.push(this.listings[i])
+    for (let listing of this.listings) {
+      if (listing.let_sell == 'Rent') {
+        filteredListings.push(listing)
       }
     }
+
 
     return filteredListings;
   }
@@ -608,12 +566,12 @@ filterProperties(): void {
 
   changeTab(): void {
     // Reset the selected filters and search query when changing tabs
-    this.selectedPropertyType = '';
-    this.selectedMinPrice = 0;
-    this.selectedMaxPrice = 0;
-    this.selectedBedrooms = 0;
+    this.prop_type = '';
+    this.price_min = 0;
+    this.price_max = 0;
+    this.bed = 0;
     this.searchQuery = '';
-    this.selectedAmenities = [];
+    this.features = [];
     this.filterProperties();
   }
 
@@ -633,7 +591,7 @@ filterProperties(): void {
   ];
 
   isSelected(amenity: string): boolean {
-    return this.selectedAmenities.includes(amenity);
+    return this.features.includes(amenity);
   }
 
   updateSelectedAmenities(event: Event): void {
@@ -642,15 +600,15 @@ filterProperties(): void {
       .filter((option: HTMLOptionElement) => option.selected)
       .map((option: HTMLOptionElement) => option.value);
 
-    this.selectedAmenities = selectedOptions;
+    this.features = selectedOptions;
   }
 
   toggleSelection(amenity: string): void {
-    const index = this.selectedAmenities.indexOf(amenity);
+    const index = this.features.indexOf(amenity);
     if (index > -1) {
-      this.selectedAmenities.splice(index, 1);
+      this.features.splice(index, 1);
     } else {
-      this.selectedAmenities.push(amenity);
+      this.features.push(amenity);
     }
   }
 
@@ -754,7 +712,6 @@ onChange()
       tog2.style.display = 'block';
     }
   }
-
 }
 async centerMap(listing : Listing)
 {
