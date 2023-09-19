@@ -1,21 +1,25 @@
-import { Component, OnDestroy, OnInit,Inject,HostListener, inject } from '@angular/core';
-import { Store } from '@ngxs/store';
+import { 
+  Component, 
+  OnDestroy, 
+  OnInit,
+  Inject,
+  HostListener, 
+  inject,
+  isDevMode
+} from '@angular/core';
+import { Store, Select } from '@ngxs/store';
 import { SubscribeToAuthState } from '@properproperty/app/auth/util';
-import { Select } from '@ngxs/store';
+import { NotificationsState } from '@properproperty/app/notifications/data-access';
 import { Observable } from 'rxjs';
 import { Unsubscribe } from 'firebase/auth';
-// import { SubscribeToUserProfile, UnsubscribeFromUserProfile } from '@properproperty/app/user/util';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { UserProfileState,UserProfileService } from '@properproperty/app/profile/data-access';
-
-
-import { ActivatedRoute } from '@angular/router';
-import { httpsCallable, Functions } from '@angular/fire/functions';
-import { isDevMode } from '@angular/core';
-// import { GetUserProfileRequest, GetUserProfileResponse, UpdateUserProfileRequest, UpdateUserProfileResponse, profile } from '@properproperty/api/profile/util';
+import { Functions } from '@angular/fire/functions';
+import { NotificationsService } from 'libs/app/notifications/data-access/src/notifications.service';
 
 
 import { DOCUMENT } from '@angular/common';
-import { NavigationEnd, Router } from '@angular/router';
+import { Notification } from '@properproperty/api/notifications/util';
 import { UserProfile } from '@properproperty/api/profile/util';
 
 declare const gtag: any;
@@ -30,15 +34,26 @@ export class CoreShellComponent implements OnInit, OnDestroy {
   isMobile: boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
+  @Select(NotificationsState.notifications) notifications$!: Observable<Notification[] | null>;
+  @Select(NotificationsState.notificationsListener) notificationsListener$!: Observable<Unsubscribe | null>;
   public loggedIn = false;
   public admin = false;
+  public dev: boolean;
   private userProfile: UserProfile | null = null;
-  dev: boolean;
   private userProfileListener: Unsubscribe | null = null;
-
+  private notificationsListener: Unsubscribe | null = null;
+  public notifications: Notification[] = [];
+  public showNotifications = false;
+  private NotificationToken = 'whups';
   private activatedRoute = inject(ActivatedRoute);
-
-  constructor(private readonly router: Router, private readonly store: Store, private readonly functions: Functions, @Inject(DOCUMENT) private document: Document,private profileServices : UserProfileService) {
+  constructor(
+    private readonly router: Router, 
+    private readonly store: Store, 
+    private readonly functions: Functions, 
+    @Inject(DOCUMENT) private document: Document,
+    private profileServices : UserProfileService,
+    private readonly notificationsService: NotificationsService
+  ) {
     this.dev = isDevMode();
     this.loggedIn = this.userProfile$ != null && this.userProfile$ != undefined;
 
@@ -53,6 +68,14 @@ export class CoreShellComponent implements OnInit, OnDestroy {
       this.userProfileListener = listener;
     });
 
+    this.notificationsListener$.subscribe((listener) => {
+      this.notificationsListener = listener;
+    });
+
+    this.notifications$.subscribe((notifications) => {
+      console.log("notifications", notifications);
+      this.notifications = notifications ?? [];
+    });
     this.userProfile$.subscribe((profile) => {
       this.userProfile = profile;
       this.loggedIn = this.userProfile != null && this.userProfile != undefined;
@@ -75,11 +98,15 @@ export class CoreShellComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.store.dispatch(new SubscribeToAuthState());
   }
-  // Unsubscribes from snapshot listener when window is unloaded
+  // Unsubscribes from snapshot listeners when window is unloaded
   @HostListener('window:beforeunload')
   ngOnDestroy() {
     if (this.userProfileListener) {
       this.userProfileListener();
+    }
+
+    if (this.notificationsListener) {
+      this.notificationsListener();
     }
   }
 
@@ -92,50 +119,13 @@ export class CoreShellComponent implements OnInit, OnDestroy {
   async test() {// very duct tape, much jank. 10/10
 
     if (isDevMode()) {
-    alert ("OI");
-    const test = JSON.parse((await httpsCallable(this.functions, 'getAnalyticsData')()).data as string);
-    const dates : Date[] = [];
-    const pageViews : number[] = [];
-
-    const rows = test.rows ?? [];
-    for(let i = 0; rows && i < rows.length; i++){
-      if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
-        const dimensionValue = rows[i].dimensionValues[1].value;
-        const year = Number(dimensionValue.substring(0,4));
-        const month = Number(dimensionValue.substring(4,6));
-        const day = Number(dimensionValue.substring(6,8));
-
-        dates[i] = new Date(year, month, day);
-
-        const metricValue = rows[i].metricValues[0].value;
-        pageViews[i] = Number(metricValue);
-      }
+      alert ("OI");
+      console.log(this.NotificationToken);
+      this.notificationsService.sendNotification(this.NotificationToken, "this is a title", "this is a body");
     }
+  }
 
-    console.log({pageViews, dates});
-    // const getUserProfile = httpsCallable<
-    //   GetUserProfileRequest,
-    //   GetUserProfileResponse
-    // >(this.functions, 'getUserProfile');
-
-    // const updateUserProfile = httpsCallable<
-    //   UpdateUserProfileRequest,
-    //   UpdateUserProfileResponse
-    // >(this.functions, 'updateUserProfile');
-    // let getresponse: GetUserProfileResponse;
-    // let profile: profile | null = null;
-    // if (this.user){
-    //   getresponse = (await getUserProfile({userId: this.user.uid})).data;
-    //   profile = getresponse.user;
-    //   console.warn(profile);
-    // }
-    // let updateResponse: UpdateUserProfileResponse;
-    // if (profile) {
-    //   profile.email = 'test@mail.com';
-    //   console.log(profile);
-    //   updateResponse = (await updateUserProfile({user: profile})).data;
-    //   console.warn(updateResponse);
-    // }
-    }
+  async toggleNotifications() {
+    this.showNotifications = !this.showNotifications;
   }
 }

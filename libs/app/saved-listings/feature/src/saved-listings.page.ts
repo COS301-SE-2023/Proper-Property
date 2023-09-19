@@ -78,7 +78,7 @@ export class SavedListingsPage implements OnInit {
     return false;
   }
 
-  saveListing($event : any, listing_id : string) {
+  saveListing($event : Event, listing_id : string) {
     if(listing_id != ''){
       const heartBut = $event.target as HTMLButtonElement;
       heartBut.style.color = "red";
@@ -96,7 +96,7 @@ export class SavedListingsPage implements OnInit {
     } 
   }
 
-  unsaveListing($event : any, listing_id : string){
+  unsaveListing($event : Event, listing_id : string){
     if(listing_id != ''){
       const heartBut = $event.target as HTMLButtonElement;
       heartBut.style.color = "red";

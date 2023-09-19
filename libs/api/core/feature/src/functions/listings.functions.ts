@@ -4,7 +4,7 @@ import {
   CreateListingRequest, CreateListingResponse,
   GetApprovedListingsResponse, GetListingsRequest,
   GetListingsResponse,
-  EditListingRequest, EditListingResponse} from '@properproperty/api/listings/util';
+  EditListingRequest, EditListingResponse, GetUnapprovedListingsResponse} from '@properproperty/api/listings/util';
 import { NestFactory } from '@nestjs/core';
 import { CoreModule } from '../core.module';
 import { ListingsService } from '@properproperty/api/listings/feature';
@@ -51,6 +51,15 @@ export const getApprovedListings = functions.region('europe-west1').https.onCall
   }
 );
 
+export const getUnapprovedListings = functions.region('europe-west1').https.onCall(
+  async(
+  ):Promise<GetUnapprovedListingsResponse> => {
+    const appContext = await NestFactory.createApplicationContext(CoreModule)
+    const listingService = appContext.get(ListingsService);
+    return listingService.getUnapprovedListings();
+  }
+)
+
 export const editListing = functions.region('europe-west1').https.onCall(
   async(
     request: EditListingRequest
@@ -58,6 +67,16 @@ export const editListing = functions.region('europe-west1').https.onCall(
     const appContext = await NestFactory.createApplicationContext(CoreModule)
     const listingService = appContext.get(ListingsService);
     return listingService.editListing(request); 
+  }
+);
+
+export const saveListing = functions.region('europe-west1').https.onCall(
+  async(
+    request: CreateListingRequest
+  ): Promise<CreateListingResponse> => {
+    const appContext = await NestFactory.createApplicationContext(CoreModule)
+    const listingService = appContext.get(ListingsService);
+    return listingService.saveListing(request); 
   }
 );
   

@@ -1,4 +1,19 @@
 .Desktop {
+  #loader{
+    position: absolute;
+    right: 45%;
+    text-align: center;
+    z-index: 1;
+    top: 40%;
+    opacity: 0;
+  }
+
+  #approval-message{
+    font-size:xx-large;
+    font-weight: 600;
+    z-index: 1;
+  }
+
   #full-grid {
     background-image: url('../../../assets/create-listing-background.png');
     margin-bottom: -7%;
@@ -355,6 +370,21 @@
 }
 
 .Mobile {
+  #loader{
+    position: absolute;
+    right: 20%;
+    text-align: center;
+    z-index: 1;
+    top: 40%;
+    opacity: 0;
+  }
+
+  #approval-message{
+    font-size:xx-large;
+    font-weight: 600;
+    z-index: 1;
+  }
+
   #full-grid {
     background-image: url('../../../assets/create-listing-background.png');
     margin-bottom: -7%;

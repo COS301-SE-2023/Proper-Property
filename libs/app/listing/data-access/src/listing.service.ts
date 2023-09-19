@@ -8,11 +8,13 @@ import { Listing,
   ChangeStatusRequest,
   GetApprovedListingsResponse,
   EditListingRequest,
-  EditListingResponse } from '@properproperty/api/listings/util';
+  EditListingResponse, 
+  GetUnapprovedListingsResponse,
+  StatusEnum} from '@properproperty/api/listings/util';
 import { GetLocInfoDataRequest,
   GetLocInfoDataResponse } from '@properproperty/api/loc-info/util';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
-import { Storage, deleteObject, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
+import { Storage, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { Observable } from 'rxjs';
@@ -47,6 +49,26 @@ export class ListingsService {
     console.warn(response);
     if (response.status) {
       this.uploadImages(response.message, list.photos);
+    }
+  }
+
+  async saveListing(list : Listing){
+    console.log(list);
+    if(list.listing_id){
+      console.log(list.listing_id + " exists, now saving");
+      const request: CreateListingRequest = {listing: list};
+      const response: CreateListingResponse = (await httpsCallable<
+        CreateListingRequest,
+        CreateListingResponse
+      >(this.functions, 'saveListing')(request)).data;
+
+      console.warn(response);
+      if (response.status) {
+        this.updateImages(list.listing_id, list.photos);
+      }
+    }
+    else{
+      await this.createListing(list);
     }
   }
   
@@ -97,7 +119,7 @@ export class ListingsService {
 
   async getApprovedListings(){
     const response = (await httpsCallable<
-      null,
+      undefined,
       GetApprovedListingsResponse
     >(
       this.functions, 
@@ -106,6 +128,22 @@ export class ListingsService {
 
     if(response.approvedListings.length > 0){
       return response.approvedListings;
+    }
+
+    return [];
+  }
+
+  async getUnapprovedListings(){
+    const response = (await httpsCallable<
+      undefined,
+      GetUnapprovedListingsResponse
+    >(
+      this.functions,
+      'getUnapprovedListings'
+    )()).data;
+  
+    if(response.unapprovedListings.length > 0){
+      return response.unapprovedListings;
     }
 
     return [];
@@ -125,7 +163,27 @@ export class ListingsService {
     return null;
   }
 
-  async changeStatus(listingId : string, admin : string, crimeScore: number, waterScore: number, sanitationScore: number, schoolScore: number){
+  async changeStatus(listingId : string, admin : string, status: StatusEnum, crimeScore?: number, waterScore?: number, sanitationScore?: number, schoolScore?: number){
+    let request : ChangeStatusRequest;
+    if(crimeScore && waterScore && sanitationScore && schoolScore){
+      request = {
+        listingId : listingId,
+        adminId : admin,
+        status: status,
+        crimeScore: crimeScore,
+        schoolScore: schoolScore,
+        waterScore: waterScore,
+        sanitationScore: sanitationScore
+      }
+    }
+    else{
+      request = {
+        listingId : listingId,
+        adminId : admin,
+        status: status,
+        reason: "git gud"
+      }
+    }
     const response: ChangeStatusResponse = (await httpsCallable<
       ChangeStatusRequest,
       ChangeStatusResponse
@@ -133,14 +191,8 @@ export class ListingsService {
       this.functions,
       'changeStatus'
     )(
-      {
-        listingId : listingId,
-        adminId : admin, 
-        crimeScore: crimeScore, 
-        schoolScore: schoolScore, 
-        waterScore: waterScore, 
-        sanitationScore: sanitationScore
-      })).data;
+        request
+      )).data;
 
     return response;
   }
@@ -168,7 +220,7 @@ export class ListingsService {
   async updateImages(listingId : string, images : string[]){
     const photoURLs : string[] = [];
     const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId);
-    deleteObject(storageRef);
+    console.log(storageRef.toString());
 
     for(let i = 0; i < images.length; i++){
       const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId + "/image" + i);

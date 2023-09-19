@@ -15,16 +15,20 @@
 
 
   <ion-content [fullscreen]="true">
+    <div id="loader">
+    <img src="assets/500.gif">
+  </div>
+  <div id="show">
     <div *ngIf="admin" id="approvalBox">
       <ion-grid>
         <ion-row>
           <ion-col id="approvalCol">
-            <ion-button class="approveBut" [attr.disabled]="this.list.approved ? '' : null"
-              (click)="changeStatus()">Approve</ion-button>
+            <ion-button class="approveBut"
+              (click)="changeStatus(true)">Approve</ion-button>
           </ion-col>
           <ion-col id="rejectionCol">
-            <ion-button [attr.disabled]="!this.list.approved ? '' : null" class="rejectBut"
-              (click)="changeStatus()">Reject</ion-button>
+            <ion-button class="rejectBut"
+              (click)="changeStatus(false)">Reject</ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -98,8 +102,8 @@
                 </ion-col>
               </ion-row>
             </ion-grid>
-            <ion-card-title id="greenbox-title" style="padding:10px">Developement Highlights</ion-card-title>
-            <ion-card-content style="padding:0;">
+            <ion-card-title id="greenbox-title" style="padding-top:4%; padding-left:5%;">Developement Highlights</ion-card-title>
+            <ion-card-content style="padding:0; padding-bottom:4%; padding-left: 3%;">
               <ion-grid style="z-index:1;">
                 <ion-row>
                   <ion-col>
@@ -241,10 +245,12 @@
                       <ion-content class="ion-padding">
                         <ion-grid>
                           <ion-row class="lister-row" style="margin-top:1%;">
-                            <ion-col>
+                            <ion-col size="4">
                               <ion-avatar>
-                                <img alt="profilePic" [src]="">
+                                <div style="border-radius: 50%; border: 1px solid black; width: 100%; height: 100%; background-image: url({{profilePic}}); background-size: cover; background-position-x: center; background-position-y: center;" id="profilePic2"></div>
                               </ion-avatar>
+                            </ion-col>
+                            <ion-col>
                               <p>{{lister_name}}</p>
                             </ion-col>
                           </ion-row>
@@ -327,6 +333,7 @@
       </ion-row>
       <properproperty-footer></properproperty-footer>
     </ion-grid>
+    </div>
   </ion-content>
 </ion-template>
 
@@ -347,16 +354,20 @@
 
 
   <ion-content [fullscreen]="true">
+    <div id="loader">
+      <img src="assets/500.gif">
+    </div>
+    <div id="show">
     <div *ngIf="admin" id="approvalBox">
       <ion-grid>
         <ion-col>
           <ion-col id="approvalCol">
-            <ion-button class="approveBut" [attr.disabled]="this.list.approved ? '' : null"
-              (click)="changeStatus()">Approve</ion-button>
+            <ion-button class="approveBut"
+              (click)="changeStatus(true)">Approve</ion-button>
           </ion-col>
           <ion-col id="rejectionCol">
-            <ion-button [attr.disabled]="!this.list.approved ? '' : null" class="rejectBut"
-              (click)="changeStatus()">Reject</ion-button>
+            <ion-button class="rejectBut"
+              (click)="changeStatus(false)">Reject</ion-button>
           </ion-col>
         </ion-col>
       </ion-grid>
@@ -434,7 +445,7 @@
               </ng-template>
               <ion-row style="margin-top: 10px;">
                 <ion-col>
-                  <div style="margin:15px;">
+                  <div style="margin-bottom:10px;">
                     <button style="color:#0DAE4F">Calculate</button> your monthly payments below!
                   </div>
                 </ion-col>
@@ -662,5 +673,6 @@
           </div>
       </ion-row>
     </ion-grid>
+    </div>
   </ion-content>
 </ion-template>

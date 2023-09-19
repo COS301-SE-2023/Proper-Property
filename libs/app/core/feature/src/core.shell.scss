@@ -1,7 +1,12 @@
 ion-content
 {
-  --background: rgb(240, 239, 239);
+  --background: rgb(255, 255, 255);
 }
+
+ion-card{
+  border: 2px solid black;
+}
+
 .link{
   --color: var( --ion-color-primary-contrast);
 }
@@ -21,3 +26,12 @@ ion-toolbar{
   align-items: center;
 }
 
+#notification-tray {
+  position: absolute;
+  top: 55px;
+  right: 0;
+  z-index: 1000;
+  height: 400px;
+  width: 300px;
+  background-color: #ffffff;
+}

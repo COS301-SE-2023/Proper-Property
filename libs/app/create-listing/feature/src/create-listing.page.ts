@@ -1,17 +1,14 @@
-import { Component, OnInit , ViewChild, ElementRef,HostListener} from '@angular/core';
+import { Component, OnInit , ViewChild, ElementRef,HostListener, isDevMode} from '@angular/core';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
-import { Listing } from '@properproperty/api/listings/util';
+import { Listing, StatusEnum } from '@properproperty/api/listings/util';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OpenAIService } from '@properproperty/app/open-ai/data-access';
-import { Select} from '@ngxs/store';
+import { Select, Store} from '@ngxs/store';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { User } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
-import { Store } from '@ngxs/store';
-import { isDevMode } from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-
 import { FormControl } from '@angular/forms';
 
 import { map, startWith } from 'rxjs/operators'
@@ -34,6 +31,7 @@ export class CreateListingPage implements OnInit {
 
   items: any[] = [];
   
+  @ViewChild('loader') scrollToElement: ElementRef | undefined;
   @ViewChild('address', { static: false }) addressInput!: ElementRef<HTMLInputElement>;
 
   @Select(AuthState.user) user$!: Observable<User | null>;
@@ -136,7 +134,7 @@ onResize(event: Event) {
   async ngOnInit() {
     this.listingType = "Sell";
     // this.currentUser = this.userService.getCurrentUser();
-    const inputElementId = 'address';
+    // const inputElementId = 'address';
 
     // this.gmapsService.setupSearchBox(inputElementId);
   }
@@ -343,8 +341,8 @@ handleAddressChange(address: string): void {
 
   selectedValue = true;
   listingAreaTypeSlider = true;
-  listingAreaType = "";
-  listingType = "";
+  listingAreaType = "Rural";
+  listingType = "Sell";
 
   changeListingType(){
     if(this.selectedValue){
@@ -364,11 +362,29 @@ handleAddressChange(address: string): void {
     }
   }
 
-  async addListing(){
+  async addListing(creationType : string){
+    const property=document.querySelector('.add-property') as HTMLElement;
+    const loader=document.querySelector('#loader') as HTMLElement;
+    property.style.opacity="0";
+    loader.style.opacity="1";
+    if (this.scrollToElement && this.scrollToElement.nativeElement) {
+      this.scrollToElement.nativeElement.scrollIntoView({ block: 'center' });
+    }
     this.address = (document.getElementById("address") as HTMLInputElement).value;
-    const score = await this.calculateQualityScore(this.photos,this.address,this.price,this.bedrooms,
-      this.bathrooms,this.parking,this.floor_size,this.erf_size,this.pos_type,this.env_type,
-      this.prop_type,this.furnish_type,this.orientation);
+    const score = await this.calculateQualityScore(
+      this.photos,
+      this.address,
+      this.price,
+      this.bedrooms,
+      this.bathrooms,
+      this.parking,
+      this.floor_size,
+      this.erf_size,
+      this.pos_type,
+      this.env_type,
+      this.prop_type,
+      this.furnish_type,
+      this.orientation);
   
     if(this.currentUser != null){
       const list : Listing = {
@@ -392,8 +408,9 @@ handleAddressChange(address: string): void {
         heading: this.heading,
         let_sell: this.listingType,
         listingAreaType: this.listingAreaType,
-        approved: false,
+        statusChanges: [],
         quality_rating: score,
+        status: creationType == "save" ? StatusEnum.SAVED : StatusEnum.PENDING_APPROVAL,
         listingDate: "" + new Date(),
         areaScore: {
           crimeScore: 0,
@@ -404,8 +421,21 @@ handleAddressChange(address: string): void {
       }
 
       console.log(list);
-      await this.listingService.createListing(list);
-    
+
+      if(creationType == "create"){
+        console.log("Creating listing")
+        await this.listingService.createListing(list);
+      }
+      else if(creationType == "save"){
+        console.log("Saving listing")
+        if(this.listingEditee)
+          list.listing_id = this.listingEditee.listing_id;
+
+        const response = await this.listingService.saveListing(list);
+        console.log(response);
+      }
+      loader.style.opacity="0";
+      property.style.opacity="1";
       this.router.navigate(['/home']);
     }
     else{
@@ -414,6 +444,13 @@ handleAddressChange(address: string): void {
   }
 
   async editListing(){
+    const property=document.querySelector('.add-property') as HTMLElement;
+    const loader=document.querySelector('#loader') as HTMLElement;
+    property.style.opacity="0";
+    loader.style.opacity="1";
+    if (this.scrollToElement && this.scrollToElement.nativeElement) {
+      this.scrollToElement.nativeElement.scrollIntoView({ block: 'center' });
+    }
     if(this.currentUser != null && this.listingEditee != null){
       const list : Listing = {
         listing_id: this.listingEditee.listing_id,
@@ -439,7 +476,7 @@ handleAddressChange(address: string): void {
         heading: this.heading,
         let_sell: this.listingType,
         listingAreaType: this.listingAreaType,
-        approved: false,
+        status: this.listingEditee.status === StatusEnum.SAVED ? StatusEnum.PENDING_APPROVAL : StatusEnum.EDITED,
         listingDate: "" + new Date(),
         areaScore: {
           crimeScore: 0,
@@ -450,6 +487,8 @@ handleAddressChange(address: string): void {
       }
 
       const resp = await this.listingService.editListing(list);
+      loader.style.opacity="0";
+      property.style.opacity="1";
       if(resp){
         this.router.navigate(['/listing', {list : this.listingEditee.listing_id}]);
       }
@@ -588,6 +627,7 @@ async calculateQualityScore(photos: string[],
   
   convertBlobUrlToNormalUrl(blobUrl: string): string {
     const img = new Image();
+    img.crossOrigin = "Anonymous";
     img.src = blobUrl;
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");

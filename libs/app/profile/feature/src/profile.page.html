@@ -3,43 +3,55 @@
 
     <ion-grid>
       <ion-row class="profilePic">
+        <ion-col size="2.5">
+        <ion-grid>
+          <ion-row class="ion-justify-content-center">
+            <div (click)="fileInput.click()" style="margin: 10px; border-radius: 50%; border: 1px solid black; width: 100px; height: 100px; background-image: url({{profilePic}}); background-size: cover; background-position-x: center; background-position-y: center;" id="profilePic2"></div>
+            <input type="file" accept="image/*" (change)="handleFileInput($event)" hidden #fileInput>
+          </ion-row>
+          <ion-row class="ion-justify-content-center">
+            <ion-button style="float: right;" size="small" expand="full" color="primary" (click)="saveProfilePic()">Save Profile</ion-button>
+          </ion-row>
+          <ion-row class="ion-justify-content-center">            
+            <h3>{{ user?.firstName }} {{ user?.lastName }}</h3>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
         <ion-col>
-          <ion-icon name="person-outline"></ion-icon>
-          <h1>{{ user?.firstName }} {{ user?.lastName }}</h1>
-      
-            <ion-grid class="Userlabels">
-              <ion-row class="row1">
-                  <ion-item>
-                    <ion-label position="stacked">Garden Lover</ion-label>
-                    <ion-range [(ngModel)]="interests.garden" ></ion-range>
-                  </ion-item>
-  
-                  <ion-item>
-                    <ion-label position="stacked">Mansion Passion</ion-label>
-                    <ion-range [(ngModel)]="interests.mansion" ></ion-range>
-                  </ion-item>  
 
-                  <ion-item>
-                    <ion-label position="stacked">Make it Accessible</ion-label>
-                    <ion-range [(ngModel)]="interests.accessible" ></ion-range>
-                  </ion-item>
-              </ion-row>
-              <ion-row class="row1">
+          <ion-grid class="Userlabels">
+            <ion-row class="row1">
                 <ion-item>
-                  <ion-label position="stacked">Open Concept Trend</ion-label>
-                  <ion-range [(ngModel)]="interests.openConcept"></ion-range>
-                </ion-item>
-                <ion-item>
-                  <ion-label position="stacked">Eco-Warrior</ion-label>
-                  <ion-range [(ngModel)]="interests.ecoWarrior"></ion-range>
+                  <ion-label position="stacked">Garden Lover</ion-label>
+                  <ion-range [(ngModel)]="interests.garden" ></ion-range>
                 </ion-item>
 
                 <ion-item>
-                  <ion-label position="stacked">Party Animal</ion-label>
-                  <ion-range [(ngModel)]="interests.ecoWarrior"></ion-range>
+                  <ion-label position="stacked">Mansion Passion</ion-label>
+                  <ion-range [(ngModel)]="interests.mansion" ></ion-range>
+                </ion-item>  
+
+                <ion-item>
+                  <ion-label position="stacked">Make it Accessible</ion-label>
+                  <ion-range [(ngModel)]="interests.accessible" ></ion-range>
                 </ion-item>
-              </ion-row>
-            </ion-grid>
+            </ion-row>
+            <ion-row class="row1">
+              <ion-item>
+                <ion-label position="stacked">Open Concept Trend</ion-label>
+                <ion-range [(ngModel)]="interests.openConcept"></ion-range>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">Eco-Warrior</ion-label>
+                <ion-range [(ngModel)]="interests.ecoWarrior"></ion-range>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="stacked">Party Animal</ion-label>
+                <ion-range [(ngModel)]="interests.ecoWarrior"></ion-range>
+              </ion-item>
+            </ion-row>
+          </ion-grid>
         </ion-col>
       </ion-row>
 
@@ -162,9 +174,15 @@
     <ion-grid>
       <ion-row class="profilePic">
         <ion-col>
-          <ion-icon name="person-outline"></ion-icon>
+          <ion-icon id="profileIcon" name="person-outline" (click)="fileInput.click()"></ion-icon>
+          <input type="file" accept="image/*" (change)="handleFileInput($event)" hidden #fileInput>
           <h1>{{ user?.firstName }} {{ user?.lastName }}</h1>
         </ion-col>
+      </ion-row>
+      <ion-row>
+        <ng-template *ngIf="saveProfile">
+          <ion-button expand="full" color="primary" (click)="saveProfilePic()">Save</ion-button>
+        </ng-template>
       </ion-row>
 
       <ion-col class="utils">
