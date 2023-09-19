@@ -334,19 +334,18 @@
           </ion-item>
 
           <ion-item>
-            <ion-label class="filter-text">Amenities</ion-label>
-            <select class="dropdown" multiple="true" [(ngModel)]="selectedAmenities" (ionChange)="filterProperties()">
-              <option value="petFriendly">Pet Friendly</option>
-              <option value="garden">Garden</option>
-              <option value="pool">Pool</option>
-              <option value="flatlet">Flatlet</option>
-              <option value="other">Other</option>
-              <option value="retirement">Retirement</option>
-              <option value="repossession">Repossession</option>
-              <option value="onShow">On Show</option>
-              <option value="securityEstate">Security Estate / Cluster</option>
-              <option value="auction">Auction</option>
-            </select>
+            <div  class="filterCheckboxes">
+              <ion-label class="filter-text">Amenities: </ion-label>
+
+              <label *ngFor="let amenity of amenities" class="checkbox-label">
+                <input
+                  type="checkbox"
+                  [checked]="isSelected(amenity.value)"
+                  (change)="toggleSelection(amenity.value)"
+                />
+                {{ amenity.label }}
+              </label>
+            </div>
           </ion-item>
 
         </div>
