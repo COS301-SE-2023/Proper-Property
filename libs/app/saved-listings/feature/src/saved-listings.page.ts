@@ -24,8 +24,6 @@ export class SavedListingsPage implements OnInit {
   isMobile = false;
 
   public savedListings : Listing[] = [];
-  public savedListingsB : Listing[] = [];
-  public savedListingsR : Listing[] = [];
 
   constructor(
     private profileServices : UserProfileService,
@@ -42,15 +40,6 @@ export class SavedListingsPage implements OnInit {
             this.listingServices.getListing(listing).then((listing) => {
               if(listing){
                 this.savedListings.push(listing);
-
-                if(listing.let_sell=="Sell")
-                {
-                  this.savedListingsB.push(listing);
-                }
-                else
-                {
-                  this.savedListingsR.push(listing);
-                }
               }
             });
           }
@@ -126,26 +115,6 @@ export class SavedListingsPage implements OnInit {
       }
     } 
   } 
-
-  Change()
-  {
-    const tog1 = document.getElementById("first") as HTMLInputElement;
-    const tog2 = document.getElementById("second") as HTMLInputElement;
-
-    if(tog1.style.display=='block')
-    {
-      
-      tog1.style.display= 'none';
-      tog2.style.display = 'block';
-
-    }
-    else
-    {
-      tog1.style.display= 'block';
-      tog2.style.display = 'none';
-    }
-
-  }
 }
 function isMobile(): boolean {
   return window.innerWidth <= 576;
