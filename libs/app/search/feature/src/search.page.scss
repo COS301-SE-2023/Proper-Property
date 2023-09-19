@@ -51,6 +51,15 @@
     padding: 10px;
   }
   
+  .filterCheckboxes {
+    display: flex;
+  }
+  
+  .checkbox-label {
+    margin-right: 20px; /* Adjust spacing as needed */
+  }
+  
+
   #address {
     border-radius: 30px;
     border: 1.5px solid #000;
@@ -66,7 +75,7 @@
   }
   
   .dropdown {
-    color: rgb(68, 68, 68);
+    color: #000;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -629,8 +638,5 @@ ion-card {
     color: #644bff;
     cursor: pointer;
   }
-  
-  
-  
 }
 

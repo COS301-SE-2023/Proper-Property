@@ -621,7 +621,7 @@ toggleColor() {
     // });
       
     this.listings[i].price = this.listings[i].price.replace(/,/g, '');
-    
+  
     // Format the price with commas
     this.listings[i].price = this.listings[i].price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   
@@ -772,6 +772,41 @@ filterProperties(): void {
   }
 }
 
+selectedSortOption = 'default';
+
+sortListings() {
+
+  for(let k = 0; k<this.listings.length; k++) {
+      
+    this.listings[k].price = this.listings[k].price.replace(/,/g, '');
+    
+  }
+
+
+  switch (this.selectedSortOption) {
+      case 'priceLowToHigh':
+          this.listings.sort((a, b) => Number(a.price) - Number(b.price));
+          break;
+      case 'priceHighToLow':
+          this.listings.sort((a, b) => Number(b.price) - Number(a.price));
+          break;
+      case 'propertyType':
+          this.listings.sort((a, b) => a.prop_type.localeCompare(b.prop_type));
+          break;
+      case 'size':
+          this.listings.sort((a, b) => Number(a.floor_size) - Number(b.floor_size));
+          break;
+      default:
+          // Default sort logic here, if any
+          break;
+  }
+
+    // Format the price with commas
+    for(let k = 0; k<this.listings.length; k++) {
+      this.listings[k].price = this.listings[k].price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+}
+
 changeTab(): void {
   // Reset the selected filters and search query when changing tabs
   this.selectedPropertyType = '';
@@ -865,6 +900,8 @@ unsaveListing($event : any, listing_id : string){
         this.profileServices.updateUserProfile(this.userProfile);
     }
   } 
+
+  
 }
 
 
