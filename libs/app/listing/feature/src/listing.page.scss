@@ -342,7 +342,7 @@ ion-item {
 }
 
 .house-titles {
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 400;
   margin-bottom: 5px;
   z-index: 2;
@@ -471,4 +471,77 @@ ion-item {
   }
 
   
+}
+
+
+.statusBadge
+{
+  width: 85%;
+  height: 14%;
+  padding-top: 1%;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.ON
+{
+  color: rgba(13, 174, 80, 0.7);
+  background: rgba(13, 174, 79, 0.192);
+  border-left: 2px solid rgba(13, 174, 79, 0.5);
+}
+
+.SOLD
+{
+  color: rgba(13, 174, 80, 0.7);
+  background: rgba(13, 174, 79, 0.192);
+  border-left: 2px solid rgba(13, 174, 79, 0.5);
+}
+
+.RENTED
+{
+  color: rgba(13, 174, 80, 0.7);
+  background: rgba(13, 174, 79, 0.192);
+  border-left: 2px solid rgba(13, 174, 79, 0.5);
+}
+
+.SAVED
+{
+  color: rgba(126, 126, 126, 0.9);
+  background: rgba(126, 126, 126, 0.192);
+  border-left: 2px solid rgba(126, 126, 126, 0.5);
+}
+
+.OFF
+{
+  color: rgba(126, 126, 126, 0.9);
+  background: rgba(126, 126, 126, 0.192);
+  border-left: 2px solid rgba(126, 126, 126, 0.5);
+}
+
+.PENDING
+{
+  color: rgba(255, 164, 0, 0.7);
+  background: rgba(255, 164, 0, 0.192);
+  border-left: 2px solid rgba(255, 164, 0, 0.5);
+}
+
+.EDITED
+{
+  color: rgba(230, 230, 15, 0.7);
+  background: rgba(230, 230, 15, 0.192);
+  border-left: 2px solid rgba(230, 230, 15, 0.5);
+}
+
+.DELETED
+{
+  color: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.377);
+  border-left: 2px solid rgba(0, 0, 0, 0.6);
+}
+
+.DENIED
+{
+  color: rgba(255, 0, 0, 0.7);
+  background: rgba(255, 0, 0, 0.192);
+  border-left: 2px solid rgba(255, 0, 0, 0.5);
 }

@@ -58,7 +58,7 @@
           <ion-card class="half-green-container">
             <ion-grid style="padding-top: 20px; padding-left:20px;">
               <ion-row>
-                <ion-card-title class="house-titles">House</ion-card-title>
+                <ion-card-title class="house-titles statusBadge {{list.status}}">{{list.status}}</ion-card-title>
                 <ion-button class="save-button" (click)="saveListing()" [ngClass]="{'red': isRed}"
                   (click)="toggleColor()" ion-tooltip="Save Listing">
                   <ion-icon name="save" ion-tooltip="Save Listing"></ion-icon>
