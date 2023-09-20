@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-import { FieldValue } from 'firebase-admin/firestore';
+import { DocumentSnapshot, FieldValue } from 'firebase-admin/firestore';
 import { Injectable } from '@nestjs/common';
 import { GetListingsRequest,
   Listing,
@@ -200,63 +200,79 @@ export class ListingsRepository {
       let query = admin
         .firestore()
         .collection('listings')
-        .orderBy('quality_rating');
+        .withConverter<Listing>({
+          fromFirestore: (snapshot) => snapshot.data() as Listing,
+          toFirestore: (listing: Listing) => listing
+        })
+        .where('status', '==', StatusEnum.ON_MARKET)
+        .orderBy('quality_rating')
+        query.limit(12);
 
-      if(req.property_size_max){
-        query = query = query.where("floor_size", "<=", req.property_size_max);
-      }
-
-      if(req.property_size_min){
-        query = query.where("floor_size", ">=", req.property_size_min);
-      }
-      
-      if(req.prop_type){
-        query = query.where("prop_type", "==", req.prop_type);
-      }
-
-      if(req.bath){query = 
-        query = query.where("bath", ">=", req.bath);
-      }
-
-      if(req.bed){
-        query = query.where("bed", ">=", req.bed);
-      }
-
-      if(req.parking){
-        query = query.where("parking", ">=", req.parking);
-      }
-
-      if(req.features){
-        query = query.where("features", "in", req.features);
-      }
-
-      if(req.price_min){
-        query = query.where("price", ">=", req.price_min);
-      }
-
-      if(req.price_max){
-        query = query.where("price", "<=", req.price_max);
-      }
-
-      query = query.where("status", "==", StatusEnum.ON_MARKET);
       
       if (req.lastListingId) {
         const lastListingDoc = (await admin
           .firestore()
           .collection('listings')
           .doc(req.lastListingId)
-          .get()).data() as Listing;
-
-        query = query.startAfter(lastListingDoc);
+          .get());
+        if (lastListingDoc.exists) {
+          query = query.startAfter(lastListingDoc);
+        }
       }
-      query = query.limit(12);
-      const listings : Listing[] = [];
-      (await query.get()).docs.forEach((doc) => {
-        doc.data() as Listing;
-        listings.push(doc.data() as Listing);
-      })
 
-      return {status: true, listings: listings}
+      if(req.prop_type){
+        query = query.where("prop_type", "==", req.prop_type);
+      }
+
+      if(req.features){
+        query = query.where("features", "array-contains-any", req.features);
+      }
+
+      const response: GetFilteredListingsResponse = {
+        status: true,
+        listings: []
+      }
+
+      let loopLimit = 0;
+      let lastListing: Listing | undefined = undefined;
+      let lastQualityRating = 0;
+      let lastSnapshot: DocumentSnapshot | undefined = undefined 
+      while (response.listings.length < 12 && loopLimit < 25) {
+        const queryData = await query.get();
+        ++loopLimit;
+        // queryData.forEach((docSnapshot) => {
+        for(let docSnapshot of queryData.docs){
+          const data = docSnapshot.data();
+          if ( //double eww
+              (!req.bath || (req.bath && data.bath >= req.bath))
+            && (!req.bed || (req.bed && data.bed >= req.bed))
+            && (!req.parking || (req.parking && data.parking >= req.parking))
+            && (
+              (!req.price_min || (req.price_min && data.price >= req.price_min) )
+              && (!req.price_max || (req.price_max && data.price <= req.price_max)
+            )
+            && (
+              (!req.property_size_min || (req.property_size_min && data.property_size >= req.property_size_min ) )
+              && (!req.property_size_max || (req.property_size_max && data.property_size <= req.property_size_max ))
+            ))
+          ){
+            for (let listing of response.listings) {
+              if (listing.listing_id == data.listing_id) {
+                console.log("what");
+              }
+            }
+            response.listings.push(data);
+          }
+
+          lastSnapshot = docSnapshot;
+        }
+        if (lastSnapshot)
+          query = query.startAfter(lastSnapshot);
+        else
+          console.log("Why the fuck can't this shit await");
+      }
+    
+      return response;
     }
     catch(e : any){
       return {status: false, listings: [], error: e.message}

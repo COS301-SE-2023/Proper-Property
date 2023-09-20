@@ -38,7 +38,7 @@
                   <ion-col size="6">
                     <ion-item class="filter">
                       <ion-label class="filter-text">Property Type</ion-label>
-                      <select class="dropdown" [(ngModel)]="prop_type" (ionChange)="filterProperties()">
+                      <select class="dropdown" [(ngModel)]="prop_type">
                         <option value="House">House</option>
                         <option value="Apartment">Apartment</option>
                         <option value="Commercial">Commercial Property</option>
@@ -48,7 +48,7 @@
                   <ion-col size="6">
                   <ion-item class="filter">
                     <ion-label class="filter-text">Number of Bedrooms</ion-label>
-                    <select class="dropdown" [(ngModel)]="bed" (ionChange)="filterProperties()">
+                    <select class="dropdown" [(ngModel)]="bed">
                       <option value="1">1 Bedroom</option>
                       <option value="2">2 Bedrooms</option>
                       <option value="3">3 Bedrooms</option>
@@ -59,17 +59,23 @@
                 </ion-row>
                 
                 <ion-col>
+                  <ion-item class="filter">
+                    <ion-label class="filter-text">Price of Listing</ion-label>
                     <div class="inputPrice">
                       <div class="field" style="padding-left: 1.5%">
                         <span>Min</span>
-                        <input type="number" value="0" [(ngModel)]="price_min" style="width: 90%" (ionChange)="filterProperties()">
+                        <input type="number" value="250000" [(ngModel)]="property_price_values.lower" style="width: 90%">
                       </div>
-                      <div class="dash">-</div>
+                      <div class="sliderDiv">
+                        <ion-range [dualKnobs]="true" [(ngModel)]="property_price_values" (ionChange)="onPriceKnobMoveStart()" id="priceSlider" min="0" max="99999999"></ion-range>
+                      </div>
+                      <!-- <div class="dash">-</div> -->
                       <div class="field">
                         <span>Max</span>
-                        <input type="number" [(ngModel)]="price_max" value="4500000" style="width: 90%" (ionChange)="filterProperties()">
+                        <input type="number" [(ngModel)]="property_price_values.upper" value="1500000" style="width: 90%">
                       </div>
                     </div>
+                  </ion-item>
                 </ion-col>
               </ion-grid>
             </div>
@@ -125,6 +131,32 @@
                 <ion-select-option value="Flatlet">Flatlet</ion-select-option>
                 <ion-select-option value="Other">Other</ion-select-option>
               </ion-select>
+            </ion-item>
+
+            <ion-item class="filter">
+              <ion-label class="filter-text">Community Environment</ion-label>
+              <select class="dropdown" [(ngModel)]="env_type" (ionChange)="filterProperties()">
+                <option value="Standalone House">Standalone House</option>
+                <option value="Complex">Complex</option>
+                <option value="Gated Community">Gated Community</option>
+              </select>
+            </ion-item>
+
+            <ion-item class="filter">
+              <ion-label style="width: 100%" class="filter-text">Property Size</ion-label>
+              <div class="inputPrice">
+                <div class="field" style="padding-left: 1.5%">
+                  <span>Minimum</span>
+                  <input type="number" value="250000" [(ngModel)]="property_size_values.lower" style="width: 90%">
+                </div>
+                <div class="sliderDiv">
+                  <ion-range [dualKnobs]="true" [(ngModel)]="property_size_values" (ionChange)="onPropSizeKnobMoveStart()" id="propSizeSlider" min="0" max="99999999"></ion-range>
+                </div>
+                <div class="field">
+                  <span>Maximum</span>
+                  <input type="number" [(ngModel)]="property_size_values.upper" value="1500000" style="width: 90%">
+                </div>
+              </div>
             </ion-item>
           </div>
         </ion-col>
@@ -306,7 +338,7 @@
           <div id="filter-container">
             <ion-item class="filter">
               <ion-label class="filter-text">Property Type</ion-label>
-              <select class="dropdown" [(ngModel)]="prop_type" (ionChange)="filterProperties()">
+              <select class="dropdown" [(ngModel)]="prop_type">
                 <option value="House">House</option>
                 <option value="Apartment">Apartment</option>
                 <option value="Commercial">Commercial Property</option>
@@ -315,7 +347,7 @@
 
             <ion-item class="filter">
               <label class="filter-text" for="minPrice">Min Price</label>
-              <select class="dropdown" [(ngModel)]="price_min" (ionChange)="filterProperties()">
+              <select class="dropdown" [(ngModel)]="price_min">
                 <option value="0">R 0</option>
                 <option value="100000">R 100,000</option>
                 <option value="150000">R 150,000</option>
@@ -330,7 +362,7 @@
 
             <ion-item class="filter">
               <label class="filter-text" for="maxPrice">Max Price</label>
-              <select class="dropdown" [(ngModel)]="price_max" (ionChange)="filterProperties()">
+              <select class="dropdown" [(ngModel)]="price_max">
                 <option value="0">R 0</option>
                 <option value="100000">R 100,000</option>
                 <option value="150000">R 150,000</option>
@@ -344,7 +376,7 @@
 
             <ion-item class="filter">
               <ion-label class="filter-text">Number of Bedrooms</ion-label>
-              <select class="dropdown" [(ngModel)]="bed" (ionChange)="filterProperties()">
+              <select class="dropdown" [(ngModel)]="bed">
                 <option value="1">1 Bedroom</option>
                 <option value="2">2 Bedrooms</option>
                 <option value="3">3 Bedrooms</option>
@@ -370,7 +402,7 @@
         <div *ngIf="showAdditionalFilters" id="additional-features">
           <ion-item>
             <ion-label class="filter-text">Bathrooms</ion-label>
-            <select class="dropdown" [(ngModel)]="bath" (ionChange)="filterProperties()">
+            <select class="dropdown" [(ngModel)]="bath">
               <option value="1">1 Bathroom</option>
               <option value="2">2 Bathrooms</option>
               <option value="3">3 Bathrooms</option>
@@ -381,7 +413,7 @@
 
           <ion-item>
             <ion-label class="filter-text">Parking / Garage</ion-label>
-            <select class="dropdown" [(ngModel)]="parking" (ionChange)="filterProperties()">
+            <select class="dropdown" [(ngModel)]="parking">
               <option value="1">1 Garage</option>
               <option value="2">2 Garages</option>
               <option value="3">3 Garages</option>
@@ -392,7 +424,7 @@
 
           <ion-item>
             <ion-label class="filter-text">Amenities</ion-label>
-            <select class="dropdown" multiple="true" [(ngModel)]="features" (ionChange)="filterProperties()">
+            <select class="dropdown" multiple="true" [(ngModel)]="features">
               <option value="petFriendly">Pet Friendly</option>
               <option value="garden">Garden</option>
               <option value="pool">Pool</option>
@@ -428,7 +460,7 @@
         <img src="{{listing.photos[0]}}" alt="house1">
       </ion-card-header>
         <ion-card-content>
-          <ion-card-title>House</ion-card-title>
+          <ion-card-title>{{listing.prop_type}}</ion-card-title>
           <ion-card-subtitle style="color: #94d2ae;">R {{listing.price}}</ion-card-subtitle>
           
           <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">

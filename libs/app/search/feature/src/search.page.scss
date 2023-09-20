@@ -1,3 +1,4 @@
+
 .Desktop {
   .filter {
     border-radius: 10px;
@@ -75,7 +76,9 @@
     width: 50%;
     height: 70%;
     margin-right: 10%;
-    // color: white;
+    // background-color: rgba(48, 207, 114, 0.4);
+    --ion-background-color: transparent;
+    color: rgba(48, 207, 114, 0.4);
     border: none;
     --border-radius: 30px;
     cursor: pointer;
@@ -442,7 +445,7 @@
     // position: absolute;
     overflow: auto;
     // top: 13%;
-    height: 50vw;
+    height: 40vw;
   }
   
   .lists2
@@ -593,7 +596,11 @@
     transition: width 0.3s ease-in-out;
   }
   
-
+  .sliderDiv{
+    width: 300px; 
+    margin-left: 1.5%; 
+    margin-right: 5%;
+  }
 }
   
 

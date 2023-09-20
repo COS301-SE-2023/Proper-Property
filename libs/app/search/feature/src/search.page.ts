@@ -11,7 +11,7 @@ import {
   ViewChildren, 
   QueryList ,
 } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, RangeCustomEvent } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
 import { GetFilteredListingsRequest, Listing } from '@properproperty/api/listings/util';
@@ -66,7 +66,8 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   public parking : number | null = null;
   public features: string[] = [];
   public areaScore : number | null = null;
-
+  public property_size_values: {lower: number, upper: number} = {lower: 0, upper: 99999999};
+  public property_price_values: {lower: number, upper: number} = {lower: 0, upper: 99999999};
   private profile: UserProfile | null = null;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
@@ -77,7 +78,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     if(coordinates){
       this.center = coordinates;
     }
-    else if (this.searchQuery == '') {
+    else if (this.searchQuery == '' && this.listings.length > 0) {
       const geoSum = {
         lat: 0,
         lng: 0
@@ -88,9 +89,10 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       }
       geoSum.lat = geoSum.lat/this.listings.length;
       geoSum.lng = geoSum.lng/this.listings.length;
+
       this.center = geoSum;
     }
-    else {
+    else if (this.searchQuery != '') {
       const coord = await this.gmapsService.geocodeAddress(this.searchQuery);
       if (coord) {
         this.center.lat = coord.geometry.location.lat();
@@ -98,8 +100,9 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
         this.center.lng = coord.geometry.location.lng();
       }
     }
+    
     if (this.map) {
-      this.map.setCenter(new this.googleMaps.LatLng(this.center.lat, this.center.lng));
+      this.map.setCenter(new this.googleMaps.LatLng(this.center.lat ?? -25.7477, this.center.lng ?? 28.2433));
     }
     
     // await this.loadMap();
@@ -221,7 +224,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   }
 async loadMap() {
   try {
-  
+  console.log(this.center);
     //const addressInput = document.getElementById("address") as HTMLInputElement;
    
     const mapElementRef1 = document.getElementById("map1") as HTMLElement;
@@ -233,8 +236,7 @@ async loadMap() {
     
     if(!this.isMobile) mapEl = this.mapElementRef.nativeElement;
     else if(this.isMobile && this.MapView) mapEl = mapElementRef1;
-    
-      const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
+      const location = new googleMaps.LatLng(this.center.lat ?? -25.7477, this.center.lng ?? 28.2433);
       this.map = new googleMaps.Map(mapEl, {
         center: location,
         zoom: 15,
@@ -398,7 +400,6 @@ async loadMap() {
 
   async searchProperties() {
     // this.listings = await this.listingServices.getApprovedListings();
-    
 
     if(this.isMobile)this.searchQuery = (document.getElementById("address1") as HTMLInputElement).value;
     else this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
@@ -410,15 +411,16 @@ async loadMap() {
       bed : this.bed ? this.bed : null,
       parking : this.parking ? this.parking : null,
       features : this.features.length > 0 ? this.features : null,
-      property_size_min : this.prop_size_min ? this.prop_size_min : null,
-      property_size_max : this.prop_size_max ? this.prop_size_max : null,
-      price_min : this.price_min ? this.price_min : null,
-      price_max : this.price_max ? this.price_max : null,
+      property_size_min : this.property_size_values.lower ? this.property_size_values.lower : null,
+      property_size_max : this.property_size_values.upper ? this.property_size_values.upper : null,
+      price_min : this.property_price_values.lower ? this.property_price_values.lower : null,
+      price_max : this.property_price_values.upper ? this.property_price_values.upper : null,
       areaScore : this.areaScore? this.areaScore : null
     } as GetFilteredListingsRequest
-
+    console.log(request);
     const response = (await this.listingServices.getFilteredListings(request));
-
+    console.log(response);
+    this.allListings = [];
     if(response.status){
       this.allListings = response.listings;
 
@@ -680,7 +682,23 @@ dropDown(){
     this.setCentre(listing.geometry);
   }
 
+  onPriceKnobMoveStart(){
+    const priceSlider = document.getElementById("priceSlider") as any;
+    if(priceSlider){
+      this.price_min = parseInt(priceSlider.value.lower);
+      this.price_max = parseInt(priceSlider.value.upper);
+    }
+  }
+
+  onPropSizeKnobMoveStart(){
+    const propSizeSlider = document.getElementById("propSizeSlider") as any;
+    if(propSizeSlider){
+      this.prop_size_min = parseInt(propSizeSlider.value.lower);
+      this.prop_size_max = parseInt(propSizeSlider.value.upper);
+    }
+  }
 }
+
 
 function isMobile(): boolean {
   return window.innerWidth <= 576;
