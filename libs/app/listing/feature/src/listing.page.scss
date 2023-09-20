@@ -152,6 +152,8 @@ swiper-slide img {
   text-align: center;
 }
 
+
+
 #approvalCol {
   // outline: 1px solid red;
   text-align: center;
@@ -208,6 +210,8 @@ swiper-slide img {
   margin: 0 auto;
   height: 250px;
   left: 1%;
+  -ms-overflow-style: none; 
+  scrollbar-width: none;
 }
 
 .quarter-container-loc-info {
@@ -218,6 +222,10 @@ swiper-slide img {
   margin: 0 auto;
   height: 280px;
   left: 1%;
+}
+
+.quarter-container::-webkit-scrollbar{
+  display: none;
 }
 
 .half-green-container {

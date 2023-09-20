@@ -51,7 +51,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   public listings: Listing[] = [];
   public allListings: Listing[] = [];
   
-  public activeTab = 'buying';
+  public activeTab = 'all';
   public searchQuery = '';
   public env_type : string | null = null;
   public prop_type : string | null = null;
@@ -200,6 +200,21 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     if (this.searchQuery!='') {
       addressInput.value = this.searchQuery;
     }
+
+    Array.from(document.getElementsByClassName("progress"))
+    .forEach((bar) => {
+      if(bar){
+        if (parseFloat((bar as HTMLElement).style.width) < 25) {
+          document.getElementById("schoolProgress")?.setAttribute("class", "errorProgressBar");
+        }
+        else if (parseFloat((bar as HTMLElement).style.width) < 60) {
+          document.getElementById("schoolProgress")?.setAttribute("class", "warningProgressBar");
+        }
+      }
+      else{
+        console.log("Bar does not exist");
+      }
+    })
   }
 async loadMap() {
   try {

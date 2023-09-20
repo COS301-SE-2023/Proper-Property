@@ -139,7 +139,7 @@
     <section id="listings-and-map" class="upper">
       <ion-grid>
         <ion-row>
-          <ion-col size="6">
+          <ion-col style="overflow-y: scoll" size="6">
             <div class="lists" id="lists">
               <ion-card *ngFor="let listing of listings" >
                 <ng-container *ngIf="status; else scoreView">
@@ -204,13 +204,23 @@
                         <ion-col>
                           <div class="white-text">Water</div>
                             <div class="slider">
-                              <div id="waterProgress" class="progress" [style.width]="listing.areaScore.waterScore"></div>
+                              <div 
+                                [class.progress]="listing.areaScore.waterScore >= 60" 
+                                [class.errorProgressBar]="listing.areaScore.waterScore < 25" 
+                                [class.warningProgressBar]="listing.areaScore.waterScore < 60 && listing.areaScore.waterScore >= 25" 
+                                [style.width]="listing.areaScore.waterScore+'%'"
+                              ></div>
                             </div>
                         </ion-col>
                         <ion-col>
                         <div class="white-text">Sanitation</div>
                         <div class="slider">
-                          <div id="sanitationProgress" class="progress" [style.width]="listing.areaScore.sanitationScore"></div>
+                          <div 
+                            [class.progress]="listing.areaScore.sanitationScore >= 60" 
+                            [class.errorProgressBar]="listing.areaScore.sanitationScore < 25" 
+                            [class.warningProgressBar]="listing.areaScore.sanitationScore < 60 && listing.areaScore.sanitationScore >= 25" 
+                            [style.width]="listing.areaScore.sanitationScore+'%'"
+                          ></div>
                         </div>
                         </ion-col>
                       </ion-row>
@@ -219,13 +229,23 @@
                         <ion-col>
                         <div class="white-text">Crime</div>
                         <div class="slider">
-                          <div id="crimeProgress" class="progress" [style.width]="listing.areaScore.crimeScore"></div>
+                          <div 
+                            [class.progress]="listing.areaScore.crimeScore >= 60" 
+                            [class.errorProgressBar]="listing.areaScore.crimeScore < 25" 
+                            [class.warningProgressBar]="listing.areaScore.crimeScore < 60 && listing.areaScore.crimeScore >= 25" 
+                            [style.width]="listing.areaScore.crimeScore+'%'"
+                          ></div>
                         </div>
                         </ion-col>
                         <ion-col>
                         <div class="white-text">School Quality</div>
                         <div class="slider">
-                          <div id="schoolProgress" class="progress" [style.width]="listing.areaScore.schoolScore"></div>
+                          <div 
+                            [class.progress]="listing.areaScore.schoolScore >= 60"  
+                            [class.errorProgressBar]="listing.areaScore.schoolScore < 25"  
+                            [class.warningProgressBar]="listing.areaScore.schoolScore < 60 && listing.areaScore.schoolScore >= 25" 
+                            [style.width]="listing.areaScore.schoolScore+'%'"
+                          ></div>
                         </div>                  
                         </ion-col>
                       </ion-row>

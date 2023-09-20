@@ -8,18 +8,19 @@
   box-shadow: none;
 }
 
-#contactUs {
+#formButtons {
   display: flex;
-  width: 274px;
-  height: 66px;
-  padding: 5px 26px;
+  width: 250px;
+  height: 85%;
+  padding-right: 5px 26px;
   justify-content: center;
   align-items: center;
-  gap: 10px;
   flex-shrink: 0;
   border-radius: 5px;
   background: #FFF;
-  margin-left: 2%;
-  position: absolute;
-  bottom: 40%;
+}
+
+.guideColumn{
+  display: flex;
+  justify-content: center;
 }
