@@ -35,6 +35,12 @@ const routes: Routes = [
     path: 'copyright',
     loadChildren: () => import('@properproperty/app/copyright/feature').then( m => m.CopyrightPageModule)
   },
+
+  {
+    path: 'terms-of-use',
+    loadChildren: () => import('@properproperty/app/terms-of-use/feature').then( m => m.TermsOfUsePageModule)
+  },
+
   {
     path: 'version',
     loadChildren: () => import('@properproperty/app/version/feature').then( m => m.VersionPageModule)
