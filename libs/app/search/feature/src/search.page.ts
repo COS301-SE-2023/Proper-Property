@@ -399,7 +399,7 @@ addMarker(position: any, listing: Listing) {
 
 createListingCard(listing: Listing): string {
   return `
-    <ion-card style="max-width: 250px; max-height: 300px;">
+    <ion-card style="max-width: 250px; max-height: 300px;" (click)="navigateToPropertyListingPage(${listing})>
       <ion-card-header style="padding: 0;">
         <img src="${listing.photos[0]}" alt="Listing Image" style="max-width: 100%; max-height: 80px;">
       </ion-card-header>
