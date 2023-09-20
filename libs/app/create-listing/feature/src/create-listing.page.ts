@@ -363,6 +363,13 @@ handleAddressChange(address: string): void {
   }
 
   async addListing(creationType : string){
+    this.checkGeocodableAddress(this.address).then(async (geoCode) => {
+      if (geoCode == null) {     
+        return;
+      }
+    });
+    
+
     const property=document.querySelector('.add-property') as HTMLElement;
     const loader=document.querySelector('#loader') as HTMLElement;
     property.style.opacity="0";
@@ -386,6 +393,8 @@ handleAddressChange(address: string): void {
       this.furnish_type,
       this.orientation);
   
+
+
     if(this.currentUser != null){
       const list : Listing = {
         user_id: this.currentUser.uid,
@@ -593,11 +602,11 @@ async calculateQualityScore(photos: string[],
     } else score-=15;
   
   
-    const geoCode = await this.checkGeocodableAddress(address);
+    // const geoCode = await this.checkGeocodableAddress(address);
   
-    if (geoCode == null) {
-      return 0;
-    }
+    // if (geoCode == null) {
+    //   return 0;
+    // }
   
     return score;
   }
@@ -658,6 +667,14 @@ async calculateQualityScore(photos: string[],
     } 
     catch (error) {
       console.error(error);
+
+      const alert = document.createElement('ion-alert');
+      alert.header = 'Error';
+      alert.message = 'Please enter a valid address';
+      alert.buttons = ['OK'];
+  
+      document.body.appendChild(alert);
+      await alert.present(); // Display the alert
       return null;
     }
   }
