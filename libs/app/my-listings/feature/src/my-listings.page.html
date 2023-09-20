@@ -28,7 +28,7 @@
               <img src="{{listing.photos[0]}}" alt="house1">
               <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
             </ion-card-header>
-
+            <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
             <ion-card-content (click)="redirectToPage(listing)">
             
               <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
