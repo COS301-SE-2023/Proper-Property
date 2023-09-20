@@ -81,6 +81,7 @@ export class GmapsService {
   }
 
   geocodeAddress(address: string): Promise<google.maps.GeocoderResult | null> {
+    console.warn("Geocodeing address: ", address);
     return this.getGeocoder().then((geocoder) => {
       return new Promise<google.maps.GeocoderResult | null>((resolve, reject) => {
         geocoder.geocode({ address: address }, (results, status) => {
@@ -368,7 +369,7 @@ export class GmapsService {
           if (status === maps.places.PlacesServiceStatus.OK) {
             resolve(results);
           } else {
-            reject('Failed to retrieve nearby schools');
+            reject('Failed to retrieve nearby schools. Places Search responded with status: ' + status);
           }
         });
       });

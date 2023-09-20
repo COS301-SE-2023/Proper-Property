@@ -3,9 +3,12 @@ import * as admin from 'firebase-admin';
 import { Injectable } from '@nestjs/common';
 import { Listing, StatusChangedEvent } from '@properproperty/api/listings/util';
 import { DocumentData, DocumentSnapshot, FieldValue, QueryDocumentSnapshot } from 'firebase-admin/firestore';
-import { Client, PlaceData, PlacesNearbyResponse, PlacesNearbyRequest, GeocodeRequest, RequestParams } from '@googlemaps/google-maps-services-js';
+import { Client, PlaceData, PlacesNearbyResponse, PlacesNearbyRequest, GeocodeRequest, RequestParams, Place } from '@googlemaps/google-maps-services-js';
 import { GetNearbyPlacesResponse, StoredPlaces } from '@properproperty/api/google-maps/util';
 import { ListingsRepository } from '@properproperty/api/listings/data-access'
+import * as path from 'path';
+// import * as fs from 'fs';
+const fs = require('fs');
 // google.maps.places.PlaceResult
 // scuffed
 function sleep(ms: number) {
@@ -34,8 +37,10 @@ export class GoogleMapsRepository {
       console.log("Hablo no listing por favor")
       throw new Error("Hablo no listing por favor");
     }
-    const pointIDs = docData.pointsOfInterestIds;
-
+    const pointIDs = docData.pointsOfInterestIds ?? [];
+    if (pointIDs.length == 0) {
+      return { response: []};
+    }
     let snapshot = await admin
       .firestore()
       .collection('pointsOfInterest')
@@ -131,6 +136,7 @@ export class GoogleMapsRepository {
   }
 
   async addPOIs(event : StatusChangedEvent){
+    const debugFileLocation = path.join(__dirname, '..', '..', '..', 'debug-files', 'google-maps-repository-addPOIs.json');
     const updates:{
       geometry?: {
         lat: number,
@@ -143,7 +149,6 @@ export class GoogleMapsRepository {
     console.log(GoogleMapsRepository.name, "::addPOIs 1");
     let geocode = undefined;
     this.docData = (await this.listingRepo.getListing(event.listingId)).listings[0];
-    
     if (!this.docData) {
       console.log("Listing doc not found");
       return {status: false, message: "Listing doc not found"};
@@ -187,10 +192,10 @@ export class GoogleMapsRepository {
     let response: PlacesNearbyResponse | undefined;
     let token: string | undefined;
     let pageFlag = true;
-    let pageCounter = 0;
     const poiIDs : string[] = [];
     const places: Partial<PlaceData>[] = [];
-    while (pageFlag && process.env['NX_RECOMMENDATION']) {
+    let pageCounter = 0; // fail-safe
+    while (pageFlag && pageCounter < 3) {
       ++pageCounter;
       pageFlag = false;
       let request: PlacesNearbyRequest = {
@@ -218,9 +223,10 @@ export class GoogleMapsRepository {
       }
       token = response.data.next_page_token;
       if (token) {
-        console.log("But wait! There's more!");
+        console.log(pageCounter, ": But wait (10-ish seconds)! There's more!");
         pageFlag = true;
-        await sleep(20000);
+        await sleep(10000);
+        console.log("Waiting finished");
       }
       
       response.data.results.forEach((place) => {
@@ -252,34 +258,38 @@ export class GoogleMapsRepository {
         savings += 0.032;
       }
     }
-    
-    // TODO add characteristics to listing
-    if (pageCounter >= 3 && this.getCharacteristics && process.env['NX_RECOMMENDATION']) {
-      this.checkParty();
-      this.checkGym();
-      this.checkFood();
-      this.checkUniversity();
-      this.checkFamily();
-    }
-    
-    for(let i = 0; i < this.types.length; i++) {
-      console.log(this.types[i] + ": " + this.flags[i]);
-    }
+    if (process.env['NX_RECOMMENDATION']) {
+      if (pageCounter >= 3 && this.getCharacteristics) {
+        this.checkParty();
+        this.checkGym();
+        this.checkFood();
+        this.checkUniversity();
+        this.checkFamily();
+      }
+      
+      for(let i = 0; i < this.types.length; i++) {
+        console.log(this.types[i] + ": " + this.flags[i]);
+      }
 
-    console.log("Saved a grand total of: " + savings);
+      console.log("Saved a grand total of: " + savings);
+      // TODO add characteristics to listing
+    }
     updates['pointsOfInterestIds'] = poiIDs;
     await admin
-    .firestore()
-    .collection('listings')
-    .doc(event.listingId)
-    .update({
-      ...updates
-    });
+      .firestore()
+      .collection('listings')
+      .doc(event.listingId)
+      .update({
+        ...updates
+      });
     this.addMissingPlaces(poiIDs, places);
     return {status: true, message: "Points of interest added :thumbsupp:"};
   }
 
   async addMissingPlaces(ids: string[], places: Partial<PlaceData>[]) {
+    if (ids.length == 0) {
+      return;
+    }
     const queryRes = (await admin
       .firestore()
       .collection('pointsOfinterest')

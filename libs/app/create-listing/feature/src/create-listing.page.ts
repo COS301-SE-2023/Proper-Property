@@ -59,6 +59,7 @@ export class CreateListingPage {
   prop_type = "";
   furnish_type = "";
   orientation = "";
+  loadingMessage = "";
   count = 0;
   geometry = {
     lat: 0,
@@ -135,6 +136,9 @@ export class CreateListingPage {
             this.listingType = listing.let_sell;
             this.geometry = listing.geometry;
             this.pointsOfInterestIds = listing.pointsOfInterestIds;
+            this.district = listing.district;
+            this.listingAreaTypeSlider = listing.listingAreaType == "Rural" ? true : false;
+            this.selectedValue = listing.let_sell == "Sell" ? true : false;
           }
         });
       }
@@ -376,6 +380,7 @@ handleAddressChange(address: string): void {
   }
 
   async addListing(creationType : string){
+    this.loadingMessage = creationType === "create"? "Sent for Approval" : "Saving Listing Draft";
     const property=document.querySelector('.add-property') as HTMLElement;
     const loader=document.querySelector('#loader') as HTMLElement;
     property.style.opacity="0";
@@ -464,6 +469,7 @@ handleAddressChange(address: string): void {
   }
 
   async editListing(){
+    this.loadingMessage = "Edits Submitted for Approval";
     const property=document.querySelector('.add-property') as HTMLElement;
     const loader=document.querySelector('#loader') as HTMLElement;
     property.style.opacity="0";

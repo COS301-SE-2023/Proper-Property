@@ -203,44 +203,42 @@ export class ListingsRepository {
         .orderBy('quality_rating');
 
       if(req.property_size_max){
-        query = query.where("floor_size", "<=", req.property_size_max);
+        query = query = query.where("floor_size", "<=", req.property_size_max);
       }
 
       if(req.property_size_min){
-        query.where("floor_size", ">=", req.property_size_min);
+        query = query.where("floor_size", ">=", req.property_size_min);
       }
-
-      if(req.let_sell){
-        query.where("let_sell", "==", req.let_sell);
-      }
-
+      
       if(req.prop_type){
-        query.where("prop_type", "==", req.prop_type);
+        query = query.where("prop_type", "==", req.prop_type);
       }
 
       if(req.bath){query = 
-        query.where("bath", ">=", req.bath);
+        query = query.where("bath", ">=", req.bath);
       }
 
       if(req.bed){
-        query.where("bed", ">=", req.bed);
+        query = query.where("bed", ">=", req.bed);
       }
 
       if(req.parking){
-        query.where("parking", ">=", req.parking);
+        query = query.where("parking", ">=", req.parking);
       }
 
       if(req.features){
-        query.where("features", "in", req.features);
+        query = query.where("features", "in", req.features);
       }
 
       if(req.price_min){
-        query.where("price", ">=", req.price_min);
+        query = query.where("price", ">=", req.price_min);
       }
 
       if(req.price_max){
-        query.where("price", "<=", req.price_max);
+        query = query.where("price", "<=", req.price_max);
       }
+
+      query = query.where("status", "==", StatusEnum.ON_MARKET);
       
       if (req.lastListingId) {
         const lastListingDoc = (await admin

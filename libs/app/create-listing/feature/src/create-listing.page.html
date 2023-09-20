@@ -33,7 +33,7 @@
 
 <ion-content [fullscreen]="true" *ngIf="!isMobile" class="Desktop">
   <div id="loader" #loader>
-    <div id="approval-message">Sent for Approval</div>
+    <div id="approval-message">{{loadingMessage}}</div>
     <img src="assets/500.gif">
   </div>
   <div class="add-property">
@@ -325,7 +325,7 @@
 
 <ion-content [fullscreen]="true" *ngIf="isMobile" class="Mobile">
   <div id="loader" #loader>
-    <div id="approval-message">Sent for Approval</div>
+    <div id="approval-message">{{loadingMessage}}</div>
     <img src="assets/500.gif">
   </div>
   <div class="add-property">

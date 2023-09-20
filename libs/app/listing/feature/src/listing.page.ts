@@ -12,6 +12,7 @@ import { Chart, registerables } from 'chart.js';
 import { Unsubscribe } from 'firebase/auth';
 import { IonContent } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
+import { GeocodeRequest } from '@googlemaps/google-maps-services-js';
 
 register();
 export interface GetAnalyticsDataRequest {
@@ -249,7 +250,13 @@ export class ListingPage implements OnDestroy {
       show.style.opacity = "0";
       const load = document.querySelector('#loader') as HTMLElement;
       load.style.opacity = "1";
-
+      if (this.list.geometry.lat == 0 || this.list.geometry.lat) {
+        const geocodeResult = await this.gmapsService.geocodeAddress(this.list.address);
+        this.list.geometry = {
+          lat: geocodeResult?.geometry.location.lat() ?? 0,
+          lng: geocodeResult?.geometry.location.lng() ?? 0
+        }
+      }
       if ((this.list.status == StatusEnum.PENDING_APPROVAL || this.list.status == StatusEnum.EDITED) && approved) {
         crimeScore = await this.getCrimeScore();
         schoolScore = await this.getSchoolRating(this.list.geometry);

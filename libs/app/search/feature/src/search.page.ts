@@ -73,21 +73,36 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   private userProfile : UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
 
-  async setCentre() {
-    if (this.searchQuery == '') {
-      this.center = this.listings[0] ? this.listings[0].geometry : { lat: -25.7477, lng: 28.2433 };
-    } else {
+  async setCentre(coordinates?: google.maps.LatLngLiteral) {
+    if(coordinates){
+      this.center = coordinates;
+    }
+    else if (this.searchQuery == '') {
+      const geoSum = {
+        lat: 0,
+        lng: 0
+      };
+      for (const listing of this.listings) {
+        geoSum.lat += listing.geometry.lat;
+        geoSum.lng += listing.geometry.lng;
+      }
+      geoSum.lat = geoSum.lat/this.listings.length;
+      geoSum.lng = geoSum.lng/this.listings.length;
+      this.center = geoSum;
+    }
+    else {
       const coord = await this.gmapsService.geocodeAddress(this.searchQuery);
-
       if (coord) {
         this.center.lat = coord.geometry.location.lat();
 
         this.center.lng = coord.geometry.location.lng();
       }
     }
-
+    if (this.map) {
+      this.map.setCenter(new this.googleMaps.LatLng(this.center.lat, this.center.lng));
+    }
+    
     // await this.loadMap();
-    await this.addMarkersToMap();
   }
   constructor(
     private route: ActivatedRoute,
@@ -154,9 +169,6 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     }, 2000);
 
 
-    this.listings = await this.listingServices.getApprovedListings();
-    this.allListings = this.listings;
-    this.filterProperties();
   }
 
   // TODO add input latency to reduce api calls
@@ -200,21 +212,12 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     if (this.searchQuery!='') {
       addressInput.value = this.searchQuery;
     }
-
-    Array.from(document.getElementsByClassName("progress"))
-    .forEach((bar) => {
-      if(bar){
-        if (parseFloat((bar as HTMLElement).style.width) < 25) {
-          document.getElementById("schoolProgress")?.setAttribute("class", "errorProgressBar");
-        }
-        else if (parseFloat((bar as HTMLElement).style.width) < 60) {
-          document.getElementById("schoolProgress")?.setAttribute("class", "warningProgressBar");
-        }
-      }
-      else{
-        console.log("Bar does not exist");
-      }
-    })
+    // this.listings = await this.listingServices.getApprovedListings();
+    // this.allListings = this.listings;
+    // await this.addMarkersToMap();
+    // this.filterProperties();
+    this.searchProperties();
+    this.addMarkersToMap();
   }
 async loadMap() {
   try {
@@ -238,7 +241,6 @@ async loadMap() {
         maxZoom: 18, // Set the maximum allowed zoom level
         minZoom: 5,
       });
-
       //this.map.fitBounds(this.gmaps.getBoundsFromLatLng(this.center.lat,this.center.lng));
 
       //const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
@@ -252,37 +254,9 @@ async loadMap() {
 
       // Iterate over each listing
       for (let i = 0; i < this.listings.length; i++) {
-        // Retrieve the longitude and latitude for the address
-        const coordinates = await this.gmaps.geocodeAddress(
-          this.listings[i].address
-        );
-        if (
-          Array.isArray(coordinates) &&
-          coordinates.length > 0 &&
-          coordinates[0].geometry &&
-          coordinates[0].geometry.location
-        ) {
-          const position = coordinates[0].geometry.location;
-
-          // Create an info window for the marker
-          const infoWindow = new googleMaps.InfoWindow({
-            content: infoWindowContent[i],
-          });
-
-          // Create a marker without the icon
-          const marker = new googleMaps.Marker({
-            position: position,
-            map: this.map,
-            listing: this.listings[i], // Store the listing object in the marker for later use
-          });
-
-          // Add a click event listener to the marker
-          googleMaps.event.addListener(marker, 'click', () => {
-            infoWindow.open(this.map, marker);
-            // this.navigateToPropertyListingPage(marker.listing);
-          });
-
-          this.markers.push(marker);
+        if (this.listings[i].geometry.lat && this.listings[i].geometry.lng ) {
+          const position = this.listings[i].geometry;
+          this.addMarker(position, this.listings[i])
         }
       }
     } catch (e) {
@@ -434,7 +408,6 @@ async loadMap() {
       prop_type : this.prop_type ? this.prop_type : null,
       bath : this.bath ? this.bath : null,
       bed : this.bed ? this.bed : null,
-      let_sell : this.let_sell ? this.let_sell : null,
       parking : this.parking ? this.parking : null,
       features : this.features.length > 0 ? this.features : null,
       property_size_min : this.prop_size_min ? this.prop_size_min : null,
@@ -444,12 +417,17 @@ async loadMap() {
       areaScore : this.areaScore? this.areaScore : null
     } as GetFilteredListingsRequest
 
-    this.allListings = (await this.listingServices.getFilteredListings(request)).listings;
+    const response = (await this.listingServices.getFilteredListings(request));
 
-    // TODO filter
-    this.filterProperties();
-    this.setCentre();
-    // await this.addMarkersToMap();
+    if(response.status){
+      this.allListings = response.listings;
+
+      // TODO filter
+      this.filterProperties();
+      this.setCentre();
+      this.loadMap();
+      // await this.addMarkersToMap();
+    }
   }
 
   async addMarkersToMap() {
@@ -532,7 +510,7 @@ addMMarker(listing: Listing) {
 
   get filteredBuyingProperties(): Listing[] {
     const filteredListings: Listing[] = [];
-    for (let listing of this.listings) {
+    for (let listing of this.allListings) {
       if (listing.let_sell == 'Sell') {
         filteredListings.push(listing)
       }
@@ -543,7 +521,7 @@ addMMarker(listing: Listing) {
 
   get filteredRentingProperties(): Listing[] {
     const filteredListings: Listing[] = [];
-    for (let listing of this.listings) {
+    for (let listing of this.allListings) {
       if (listing.let_sell == 'Rent') {
         filteredListings.push(listing)
       }
@@ -694,33 +672,14 @@ dropDown(){
 
 }
 
-status=true;
+  status=true;
 
 
-async centerMap(listing : Listing)
-{
-  
-    this.listingServices.getListings().then(async (listings) => {
-    this.filterProperties();
-
-    this.searchQuery = listing.address;
-    this.setCentre();
-
-  });
-
-  await this.addOneMarkersToMap(listing) ;
- 
-}
-
-async addOneMarkersToMap(listing : Listing) {
-  
-  const coordinates = await this.gmapsService.geocodeAddress(listing.address);
-  if (coordinates) {
-    console.log("my coordinates ",coordinates);
-    this.addMarker(coordinates, listing);
-    
+  async centerMap(listing : Listing)
+  {
+    this.setCentre(listing.geometry);
   }
-}
+
 }
 
 function isMobile(): boolean {

@@ -8,7 +8,6 @@ export interface GetFilteredListingsRequest {
   prop_type?: string;
   bath?: number;
   bed?: number;
-  let_sell?: string;
   parking?: number;
   features?: string[];
   property_size_min?: number;
