@@ -137,11 +137,12 @@ ion-card {
 
 #loader{
   position: absolute;
-  right: 50%;
+  right: 45%;
   text-align: center;
   z-index: 1;
   top: 40%;
   opacity: 0;
+  width: 10%;
 }
 
 #show{
