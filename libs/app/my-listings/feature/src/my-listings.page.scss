@@ -1,20 +1,8 @@
-#category{
-  color: var(--ion-color-primary);
-  background: rgba(13, 174, 79, 0.05);
-  
-}
-
-.rightBorder
-{
-  border-right: 1px solid rgba(13, 174, 79, 0.20);
-}
-
-ion-card {
-  width: 85%;
-  height: 180px;
-  margin-left: 10%;
-  margin-top: 15px;
-  margin-bottom: 10px;
+.green-tab {
+  --color: green;
+}#house_details img {
+  width: 10px; /* Adjust the size as desired */
+  height: 10px; /* Adjust the size as desired */
   border-radius: 10px;
 }
 

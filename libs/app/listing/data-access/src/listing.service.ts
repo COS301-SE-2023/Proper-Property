@@ -89,7 +89,23 @@ export class ListingsService {
       await updateDoc(listingRef, {photos: photoURLs});
   }
 
-  async getListings(){
+  async getListings(userId?: string){
+    const request = userId? {userId: userId} : {};
+    const response = (await httpsCallable<
+      GetListingsRequest,
+      GetListingsResponse
+    >(
+      this.functions, 
+      'getListings'
+    )(request)).data;
+    if (response.listings.length > 0){
+      return response.listings;
+    }
+    return [];
+   
+  }
+
+  async getRecentListings(){
     const response = (await httpsCallable<
       GetListingsRequest,
       GetListingsResponse
@@ -98,7 +114,7 @@ export class ListingsService {
       'getListings'
     )({})).data;
     if (response.listings.length > 0){
-      return response.listings;
+      return response.listings.slice(0, 5);
     }
     return [];
    

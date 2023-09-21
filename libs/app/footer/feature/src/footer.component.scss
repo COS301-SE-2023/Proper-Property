@@ -6,9 +6,13 @@
   background-image: url('../../../assets/footer.svg');
   background-size: cover;
   box-shadow: none;
+
+  @media only screen and (max-width: 600px) {
+    height: auto;
+  }
 }
 
-#formButtons {
+.formButtons {
   display: flex;
   width: 250px;
   height: 85%;
@@ -18,9 +22,32 @@
   flex-shrink: 0;
   border-radius: 5px;
   background: #FFF;
+
+  @media only screen and (max-width: 600px) {
+    width: 90%;
+    position: static;
+    margin: 0 auto 10px;
+  }
 }
 
 .guideColumn{
   display: flex;
   justify-content: center;
+}
+
+#footer-grid {
+  width: 100%;
+  position: absolute;
+  bottom: 15%;
+
+  @media only screen and (max-width: 600px) {
+    position: static;
+  }
+}
+
+.footer-row {
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+    align-items: center;
+  }
 }

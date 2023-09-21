@@ -23,6 +23,7 @@ export class SavedListingsPage implements OnInit {
 
   isMobile = false;
 
+  public savedListings : Listing[] = [];
   public savedListingsB : Listing[] = [];
   public savedListingsR : Listing[] = [];
 
@@ -31,18 +32,18 @@ export class SavedListingsPage implements OnInit {
     private listingServices : ListingsService,
     private router : Router
     ) {
-      // this.savedListings = [];
+      this.savedListings = [];
     this.userProfile$.subscribe((profile) => {
       this.userProfile = profile;
       if(this.userProfile){
         //Todo - Change this to send an array of IDs
         if(this.userProfile && this.userProfile.savedListings){
-          this.savedListingsB = [];
-          this.savedListingsR = [];
           for(const listing of this.userProfile.savedListings){
             this.listingServices.getListing(listing).then((listing) => {
               if(listing){
                 // this.savedListings.push(listing);
+                this.savedListingsB = [];
+                this.savedListingsR = [];
 
                 if(listing.let_sell=="Sell")
                 {
@@ -75,6 +76,39 @@ export class SavedListingsPage implements OnInit {
     this.router.navigate(['/listing', {list : listing.listing_id}]);
   }
 
+  isSaved(listing_id : string){
+    if(this.userProfile){
+      if(this.userProfile.savedListings){
+        if(this.userProfile.savedListings.includes(listing_id)){
+          return true;
+        }
+      }
+    }
+    else{
+      console.log("Profile not found");
+    }
+
+    return false;
+  }
+
+  saveListing($event : Event, listing_id : string) {
+    if(listing_id != ''){
+      const heartBut = $event.target as HTMLButtonElement;
+      heartBut.style.color = "red";
+      
+      if(this.userProfile){
+          if(this.userProfile.savedListings){
+            this.userProfile.savedListings.push(listing_id);
+          }
+          else{
+            this.userProfile.savedListings = [listing_id];
+          }
+  
+          this.profileServices.updateUserProfile(this.userProfile);
+      }
+    } 
+  }
+
   unsaveListing($event : Event, listing_id : string, side : string){
     const editedListingArray = side == "buy" ? this.savedListingsB : this.savedListingsR;
     if(listing_id != ''){
@@ -96,7 +130,7 @@ export class SavedListingsPage implements OnInit {
           this.profileServices.updateUserProfile(this.userProfile);
       }
     } 
-  } 
+  }
 
   Change()
   {

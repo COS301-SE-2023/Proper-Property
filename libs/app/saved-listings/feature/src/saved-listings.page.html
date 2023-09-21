@@ -10,10 +10,10 @@
 
   <section id="category">
     <ion-segment>
-      <ion-segment-button class="rightBorder">
+      <ion-segment-button aria-disabled="true" class="rightBorder">
         <ion-label>Buy</ion-label>
       </ion-segment-button>
-      <ion-segment-button>
+      <ion-segment-button aria-disabled="true">
         <ion-label>Rent</ion-label>
       </ion-segment-button>
     </ion-segment>
@@ -29,6 +29,7 @@
               <img src="{{listing.photos[0]}}" alt="house1">
               <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
             </ion-card-header>
+
             <ion-card-content (click)="redirectToPage(listing)">
             
               <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
@@ -39,7 +40,7 @@
               {{listing.desc}}
               </p>
               <br>
-              <div id="house_details">
+              <div class="house_details">
                 <img src="assets/icon/bedrooms.png">
                 {{listing.bed}}
                 &nbsp; &nbsp;&nbsp;
@@ -58,12 +59,11 @@
         </ion-col>
         <ion-col>
           <ion-card *ngFor="let listing of savedListingsR" >
-            <ion-icon (click)="unsaveListing($event, listing.listing_id ?? '', 'rent')" name="heart" class="heart-icon"></ion-icon>
-
             <ion-card-header (click)="redirectToPage(listing)">
               <img src="{{listing.photos[0]}}" alt="house1">
               <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
             </ion-card-header>
+
             <ion-card-content (click)="redirectToPage(listing)">
             
               <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
@@ -74,7 +74,7 @@
               {{listing.desc}}
               </p>
               <br>
-              <div id="house_details">
+              <div class="house_details">
                 <img src="assets/icon/bedrooms.png">
                 {{listing.bed}}
                 &nbsp; &nbsp;&nbsp;
@@ -160,7 +160,7 @@
                 </ion-row>
               </ion-grid>
               <br>
-              <div id="house_details">
+              <div class="house_details2">
                 Address: {{listing.address}}
               </div>
             </ion-card-content>
@@ -229,7 +229,7 @@
                 </ion-row>
               </ion-grid>
               <br>
-              <div id="house_details">
+              <div class="house_details2">
                 Address: {{listing.address}}
               </div>
             </ion-card-content>

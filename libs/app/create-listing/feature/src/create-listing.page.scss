@@ -1,11 +1,12 @@
 .Desktop {
   #loader{
     position: absolute;
-    right: 45%;
+    right: 40%;
     text-align: center;
     z-index: 1;
     top: 40%;
     opacity: 0;
+    width: 20%;
   }
 
   #approval-message{

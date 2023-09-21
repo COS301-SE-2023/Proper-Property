@@ -425,13 +425,13 @@
         <ion-col>
           <ion-row class="dropdown">
             <ion-col>
-              <label position="floating" class="house-text" style="margin-left: 3%">Property Type:</label>
+              <label position="floating" class="house-text" style="margin-left: 3%">Type:</label>
             </ion-col>
             <ion-col>
               <select [(ngModel)]="prop_type" class="house-dropdown" aria-label="prop-type" id="prop-type">
                 <option value="House">House</option>
                 <option value="Apartment">Apartment</option>
-                <option value="Commercial">Commercial Property</option>
+                <option value="Commercial">Commercial</option>
               </select>
             </ion-col>
           </ion-row>
@@ -439,7 +439,7 @@
         <ion-col>
           <ion-row class="dropdown">
             <ion-col>
-              <label [(ngModel)]="env_type" position="floating" class="house-text">Community Environment:</label>
+              <label [(ngModel)]="env_type" position="floating" class="house-text">Environment:</label>
             </ion-col>
             <ion-col>
               <select class="house-dropdown" aria-label="env-type">
@@ -461,8 +461,8 @@
             <ion-col>
               <select [(ngModel)]="furnish_type" class="house-dropdown" aria-label="furnishing">
                 <option value="Furnished">Furnished</option>
-                <option value="Partly Furnished">Partly Furnished</option>
-                <option value="Not Furnished">Not Furnished</option>
+                <option value="Partly Furnished">Partly-Furnished</option>
+                <option value="Not Furnished">Not-Furnished</option>
               </select>
             </ion-col>
           </ion-row>
@@ -487,7 +487,7 @@
       <ion-row style="width:100%; border-bottom: 2px solid #0DAE4F;">
         <ion-col>
           <ion-item class="ion-container">
-            <ion-label position="floating" class="house-text">Bathroom Count<span class="required-indicator"
+            <ion-label position="floating" class="house-text">Bathrooms<span class="required-indicator"
                 *ngIf="!bathrooms">*</span></ion-label>
 
             <ion-input type="number" id="bath" [(ngModel)]="bathrooms" required></ion-input>
@@ -496,7 +496,7 @@
         </ion-col>
         <ion-col>
           <ion-item class="ion-container">
-            <ion-label position="floating" class="house-text">Bedroom Count<span class="required-indicator"
+            <ion-label position="floating" class="house-text">Bedrooms<span class="required-indicator"
                 *ngIf="!bedrooms">*</span></ion-label>
 
             <ion-input type="number" id="bed" [(ngModel)]="bedrooms" required></ion-input>

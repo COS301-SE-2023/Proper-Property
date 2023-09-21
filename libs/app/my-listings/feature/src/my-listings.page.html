@@ -1,8 +1,32 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Property Listing App
-    </ion-title>
+<ion-header [translucent]="true">
+
+
+  <ion-toolbar class = "profile-nav" >
+
+      <ion-tabs>
+        <ion-tab-bar slot="end">
+          <ion-tab-button tab="profile" routerLink="/profile" routerDirection="root">
+            <ion-icon name="person-circle-outline"></ion-icon>
+            <ion-label>Profile</ion-label>
+          </ion-tab-button>
+    
+          <ion-tab-button tab="create-listing" routerLink="/create-listing" routerDirection="root" >
+            <ion-icon name="add-circle-outline"></ion-icon>
+            <ion-label>Create Listing</ion-label>
+          </ion-tab-button>
+    
+          <ion-tab-button tab="saved-listings" routerLink="/saved-listings" routerDirection="root">
+            <ion-icon name="heart-outline"></ion-icon>
+            <ion-label>Saved Listings</ion-label>
+          </ion-tab-button>
+    
+          <ion-tab-button tab="my-listings" routerLink="/my-listings" routerDirection="root" class="green-tab">
+            <ion-icon name="list-outline"></ion-icon>
+            <ion-label>My Listings</ion-label>
+          </ion-tab-button>
+        </ion-tab-bar>
+      </ion-tabs>
+
   </ion-toolbar>
 </ion-header>
 

@@ -1,7 +1,13 @@
 ion-content
 {
-  --background: rgb(240, 239, 239);
+  --background: rgb(255, 255, 255);
 }
+
+ion-card{
+  border: 2px solid black;
+  background-color: rgba(13, 174, 79, 0.40);;
+}
+
 .link{
   --color: var( --ion-color-primary-contrast);
 }

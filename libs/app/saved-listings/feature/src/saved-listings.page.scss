@@ -122,7 +122,15 @@ ion-card ion-card-content {
   transition: width 0.3s ease-in-out;
 }
 
-#house_details img {
+.house_details{
+  margin-top: 3.25%;
+}
+
+.house_details2{
+  margin-top: -5.25%;
+}
+
+.house_details img {
   //set image size
   width: 15px;
   height: 15px;

@@ -11,7 +11,12 @@ import {
   ViewChildren, 
   QueryList ,
 } from '@angular/core';
-import { ActionSheetController, RangeCustomEvent } from '@ionic/angular';
+import { 
+  ActionSheetController, 
+  RangeCustomEvent, 
+  IonContent,
+  IonCard
+} from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
 import { GetFilteredListingsRequest, Listing } from '@properproperty/api/listings/util';
@@ -21,7 +26,7 @@ import { Unsubscribe } from '@angular/fire/auth';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { ActivatedRoute } from '@angular/router';
-import { IonContent } from '@ionic/angular';
+// import { IonContent } from '@ionic/angular';
 
 @Component({
   selector: 'app-search',
@@ -283,7 +288,10 @@ async loadMap() {
     const infoWindow = new googleMaps.InfoWindow({
       content: this.createListingCard(listing),
     });
-
+    infoWindow.closeClick = () => {
+      infoWindow.close();
+    }
+    
     // Add a click event listener to the marker
     googleMaps.event.addListener(marker, 'click', () => {
       infoWindow.open(this.map, marker);
@@ -292,20 +300,97 @@ async loadMap() {
 
     // Add a click event listener to the info window
     infoWindow.addListener('domready', () => {
-      const infoWindowElement = document.querySelector('.gm-style-iw');
+      const infoWindowElement = document.querySelector('.marker-card');
       if (infoWindowElement) {
-        infoWindowElement.addEventListener('click', () => {
-          this.redirectToPage(marker.listing); // Call the navigateToPropertyListingPage function with the marker's listing object
+        infoWindowElement.addEventListener('click', (event: Event) => {
+          event.stopPropagation();
+          // console.log(event);
+          // if (event.target != event.currentTarget) {
+          //   return;
+          // }
+          this.mapMarkerClicked(event,infoWindowElement.getAttribute( "data-id") ?? ""); // Call the navigateToPropertyListingPage function with the marker's listing object
         });
       }
     });
 
     this.markers.push(marker);
   }
+  mapMarkerClicked(event: Event, listingId?: string) {
+    event.stopPropagation();
+    if (listingId) {
+      this.router.navigate(['/listing', { list: listingId }]);
+    }
+  }
+  createListingCard(listing: Listing): any {
+    // <ion-card style="max-width: 250px; max-height: 300px;" (click)="mapMarkerClicked($event, ${listing.listing_id})">
+    // const card = this.renderer.createElement("ion-card");
+    // this.renderer.addClass(card, "marker-card");
+    // this.renderer.setAttribute(card, "style", "max-width: 250px; max-height: 300px;");
+    // this.renderer.listen(card,"click", (event: Event) => {
+    //   event.stopPropagation();
+    //   this.mapMarkerClicked(event, listing.listing_id);
+    // });
+    // // <ion-card-header style="padding: 0;">
+    // const header = this.renderer.createElement("ion-card-header");
+    // this.renderer.setAttribute(header, "style", "padding: 0;");
+    // this.renderer.addClass(header, "marker-header");
+    // // <img src="${listing.photos[0]}" alt="Listing Image" style="max-width: 100%; max-height: 80px;">
+    // const imgHead = this.renderer.createElement("img");
+    // this.renderer.addClass(header, "marker-listing-image");
+    // this.renderer.setAttribute(imgHead, "src", listing.photos[0]);
+    // this.renderer.setAttribute(imgHead, "alt", "Listing Image");
+    // this.renderer.setAttribute(imgHead, "style", "max-width: 100%; max-height: 80px;");
 
-  createListingCard(listing: Listing): string {
+    // // <ion-card-content style="padding: 0.5rem;">
+    // const cardContent = this.renderer.createElement("ion-card-content");
+    // this.renderer.setAttribute(cardContent, "style", "padding: 0.5rem;");
+    // this.renderer.addClass(cardContent, "marker-content");
+    // // <ion-card-title style="font-size: 1rem; line-height: 1.2; margin-bottom: 0.5rem;">${listing.prop_type}</ion-card-title>
+    // const cardTitle = this.renderer.createElement("ion-card-title");
+    // this.renderer.addClass(header, "marker-title");
+    // this.renderer.setAttribute(cardTitle, "style", "font-size: 1rem; line-height: 1.2; margin-bottom: 0.5rem;");
+    // this.renderer.setProperty(cardTitle, "innerHTML", listing.prop_type);
+    // // <ion-card-subtitle style="color: #0DAE4F; font-size: 0.9rem; line-height: 1;">R ${listing.price}</ion-card-subtitle>
+    // const cardSubTitle = this.renderer.createElement("ion-card-subtitle");
+    // this.renderer.addClass(header, "marker-subtitle");
+    // this.renderer.setAttribute(cardSubTitle, "style", "color: #0DAE4F; font-size: 0.9rem; line-height: 1;");
+    // this.renderer.setProperty(cardSubTitle, "innerHTML", `R ${listing.price}`);
+    // // <div id="house_details" style="font-size: 0.8rem; line-height: 1.2;">
+    // const cardDiv = this.renderer.createElement("div");
+    // this.renderer.addClass(cardDiv, "house_details");
+    // this.renderer.addClass(cardDiv, "marker-details");
+    // this.renderer.setAttribute(cardDiv, "style", "font-size: 0.8rem; line-height: 1.2;");
+    // this.renderer.setProperty(cardDiv, "innerHTML", `
+    //   <img class="marker-icon" src="assets/icon/bedrooms.png" style="max-width: 7.5px; height: auto;">
+    //   ${listing.bed}
+    //   &nbsp; &nbsp;&nbsp;
+    //   <img class="marker-icon" src="assets/icon/bathrooms.png" style="max-width: 7.5px; height: auto;">
+    //   ${listing.bath}
+    //   &nbsp; &nbsp;&nbsp;
+    //   <img class="marker-icon" src="assets/icon/floorplan.png" style="max-width: 7.5px; height: auto;">
+    //   ${listing.floor_size} m<sup>2</sup>
+    //   &nbsp; &nbsp;&nbsp;
+    //   <img class="marker-icon" src="assets/icon/erf.png" style="max-width: 7.5px; height: auto;">
+    //   ${listing.property_size} m<sup>2</sup>`
+    // );
+    //   this.renderer.appendChild(header, imgHead);
+    //   this.renderer.appendChild(card, header);
+      
+    //   this.renderer.appendChild(cardContent, cardTitle);
+    //   this.renderer.appendChild(cardContent, cardSubTitle);
+    //   this.renderer.appendChild(cardContent, cardDiv);
+    //   this.renderer.appendChild(card, cardContent);
+    // console.log(card);
+    // return card;
+    // const imgContent = this.renderer.createElement("img");
+    // this.renderer.setAttribute(imgContent, "src", "assets/icon/bedrooms.png");
+    // this.renderer.setAttribute(imgContent, "alt", "Listing Image");
+    // this.renderer.setAttribute(imgContent, "style", "max-width: 100%; max-height: 80px;");
+
+    // console.log(card);
+    // return card;
     return `
-    <ion-card style="max-width: 250px; max-height: 300px;">
+    <ion-card data-id="${listing.listing_id}"class="marker-card" style="max-width: 250px; max-height: 300px;" (click)="mapMarkerClicked($event, ${listing.listing_id})">
       <ion-card-header style="padding: 0;">
         <img src="${listing.photos[0]}" alt="Listing Image" style="max-width: 100%; max-height: 80px;">
       </ion-card-header>
@@ -547,6 +632,32 @@ filterProperties(): void {
   }
 }
 
+
+
+selectedSortOption = 'default';
+
+sortListings() {
+
+
+  switch (this.selectedSortOption) {
+      case 'priceLowToHigh':
+          this.listings.sort((a, b) => Number(a.price) - Number(b.price));
+          break;
+      case 'priceHighToLow':
+          this.listings.sort((a, b) => Number(b.price) - Number(a.price));
+          break;
+      case 'propertyType':
+          this.listings.sort((a, b) => a.prop_type.localeCompare(b.prop_type));
+          break;
+      case 'size':
+          this.listings.sort((a, b) => Number(a.floor_size) - Number(b.floor_size));
+          break;
+      default:
+          // Default sort logic here, if any
+          break;
+  }
+}
+
   changeTab(): void {
     // Reset the selected filters and search query when changing tabs
     this.prop_type = '';
@@ -703,5 +814,3 @@ dropDown(){
 function isMobile(): boolean {
   return window.innerWidth <= 576;
 }
-
-

@@ -58,6 +58,15 @@
     padding: 10px;
   }
   
+  .filterCheckboxes {
+    display: flex;
+  }
+  
+  .checkbox-label {
+    margin-right: 20px; /* Adjust spacing as needed */
+  }
+  
+
   #address {
     border-radius: 30px;
     border: 1.5px solid #000;
@@ -93,7 +102,7 @@
     margin-top: 1%;
   }
   
-  .search-button{
+  .search-button {
     width: 90%;
     height: 100%;
     margin-right: 10%;
@@ -117,39 +126,56 @@
   }
   
   
-  // //make the img in ion-card-header smaller
-  // ion-card-header img {
-  //   width: 100%;
-  //   height: 130px;
-  //   //rounded edges
-  //   border-radius: 10px;
-  // }
+  //make the img in ion-card-header smaller
+  .lists ion-card-header img {
+    width: 200px;
+    height: 130px;
+    //rounded edges
+    border-radius: 10px;
+  }
   
-  // //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
-  // ion-card-header ion-card-title {
-  //   margin-left: 220px;
-  //   //move ths up
-  //   margin-top: -130px;
-  // }
+  //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
+  .lists ion-card-header ion-card-title{
+    margin-left: 220px;
+    //move ths up
+    margin-top: -130px;
+  }
   
-  // ion-card-header ion-card-subtitle {
-  //   margin-left: 220px;
-  // }
+  .lists ion-card-header ion-card-subtitle {
+    margin-left: 220px;
+  }
   
-  // ion-card ion-card-content {
-  //   margin-left: 220px;
-  // }
+  .lists ion-card ion-card-content  {
+    margin-left: 220px;
+  }
   
   //make the ion-card take only half of the page
-  ion-card {
+  .lists ion-card {
     // width: 45%;
     margin-left: 2%;
     margin-top: 10px;
     border-radius: 10px;
   }
   
+  #house_description{
+    height: 10% !important;
+    width: 87%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .house_details{
+    margin-top: 7.25%;
+  }
+
+  .house_details2{
+    margin-top: -1.25%;
+  }
+
   //styling for div with id="house_details"
-  #house_details img {
+  .house_details img {
     //set image size
     width: 15px;
     height: 15px;
@@ -183,11 +209,36 @@
     color: grey;
   }
   
+  .map {
+    // margin-left: 50%;
+    // width: 40%;
+    // margin-left: 55%;
+    margin-top: -10px;
+    width: 95%;
+    margin-left: 2%;
+    margin-right: 3%;
+    height: 40vh;
+    border-radius: 10px;
+    background-color: transparent;
+    opacity: 0;
+    transition: opacity 150ms ease-in;
+  }
   
   .map.visible {
     opacity: 1;
   }
   
+  #map {
+    // width: 50%;
+    margin-left: 2%;
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+  
+  // #login-button{
+  //   background-color: #0DAE4F;
+  //   color: white;
+  // }
   
   #back-arrow {
     color: #0DAE4F;
@@ -208,12 +259,12 @@
     transform: translateY(100px);
   }
   
-  // .search-container {
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: space-between;
-  //   margin: 10px;
-  // }
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px;
+  }
   
   //end of scss
   * {
@@ -513,7 +564,7 @@
     margin-right: 5%;
     width: 65%;
   }
-  
+
   .pin {
     --background: transparent;
     --border-radius: 50%;
@@ -531,7 +582,7 @@
   }
   
   //styling for div with id="house_details"
-  #house_details img {
+  .house_details img {
     //set image size
     width: 15px;
     height: 15px;
@@ -601,6 +652,59 @@
     margin-left: 1.5%; 
     margin-right: 5%;
   }
+
+  // .marker-card {
+    
+  //   width: initial;
+  //   height: initial;
+  //   margin-left: initial;
+  //   margin-top: initial;
+  //   margin-bottom: initial;
+  //   border-radius: initial;
+  // }
+
+  // .marker-header {
+  //   width: initial;
+  // }
+
+  // .marker-listing-image {
+  //   width: 100% !important;
+  //   height: initial !important;
+  //   position: initial !important;
+  //   top: initial !important;
+  //   border-radius: initial !important;
+  // }
+
+  // .marker-content {
+  //   margin-left: initial !important;
+  //   margin-right: initial;
+  //   width: initial;
+  // }
+
+  // .marker-title {
+  //   margin-left: initial;
+  //   padding-top: initial;
+  //   margin-top: initial;
+  // }
+
+  // .marker-subtitle {
+  //   margin-left: initial;
+  // }
+
+  // .marker-details {
+  //   margin: 0 !important;
+  //   width: 100% !important;
+  // }
+
+  // .marker-icon {
+  //   margin: initial;
+  //   width: initial;
+  //   height: initial;
+  //   position: initial;
+  //   top: initial;
+  //   border-radius: initial;
+  // }
+
 }
   
 
@@ -670,8 +774,6 @@
     font-style: normal;
     font-weight: 400;
   }
-
-  
   
   .dropdown {
     color: rgb(68, 68, 68);
@@ -690,7 +792,16 @@
     margin-top: 1%;
   }
   
-
+  .search-button {
+    width: 90%;
+    height: 70%;
+    margin-right: 10%;
+    color: white;
+    border: none;
+    --border-radius: 30px;
+    cursor: pointer;
+    margin-top: 1%;
+  }
   
   .link {
     --color: var(--ion-color-primary-contrast);
@@ -705,28 +816,28 @@
   }
   
   
-  //make the img in ion-card-header smaller
-  ion-card-header img {
-    width: 200px;
-    height: 200px;
-    //rounded edges
-    border-radius: 10px;
-  }
+  // //make the img in ion-card-header smaller
+  // ion-card-header img {
+  //   width: 200px;
+  //   height: 200px;
+  //   //rounded edges
+  //   border-radius: 10px;
+  // }
   
-  //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
-  ion-card-header ion-card-title {
-    margin-left: 220px;
-    //move ths up
-    margin-top: -100px;
-  }
+  // //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
+  // ion-card-header ion-card-title {
+  //   margin-left: 220px;
+  //   //move ths up
+  //   margin-top: -100px;
+  // }
   
-  ion-card-header ion-card-subtitle {
-    margin-left: 220px;
-  }
+  // ion-card-header ion-card-subtitle {
+  //   margin-left: 220px;
+  // }
   
-  ion-card ion-card-content {
-    margin-left: 220px;
-  }
+  // ion-card ion-card-content {
+  //   margin-left: 220px;
+  // }
   
   //make the ion-card take only half of the page
 
@@ -749,27 +860,24 @@ ion-card {
   }
   
   .heart-button {
-    --background: transparent;
-    --border-radius: 50%;
-    --border: none;
+    background-color: transparent;
+    border: none;
     padding: 0;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     //move it to right hand corner
     margin-left: 90%;
-    // float: right;
-    // margin-top: -30px;
+    margin-top: -30px;
   }
   
-  .heart-icon {
-    
-    color: red;
-    font-size: 24px;
-  }
+  // .heart-icon {
+  //   color: red;
+  //   font-size: 24px;
+  // }
   
   .red {
     color: red;
@@ -925,8 +1033,5 @@ ion-card {
     color: #644bff;
     cursor: pointer;
   }
-  
-  
-  
 }
 
