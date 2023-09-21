@@ -161,13 +161,14 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     //   this.listings = listings;
     //   this.filterProperties();
     // });
-
+    // const footerGap=document.querySelector('.footer-gap') as HTMLElement;
+    // footerGap.style.display="none";
     setTimeout(function () {
       // Hide the loader
       const load=document.querySelector('.loading-animation') as HTMLElement;
-      const footerGap=document.querySelector('.footer-gap') as HTMLElement;
       // load.style.display="none";
       load.style.opacity="0";
+      const footerGap=document.querySelector('.footer-gap') as HTMLElement;
       footerGap.style.display="none";
 
       // Display the map listing
@@ -785,7 +786,7 @@ dropDown(){
 
 }
 
-  status=true;
+  status=false;
 
 
   async centerMap(listing : Listing)
