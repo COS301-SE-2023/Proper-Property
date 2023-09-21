@@ -24,11 +24,11 @@
       <ion-row>
         <ion-col class="rightBorder">
           <ion-card *ngFor="let listing of savedListingsB" >
+            <ion-icon (click)="unsaveListing($event, listing.listing_id ?? '', 'buy')" name="heart" class="heart-icon"></ion-icon>
             <ion-card-header (click)="redirectToPage(listing)">
               <img src="{{listing.photos[0]}}" alt="house1">
               <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
             </ion-card-header>
-
             <ion-card-content (click)="redirectToPage(listing)">
             
               <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
@@ -58,11 +58,12 @@
         </ion-col>
         <ion-col>
           <ion-card *ngFor="let listing of savedListingsR" >
+            <ion-icon (click)="unsaveListing($event, listing.listing_id ?? '', 'rent')" name="heart" class="heart-icon"></ion-icon>
+
             <ion-card-header (click)="redirectToPage(listing)">
               <img src="{{listing.photos[0]}}" alt="house1">
               <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
             </ion-card-header>
-
             <ion-card-content (click)="redirectToPage(listing)">
             
               <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
@@ -112,13 +113,23 @@
                   <ion-col>
                     <div class="white-text">Water</div>
                       <div class="slider">
-                        <div id="waterProgress" class="progress" [style.width]="listing.areaScore.waterScore+'%'"></div>
+                        <div 
+                          [class.progress]="listing.areaScore.waterScore >= 60" 
+                          [class.errorProgressBar]="listing.areaScore.waterScore < 25" 
+                          [class.warningProgressBar]="listing.areaScore.waterScore < 60 && listing.areaScore.waterScore >= 25" 
+                          [style.width]="listing.areaScore.waterScore+'%'"
+                        ></div>
                       </div>
                   </ion-col>
                   <ion-col>
                   <div class="white-text">Sanitation</div>
                   <div class="slider">
-                    <div id="sanitationProgress" class="progress" [style.width]="listing.areaScore.sanitationScore+'%'"></div>
+                    <div 
+                      [class.progress]="listing.areaScore.sanitationScore >= 60" 
+                      [class.errorProgressBar]="listing.areaScore.sanitationScore < 25" 
+                      [class.warningProgressBar]="listing.areaScore.sanitationScore < 60 && listing.areaScore.sanitationScore >= 25" 
+                      [style.width]="listing.areaScore.sanitationScore+'%'"
+                    ></div>
                   </div>
                   </ion-col>
                 </ion-row>
@@ -127,13 +138,23 @@
                   <ion-col>
                   <div class="white-text">Crime</div>
                   <div class="slider">
-                    <div id="crimeProgress" class="progress" [style.width]="listing.areaScore.crimeScore+'%'"></div>
+                    <div 
+                      [class.progress]="listing.areaScore.crimeScore >= 60" 
+                      [class.errorProgressBar]="listing.areaScore.crimeScore < 25" 
+                      [class.warningProgressBar]="listing.areaScore.crimeScore < 60 && listing.areaScore.crimeScore >= 25" 
+                      [style.width]="listing.areaScore.crimeScore+'%'"
+                    ></div>
                   </div>
                   </ion-col>
                   <ion-col>
                   <div class="white-text">School Quality</div>
                   <div class="slider">
-                    <div id="schoolProgress" class="progress" [style.width]="listing.areaScore.schoolScore+'%'"></div>
+                    <div 
+                      [class.progress]="listing.areaScore.schoolScore >= 60"  
+                      [class.errorProgressBar]="listing.areaScore.schoolScore < 25"  
+                      [class.warningProgressBar]="listing.areaScore.schoolScore < 60 && listing.areaScore.schoolScore >= 25" 
+                      [style.width]="listing.areaScore.schoolScore+'%'"
+                    ></div>
                   </div>                  
                   </ion-col>
                 </ion-row>
@@ -161,13 +182,23 @@
                   <ion-col>
                     <div class="white-text">Water</div>
                       <div class="slider">
-                        <div id="waterProgress" class="progress" [style.width]="listing.areaScore.waterScore+'%'"></div>
+                        <div 
+                          [class.progress]="listing.areaScore.waterScore >= 60" 
+                          [class.errorProgressBar]="listing.areaScore.waterScore < 25" 
+                          [class.warningProgressBar]="listing.areaScore.waterScore < 60 && listing.areaScore.waterScore >= 25" 
+                          [style.width]="listing.areaScore.waterScore+'%'"
+                        ></div>
                       </div>
                   </ion-col>
                   <ion-col>
                   <div class="white-text">Sanitation</div>
                   <div class="slider">
-                    <div id="sanitationProgress" class="progress" [style.width]="listing.areaScore.sanitationScore+'%'"></div>
+                    <div 
+                      [class.progress]="listing.areaScore.sanitationScore >= 60" 
+                      [class.errorProgressBar]="listing.areaScore.sanitationScore < 25" 
+                      [class.warningProgressBar]="listing.areaScore.sanitationScore < 60 && listing.areaScore.sanitationScore >= 25" 
+                      [style.width]="listing.areaScore.sanitationScore+'%'"
+                    ></div>
                   </div>
                   </ion-col>
                 </ion-row>
@@ -176,13 +207,23 @@
                   <ion-col>
                   <div class="white-text">Crime</div>
                   <div class="slider">
-                    <div id="crimeProgress" class="progress" [style.width]="listing.areaScore.crimeScore+'%'"></div>
+                    <div 
+                      [class.progress]="listing.areaScore.crimeScore >= 60" 
+                      [class.errorProgressBar]="listing.areaScore.crimeScore < 25" 
+                      [class.warningProgressBar]="listing.areaScore.crimeScore < 60 && listing.areaScore.crimeScore >= 25" 
+                      [style.width]="listing.areaScore.crimeScore+'%'"
+                    ></div>
                   </div>
                   </ion-col>
                   <ion-col>
                   <div class="white-text">School Quality</div>
                   <div class="slider">
-                    <div id="schoolProgress" class="progress" [style.width]="listing.areaScore.schoolScore+'%'"></div>
+                    <div 
+                      [class.progress]="listing.areaScore.schoolScore >= 60"  
+                      [class.errorProgressBar]="listing.areaScore.schoolScore < 25"  
+                      [class.warningProgressBar]="listing.areaScore.schoolScore < 60 && listing.areaScore.schoolScore >= 25" 
+                      [style.width]="listing.areaScore.schoolScore+'%'"
+                    ></div>
                   </div>                  
                   </ion-col>
                 </ion-row>

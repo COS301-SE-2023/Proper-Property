@@ -121,3 +121,17 @@ ion-card ion-card-content {
   border-radius: 5px;
   transition: width 0.3s ease-in-out;
 }
+
+#house_details img {
+  //set image size
+  width: 15px;
+  height: 15px;
+}
+
+.heart-icon {
+  color: red;
+  font-size: 24px;
+  background-color: white;
+  float: right;
+  margin-right: 1%
+}

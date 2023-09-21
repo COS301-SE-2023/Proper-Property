@@ -23,7 +23,6 @@ export class SavedListingsPage implements OnInit {
 
   isMobile = false;
 
-  public savedListings : Listing[] = [];
   public savedListingsB : Listing[] = [];
   public savedListingsR : Listing[] = [];
 
@@ -32,16 +31,18 @@ export class SavedListingsPage implements OnInit {
     private listingServices : ListingsService,
     private router : Router
     ) {
-      this.savedListings = [];
+      // this.savedListings = [];
     this.userProfile$.subscribe((profile) => {
       this.userProfile = profile;
       if(this.userProfile){
         //Todo - Change this to send an array of IDs
         if(this.userProfile && this.userProfile.savedListings){
+          this.savedListingsB = [];
+          this.savedListingsR = [];
           for(const listing of this.userProfile.savedListings){
             this.listingServices.getListing(listing).then((listing) => {
               if(listing){
-                this.savedListings.push(listing);
+                // this.savedListings.push(listing);
 
                 if(listing.let_sell=="Sell")
                 {
@@ -74,40 +75,8 @@ export class SavedListingsPage implements OnInit {
     this.router.navigate(['/listing', {list : listing.listing_id}]);
   }
 
-  isSaved(listing_id : string){
-    if(this.userProfile){
-      if(this.userProfile.savedListings){
-        if(this.userProfile.savedListings.includes(listing_id)){
-          return true;
-        }
-      }
-    }
-    else{
-      console.log("Profile not found");
-    }
-
-    return false;
-  }
-
-  saveListing($event : Event, listing_id : string) {
-    if(listing_id != ''){
-      const heartBut = $event.target as HTMLButtonElement;
-      heartBut.style.color = "red";
-      
-      if(this.userProfile){
-          if(this.userProfile.savedListings){
-            this.userProfile.savedListings.push(listing_id);
-          }
-          else{
-            this.userProfile.savedListings = [listing_id];
-          }
-  
-          this.profileServices.updateUserProfile(this.userProfile);
-      }
-    } 
-  }
-
-  unsaveListing($event : Event, listing_id : string){
+  unsaveListing($event : Event, listing_id : string, side : string){
+    const editedListingArray = side == "buy" ? this.savedListingsB : this.savedListingsR;
     if(listing_id != ''){
       const heartBut = $event.target as HTMLButtonElement;
       heartBut.style.color = "red";
@@ -115,9 +84,11 @@ export class SavedListingsPage implements OnInit {
       if(this.userProfile){
           if(this.userProfile.savedListings){
             this.userProfile.savedListings.splice(this.userProfile.savedListings.indexOf(listing_id), 1);
-            for(const listing of this.savedListings){
+            for(const listing of editedListingArray){
               if(listing.listing_id == listing_id){
-                this.savedListings.splice(this.savedListings.indexOf(listing), 1);
+                editedListingArray.splice(editedListingArray.indexOf(listing), 1);
+                console.log(editedListingArray);
+                console.log(this.savedListingsB);
               }
             }
           }

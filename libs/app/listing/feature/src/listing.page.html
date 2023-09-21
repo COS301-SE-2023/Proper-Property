@@ -68,57 +68,45 @@
         </ion-buttons>
       </div>
 
-      <ion-grid style="width: 80%">
-        <ion-row style="height: 550px">
-          <ion-col>
-            <ion-card class="half-green-container">
-              <ion-grid style="padding-top: 20px; padding-left: 20px">
+    <ion-grid style="width:80%;">
+      <ion-row style="height:550px">
+        <ion-col>
+          <ion-card class="half-green-container">
+            <ion-grid style="padding-top: 20px; padding-left:20px;">
+              <ion-row>
+                <ion-card-title class="house-titles statusBadge {{list.status}}">{{list.status}}</ion-card-title>
+                <ion-button class="save-button" (click)="saveListing()" [ngClass]="{'red': isRed}"
+                  (click)="toggleColor()" ion-tooltip="Save Listing">
+                  <ion-icon name="save" ion-tooltip="Save Listing"></ion-icon>
+                </ion-button>
+              </ion-row>
+              <ion-row>
+                <ion-card-title
+                  class="house-titles"
+                  style="margin-top: 8px; font-size: 25px"
+                  >{{list.bed}} Bedroom, {{list.parking}} Parking Spaces {{list.prop_type}}</ion-card-title
+                >
+              </ion-row>
+              <ion-row>
+                <ion-card-subtitle class="house-subtitles"
+                  >{{list.address}}</ion-card-subtitle
+                >
+              </ion-row>
+              <ng-template [ngIf]="list.let_sell === 'Sell'">
                 <ion-row>
-                  <ion-card-title class="house-titles"
-                    >{{list.prop_type}}</ion-card-title
+                  <ion-card-title class="house-titles" style="margin-top: 8px"
+                    >R {{list.price}}</ion-card-title
                   >
-                  <ion-button
-                    class="save-button"
-                    (click)="saveListing()"
-                    [ngClass]="{'red': isRed}"
-                    (click)="toggleColor()"
-                    ion-tooltip="Save Listing"
-                  >
-                    <ion-icon name="save" ion-tooltip="Save Listing"></ion-icon>
-                  </ion-button>
-                </ion-row>
-                <ion-row>
-                  <ion-card-subtitle class="house-subtitles"
-                    >by {{lister_name}}</ion-card-subtitle
+                  <ion-card-subtitle
+                    class="house-subtitles"
+                    style="
+                      margin-top: 25px;
+                      margin-bottom: 0;
+                      margin-left: 10px;
+                    "
+                    >R {{price_per_sm}}/ m<sup>2</sup></ion-card-subtitle
                   >
                 </ion-row>
-                <ion-row>
-                  <ion-card-title
-                    class="house-titles"
-                    style="margin-top: 8px; font-size: 25px"
-                    >{{list.bed}} Bedroom, {{list.parking}} Parking Spaces House</ion-card-title
-                  >
-                </ion-row>
-                <ion-row>
-                  <ion-card-subtitle class="house-subtitles"
-                    >{{list.address}}</ion-card-subtitle
-                  >
-                </ion-row>
-                <ng-template [ngIf]="list.let_sell === 'Sell'">
-                  <ion-row>
-                    <ion-card-title class="house-titles" style="margin-top: 8px"
-                      >R {{list.price}}</ion-card-title
-                    >
-                    <ion-card-subtitle
-                      class="house-subtitles"
-                      style="
-                        margin-top: 25px;
-                        margin-bottom: 0;
-                        margin-left: 10px;
-                      "
-                      >R {{price_per_sm}}/ m<sup>2</sup></ion-card-subtitle
-                    >
-                  </ion-row>
                 </ng-template>
                 <ng-template [ngIf]="list.let_sell === 'Rent'">
                   <ion-row>
@@ -143,6 +131,11 @@
                       monthly payments below!
                     </div>
                   </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-card-subtitle class="house-subtitles"
+                    >by {{lister_name}}</ion-card-subtitle
+                  >
                 </ion-row>
               </ion-grid>
               <ion-card-title
