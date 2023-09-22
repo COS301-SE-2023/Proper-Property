@@ -234,14 +234,14 @@ export class ListingsRepository {
       }
 
       let loopLimit = 0;
-      let lastListing: Listing | undefined = undefined;
-      let lastQualityRating = 0;
+      // let lastListing: Listing | undefined = undefined;
+      // let lastQualityRating = 0;
       let lastSnapshot: DocumentSnapshot | undefined = undefined 
       while (response.listings.length < 12 && loopLimit < 25) {
         const queryData = await query.get();
         ++loopLimit;
         // queryData.forEach((docSnapshot) => {
-        for(let docSnapshot of queryData.docs){
+        for(const docSnapshot of queryData.docs){
           const data = docSnapshot.data();
           if ( //double eww
               (!req.bath || (req.bath && data.bath >= req.bath))
@@ -256,7 +256,7 @@ export class ListingsRepository {
               && (!req.property_size_max || (req.property_size_max && data.property_size <= req.property_size_max ))
             ))
           ){
-            for (let listing of response.listings) {
+            for (const listing of response.listings) {
               if (listing.listing_id == data.listing_id) {
                 console.log("what");
               }
@@ -268,13 +268,11 @@ export class ListingsRepository {
         }
         if (lastSnapshot)
           query = query.startAfter(lastSnapshot);
-        else
-          console.log("Why the fuck can't this shit await");
       }
     
       return response;
     }
-    catch(e : any){
+    catch(e: any){
       return {status: false, listings: [], error: e.message}
     }
   }

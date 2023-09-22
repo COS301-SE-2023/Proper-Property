@@ -2,13 +2,10 @@
 import * as admin from 'firebase-admin';
 import { Injectable } from '@nestjs/common';
 import { Listing, StatusChangedEvent } from '@properproperty/api/listings/util';
-import { DocumentData, DocumentSnapshot, FieldValue, QueryDocumentSnapshot } from 'firebase-admin/firestore';
-import { Client, PlaceData, PlacesNearbyResponse, PlacesNearbyRequest, GeocodeRequest, RequestParams, Place } from '@googlemaps/google-maps-services-js';
+import { DocumentData, QueryDocumentSnapshot } from 'firebase-admin/firestore';
+import { Client, PlaceData, PlacesNearbyResponse, PlacesNearbyRequest, GeocodeRequest } from '@googlemaps/google-maps-services-js';
 import { GetNearbyPlacesResponse, StoredPlaces } from '@properproperty/api/google-maps/util';
 import { ListingsRepository } from '@properproperty/api/listings/data-access'
-import * as path from 'path';
-// import * as fs from 'fs';
-const fs = require('fs');
 // google.maps.places.PlaceResult
 // scuffed
 function sleep(ms: number) {
@@ -41,7 +38,7 @@ export class GoogleMapsRepository {
     if (pointIDs.length == 0) {
       return { response: []};
     }
-    let snapshot = await admin
+    const snapshot = await admin
       .firestore()
       .collection('pointsOfInterest')
       .where('id', 'in', pointIDs)
@@ -123,7 +120,6 @@ export class GoogleMapsRepository {
   async geocodeAddress(address ?: string){
     const keeeeee = process.env['NX_GOOGLE_MAPS_KEY']
     if(!keeeeee){
-      console.log("OOPSIE WHOOPSIE FUCKY WUCKY")
       return;
     }
     const request : GeocodeRequest = {
@@ -136,7 +132,6 @@ export class GoogleMapsRepository {
   }
 
   async addPOIs(event : StatusChangedEvent){
-    const debugFileLocation = path.join(__dirname, '..', '..', '..', 'debug-files', 'google-maps-repository-addPOIs.json');
     const updates:{
       geometry?: {
         lat: number,
@@ -198,7 +193,7 @@ export class GoogleMapsRepository {
     while (pageFlag && pageCounter < 3) {
       ++pageCounter;
       pageFlag = false;
-      let request: PlacesNearbyRequest = {
+      const request: PlacesNearbyRequest = {
         params:{
           location :{
             lat: geocode.lat, 
@@ -213,7 +208,7 @@ export class GoogleMapsRepository {
       }
       try {
         response = await this.mapsClient.placesNearby(request);
-      } catch (e : any) {
+      } catch (e) {
         console.log("NearbyPlaces Failed: ");
         console.log(e);
         return {status: false, message: e};
@@ -252,8 +247,8 @@ export class GoogleMapsRepository {
     }
 
     let savings = -0.032 * 3;
-    for ( let x = 0; x < this.types.length; ++x) {
-      let BOOl = this.flags[x];
+    for ( let x = 0; x < this.types.length && process.env['NX_ENVIRONMENT']; ++x) {
+      const BOOl = this.flags[x];
       if (BOOl) {
         savings += 0.032;
       }

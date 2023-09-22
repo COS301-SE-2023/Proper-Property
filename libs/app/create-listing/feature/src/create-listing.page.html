@@ -94,12 +94,20 @@
           <ion-item class="ion-container">
             <div class="container">
               <div class="searchInput">
-                <label position="floating" class="house-text">Property District Municipality<span class="required-indicator"
+                <label position="floating" class="house-text">Property District Municipality 
+                  <a href="https://www.dws.gov.za/niwis2/dwq2" target="_blank" rel="noopener">
+                    <ion-icon id="help-icon" name="help-circle-outline"><div class="tooltip">
+                      <!-- <ion-popover trigger="help-icon" triggerAction="hover" show-backdrop="false" ionBackdropDismiss="false">
+                        <ng-template>
+                          <ion-content>
+                            hello there, general kenobi
+                          </ion-content>
+                        </ng-template>
+                      </ion-popover> -->
+                      <span class="tooltiptext">Use the map to determine your WSA district</span>
+                    </div></ion-icon>
+                  </a><span class="required-indicator"
                   *ngIf="!address">*</span>
-                    <div id="districtHelp">
-                      ?
-                    </div>
-                    <span id="districtHelpSpan">Follow <a href="https://www.dws.gov.za/niwis2/dwq2" target="_blank" rel="noopener">this</a> link an determine your district by zooming into the map</span>
                 </label>
                 <input style="font-weight: 500; padding-left:1%" type="text" class="house-text" id="address"
                   [(ngModel)]="district" placeholder="Enter the district of you listing">
@@ -301,16 +309,16 @@
       <ion-row style="width:100%">
         <ng-container *ngIf="!ownerViewing; else ownerView">
           <ion-button (click)="addListing('create')"
-          [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">SUBMIT
+          [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking||!district">SUBMIT
           LISTING</ion-button>
         </ng-container>
         <ng-template #ownerView>
           <ion-button (click)="editListing()"
-          [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">SUBMIT EDITS
+          [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking||!district">SUBMIT EDITS
           </ion-button>
         </ng-template>&nbsp;&nbsp;
         <ion-button (click)="addListing('save')"
-        [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">DRAFT
+        [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking||!district">DRAFT
         LISTING</ion-button>
       </ion-row>
     </ion-row>

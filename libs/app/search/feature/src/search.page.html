@@ -15,10 +15,17 @@
 
     <div [ngSwitch]="activeTab">
 
-      <ion-row style="width: 100%;">
+      <ion-row style="width: 100%;" id="search-row">
         <ion-row id="searchBar" style="width: 100%;">
           <ion-col size="10">
-            <input type="text" id="address" class="address" [(ngModel)]="searchQuery" placeholder="search">
+            <ion-input type="text" (ionInput)="handleInputChange($event)" id="address" class="address" [(ngModel)]="searchQuery" placeholder="search"></ion-input>
+            <ion-list *ngIf="predictionDisplay()" class="prediction-result-list">
+              <ion-item class="prediction-result" (click)="replaceInputText($event,prediction.description)" *ngFor="let prediction of predictions">
+                <!-- <a href="#" class="prediction-button"> -->
+                  <ion-icon name="search-outline"></ion-icon>{{ prediction.description }}
+                <!-- </a> -->
+              </ion-item>
+            </ion-list>
           </ion-col>
           <ion-col>
             <ion-button class="search-button" (click)="searchProperties()">Search</ion-button>
@@ -486,16 +493,6 @@
             {{listing.property_size}} m<sup>2</sup>
           </div>
         </ion-card-content>
-        <!-- <ng-template [ngIf]="isSaved(listing.listing_id ?? '')" [ngIfElse]="notSaved">
-          <button style="float: right; margin-right: 1%" (click)="unsaveListing($event, listing.listing_id ?? '')">
-            <ion-icon name="heart" class="heart-icon" style="color: red"></ion-icon>
-          </button>
-        </ng-template>
-        <ng-template #notSaved>
-          <button style="float: right; margin-right: 1%" (click)="saveListing($event, listing.listing_id ?? '')">
-            <ion-icon name="heart" class="heart-icon" style="color: black"></ion-icon>
-          </button>
-        </ng-template> -->
       
     </ion-card>
     </ion-row>

@@ -14,31 +14,4 @@ export class GoogleMapsSagas {
         )
       );
     };
-    
-    // @Saga()
-    // onNotification = (events$: Observable<any>): Observable<ICommand> => {
-    //   return events$.pipe(
-    //     ofType(ApprovalChangeNotifiedEvent),
-    //     map(
-    //       (event: ApprovalChangeNotifiedEvent) => {
-    //         console.log("onNotificationSaga firing")
-    //         const ev = new StatusChangedEvent(
-    //           "fuck this",
-    //           {
-    //             adminId: "some guy",
-    //             status: StatusEnum.DENIED,
-    //             date:"0001-01-01"
-    //           },
-    //           "fuck this also",
-    //           {
-    //             status: StatusEnum.DENIED,
-    //             listingId: "fuck this",
-    //           },
-    //           "123 eat my ass Street, shittertonville"
-    //         )
-    //         return new AddPOICommand(ev);
-    //       }
-    //     )
-    //   );
-    // };
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { QueryBus } from '@nestjs/cqrs';
 import { 
   SearchListingsRequest, 
   SearchListingsResponse, 
@@ -10,7 +10,6 @@ import {
 export class SearchService {
   constructor(
     private readonly queryBus: QueryBus,
-    private readonly commandBus: CommandBus
   ) {}
 
   searchListings(req: SearchListingsRequest): Promise<SearchListingsResponse> {

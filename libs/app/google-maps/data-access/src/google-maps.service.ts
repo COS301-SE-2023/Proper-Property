@@ -12,13 +12,16 @@ import { GetNearbyPlacesRequest, GetNearbyPlacesResponse, StoredPlaces } from '@
   providedIn: 'root'
 })
 export class GmapsService {
-  constructor(@Inject(API_KEY_TOKEN) private key: string
-  ,private readonly functions: Functions) { }
+  constructor(
+    @Inject(API_KEY_TOKEN) private key: string,
+    private readonly functions: Functions
+  ) {}
   geocoder!: google.maps.Geocoder;
   geometry!: google.maps.GeometryLibrary;
   autocompleteService!: google.maps.places.AutocompleteService;
   nearby!: google.maps.places.PlacesService;
 
+  timeout: NodeJS.Timeout | undefined = undefined;
   //for create-listing
   setupSearchBox(elementId: string): Promise<any> {
     
@@ -65,19 +68,13 @@ export class GmapsService {
   }
 
   // TODO refactor into using radius
-  async checkAddressInArea(address1: string, listingGeometry: google.maps.LatLngLiteral): Promise<boolean> {
-    return Promise.all([
-      this.geocodeAddress(address1),
-    ]).then(([location1]) => {
-      if (location1) {
-        const area1 = location1.geometry?.viewport;
-        const point2 = listingGeometry;
-        if (area1 && point2) {
-          return area1.contains(point2);
-        }
+  async checkAddressInArea(areaBounds: google.maps.LatLngBounds, listingGeometry: google.maps.LatLngLiteral): Promise<boolean> {
+      const area1 = areaBounds;
+      const point2 = listingGeometry;
+      if (area1 && point2) {
+        return area1.contains(point2);
       }
-      return false;
-    });
+    return false;
   }
 
   geocodeAddress(address: string): Promise<google.maps.GeocoderResult | null> {
@@ -101,7 +98,7 @@ export class GmapsService {
   //for create-listing
   async handleInput(input: HTMLInputElement, defaultBounds: google.maps.LatLngBounds): Promise<void> {
     if (!this.autocompleteService) {
-      return;
+      this.autocompleteService = new (await this.loadGoogleMaps()).places.AutocompleteService();
     }
     await this.autocompleteService.getPlacePredictions(
       {
@@ -139,20 +136,24 @@ export class GmapsService {
 
 
   //for search
-  getRegionPredictions(input: string, bounds: google.maps.LatLngBounds): void {
-    this.autocompleteService.getPlacePredictions(
-      {
+  async getRegionPredictions(input: string): Promise<void> {
+    if (!this.autocompleteService) {
+      // I'm sorry about this. It makes me feel gross too.
+      this.autocompleteService = new (await this.loadGoogleMaps()).places.AutocompleteService();
+    }
+    return new Promise<void>((resolve, reject) => {
+      this.autocompleteService.getPlacePredictions({
         input: input,
-        bounds: bounds,
         types: ['(regions)'], // Include only regions
         componentRestrictions: { country: 'ZA' } // Replace 'your_country_code' with the appropriate country code
       },
       (regionPredictions: google.maps.places.AutocompletePrediction[] | null, status: google.maps.places.PlacesServiceStatus) => {
         if (status === google.maps.places.PlacesServiceStatus.OK && regionPredictions) {
           this.regionPredictions = regionPredictions;
+          resolve();
         }
-      }
-    );
+      });
+    });
   }
   
 
@@ -174,9 +175,15 @@ export class GmapsService {
       const searchBox = new maps.places.Autocomplete(input, options);
   
       input.addEventListener('input', () => {
-   
-  
-          this.handleRegionInput(input, defaultBounds);
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+          if(input.value.length <=0){
+            this.predictions = [];
+          }
+          else {
+            this.handleRegionInput(input, defaultBounds); 
+          }
+        }, 5000);
   
         });
 
@@ -432,18 +439,18 @@ toRad(degrees: number): number {
 }
 calculateDistanceInMeters(lat1: number, lon1: number, lat2: number, lon2: number): number {
     //https://en.wikipedia.org/wiki/Haversine_formula
-    let latDelta = this.toRad(lat2 - lat1);
-    let lonDelta = this.toRad(lon2 - lon1);
-    let sinLat = Math.sin(latDelta/2);
-    let sinLon = Math.sin(lonDelta/2);
+    const latDelta = this.toRad(lat2 - lat1);
+    const lonDelta = this.toRad(lon2 - lon1);
+    const sinLat = Math.sin(latDelta/2);
+    const sinLon = Math.sin(lonDelta/2);
     // 1.42
-    let _2Radius = 2 * 6378137;
-    let a = sinLat * sinLat + 
+    const _2Radius = 2 * 6378137;
+    const a = sinLat * sinLat + 
             Math.cos(this.toRad(lat1)) * Math.cos(this.toRad(lat2)) * 
             sinLon * sinLon;
 
-    let c = Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    let d = _2Radius * c;
+    const c = Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    const d = _2Radius * c;
 
     return d;
 }

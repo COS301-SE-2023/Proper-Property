@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
   templateUrl: './admin.page.html',
   styleUrls: ['./admin.page.scss'],
 })
-export class AdminPage{
+export class AdminPage implements OnInit{
 
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;

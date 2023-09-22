@@ -1,5 +1,4 @@
 import * as admin from 'firebase-admin';
-import { Injectable } from '@nestjs/common';
 import { SearchListingsRequest, SearchListingsResponse } from '@properproperty/api/search/util';
 import { 
   FindPlaceFromTextRequest,
@@ -10,8 +9,6 @@ import { PlaceDetailsResponseData, PlaceDetailsRequest } from '@googlemaps/googl
 import { Client } from '@googlemaps/google-maps-services-js';
 import { PlaceInputType } from '@googlemaps/google-maps-services-js/dist/common';
 import { Listing } from '@properproperty/api/listings/util';
-import  axios from 'axios';
-import { AxiosResponse } from 'axios';
 export class SearchRepository {
   async searchListings(req: SearchListingsRequest): Promise<SearchListingsResponse>{
     console.log(process.env);

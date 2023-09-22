@@ -13,9 +13,7 @@ import {
 } from '@angular/core';
 import { 
   ActionSheetController, 
-  RangeCustomEvent, 
-  IonContent,
-  IonCard
+  IonContent
 } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
@@ -26,6 +24,7 @@ import { Unsubscribe } from '@angular/fire/auth';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { ActivatedRoute } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 // import { IonContent } from '@ionic/angular';
 
 @Component({
@@ -39,7 +38,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   isMobile = true;
   MapView = true ;
   autocomplete: any;
-  defaultBounds: google.maps.LatLngBounds;
+  // defaultBounds: google.maps.LatLngBounds;
   predictions: google.maps.places.AutocompletePrediction[] = [];
 
   @ViewChild('map', { static: false }) mapElementRef!: ElementRef;
@@ -48,7 +47,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   
   googleMaps: any;
   // center = { lat: -25.7477, lng: 28.2433 };
-  private center = { lat: 0, lng: 0 };
+  private center = { lat: -25.7477, lng: 28.2433 };
   private map: any;
   private mapClickListener: any;
   private markerClickListener: any;
@@ -80,10 +79,13 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   private userProfileListener: Unsubscribe | null = null;
 
   async setCentre(coordinates?: google.maps.LatLngLiteral) {
+    console.log(this.listings);
     if(coordinates){
+      console.log("Setting center with coords")
       this.center = coordinates;
     }
-    else if (this.searchQuery == '' && this.listings.length > 0) {
+    else if (!this.searchQuery && this.listings.length > 0) {
+      console.log("Getting average");
       const geoSum = {
         lat: 0,
         lng: 0
@@ -97,7 +99,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
       this.center = geoSum;
     }
-    else if (this.searchQuery != '') {
+    else if (this.searchQuery) {
       const coord = await this.gmapsService.geocodeAddress(this.searchQuery);
       if (coord) {
         this.center.lat = coord.geometry.location.lat();
@@ -105,7 +107,9 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
         this.center.lng = coord.geometry.location.lng();
       }
     }
-    
+    else {
+      console.warn("Yo what '",this.searchQuery, "' ", this.listings.length);
+    }
     if (this.map) {
       this.map.setCenter(new this.googleMaps.LatLng(this.center.lat ?? -25.7477, this.center.lng ?? 28.2433));
     }
@@ -120,10 +124,12 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     private router: Router,
     private listingServices: ListingsService,
     public gmapsService: GmapsService,
-    private profileServices : UserProfileService
+    private profileServices : UserProfileService,
+    private toastController: ToastController
     ) {
       this.predictions = [];
-      this.defaultBounds = new google.maps.LatLngBounds();
+      // this.defaultBounds = new google.maps.LatLngBounds();
+      
 
       this.userProfile$.subscribe((profile) => {
         this.userProfile = profile;
@@ -156,6 +162,9 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       this.isMobile = window.innerWidth <= 576;
   }
     
+  predictionDisplay() {
+    return this.predictions.length > 0;
+  }
   async ngOnInit() {
     // await this.listingServices.getApprovedListings().then((listings) => {
     //   this.listings = listings;
@@ -181,11 +190,30 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   }
 
   // TODO add input latency to reduce api calls
-  handleInputChange(event: Event): void {
-    return;
+  timeout: NodeJS.Timeout | undefined = undefined;
+  async handleInputChange(event: Event) {
+    // console.log(event.target as HTMLInputElement);
+    // return;
     // const input = event.target as HTMLInputElement;
     // this.gmapsService.handleRegionInput(input, this.defaultBounds);
     // this.predictions = this.gmapsService.regionPredictions;
+    // if timeout is already set, reset remaining duration
+    clearTimeout(this.timeout);
+    // set timeout to get predictions after 1.5 seconds
+    this.timeout = setTimeout(() => {
+      const input = event.target as HTMLInputElement;
+ 
+      if(input.value.length <=0){
+        this.predictions = [];
+      }
+      else {
+        this.gmapsService.getRegionPredictions(input.value).then(() => {
+          this.predictions = this.gmapsService.regionPredictions;
+        });
+      }
+      // clear timeout after execution
+      this.timeout = undefined;
+    }, 1000);
   }
 
   replaceInputText(event: MouseEvent | undefined, prediction: string) {
@@ -212,7 +240,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     console.log(this.listings);
 
     const inputElementId = this.isMobile ? 'address1' : 'address';
-    this.gmapsService.setupRegionSearchBox(inputElementId);
+    // this.gmapsService.setupRegionSearchBox(inputElementId);
 
     const queryParams = this.route.snapshot.queryParams;
     this.searchQuery = queryParams['q'] || ''; // If 'q' parameter is not available, default to an empty string.
@@ -226,7 +254,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     // await this.addMarkersToMap();
     // this.filterProperties();
     this.searchProperties();
-    this.addMarkersToMap();
+    // this.addMarkersToMap();
   }
 async loadMap() {
   try {
@@ -256,7 +284,7 @@ async loadMap() {
       this.renderer.addClass(mapEl, 'visible');
 
       // Generate info window content for each listing
-      const infoWindowContent = this.listings.map((listing) =>
+      this.listings.map((listing) =>
         this.createListingCard(listing)
       );
 
@@ -289,9 +317,6 @@ async loadMap() {
     const infoWindow = new googleMaps.InfoWindow({
       content: this.createListingCard(listing),
     });
-    infoWindow.closeClick = () => {
-      infoWindow.close();
-    }
     
     // Add a click event listener to the marker
     googleMaps.event.addListener(marker, 'click', () => {
@@ -302,13 +327,17 @@ async loadMap() {
     // Add a click event listener to the info window
     infoWindow.addListener('domready', () => {
       const infoWindowElement = document.querySelector('.marker-card');
+      const dumbButton = document.querySelector('.gm-ui-hover-effect');
+      if (dumbButton) {
+        dumbButton.addEventListener('click', (event: Event) => {
+          event.stopPropagation();
+          // infoWindow.close();
+        });
+        return;
+      }
       if (infoWindowElement) {
         infoWindowElement.addEventListener('click', (event: Event) => {
           event.stopPropagation();
-          // console.log(event);
-          // if (event.target != event.currentTarget) {
-          //   return;
-          // }
           this.mapMarkerClicked(event,infoWindowElement.getAttribute( "data-id") ?? ""); // Call the navigateToPropertyListingPage function with the marker's listing object
         });
       }
@@ -317,79 +346,14 @@ async loadMap() {
     this.markers.push(marker);
   }
   mapMarkerClicked(event: Event, listingId?: string) {
+    const el = event.target as HTMLElement;
+    console.log(el);
     event.stopPropagation();
     if (listingId) {
       this.router.navigate(['/listing', { list: listingId }]);
     }
   }
   createListingCard(listing: Listing): any {
-    // <ion-card style="max-width: 250px; max-height: 300px;" (click)="mapMarkerClicked($event, ${listing.listing_id})">
-    // const card = this.renderer.createElement("ion-card");
-    // this.renderer.addClass(card, "marker-card");
-    // this.renderer.setAttribute(card, "style", "max-width: 250px; max-height: 300px;");
-    // this.renderer.listen(card,"click", (event: Event) => {
-    //   event.stopPropagation();
-    //   this.mapMarkerClicked(event, listing.listing_id);
-    // });
-    // // <ion-card-header style="padding: 0;">
-    // const header = this.renderer.createElement("ion-card-header");
-    // this.renderer.setAttribute(header, "style", "padding: 0;");
-    // this.renderer.addClass(header, "marker-header");
-    // // <img src="${listing.photos[0]}" alt="Listing Image" style="max-width: 100%; max-height: 80px;">
-    // const imgHead = this.renderer.createElement("img");
-    // this.renderer.addClass(header, "marker-listing-image");
-    // this.renderer.setAttribute(imgHead, "src", listing.photos[0]);
-    // this.renderer.setAttribute(imgHead, "alt", "Listing Image");
-    // this.renderer.setAttribute(imgHead, "style", "max-width: 100%; max-height: 80px;");
-
-    // // <ion-card-content style="padding: 0.5rem;">
-    // const cardContent = this.renderer.createElement("ion-card-content");
-    // this.renderer.setAttribute(cardContent, "style", "padding: 0.5rem;");
-    // this.renderer.addClass(cardContent, "marker-content");
-    // // <ion-card-title style="font-size: 1rem; line-height: 1.2; margin-bottom: 0.5rem;">${listing.prop_type}</ion-card-title>
-    // const cardTitle = this.renderer.createElement("ion-card-title");
-    // this.renderer.addClass(header, "marker-title");
-    // this.renderer.setAttribute(cardTitle, "style", "font-size: 1rem; line-height: 1.2; margin-bottom: 0.5rem;");
-    // this.renderer.setProperty(cardTitle, "innerHTML", listing.prop_type);
-    // // <ion-card-subtitle style="color: #0DAE4F; font-size: 0.9rem; line-height: 1;">R ${listing.price}</ion-card-subtitle>
-    // const cardSubTitle = this.renderer.createElement("ion-card-subtitle");
-    // this.renderer.addClass(header, "marker-subtitle");
-    // this.renderer.setAttribute(cardSubTitle, "style", "color: #0DAE4F; font-size: 0.9rem; line-height: 1;");
-    // this.renderer.setProperty(cardSubTitle, "innerHTML", `R ${listing.price}`);
-    // // <div id="house_details" style="font-size: 0.8rem; line-height: 1.2;">
-    // const cardDiv = this.renderer.createElement("div");
-    // this.renderer.addClass(cardDiv, "house_details");
-    // this.renderer.addClass(cardDiv, "marker-details");
-    // this.renderer.setAttribute(cardDiv, "style", "font-size: 0.8rem; line-height: 1.2;");
-    // this.renderer.setProperty(cardDiv, "innerHTML", `
-    //   <img class="marker-icon" src="assets/icon/bedrooms.png" style="max-width: 7.5px; height: auto;">
-    //   ${listing.bed}
-    //   &nbsp; &nbsp;&nbsp;
-    //   <img class="marker-icon" src="assets/icon/bathrooms.png" style="max-width: 7.5px; height: auto;">
-    //   ${listing.bath}
-    //   &nbsp; &nbsp;&nbsp;
-    //   <img class="marker-icon" src="assets/icon/floorplan.png" style="max-width: 7.5px; height: auto;">
-    //   ${listing.floor_size} m<sup>2</sup>
-    //   &nbsp; &nbsp;&nbsp;
-    //   <img class="marker-icon" src="assets/icon/erf.png" style="max-width: 7.5px; height: auto;">
-    //   ${listing.property_size} m<sup>2</sup>`
-    // );
-    //   this.renderer.appendChild(header, imgHead);
-    //   this.renderer.appendChild(card, header);
-      
-    //   this.renderer.appendChild(cardContent, cardTitle);
-    //   this.renderer.appendChild(cardContent, cardSubTitle);
-    //   this.renderer.appendChild(cardContent, cardDiv);
-    //   this.renderer.appendChild(card, cardContent);
-    // console.log(card);
-    // return card;
-    // const imgContent = this.renderer.createElement("img");
-    // this.renderer.setAttribute(imgContent, "src", "assets/icon/bedrooms.png");
-    // this.renderer.setAttribute(imgContent, "alt", "Listing Image");
-    // this.renderer.setAttribute(imgContent, "style", "max-width: 100%; max-height: 80px;");
-
-    // console.log(card);
-    // return card;
     return `
     <ion-card data-id="${listing.listing_id}"class="marker-card" style="max-width: 250px; max-height: 300px;" (click)="mapMarkerClicked($event, ${listing.listing_id})">
       <ion-card-header style="padding: 0;">
@@ -507,20 +471,44 @@ async loadMap() {
     const response = (await this.listingServices.getFilteredListings(request));
     console.log(response);
     this.allListings = [];
-    if(response.status){
-      this.allListings = response.listings;
 
-      // TODO filter
+
+    // TODO filter
+    if(!response.listings.length){
+      const toast = await this.toastController.create({
+        message: 'No listings returned',
+        duration: 3000, // Duration in milliseconds
+        color: 'danger', // Use 'danger' to display in red
+        position: 'bottom' // Position of the toast: 'top', 'middle', 'bottom'
+      });
+      toast.present();
+      return;
+    }
+    const areaBounds = this.searchQuery?  await this.gmapsService.geocodeAddress(this.searchQuery) : null;
+    if (areaBounds) {
+      for(let listing of response.listings){
+        const isInArea = await this.gmapsService.checkAddressInArea(areaBounds.geometry.viewport, listing.geometry)
+        if(isInArea){
+          this.allListings.push(listing);
+        }
+      }
+    } else {
+      this.allListings = response.listings;
+    }
+    console.warn("Oh boy I sure do hope that the listings get filtered");
+    if(this.allListings){
+      console.log("Yo");  
       this.filterProperties();
-      this.setCentre();
-      this.loadMap();
+      await this.loadMap();
+      await this.addMarkersToMap();
+      await this.setCentre();
       // await this.addMarkersToMap();
     }
   }
 
   async addMarkersToMap() {
-    console.log(this.listings)
-    for (let listing of this.listings) {
+    // console.log(this.listings)
+    for (const listing of this.listings) {
       const coordinates = listing.geometry
       if (coordinates) {
         this.addMMarker(listing);
@@ -529,7 +517,7 @@ async loadMap() {
   }
 
 addMMarker(listing: Listing) {
-  console.log(listing);
+  // console.log(listing);
   const googleMaps: any = this.googleMaps;
   // const icon = {
   //   url: 'assets/icon/locationpin.png',
@@ -552,12 +540,16 @@ addMMarker(listing: Listing) {
       // this.navigateToPropertyListingPage(marker.listing);
     });
 
-    // Add a click event listener to the info window
     infoWindow.addListener('domready', () => {
-      const infoWindowElement = document.querySelector('.gm-style-iw');
+      const infoWindowElement = document.querySelector('.marker-card');
       if (infoWindowElement) {
-        infoWindowElement.addEventListener('click', () => {
-          this.redirectToPage(listing); // Call the navigateToPropertyListingPage function with the marker's listing object
+        infoWindowElement.addEventListener('click', (event: Event) => {
+          event.stopPropagation();
+          // console.log(event);
+          // if (event.target != event.currentTarget) {
+          //   return;
+          // }
+          this.mapMarkerClicked(event,infoWindowElement.getAttribute( "data-id") ?? ""); // Call the navigateToPropertyListingPage function with the marker's listing object
         });
       }
     });
@@ -577,28 +569,9 @@ addMMarker(listing: Listing) {
   this.features= [];
 }
 
-
-// activeTab = 'all';
-// searchQuery = '';
-// selectedPropertyType = '';
-// selectedMinPrice = 0;
-// selectedMaxPrice = 0;
-// selectedBedrooms = 0;
-// showAdditionalFilters = false;
-// selectedBathrooms = 0;
-// selectedParking = 0;
-// selectedAmenities: string[] = [];
-
-// properties: Property[] = [
-//   { title: 'House 1', type: 'house', price: 100000, bedrooms: 3 },
-//   { title: 'Apartment 1', type: 'apartment', price: 1500, bedrooms: 2 },
-//   { title: 'Condo 1', type: 'condo', price: 2000, bedrooms: 1 },
-//   // Add more properties here
-// ];
-
   get filteredBuyingProperties(): Listing[] {
     const filteredListings: Listing[] = [];
-    for (let listing of this.allListings) {
+    for (const listing of this.allListings) {
       if (listing.let_sell == 'Sell') {
         filteredListings.push(listing)
       }
@@ -609,7 +582,7 @@ addMMarker(listing: Listing) {
 
   get filteredRentingProperties(): Listing[] {
     const filteredListings: Listing[] = [];
-    for (let listing of this.allListings) {
+    for (const listing of this.allListings) {
       if (listing.let_sell == 'Rent') {
         filteredListings.push(listing)
       }
@@ -709,55 +682,6 @@ sortListings() {
     }
   }
 
-  //Save listing
-  isSaved(listing_id: string) {
-    if (this.profile) {
-      if (this.profile.savedListings) {
-        if (this.profile.savedListings.includes(listing_id)) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
-  saveListing($event: any, listing_id: string) {
-    if (listing_id != '') {
-      const heartBut = $event.target as HTMLButtonElement;
-      heartBut.style.color = 'red';
-
-      if (this.profile) {
-        if (this.profile.savedListings) {
-          this.profile.savedListings.push(listing_id);
-        } else {
-          this.profile.savedListings = [listing_id];
-        }
-
-        this.profileServices.updateUserProfile(this.profile);
-      }
-    }
-  }
-
-  unsaveListing($event: any, listing_id: string) {
-    if (listing_id != '') {
-      const heartBut = $event.target as HTMLButtonElement;
-      heartBut.style.color = 'red';
-
-      if (this.profile) {
-        if (this.profile.savedListings) {
-          this.profile.savedListings.splice(
-            this.profile.savedListings.indexOf(listing_id),
-            1
-          );
-        }
-
-      if(this.userProfile){
-        this.profileServices.updateUserProfile(this.userProfile);
-      }
-    }
-  } 
-}
 clicked = false;
 dropDown(){
 

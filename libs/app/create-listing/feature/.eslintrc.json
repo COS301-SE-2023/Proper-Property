@@ -8,7 +8,6 @@
         "project": ["apps/app/tsconfig.*?.json"]
       },
       "rules": {
-        "@typescript-eslint/no-explicit-any": 0,
         "@angular-eslint/directive-selector": [
           "error",
           {

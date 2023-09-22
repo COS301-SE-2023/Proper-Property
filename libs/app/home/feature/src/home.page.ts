@@ -5,6 +5,7 @@ import { UserProfile } from '@properproperty/api/profile/util';
 import Swiper from 'swiper';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { Router } from '@angular/router';
+import { LatLngBounds } from '@google/maps';
 
 // import { Storage, ref } from '@angular/fire/storage';
 // import { uploadBytes } from 'firebase/storage';
@@ -23,7 +24,7 @@ export class HomePage implements OnInit {
   // public autocomplete: any;
 
   public predictions: google.maps.places.AutocompletePrediction[] = [];
-
+  predictionsLoading = false;
 
   @ViewChild('swiper')
   swiperRef: ElementRef | undefined;
@@ -32,7 +33,9 @@ export class HomePage implements OnInit {
   swiperSlideChanged(e:Event) {
     console.log('changed', e)
   }
-
+  predictionDisplay() {
+    return this.predictions.length > 0;
+  }
   
   public home!: string;
   private activatedRoute = inject(ActivatedRoute);
@@ -62,16 +65,13 @@ export class HomePage implements OnInit {
   
     let inputElementId = '';
 
-    if(!this.isMobile) {
-      inputElementId = 'query';
-      this.gmapsService.setupRegionSearchBox(inputElementId);
-    } else {
-      inputElementId = 'query1';
-      this.gmapsService.setupRegionSearchBox(inputElementId);
-    }
-
-    
-
+    // if(!this.isMobile) {
+    //   inputElementId = 'query';
+    //   this.gmapsService.setupRegionSearchBox(inputElementId);
+    // } else {
+    //   inputElementId = 'query1';
+    //   this.gmapsService.setupRegionSearchBox(inputElementId);
+    // }
   }
 
   @HostListener('window:resize', ['$event'])
@@ -93,6 +93,50 @@ export class HomePage implements OnInit {
 
     // Redirect to the search page with the search query as a parameter
     this.router.navigate(['/search'], { queryParams: { q: this.searchQuery } });
+  }
+
+  timeout: NodeJS.Timeout | undefined = undefined;
+  async handleInputChange(event: Event) {
+    this.predictionsLoading = true;
+    // console.log(event.target as HTMLInputElement);
+    // return;
+    // const input = event.target as HTMLInputElement;
+    // this.gmapsService.handleRegionInput(input, this.defaultBounds);
+    // this.predictions = this.gmapsService.regionPredictions;
+    // if timeout is already set, reset remaining duration
+    clearTimeout(this.timeout);
+    // set timeout to get predictions after 1.5 seconds
+    if (this.searchQuery.length == 0) {
+      this.predictions = [];
+      this.predictionsLoading = false;
+    }
+    this.timeout = setTimeout(() => {
+      const input = event.target as HTMLInputElement;
+ 
+      if(input.value.length <=0){
+        this.predictions = [];
+        this.predictionsLoading = false;
+      }
+      else {
+        this.gmapsService.getRegionPredictions(input.value).then(() => {
+          this.predictions = this.gmapsService.regionPredictions;
+        this.predictionsLoading = false;
+        });
+      }
+      // clear timeout after execution
+      this.timeout = undefined;
+    }, 1000);
+  }
+
+  replaceInputText(event: MouseEvent | undefined, prediction: string) {
+    // this.address = prediction;
+    //set the text in HTML element with id=hello to predictions
+    if (event) {
+      event.preventDefault(); // Prevent the default behavior of the <a> tag
+    }
+
+    this.searchQuery = prediction;
+    this.predictions = [];
   }
   // swiperReady() {
   //   this.swiper = this.swiperRef?.nativeElement.swiper;

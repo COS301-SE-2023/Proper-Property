@@ -1,6 +1,6 @@
 
 import { areaScore } from '@properproperty/api/listings/util';
-import { StatusEnum } from '../enums/status.enum';
+// import { StatusEnum } from '../enums/status.enum';
 
 export interface GetFilteredListingsRequest {
   address?: string;

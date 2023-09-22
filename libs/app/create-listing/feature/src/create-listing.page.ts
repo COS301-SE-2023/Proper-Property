@@ -1,4 +1,7 @@
-import { Component, OnInit , ViewChild, ElementRef,HostListener, isDevMode} from '@angular/core';
+// eslint-disable-next-line
+/// <reference types="@types/google.maps" />
+
+import { Component , ViewChild, ElementRef,HostListener, isDevMode} from '@angular/core';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { Listing, StatusEnum } from '@properproperty/api/listings/util';
 import { ListingsService } from '@properproperty/app/listing/data-access';
@@ -10,7 +13,6 @@ import { User } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { FormControl } from '@angular/forms';
-
 import { map, startWith } from 'rxjs/operators'
 
 
@@ -20,7 +22,7 @@ import { map, startWith } from 'rxjs/operators'
   styleUrls: ['./create-listing.page.scss'],
   
 })
-export class CreateListingPage {
+export class CreateListingPage{
 
 
   @ViewChild('inputElement', { static: false }) inputElement!: ElementRef;
@@ -35,9 +37,9 @@ export class CreateListingPage {
   @ViewChild('address', { static: false }) addressInput!: ElementRef<HTMLInputElement>;
 
   @Select(AuthState.user) user$!: Observable<User | null>;
-  // autocomplete: any;
-  defaultBounds: google.maps.LatLngBounds;
-  predictions: google.maps.places.AutocompletePrediction[] = [];
+  // autocomplete: any;;
+  maps: any;
+  predictions: any[] = [];
   isMobile = false;
   currentUser: User | null = null;
   description = "";
@@ -79,6 +81,9 @@ export class CreateListingPage {
     private readonly store: Store,
     private route: ActivatedRoute,
   ) {
+    this.gmapsService.loadGoogleMaps().then((maps) => {
+      this.maps = maps;
+    });
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value))
@@ -90,7 +95,7 @@ export class CreateListingPage {
     this.address="";
     this.floor_size=this.price=this.erf_size=this.bathrooms=this.bedrooms=this.parking=0;
     this.predictions = [];
-    this.defaultBounds = new google.maps.LatLngBounds();
+    // this.defaultBounds = new google.maps.LatLngBounds();
     if (isDevMode()) {
       this.address = "123 Fake Street";
       this.price = 1000000;
@@ -164,28 +169,28 @@ onResize(event: Event) {
 
   timeout : NodeJS.Timeout | undefined;
   async handleInputChange(event: Event): Promise<void> {
-    return;
-    // TODO uncomment
-    // if(this.timeout){
-    //   this.timeout.refresh();
-    //   return;
-    // }
-    // this.timeout = setTimeout(() => {
-    //   const input = event.target as HTMLInputElement;
+    console.log("handleInput");
+    this.maps = this.maps ?? await this.gmapsService.loadGoogleMaps();
+    console.log(this.maps);
+    // return;
+    // Ur going 100 in a 60 zone, buddy
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      console.log("timeout");
+      const input = event.target as HTMLInputElement;
  
-    //   if(input.value.length <=0){
-    //     this.predictions = [];
-    //   }
-    //   else {
-    //     this.gmapsService.handleInput(input, this.defaultBounds).then(() => {
-    //       this.predictions = this.gmapsService.predictions;
-    //       this.address = input.value;
+      if(input.value.length <=0){
+        this.predictions = [];
+      }
+      else {
+        this.gmapsService.handleInput(input, new this.maps.LatLngBounds()).then(() => {
+          this.predictions = this.gmapsService.predictions;
+          // this.address = input.value;
           
-    //       this.handleAddressChange(input.value);
-    //     });
-    //   }
-    //   this.timeout = undefined;
-    // }, 1500);
+          // this.handleAddressChange(input.value);
+        });
+      }
+    }, 1500);
   }
   
   
@@ -221,9 +226,9 @@ onResize(event: Event) {
     
   }
 
-handleAddressChange(address: string): void {
-   this.address = address;
-}
+// handleAddressChange(address: string): void {
+//    this.address = address;
+// }
 
 
   handleFileInput(event: Event) {
@@ -402,8 +407,7 @@ handleAddressChange(address: string): void {
       this.env_type,
       this.prop_type,
       this.furnish_type,
-      this.orientation,
-      this.gmapsService
+      this.orientation
     );
   
     if(this.currentUser != null){
@@ -572,7 +576,6 @@ handleAddressChange(address: string): void {
     prop_type:string,
     furnish_type:string,
     orientation:string,
-    gmapsService: GmapsService
   ): Promise<number>{
     let score = 0;
     if(price){

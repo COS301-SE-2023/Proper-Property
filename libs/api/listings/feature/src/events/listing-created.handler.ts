@@ -7,6 +7,6 @@ export class ListingCreatedHandler implements IEventHandler<ListingCreatedEvent>
   constructor(private readonly listingRepo: ListingsRepository) {}
 
   async handle(event: ListingCreatedEvent) {
-    console.log(ListingCreatedHandler.name);
+    console.log(ListingCreatedHandler.name + " ", event);
   }
 }

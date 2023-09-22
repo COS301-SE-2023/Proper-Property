@@ -2,7 +2,7 @@
 
 
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
@@ -56,7 +56,7 @@ export class MyListingsPage  implements OnInit, OnDestroy  {
     const user_listings: Listing[] = [];
 
     //for i = 0; i< listings size i++
-    for (let listing of this.listings) {
+    for (const listing of this.listings) {
       //get the user_id of the listing
       const user_ID = listing.user_id;
       //declare a listing[] array

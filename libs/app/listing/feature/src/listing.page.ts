@@ -12,7 +12,6 @@ import { Chart, registerables } from 'chart.js';
 import { Unsubscribe } from 'firebase/auth';
 import { IonContent } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
-import { GeocodeRequest } from '@googlemaps/google-maps-services-js';
 
 register();
 export interface GetAnalyticsDataRequest {
@@ -160,15 +159,11 @@ export class ListingPage implements OnDestroy {
     const loader = document.querySelector(".graph-animation") as HTMLElement;
     loader.style.display = "block";
     const request: GetAnalyticsDataRequest = { listingId: this.list?.listing_id ?? "" };
-    const analyticsData = JSON.parse((await httpsCallable(this.functions, 'getAnalyticsData')(request)).data as string);
-    if (analyticsData == null) {
-      return;
-    }
-
+    const analyticsResponse = (await httpsCallable(this.functions, 'getAnalyticsData')(request)).data;
+    const analyticsData = JSON.parse(analyticsResponse as string);
+    console.log(analyticsData);
     let totUsers = 0;
     let totEngagement = 0;
-
-    console.log(analyticsData);
     let dates: string[] = [];
     let pageViews: number[] = [];
 
@@ -331,7 +326,6 @@ export class ListingPage implements OnDestroy {
             for (let i = 0; i < response.length; i++) {
               totalRating += response[i].rating ?? 0;
             }
-            console.log("School is here bitch");
             return (totalRating / response.length) * 20;
           }
 
@@ -368,7 +362,6 @@ export class ListingPage implements OnDestroy {
     if (this.list) {
       const response = await this.listingServices.getSanitationScore(this.list.district)
       console.log("SANITATION SCORE:", (response.percentage ? response.percentage : 0) * 100);
-      console.log("Sanitation is here bitch");
       return (response.percentage ? response.percentage : 0) * 100;
     }
 
@@ -400,7 +393,6 @@ export class ListingPage implements OnDestroy {
         , this.list.listingAreaType
         , this.list.prop_type
         , { lat: this.list.geometry.lat , long: this.list.geometry.lng })
-      console.log("Water is here bitch");
       return (response.percentage ? response.percentage : 0) * 100;
     }
 
@@ -432,7 +424,6 @@ export class ListingPage implements OnDestroy {
         const response = await this.listingServices.getCrimeScore({ lat: this.list.geometry.lat, long: this.list.geometry.lng });
         console.log("CRIME SCORE:", response.percentage ? response.percentage * 100 : "error");
         console.log(response);
-        console.log("Crime is here bitch");
         return (response.percentage ? response.percentage : 0) * 100;
       }
       catch (error) {

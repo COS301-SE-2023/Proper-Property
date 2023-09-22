@@ -478,7 +478,7 @@ export class LocInfoRepository {
       const accessWSAs : string[] = [];
       const qualityWSAs : string[] = [];
       const reliabilityWSAs : string[] = [];
-      let count = 0;
+
       await admin.
         firestore().
         doc('WaterStats-Access/metadata').

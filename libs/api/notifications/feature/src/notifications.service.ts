@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { StatusChange, StatusEnum } from '@properproperty/api/listings/util';
+// import { StatusChange, StatusEnum } from '@properproperty/api/listings/util';
 import {
-  NotifyApprovalChangeCommand,
   NotifyStatusChangeCommand,
   NotifyViewDropCommand
 } from '@properproperty/api/notifications/util';

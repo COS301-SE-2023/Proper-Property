@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { QueryBus } from '@nestjs/cqrs';
 import { GetNearbyPlacesRequest, GetNearbyPlacesResponse, GetNearbyPlacesQuery } from '@properproperty/api/google-maps/util';
 
 
