@@ -478,7 +478,7 @@ export class LocInfoRepository {
       const accessWSAs : string[] = [];
       const qualityWSAs : string[] = [];
       const reliabilityWSAs : string[] = [];
-      let count = 0;
+
       await admin.
         firestore().
         doc('WaterStats-Access/metadata').
@@ -493,8 +493,6 @@ export class LocInfoRepository {
           }
         })
 
-      console.log(count++)
-
       await admin.
       firestore().
       doc('WaterStats-Quality/metadata').
@@ -508,8 +506,6 @@ export class LocInfoRepository {
           qualityWSAs.push(res);
         }
       })
-
-      console.log(count++)
       
       await admin.
       firestore().
@@ -524,8 +520,6 @@ export class LocInfoRepository {
           reliabilityWSAs.push(res);
         }
       })
-
-      console.log(count++)
 
       let accessWSA = "";
       let qualityWSA = "";
@@ -549,8 +543,6 @@ export class LocInfoRepository {
         }
       }
 
-      console.log(count++)
-
       let accessScore = 0;
       let qualityScore = 0;
       let reliabilityScore = 0;
@@ -564,8 +556,6 @@ export class LocInfoRepository {
       then((response) =>{
         accessScore += response.data()?.['accessPercentage'];
       })
-
-      console.log(count++)
 
       await admin.
       firestore().
@@ -581,8 +571,6 @@ export class LocInfoRepository {
           (response.data()?.['chemicalOperational'] != null ? response.data()?.['chemicalOperational'] : 0);
         qualityScore = totalQ / 6;
       })
-
-      console.log(count++)
 
       await admin.
       firestore().
@@ -612,8 +600,6 @@ export class LocInfoRepository {
         }
       })
 
-      console.log(count++)
-
       //WMA tariff calculations
       let WMA = "";
       let url = "https://services3.arcgis.com/QdLJLZBqzVAhCil8/arcgis/rest/services/WMA_2012/FeatureServer/0/query?where=1%3D1&outFields=WMA_NAME&geometry=" 
@@ -627,8 +613,6 @@ export class LocInfoRepository {
       .then((response) => {
         WMA = response.data?.['features']?.[0]?.['attributes']?.['WMA_NAME'];
       });
-
-      console.log(count++)
 
       let avgDomesticTariff = 0;
       let avgIrrigationTariff = 0;
@@ -650,8 +634,6 @@ export class LocInfoRepository {
             WMAs.push(wma);
           }
         })
-
-        console.log(count++)
 
       let tariffWMA = "";
       for(let wma of WMAs){
@@ -723,14 +705,10 @@ export class LocInfoRepository {
         }
       });
 
-      let finalScore = 0;
-      await admin
+      let finalScore = (await admin
       .firestore()
       .doc('crimeStats/' + correctStation)
-      .get()
-      .then((response) => {
-        finalScore = response.data()?.['score'];
-      })
+      .get()).data()?.['score'];
 
       return {type: "crime", status: true, percentage: finalScore};
     }

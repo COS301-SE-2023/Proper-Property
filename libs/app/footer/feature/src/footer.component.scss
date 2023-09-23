@@ -2,7 +2,9 @@
   margin-top: 10px;
   height: 348px;
   width: 100%;
-  bottom: 0;
+  // bottom: 0;
+  // left: 0;
+  // position: absolute;
   background-image: url('../../../assets/footer.svg');
   background-size: cover;
   box-shadow: none;
@@ -12,26 +14,27 @@
   }
 }
 
-.contact-button {
+.formButtons {
   display: flex;
-  width: 274px;
-  height: 66px;
-  padding: 5px 26px;
+  width: 250px;
+  height: 85%;
+  padding-right: 5px 26px;
   justify-content: center;
   align-items: center;
-  gap: 10px;
   flex-shrink: 0;
   border-radius: 5px;
   background: #FFF;
-  margin-left: 2%;
-  position: absolute;
-  bottom: 40%;
 
   @media only screen and (max-width: 600px) {
     width: 90%;
     position: static;
     margin: 0 auto 10px;
   }
+}
+
+.guideColumn{
+  display: flex;
+  justify-content: center;
 }
 
 #footer-grid {

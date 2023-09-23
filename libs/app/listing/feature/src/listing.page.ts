@@ -93,8 +93,15 @@ export class ListingPage implements OnDestroy {
           this.adminId = admin;
         }
 
-       
-        this.price_per_sm = Number( this.list?.price.replace(/,/g, '')) / Number(this.list?.property_size);
+        
+        // TODO
+        console.log(this.list);
+
+        if (!this.list?.price || !this.list?.property_size) {
+          console.error("Both Property Size and Price need to be specified");
+          return
+        }
+        this.price_per_sm = this.list?.price / this.list?.property_size;
   
         this.userServices.getUser("" + this.list?.user_id).then((user : UserProfile) => {
           this.lister = user;
@@ -115,14 +122,13 @@ export class ListingPage implements OnDestroy {
           this.userProfileListener = listener;
         });
 
-        this.gmapsService.getLatLongFromAddress("" + this.list?.address).then((coordinates) => {
-          this.coordinates = coordinates;
-          this.getNearbyPointsOfInterest(coordinates);
-          this.setCrimeScore();
-          this.setSanitationScore();
-          this.setSchoolRating();
-          this.setWaterScore();
-        })
+      if(this.list?.geometry && this.list?.status == StatusEnum.ON_MARKET){
+        this.getNearbyPointsOfInterest();
+        this.setCrimeScore();
+        this.setSanitationScore();
+        this.setSchoolRating();
+        this.setWaterScore();
+      }
       });
     });
 
@@ -153,21 +159,17 @@ export class ListingPage implements OnDestroy {
     const loader = document.querySelector(".graph-animation") as HTMLElement;
     loader.style.display = "block";
     const request: GetAnalyticsDataRequest = { listingId: this.list?.listing_id ?? "" };
-    const analyticsData = JSON.parse((await httpsCallable(this.functions, 'getAnalyticsData')(request)).data as string);
-    if (analyticsData == null) {
-      return;
-    }
-
+    const analyticsResponse = (await httpsCallable(this.functions, 'getAnalyticsData')(request)).data;
+    const analyticsData = JSON.parse(analyticsResponse as string);
+    console.log(analyticsData);
     let totUsers = 0;
     let totEngagement = 0;
-
-    console.log(analyticsData);
     let dates: string[] = [];
     let pageViews: number[] = [];
 
     const rows = analyticsData.rows ?? [];
-    for (let i = 0; rows && i < rows.length; i++) {
-      if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
+    for(let i = 0; rows && i < rows.length; i++){
+      if (rows[i]?.dimensionValues[1] && rows[i]?.metricValues[0]) {
         const dimensionValue = rows[i].dimensionValues[1].value;
         const year = Number(dimensionValue.substring(0, 4));
         const month = Number(dimensionValue.substring(4, 6));
@@ -243,10 +245,16 @@ export class ListingPage implements OnDestroy {
       show.style.opacity = "0";
       const load = document.querySelector('#loader') as HTMLElement;
       load.style.opacity = "1";
-
+      if (this.list.geometry.lat == 0 || this.list.geometry.lat) {
+        const geocodeResult = await this.gmapsService.geocodeAddress(this.list.address);
+        this.list.geometry = {
+          lat: geocodeResult?.geometry.location.lat() ?? 0,
+          lng: geocodeResult?.geometry.location.lng() ?? 0
+        }
+      }
       if ((this.list.status == StatusEnum.PENDING_APPROVAL || this.list.status == StatusEnum.EDITED) && approved) {
         crimeScore = await this.getCrimeScore();
-        schoolScore = await this.getSchoolRating(this.coordinates);
+        schoolScore = await this.getSchoolRating(this.list.geometry);
         waterScore = await this.getWaterScore();
         sanitationScore = await this.getSanitationScore();
         console.log(crimeScore, schoolScore, waterScore, sanitationScore);
@@ -284,35 +292,40 @@ export class ListingPage implements OnDestroy {
     }
   }
 
-  async getNearbyPointsOfInterest(coordinates: { latitude: number, longitude: number }) {
-    if (this.list && this.list.address) {
+  async getNearbyPointsOfInterest() {
+    if (this.list?.listing_id) {
       try {
-        if (coordinates) {
-          const results = await this.gmapsService.getNearbyPlaces(
-            coordinates.latitude,
-            coordinates.longitude
-          );
-
-          this.processPointsOfInterestResults(results, coordinates.latitude, coordinates.longitude);
-        }
+        const response = await this.gmapsService.getNearbyPlaces2(this.list.listing_id)
+        response.forEach((place) => {
+          let distance = -1;
+          if(this.list?.geometry.lat){
+            distance = this.gmapsService.calculateDistanceInMeters(
+              this.list?.geometry.lat,
+              this.list?.geometry.lng,
+              place.geometry.lat,
+              place.geometry.lng
+            );
+          }
+          const naam = place.name + " ("+ (distance / 1000).toFixed(2)+"km)";
+          this.pointsOfInterest.push({photo : place.photos, name : naam})
+        })
       } catch (error) {
         console.error('Error retrieving nearby places:', error);
       }
     }
   }
 
-  async getSchoolRating(coordinates: { latitude: number, longitude: number } | null): Promise<number> {
-    if (this.list && this.list.address) {
+  async getSchoolRating(coordinates: { lat: number, lng: number }): Promise<number> {
+    if (this.list) {
       try {
         if (coordinates) {
-          const response = await this.gmapsService.getNearbySchools(coordinates.latitude, coordinates.longitude);
+          const response = await this.gmapsService.getNearbySchools(coordinates.lat, coordinates.lng);
           // console.log("schools: " + schools);
           if (response.length > 0) {
             let totalRating = 0;
             for (let i = 0; i < response.length; i++) {
               totalRating += response[i].rating ?? 0;
             }
-            console.log("School is here bitch");
             return (totalRating / response.length) * 20;
           }
 
@@ -349,7 +362,6 @@ export class ListingPage implements OnDestroy {
     if (this.list) {
       const response = await this.listingServices.getSanitationScore(this.list.district)
       console.log("SANITATION SCORE:", (response.percentage ? response.percentage : 0) * 100);
-      console.log("Sanitation is here bitch");
       return (response.percentage ? response.percentage : 0) * 100;
     }
 
@@ -375,13 +387,12 @@ export class ListingPage implements OnDestroy {
   }
 
   async getWaterScore(): Promise<number> {
-    if (this.list && this.coordinates) {
+    if (this.list) {
       console.log("Calculating water score")
       const response = await this.listingServices.getWaterScore(this.list.district
         , this.list.listingAreaType
         , this.list.prop_type
-        , { lat: this.coordinates?.latitude, long: this.coordinates?.longitude })
-      console.log("Water is here bitch");
+        , { lat: this.list.geometry.lat , long: this.list.geometry.lng })
       return (response.percentage ? response.percentage : 0) * 100;
     }
 
@@ -408,12 +419,11 @@ export class ListingPage implements OnDestroy {
 
 
   async getCrimeScore(): Promise<number> {
-    if (this.list && this.coordinates) {
+    if (this.list) {
       try {
-        const response = await this.listingServices.getCrimeScore({ lat: this.coordinates?.latitude, long: this.coordinates.longitude });
+        const response = await this.listingServices.getCrimeScore({ lat: this.list.geometry.lat, long: this.list.geometry.lng });
         console.log("CRIME SCORE:", response.percentage ? response.percentage * 100 : "error");
         console.log(response);
-        console.log("Crime is here bitch");
         return (response.percentage ? response.percentage : 0) * 100;
       }
       catch (error) {
@@ -441,70 +451,7 @@ export class ListingPage implements OnDestroy {
       this.areaScore = parseInt(((this.areaScore + this.list?.areaScore.crimeScore) / 2).toFixed(2));
     }
   }
-
-  //TODO - move to listing.service.ts
-  async processPointsOfInterestResults(results: google.maps.places.PlaceResult[], address_lat: number, address_lng: number) {
-    // Clear the existing points of interest
-    this.pointsOfInterest = [];
-    const wantedTypes: string[] = [
-      "airport",
-      "school",
-      "liquor_store",
-      "atm", // so I can pay for my liquor
-      "bar",
-      "casino",
-      "pharmacy", //for the hangover
-      "car_repair", // to deal with the consequences of my actions
-      "hospital", // for the liver poisoning I will have
-      "cemetary", // consequences of my actions
-      "laundry", // to clean up the mess
-      "bakery", // for those late night munchies
-      "bank", // to plead for a loan for liquour  
-      "bus_station",
-      "cafe",
-      "church",
-      "drugstore",
-      "gym",
-      "park",
-      "shopping_mall",
-      "tourist_attraction",
-      "train_station",
-      "university"
-    ]
-
-    // Iterate over the results and extract the icons and names of the places
-    for (const result of results) {
-      if (result.photos && result.photos.length > 0 && result.name && result.types) {
-        for (const type of result.types) {
-          if (wantedTypes.includes(type)) {
-            let dist = 0;
-
-            await this.gmapsService.getLatLongFromAddress(result.vicinity + "").then((coord) => {
-              console.log("these are the coords ", coord);
-
-
-              this.gmapsService.calculateDistanceInMeters(
-                address_lat,
-                address_lng,
-                coord.latitude,
-                coord.longitude
-              ).then((distanceInMeters) => {
-                console.log('Distance between the two coordinates:', distanceInMeters, 'meters');
-                dist = distanceInMeters;
-              });
-            });
-
-            const naam = result.name + " (" + (dist / 1000).toFixed(2) + "km)";
-            this.pointsOfInterest.push({ photo: result.photos[0].getUrl(), name: naam });
-            break;
-          }
-        }
-      }
-    }
-
-    console.log("Accepted: ", this.pointsOfInterest);
-  }
-
+  
   goNext(event: Event) {
     console.log(event)
     if (this.swiperRef) {
@@ -548,21 +495,20 @@ export class ListingPage implements OnDestroy {
     this.minGrossMonthlyIncome = this.monthlyPayment * 3; // Assuming minimum income requirement is 3 times the monthly payment
   }
 
-  async getNearbyPlaces() {
-    try {
-      const coordinates = await this.gmapsService.getLatLongFromAddress(
-        this.list?.address + ""
-      );
-      const results = await this.gmapsService.getNearbyPlaces(
-        coordinates.latitude,
-        coordinates.longitude
-      );
-      // Process the nearby places results here
-      console.log('Nearby places:', results);
-    } catch (error) {
-      console.error('Error retrieving nearby places:', error);
-    }
-  }
+  // async getNearbyPlaces() {
+  //   try {
+  //     if(this.list?.geometry){
+  //       const results = await this.gmapsService.getNearbyPlaces(
+  //         this.list.geometry.lat,
+  //         this.list.geometry.lng
+  //       );
+  //       // Process the nearby places results here
+  //       console.log('Nearby places:', results);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error retrieving nearby places:', error);
+  //   }
+  // }
 
   toggleColor() {
     if (this.isRed)

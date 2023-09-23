@@ -6,38 +6,187 @@
   border-radius: 10px;
 }
 
+ion-card-header{
 
-ion-card {
-  top: -50px;
-  width: 400px; /* Adjust the width as desired */
-  height: 450px;
-  margin: 0 auto; /* Center the card horizontally */
-  margin-top: 50px;
+  width: 70%;
 
-  border-radius: 20px;
 }
 
-.like-button {
-  background-color: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  //move it to right hand corner
-  margin-left: 90%;
-
-  margin-top: -30px;
+//make the img in ion-card-header smaller
+ion-card-header img {
+  width: 50%;
+  height: 200px;
+  position: relative;
+  top: -20px;
+  left: -20px;
+  //rounded edges
+  border-radius: 10px;
 }
 
-// .heart-icon {
-//   color: red;
-//   font-size: 24px;
-// }
+//Make the ion-card-title in  ion-card-header to the right of ion-card-header img
+ion-card-header ion-card-title {
+  margin-left: 55%;
+  padding-top: 5px;
+  //move ths up
+  margin-top: -210px;
+}
 
-.red {
-  color: red;
+ion-card-header ion-card-subtitle {
+  margin-left: 220px;
+}
+
+ion-card ion-card-content {
+  margin-left: 39%;
+  margin-right: 5%;
+  width: 65%;
+}
+
+#saved
+{
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
+  width: 250px;
+  --background: rgba(13, 174, 79, 0.18);
+  border-radius: 10px;
+}
+
+#swap
+{
+  position: fixed;
+  bottom: 5%;
+  left: 1%;
+  --background: rgba(13, 174, 79, 0.8);
+}
+
+#first
+{
+  display: block;
+}
+
+#second
+{
+  display: none;
+}
+
+.slider {
+  position: relative;
+  width: 80%;
+  height: 13px;
+  background-color: rgb(150, 150, 150);
+  border-radius: 5px;
+  margin-bottom: 5px;
+  margin-right: 5%;
+  padding-right: 50px;
+}
+
+.progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: green;
+  border-radius: 5px;
+  transition: width 0.3s ease-in-out;
+}
+
+.errorProgressBar{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: red;
+  border-radius: 5px;
+  transition: width 0.3s ease-in-out;
+}
+
+.warningProgressBar{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #ffcc00;
+  border-radius: 5px;
+  transition: width 0.3s ease-in-out;
+}
+
+#house_details img {
+  //set image size
+  width: 15px;
+  height: 15px;
+}
+
+.statusBadge
+{
+  position: absolute;
+  right: 3%;
+  top: 3%;
+  width: 30%;
+  height: 14%;
+  padding-top: 1%;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.ON
+{
+  color: rgba(13, 174, 80, 0.7);
+  background: rgba(13, 174, 79, 0.192);
+  border-left: 2px solid rgba(13, 174, 79, 0.5);
+}
+
+.SOLD
+{
+  color: rgba(13, 174, 80, 0.7);
+  background: rgba(13, 174, 79, 0.192);
+  border-left: 2px solid rgba(13, 174, 79, 0.5);
+}
+
+.RENTED
+{
+  color: rgba(13, 174, 80, 0.7);
+  background: rgba(13, 174, 79, 0.192);
+  border-left: 2px solid rgba(13, 174, 79, 0.5);
+}
+
+.SAVED
+{
+  color: rgba(126, 126, 126, 0.9);
+  background: rgba(126, 126, 126, 0.192);
+  border-left: 2px solid rgba(126, 126, 126, 0.5);
+}
+
+.OFF
+{
+  color: rgba(126, 126, 126, 0.9);
+  background: rgba(126, 126, 126, 0.192);
+  border-left: 2px solid rgba(126, 126, 126, 0.5);
+}
+
+.PENDING
+{
+  color: rgba(255, 164, 0, 0.7);
+  background: rgba(255, 164, 0, 0.192);
+  border-left: 2px solid rgba(255, 164, 0, 0.5);
+}
+
+.EDITED
+{
+  color: rgba(230, 230, 15, 0.7);
+  background: rgba(230, 230, 15, 0.192);
+  border-left: 2px solid rgba(230, 230, 15, 0.5);
+}
+
+.DELETED
+{
+  color: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.377);
+  border-left: 2px solid rgba(0, 0, 0, 0.6);
+}
+
+.DENIED
+{
+  color: rgba(255, 0, 0, 0.7);
+  background: rgba(255, 0, 0, 0.192);
+  border-left: 2px solid rgba(255, 0, 0, 0.5);
 }

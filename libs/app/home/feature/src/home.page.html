@@ -16,10 +16,25 @@ core.shell.html
         <h1 id="caption">Discover Your Dream Home: Where Living Extends Beyond Walls</h1>
       </div>
       <div class="search-container">
-        <input type="text" id="query" class="query" [(ngModel)]="searchQuery" placeholder="Property Location Search">
-        <ion-button id="search-button" (click)="searchProperties()">
-          <h1 class="search-button-text" style="margin-top: 10px;">Search</h1>
+        <ion-input lines="none" type="text" id="query" (ionInput)="handleInputChange($event)" class="query" [(ngModel)]="searchQuery" placeholder="Property Location Search"></ion-input>
+        <ion-button [disabled]="predictionsLoading" id="search-button" (click)="searchProperties()">
+          <ng-container *ngIf="!predictionsLoading; then searchIcon; else spinner">
+          </ng-container>
+          <ng-template #searchIcon>
+            <ion-icon name="search-outline" class="search-icon"></ion-icon>
+          </ng-template>
+          <ng-template #spinner>
+            <ion-spinner name="crescent" color="black" class="search-icon"></ion-spinner>
+          </ng-template>
+          <!-- <h1 class="search-button-text" style="margin-top: 10px;">Search</h1> -->
         </ion-button>
+        <ion-list *ngIf="predictionDisplay()" class="prediction-result-list">
+          <ion-item class="prediction-result" (click)="replaceInputText($event,prediction.description)" *ngFor="let prediction of predictions">
+            <!-- <a href="#" class="prediction-button"> -->
+              <ion-icon name="search-outline"></ion-icon>{{ prediction.description }}
+            <!-- </a> -->
+          </ion-item>
+        </ion-list>
       </div>
     </div>
 
@@ -168,10 +183,17 @@ core.shell.html
       <h1 class="mainHeading">Proper Properties For You</h1>
       <h1 id="caption">Discover Your Dream Home</h1>
       <div class="search-container">
-        <input type="text" id="query1"  class="query1" [(ngModel)]="searchQuery" placeholder="Property Location Search">
+        <ion-input type="text" id="query1" (ionInput)="handleInputChange($event)" class="query1" [(ngModel)]="searchQuery" placeholder="Property Location Search"></ion-input>
         <ion-button id="search-button" (click)="searchProperties()">
           <ion-icon name="search" class="search-icon"></ion-icon>
         </ion-button>
+        <ion-list [hidden]="predictions.length <= 0">
+          <ion-item (click)="replaceInputText($event,prediction.description)" *ngFor="let prediction of predictions">
+            <!-- <a href="#" class="prediction-button"> -->
+              {{ prediction.description }}
+            <!-- </a> -->
+          </ion-item>
+        </ion-list>
       </div>
     </div>
   </section>

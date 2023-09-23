@@ -1,0 +1,1 @@
+export * from './stored-places.interface';

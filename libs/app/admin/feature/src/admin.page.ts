@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
   templateUrl: './admin.page.html',
   styleUrls: ['./admin.page.scss'],
 })
-export class AdminPage{
+export class AdminPage implements OnInit{
 
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
@@ -79,8 +79,7 @@ export class AdminPage{
     show.style.opacity="0";
     const load=document.querySelector('#loader') as HTMLElement;
     load.style.opacity="1";
-    this.appListings = [];
-    this.nonAppListings = [];
+    this.nonAppListings = [];      
     this.listingServices.getUnapprovedListings().then((response) => {
       this.nonAppListings = response;
 
@@ -98,6 +97,7 @@ export class AdminPage{
         }
       })
     });
+  
     setTimeout( function finishLoading(){
       const show=document.querySelector('#show') as HTMLDivElement;
       const load=document.querySelector('#loader') as HTMLElement;
@@ -107,6 +107,19 @@ export class AdminPage{
       load.style.opacity="0";
       show.style.opacity="1";
     }, 1000)
+  }
+
+  addData(){
+    this.crimeFiles = null;
+    this.sanitationFiles = null;
+    this.waterAccessFiles = null;
+    this.waterQualityFiles = null;
+    this.waterReliabilityFiles = null;
+    this.waterTariffsFiles = null;
+    this.muniFiles = null;
+    this.WWQ = null;
+    this.isPopoverOpen = true;
+    console.log("Adding data");
   }
 
   handleFileInput(event: Event, type: string) {
