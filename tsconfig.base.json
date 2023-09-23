@@ -164,6 +164,9 @@
       ],
       "@properproperty/app/version/feature": [
         "libs/app/version/feature/src/index.ts"
+      ],
+      "@properproperty/app/alerts/feature": [
+        "libs/app/alerts/feature/src/index.ts"
       ]
     }
   },

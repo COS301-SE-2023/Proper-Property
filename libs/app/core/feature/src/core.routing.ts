@@ -45,6 +45,13 @@ const routes: Routes = [
     path: 'version',
     loadChildren: () => import('@properproperty/app/version/feature').then( m => m.VersionPageModule)
   },
+
+  {
+    path: 'alerts',
+    loadChildren: () => import('@properproperty/app/alerts/feature').then( m => m.AlertsPageModule)
+  },
+
+  
   {
     path: 'create-listing',
     loadChildren: () => import('@properproperty/app/create-listing/feature').then( m => m.CreateListingPageModule)
