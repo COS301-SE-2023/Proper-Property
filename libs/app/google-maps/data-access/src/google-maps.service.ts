@@ -141,7 +141,7 @@ export class GmapsService {
       // I'm sorry about this. It makes me feel gross too.
       this.autocompleteService = new (await this.loadGoogleMaps()).places.AutocompleteService();
     }
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>((resolve) => {
       this.autocompleteService.getPlacePredictions({
         input: input,
         types: ['(regions)'], // Include only regions

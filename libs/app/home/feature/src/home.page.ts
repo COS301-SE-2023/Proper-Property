@@ -5,7 +5,7 @@ import { UserProfile } from '@properproperty/api/profile/util';
 import Swiper from 'swiper';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { Router } from '@angular/router';
-import { LatLngBounds } from '@google/maps';
+// import { LatLngBounds } from '@google/maps';
 
 // import { Storage, ref } from '@angular/fire/storage';
 // import { uploadBytes } from 'firebase/storage';
@@ -63,7 +63,7 @@ export class HomePage implements OnInit {
       }
     }
   
-    let inputElementId = '';
+    // let inputElementId = '';
 
     // if(!this.isMobile) {
     //   inputElementId = 'query';

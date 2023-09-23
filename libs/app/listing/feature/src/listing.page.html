@@ -19,7 +19,7 @@
 
   <ion-content [fullscreen]="true">
     <div id="loader">
-      <img src="assets/500.gif" />
+      <img src="assets/500.gif" alt="loading-anim"/>
     </div>
     <div id="show">
       <div *ngIf="admin" id="approvalBox">
@@ -41,7 +41,7 @@
       <div class="swiper-container-wrapper">
         <ion-buttons slot="start" class="swiper-button1" #one>
           <ion-button style="height: 100px" (click)="goPrev()" #one>
-            <img src="assets/icon/arrow1.svg" #back />
+            <img src="assets/icon/arrow1.svg" #back alt="swiper-back"/>
           </ion-button>
         </ion-buttons>
         <swiper-container
@@ -63,7 +63,7 @@
             (click)="goNext($event)"
             #two
           >
-            <img src="assets/icon/arrow.svg" #forward />
+            <img src="assets/icon/arrow.svg" #forward alt="swiper-forward"/>
           </ion-button>
         </ion-buttons>
       </div>
@@ -409,7 +409,7 @@
             <ion-button (click)="editListing()">Edit Listing</ion-button>
           </div>
           <div class="graph-animation">
-            <img src="assets/loader1.gif" />
+            <img src="assets/loader1.gif" alt="analytics-loader"/>
           </div>
           <canvas id="lineGraph" class="graph"></canvas>
           <div class="data-calc" *ngIf="showData">
@@ -444,7 +444,7 @@
 
   <ion-content [fullscreen]="true">
     <div id="loader">
-      <img src="assets/500.gif" />
+      <img src="assets/500.gif" alt="loader-img"/>
     </div>
     <div id="show">
       <div *ngIf="admin" id="approvalBox">
@@ -466,7 +466,7 @@
       <div class="swiper-container-wrapper">
         <ion-buttons slot="start" class="swiper-button1" #one>
           <ion-button style="height: 100px" (click)="goPrev()" #one>
-            <img src="assets/icon/arrow1.svg" #back />
+            <img src="assets/icon/arrow1.svg" #back alt="swiper-back-mobile"/>
           </ion-button>
         </ion-buttons>
         <swiper-container
@@ -494,7 +494,7 @@
             (click)="goNext($event)"
             #two
           >
-            <img src="assets/icon/arrow.svg" #forward />
+            <img src="assets/icon/arrow.svg" #forward alt="swiper-forward-mobile"/>
           </ion-button>
         </ion-buttons>
       </div>
@@ -813,7 +813,7 @@
             <ion-button (click)="editListing()">Edit Listing</ion-button>
           </div>
           <div class="graph-animation">
-            <img src="assets/loader1.gif" />
+            <img src="assets/loader1.gif" alt="analytics-loader-mobile"/>
           </div>
           <canvas id="lineGraph" class="graph"></canvas>
           <div class="data-calc" *ngIf="showData">

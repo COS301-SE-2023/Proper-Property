@@ -284,10 +284,14 @@ async loadMap() {
       this.renderer.addClass(mapEl, 'visible');
 
       // Generate info window content for each listing
-      this.listings.map((listing) =>
-        this.createListingCard(listing)
-      );
+      // this.listings.map((listing) =>
+      //   this.createListingCard(listing)
+      // );
 
+      for(const listing of this.listings){
+        this.createListingCard(listing);
+      }
+      
       // Iterate over each listing
       for (let i = 0; i < this.listings.length; i++) {
         if (this.listings[i].geometry.lat && this.listings[i].geometry.lng ) {
@@ -486,7 +490,7 @@ async loadMap() {
     }
     const areaBounds = this.searchQuery?  await this.gmapsService.geocodeAddress(this.searchQuery) : null;
     if (areaBounds) {
-      for(let listing of response.listings){
+      for(const listing of response.listings){
         const isInArea = await this.gmapsService.checkAddressInArea(areaBounds.geometry.viewport, listing.geometry)
         if(isInArea){
           this.allListings.push(listing);
