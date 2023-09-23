@@ -1,4 +1,7 @@
-import { Component, OnInit , ViewChild, ElementRef,HostListener, isDevMode} from '@angular/core';
+// eslint-disable-next-line
+/// <reference types="@types/google.maps" />
+
+import { Component , ViewChild, ElementRef,HostListener, isDevMode} from '@angular/core';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { Listing, StatusEnum } from '@properproperty/api/listings/util';
 import { ListingsService } from '@properproperty/app/listing/data-access';
@@ -10,7 +13,6 @@ import { User } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { FormControl } from '@angular/forms';
-
 import { map, startWith } from 'rxjs/operators'
 
 
@@ -20,7 +22,7 @@ import { map, startWith } from 'rxjs/operators'
   styleUrls: ['./create-listing.page.scss'],
   
 })
-export class CreateListingPage implements OnInit {
+export class CreateListingPage{
 
 
   @ViewChild('inputElement', { static: false }) inputElement!: ElementRef;
@@ -35,15 +37,40 @@ export class CreateListingPage implements OnInit {
   @ViewChild('address', { static: false }) addressInput!: ElementRef<HTMLInputElement>;
 
   @Select(AuthState.user) user$!: Observable<User | null>;
-  // autocomplete: any;
-  defaultBounds: google.maps.LatLngBounds;
-  predictions: google.maps.places.AutocompletePrediction[] = [];
+  // autocomplete: any;;
+  maps: any;
+  predictions: any[] = [];
   isMobile = false;
   currentUser: User | null = null;
   description = "";
   heading = "";
   ownerViewing = false;
   listingEditee : Listing | null = null;
+
+  photos: string[] = [];
+  address = "";
+  district = "";
+  price = 0;
+  bathrooms = 0;
+  bedrooms = 0;
+  parking = 0;
+  floor_size = 0;
+  erf_size  = 0;
+  pos_type = "";
+  env_type = "";
+  prop_type = "";
+  furnish_type = "";
+  orientation = "";
+  loadingMessage = "";
+  count = 0;
+  geometry = {
+    lat: 0,
+    lng: 0
+  };
+  pointsOfInterestIds: string[] = [];
+  listingType = "Sell";
+  listingAreaType = "Rural";
+
 
   constructor(
     private readonly router: Router, 
@@ -54,6 +81,9 @@ export class CreateListingPage implements OnInit {
     private readonly store: Store,
     private route: ActivatedRoute,
   ) {
+    this.gmapsService.loadGoogleMaps().then((maps) => {
+      this.maps = maps;
+    });
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value))
@@ -62,17 +92,18 @@ export class CreateListingPage implements OnInit {
 
     this.isMobile = window.innerWidth <= 576;
     
-    this.address=this.price=this.floor_size=this.erf_size=this.bathrooms=this.bedrooms=this.parking="";
+    this.address="";
+    this.floor_size=this.price=this.erf_size=this.bathrooms=this.bedrooms=this.parking=0;
     this.predictions = [];
-    this.defaultBounds = new google.maps.LatLngBounds();
+    // this.defaultBounds = new google.maps.LatLngBounds();
     if (isDevMode()) {
       this.address = "123 Fake Street";
-      this.price = "1000000";
-      this.floor_size = "100";
-      this.erf_size = "100";
-      this.bathrooms = "2";
-      this.bedrooms = "3";
-      this.parking = "1";
+      this.price = 1000000;
+      this.floor_size = 100;
+      this.erf_size = 100;
+      this.bathrooms = 2;
+      this.bedrooms = 3;
+      this.parking = 1;
       this.pos_type = "Leasehold";
       this.env_type = "Gated Community";
       this.prop_type = "House";
@@ -108,6 +139,11 @@ export class CreateListingPage implements OnInit {
             this.features = listing.features;
             this.photos = listing.photos;
             this.listingType = listing.let_sell;
+            this.geometry = listing.geometry;
+            this.pointsOfInterestIds = listing.pointsOfInterestIds;
+            this.district = listing.district;
+            this.listingAreaTypeSlider = listing.listingAreaType == "Rural" ? true : false;
+            this.selectedValue = listing.let_sell == "Sell" ? true : false;
           }
         });
       }
@@ -131,27 +167,30 @@ onResize(event: Event) {
 
   features: string[] = [];
 
-  async ngOnInit() {
-    this.listingType = "Sell";
-    // this.currentUser = this.userService.getCurrentUser();
-    // const inputElementId = 'address';
-
-    // this.gmapsService.setupSearchBox(inputElementId);
-  }
-
+  timeout : NodeJS.Timeout | undefined;
   async handleInputChange(event: Event): Promise<void> {
-    const input = event.target as HTMLInputElement;
-
-    if(input.value.length <=0){
-      this.predictions = [];
-      return;
-    }
-    await this.gmapsService.handleInput(input, this.defaultBounds);
-    this.predictions = this.gmapsService.predictions;
-    console.log("predictions: ", this.predictions);
-    this.address= input.value;
-    
-    this.handleAddressChange(input.value);
+    console.log("handleInput");
+    this.maps = this.maps ?? await this.gmapsService.loadGoogleMaps();
+    console.log(this.maps);
+    // return;
+    // Ur going 100 in a 60 zone, buddy
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      console.log("timeout");
+      const input = event.target as HTMLInputElement;
+ 
+      if(input.value.length <=0){
+        this.predictions = [];
+      }
+      else {
+        this.gmapsService.handleInput(input, new this.maps.LatLngBounds()).then(() => {
+          this.predictions = this.gmapsService.predictions;
+          // this.address = input.value;
+          
+          // this.handleAddressChange(input.value);
+        });
+      }
+    }, 1500);
   }
   
   
@@ -187,25 +226,10 @@ onResize(event: Event) {
     
   }
 
-handleAddressChange(address: string): void {
-  this.address = address;
-}
+// handleAddressChange(address: string): void {
+//    this.address = address;
+// }
 
-  photos: string[] = [];
-  address = "";
-  district = "";
-  price = "";
-  bathrooms = "";
-  bedrooms = "";
-  parking = "";
-  floor_size = "";
-  erf_size  = "";
-  pos_type = "";
-  env_type = "";
-  prop_type = "";
-  furnish_type = "";
-  orientation = "";
-  count = 0;
 
   handleFileInput(event: Event) {
     if (!event.currentTarget) {
@@ -262,10 +286,10 @@ handleAddressChange(address: string): void {
     this.address = (document.getElementById("address") as HTMLInputElement).value;
     // console.log("eyy cousinn...",this.address);
     // Remove existing commas from the price
-    this.price = this.price.replace(/,/g, '');
+    // this.price = this.price.replace(/,/g, '');
   
     // Format the price with commas
-    this.price = this.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    // this.price = this.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
   async generateDesc(){
@@ -341,8 +365,6 @@ handleAddressChange(address: string): void {
 
   selectedValue = true;
   listingAreaTypeSlider = true;
-  listingAreaType = "Rural";
-  listingType = "Sell";
 
   changeListingType(){
     if(this.selectedValue){
@@ -370,6 +392,7 @@ handleAddressChange(address: string): void {
     });
     
 
+    this.loadingMessage = creationType === "create"? "Sent for Approval" : "Saving Listing Draft";
     const property=document.querySelector('.add-property') as HTMLElement;
     const loader=document.querySelector('#loader') as HTMLElement;
     property.style.opacity="0";
@@ -391,7 +414,8 @@ handleAddressChange(address: string): void {
       this.env_type,
       this.prop_type,
       this.furnish_type,
-      this.orientation);
+      this.orientation
+    );
   
 
 
@@ -421,6 +445,11 @@ handleAddressChange(address: string): void {
         quality_rating: score,
         status: creationType == "save" ? StatusEnum.SAVED : StatusEnum.PENDING_APPROVAL,
         listingDate: "" + new Date(),
+        geometry: {
+          lat: 0,
+          lng: 0
+        },
+        pointsOfInterestIds: [],
         areaScore: {
           crimeScore: 0,
           schoolScore: 0,
@@ -453,6 +482,7 @@ handleAddressChange(address: string): void {
   }
 
   async editListing(){
+    this.loadingMessage = "Edits Submitted for Approval";
     const property=document.querySelector('.add-property') as HTMLElement;
     const loader=document.querySelector('#loader') as HTMLElement;
     property.style.opacity="0";
@@ -487,13 +517,18 @@ handleAddressChange(address: string): void {
         listingAreaType: this.listingAreaType,
         status: this.listingEditee.status === StatusEnum.SAVED ? StatusEnum.PENDING_APPROVAL : StatusEnum.EDITED,
         listingDate: "" + new Date(),
+        geometry: {
+          lat: this.geometry.lat,
+          lng: this.geometry.lng
+        },
+        pointsOfInterestIds: this.pointsOfInterestIds,
         areaScore: {
           crimeScore: 0,
           schoolScore: 0,
           waterScore: 0,
           sanitationScore: 0
         }
-      }
+      };
 
       const resp = await this.listingService.editListing(list);
       loader.style.opacity="0";
@@ -513,7 +548,7 @@ handleAddressChange(address: string): void {
     'Solar panels',
     'Flatlet',
     'Garden',
-    'Pet-Friendly',
+    'Pet Friendly',
   ];
   filteredAmenities: string[] = [];
 
@@ -536,69 +571,64 @@ handleAddressChange(address: string): void {
     this.filteredAmenities = [];
   }
 
-
-async calculateQualityScore(photos: string[],
-  address:string,
-  price:string,
-  bedrooms:string,
-  bathrooms:string,
-  parking:string,
-  floor_size:string,
-  erf_size:string,
-  pos_type:string,
-  env_type:string,
-  prop_type:string,
-  furnish_type:string,
-  orientation:string): Promise<number>{
-            
+  async calculateQualityScore(
+    photos: string[],
+    address:string,
+    price:number,
+    bedrooms:number,
+    bathrooms:number,
+    parking:number,
+    floor_size:number,
+    erf_size:number,
+    pos_type:string,
+    env_type:string,
+    prop_type:string,
+    furnish_type:string,
+    orientation:string,
+  ): Promise<number>{
     let score = 0;
-  
-    for(let i = 0; i < this.min(8, photos.length); i++){
-        score+= this.calculatePhotoScore(photos[i]);
-    }
-  
-    if(this.isNumericInput(price)){
-        score+= 5;
+    if(price){
+      score+= 5;
     } else score-=20;
-  
-    if(this.isNumericInput(bedrooms)){
-        score+= 5;
+
+    if(bedrooms){
+      score+= 5;
     } else score-=20;
-  
-    if(this.isNumericInput(bathrooms)){
-        score+= 5;
+
+    if(bathrooms){
+      score+= 5;
     } else score-=20;
-  
-    if(this.isNumericInput(parking)){
-        score+= 5;
+
+    if(parking){
+      score+= 5;
     } else score-=20;
-  
-    if(this.isNonEmptyStringInput("" + floor_size)){
-        score+= 5;
+
+    if(floor_size && floor_size > 0){
+      score+= 5;
     } else score-=15;
-  
-    if(this.isNonEmptyStringInput("" + erf_size)){
-        score+= 5;
+
+    if(erf_size && erf_size > 0){
+      score+= 5;
     } else score-=15;
-  
-    if(this.isNonEmptyStringInput("" + pos_type)){
-        score+= 5;
+
+    if(this.isNonEmptyStringInput(pos_type)){
+      score+= 5;
     } else score-=15;
-  
-    if(this.isNonEmptyStringInput("" + env_type)){
-        score+= 5;
+
+    if(this.isNonEmptyStringInput(env_type)){
+      score+= 5;
     } else score-=15;
-  
-    if(this.isNonEmptyStringInput("" + prop_type)){
-        score+= 5;
+
+    if(this.isNonEmptyStringInput(prop_type)){
+      score+= 5;
     } else score-=15;
-  
-    if(this.isNonEmptyStringInput("" + furnish_type)){
-        score+= 5;
+
+    if(this.isNonEmptyStringInput(furnish_type)){
+      score+= 5;
     } else score-=15;
-  
-    if(this.isNonEmptyStringInput("" + orientation)){
-        score+= 5;
+
+    if(this.isNonEmptyStringInput(orientation)){
+      score+= 5;
     } else score-=15;
   
   
@@ -711,9 +741,4 @@ async calculateQualityScore(photos: string[],
     
     return false;
   }
-
-
-  // isMobile(): boolean {
-  //   return window.innerWidth <= 576;
-  // }
 }

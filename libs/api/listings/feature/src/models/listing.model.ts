@@ -1,3 +1,5 @@
+// eslint-disable-next-line
+/// <reference types="@types/google.maps" />
 import { AggregateRoot } from '@nestjs/cqrs';
 import { 
   ListingEditedEvent, 
@@ -16,17 +18,17 @@ export class ListingModel extends AggregateRoot implements Listing {
     public user_id: string,
     public address: string,
     public district: string,
-    public price: string,
+    public price: number,
     public pos_type: string,
     public env_type: string,
     public prop_type: string,
     public furnish_type: string,
     public orientation: string,
-    public floor_size: string,
-    public property_size: string,
-    public bath: string,
-    public bed: string,
-    public parking: string,
+    public floor_size: number,
+    public property_size: number,
+    public bath: number,
+    public bed: number,
+    public parking: number,
     public features: string[],
     public photos: string[],
     public desc: string,
@@ -34,11 +36,16 @@ export class ListingModel extends AggregateRoot implements Listing {
     public listingAreaType: string,
     public heading: string,
     public listingDate: string,
+    public geometry: {
+      lat: number,
+      lng: number
+    },
+    public pointsOfInterestIds: string[],
     public areaScore: areaScore,
     public status: StatusEnum,
+    public quality_rating: number,
     public listing_id?: string,
     public statusChanges?: StatusChange[],
-    public quality_rating?: number,
   ) {
     super();
   }
@@ -66,11 +73,13 @@ export class ListingModel extends AggregateRoot implements Listing {
       listing.listingAreaType,
       listing.heading,
       listing.listingDate,
+      listing.geometry,
+      listing.pointsOfInterestIds,
       listing.areaScore,
       listing.status,
+      listing.quality_rating,
       listing.listing_id,
       listing.statusChanges,
-      listing.quality_rating,
     );
     return model;
   }
@@ -97,6 +106,8 @@ export class ListingModel extends AggregateRoot implements Listing {
     this.listingAreaType = listing.listingAreaType;
     this.heading = listing.heading;
     this.listingDate = listing.listingDate;
+    this.geometry = listing.geometry;
+    this.pointsOfInterestIds = listing.pointsOfInterestIds;
     this.listing_id = listing.listing_id;
     this.status = listing.status;
     this.quality_rating = listing.quality_rating;
@@ -164,6 +175,8 @@ export class ListingModel extends AggregateRoot implements Listing {
       statusChanges: this.statusChanges,
       quality_rating: this.quality_rating,
       listingAreaType: this.listingAreaType,
+      geometry: this.geometry,
+      pointsOfInterestIds: this.pointsOfInterestIds,
     };
   }
 

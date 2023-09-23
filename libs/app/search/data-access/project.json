@@ -1,0 +1,26 @@
+{
+  "name": "app-search-data-access",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/app/search/data-access/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/app/search/data-access",
+        "main": "libs/app/search/data-access/src/index.ts",
+        "tsConfig": "libs/app/search/data-access/tsconfig.lib.json",
+        "assets": ["libs/app/search/data-access/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/app/search/data-access/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

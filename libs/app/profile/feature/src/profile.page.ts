@@ -74,7 +74,6 @@ export class ProfilePage implements OnInit {
       private readonly router: Router,
       private readonly store: Store
     ) {
-      console.log("This is me testing the bitch that is front end")
       
       this.isMobile = window.innerWidth <= 576;
     // default value cus ngModel cries when the user is null

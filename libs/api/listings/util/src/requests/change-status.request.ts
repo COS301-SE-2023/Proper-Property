@@ -1,5 +1,4 @@
 import { StatusEnum } from "../enums";
-
 export interface ChangeStatusRequest{
   status: StatusEnum;
   reason?: string;
@@ -9,4 +8,8 @@ export interface ChangeStatusRequest{
   schoolScore?: number;
   waterScore?: number;
   sanitationScore?: number;
+  geometry?: {
+    lat: number,
+    lng: number
+  }
 }

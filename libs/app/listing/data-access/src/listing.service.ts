@@ -10,7 +10,9 @@ import { Listing,
   EditListingRequest,
   EditListingResponse, 
   GetUnapprovedListingsResponse,
-  StatusEnum} from '@properproperty/api/listings/util';
+  StatusEnum,
+  GetFilteredListingsResponse,
+  GetFilteredListingsRequest} from '@properproperty/api/listings/util';
 import { GetLocInfoDataRequest,
   GetLocInfoDataResponse } from '@properproperty/api/loc-info/util';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
@@ -87,14 +89,15 @@ export class ListingsService {
       await updateDoc(listingRef, {photos: photoURLs});
   }
 
-  async getListings(){
+  async getListings(userId?: string){
+    const request = userId? {userId: userId} : {};
     const response = (await httpsCallable<
       GetListingsRequest,
       GetListingsResponse
     >(
       this.functions, 
       'getListings'
-    )({})).data;
+    )(request)).data;
     if (response.listings.length > 0){
       return response.listings;
     }
@@ -262,6 +265,15 @@ export class ListingsService {
     >(this.functions, 'getLocInfoData')({type: "crime", latlong: coordinates})).data;
 
     console.log("Listing services", response);
+    return response;
+  }
+
+  async getFilteredListings(req : GetFilteredListingsRequest){
+    const response: GetFilteredListingsResponse = (await httpsCallable<
+      GetFilteredListingsRequest,
+      GetFilteredListingsResponse
+    >(this.functions, 'filterListings')(req)).data;
+
     return response;
   }
 }
