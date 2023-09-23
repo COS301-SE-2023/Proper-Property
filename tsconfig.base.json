@@ -18,6 +18,15 @@
       "@properproperty/api/core/feature": [
         "libs/api/core/feature/src/index.ts"
       ],
+      "@properproperty/api/google-maps/data-access": [
+        "libs/api/google-maps/data-access/src/index.ts"
+      ],
+      "@properproperty/api/google-maps/feature": [
+        "libs/api/google-maps/feature/src/index.ts"
+      ],
+      "@properproperty/api/google-maps/util": [
+        "libs/api/google-maps/util/src/index.ts"
+      ],
       "@properproperty/api/listings/data-access": [
         "libs/api/listings/data-access/src/index.ts"
       ],
@@ -36,6 +45,15 @@
       "@properproperty/api/loc-info/util": [
         "libs/api/loc-info/util/src/index.ts"
       ],
+      "@properproperty/api/notifications/data-access": [
+        "libs/api/notifications/data-access/src/index.ts"
+      ],
+      "@properproperty/api/notifications/feature": [
+        "libs/api/notifications/feature/src/index.ts"
+      ],
+      "@properproperty/api/notifications/util": [
+        "libs/api/notifications/util/src/index.ts"
+      ],
       "@properproperty/api/profile/data-access": [
         "libs/api/profile/data-access/src/index.ts"
       ],
@@ -45,6 +63,13 @@
       "@properproperty/api/profile/util": [
         "libs/api/profile/util/src/index.ts"
       ],
+      "@properproperty/api/search/data-access": [
+        "libs/api/search/data-access/src/index.ts"
+      ],
+      "@properproperty/api/search/feature": [
+        "libs/api/search/feature/src/index.ts"
+      ],
+      "@properproperty/api/search/util": ["libs/api/search/util/src/index.ts"],
       "@properproperty/app/admin/data-access": [
         "libs/app/admin/data-access/src/index.ts"
       ],
@@ -58,6 +83,9 @@
       "@properproperty/app/auth/util": ["libs/app/auth/util/src/index.ts"],
       "@properproperty/app/copyright/feature": [
         "libs/app/copyright/feature/src/index.ts"
+      ],
+      "@properproperty/app/terms-of-use/feature": [
+        "libs/app/terms-of-use/feature/src/index.ts"
       ],
       "@properproperty/app/core/feature": [
         "libs/app/core/feature/src/index.ts"
@@ -95,6 +123,12 @@
       "@properproperty/app/my-listings/feature": [
         "libs/app/my-listings/feature/src/index.ts"
       ],
+      "@properproperty/app/notifications/data-access": [
+        "libs/app/notifications/data-access/src/index.ts"
+      ],
+      "@properproperty/app/notifications/util": [
+        "libs/app/notifications/util/src/index.ts"
+      ],
       "@properproperty/app/open-ai/data-access": [
         "libs/app/open-ai/data-access/src/index.ts"
       ],
@@ -118,6 +152,9 @@
       ],
       "@properproperty/app/saved-listings/feature": [
         "libs/app/saved-listings/feature/src/index.ts"
+      ],
+      "@properproperty/app/search/data-access": [
+        "libs/app/search/data-access/src/index.ts"
       ],
       "@properproperty/app/search/feature": [
         "libs/app/search/feature/src/index.ts"

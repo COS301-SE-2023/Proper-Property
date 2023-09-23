@@ -1,6 +1,60 @@
+ion-content::part(scroll) {
+  overflow-y: auto !important;
+}
+
 .Desktop {
+  .header-segment { 
+    margin-bottom: 40px;
+  }
+  .listing-map-grid {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 56px;
+    // padding: 0 10px;
+    border-radius: 8px;
+    margin: 5px;
+    overflow: hidden;
+  }
+
+  .search-result-grid-header {
+    padding: 5px;
+    height: 48px;
+    background-color: rgba(13, 174, 79, 0.4);
+  }
+
+  .listing-image-col {
+    height: 100%;
+  }
+
+  .listing-details-col {
+    height: 100%;
+    padding: 4px;
+  }
+
+  .listing-header-row {
+    height: 44px;
+  }
+
+  .area-score-toggle-label {
+    font-size: 18px;
+    color: #000000;
+  }
+
+  .search-result-header-col {
+    align-content: center;
+  }
+
+  .search-result-header {
+    font-size: 28px;
+    color: #000000;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+  }
+
   .filter {
     border-radius: 10px;
+    width: 100%;
     //make it smaller so that 4 can fit in 1 line
     margin: 0 5px;
     //make all of them fit in 1 line
@@ -19,8 +73,11 @@
   }
 
   .footer-gap{
-    height:800px;
-    position:relative;
+    // height:348px;
+    margin-top: 348px;
+    width: 100%;
+    display: block;
+    // position:relative;
   }
 
   #filter-container {
@@ -28,7 +85,6 @@
     border: 1px solid #000;
     background: rgba(13, 174, 79, 0.40);
     width: 92%;
-    margin-left: 4%;
     height: auto;
   }
   
@@ -37,6 +93,36 @@
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
+  }
+
+  #searchBar{
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .prediction-result-list {
+    position: absolute;
+    top: 100%;
+    margin-top: 2px;
+    left: 0;
+    border-radius: 25px;
+    width: 92%;
+    padding: 0;
+    background: rgba(0,0,0,0);
+    z-index: 10;
+    .prediction-result {
+      z-index: 10;
+      cursor: pointer;
+      padding: 0 0;
+      border: 2px solid grey;
+      border-radius: 24px;
+      // height: 20px;
+      font-size: 14px;
+      --inner-padding-top: 0;
+      --inner-padding-bottom: 0;
+      --padding-top: 0;
+      --padding-bottom: 0;
+    }
   }
   
   #additional-features {
@@ -51,27 +137,46 @@
     padding: 10px;
   }
   
+  .filterCheckboxes {
+    display: flex;
+  }
+  
+  .checkbox-label {
+    margin-right: 20px; /* Adjust spacing as needed */
+  }
+  
+  #search-row{
+    padding-left: 4%;
+  }
+  
   #address {
     border-radius: 30px;
     border: 1.5px solid #000;
     background: #FFF;
     width: 92%;
-    margin-left: 4%;
     margin-bottom: 1%;
     padding-left: 18px;
     height: 50px;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
+    --padding-start: 20px;
+    --highlight-color-focused: none;
+    --highlight-color-valid: none;
+    --highlight-color-invalid: none;
   }
   
   .dropdown {
-    color: rgb(68, 68, 68);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    background-color: transparent;
+    width: 50%;
+    height: 70%;
+    margin-right: 10%;
+    // background-color: rgba(48, 207, 114, 0.4);
+    --ion-background-color: transparent;
+    color: rgba(48, 207, 114, 0.4);
     border: none;
+    --border-radius: 30px;
+    cursor: pointer;
+    margin-top: 1%;
   }
   
   .filter-button {
@@ -84,13 +189,12 @@
   
   .search-button {
     width: 90%;
-    height: 70%;
+    height: 100%;
     margin-right: 10%;
     color: white;
     border: none;
     --border-radius: 30px;
     cursor: pointer;
-    margin-top: 1%;
   }
   
   .link {
@@ -107,38 +211,55 @@
   
   
   //make the img in ion-card-header smaller
-  ion-card-header img {
+  .lists ion-card-header img {
     width: 200px;
-    height: 130px;
+    height: 100%;
     //rounded edges
     border-radius: 10px;
+    object-fit: cover;
   }
   
   //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
-  ion-card-header ion-card-title {
-    margin-left: 220px;
+  .lists ion-card-header ion-card-title{
+    // margin-left: 220px;
     //move ths up
-    margin-top: -130px;
+    // margin-top: -130px;
   }
   
-  ion-card-header ion-card-subtitle {
-    margin-left: 220px;
+  .lists ion-card-header ion-card-subtitle {
+    // margin-left: 220px;
   }
   
-  ion-card ion-card-content {
-    margin-left: 220px;
+  .lists ion-card ion-card-content  {
+    // margin-left: 220px;
   }
   
   //make the ion-card take only half of the page
-  ion-card {
+  .lists ion-card {
     // width: 45%;
     margin-left: 2%;
     margin-top: 10px;
     border-radius: 10px;
   }
   
+  #house_description{
+    height: 10% !important;
+    width: 87%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .house_details{
+    // margin-top: 7.25%;
+  }
+
+  .house_details2{
+    margin-top: -1.25%;
+  }
+
   //styling for div with id="house_details"
-  #house_details img {
+  .house_details img {
     //set image size
     width: 15px;
     height: 15px;
@@ -180,7 +301,7 @@
     width: 95%;
     margin-left: 2%;
     margin-right: 3%;
-    height: 600px;
+    height: 40vh;
     border-radius: 10px;
     background-color: transparent;
     opacity: 0;
@@ -192,7 +313,7 @@
   }
   
   #map {
-    width: 50%;
+    // width: 50%;
     margin-left: 2%;
     margin-top: 10px;
     border-radius: 10px;
@@ -210,7 +331,7 @@
   #listings-and-map {
     transition: transform 0.3s ease-in-out;
     margin-top:3%;
-    margin-bottom: 25%;
+    // margin-bottom: 25%;
     display: none;
   }
   
@@ -308,10 +429,365 @@
     color: #644bff;
     cursor: pointer;
   }
+
+  //////////////////////////////////////////////////////////
+
+  
+  /* search and button section*/
+
+  .sortFilter
+  {
+    position: fixed;
+    top: 5%;
+    width: 100%;
+    z-index: 6;
+    background: white;
+    height: 100px;
+  }
+  
+  .grid1
+  {
+    padding-top: 35px;
+  }
+
+  
+
+  ion-toggle {
+    // padding: 1%;
+    // margin-right: 5%;
+    // margin-bottom: 5%;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    margin-left: 2%;
+    color: white;
+    border: none;
+    --border-radius: 32px;
+    cursor: pointer;
+    // margin-top: 1%;
+  
+    --track-background: #ddd;
+    --track-background-checked: var(--ion-color-primary);
+  
+    --handle-background: var(--ion-color-primary);
+    --handle-background-checked: #ddd;
+  
+    --handle-width: 26px;
+    --handle-height: 26px;
+    --handle-max-height: auto;
+    --handle-spacing: 3px;
+  
+    --handle-border-radius: 50%;
+  }
+  
+  ion-toggle::part(track) {
+    // top: -10px;
+    height: 32px;
+    width: 65px;
+    align-items: center;
+    justify-content: space-between;
+    // margin: 10px;
+  
+  
+    /* Required for iOS handle to overflow the height of the track */
+    overflow: visible;
+  }
+
+  .butDown
+  {
+    width: 90%;
+    height: 55%;
+    margin-right: 10%;
+    color: white;
+    border: none;
+    --border-radius: 30px;
+    cursor: pointer;
+    margin-top: 1%;
+  }
+  
+  
+  /* Sort and Filter section*/
+  .sandf
+  {
+    position: fixed;
+    overflow: hidden;
+    top: 20%;
+    width: 100%;
+    display: none;
+    z-index: 6;
+    background: white;
+  }
+  
+  .Amenities
+  {
+     text-align: center;
+  }
+  .show
+  {
+    display:inline-block;
+  }
+ 
+  
+  .wrapper
+  {
+    display: flex;
+    height: 120px;
+  }
+  
+  .inputPrice
+  {
+    display: flex;
+    margin: 30px 0 35px;
+  }
+  
+  .inputPrice .field
+  {
+    height: 45px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  
+  .field input
+  {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    font-size: 19px;
+    text-align: center;
+    margin-left: 12px;
+    border-radius: 5px;
+    border: 1px solid rgb(223, 223, 223);
+  }
+  
+  .inputPrice .dash
+  {
+    width: 130px;
+    display: flex;
+    font-size: 19px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  
+  
+  .btnFilters {
+    width: 15%;
+   
+  }
+  
+  
+  /* Listings Section */
+  
+  .lists
+  {
+    // position: absolute;
+    overflow: auto;
+    // top: 13%;
+    height: 40vw;
+  }
+  
+  .lists2
+  {
+    width: 50%;
+    position: absolute;
+    overflow: auto;
+    top: 13%;
+    display: none;
+  
+  }
+  
+  .map {
+    position:fixed; 
+    padding-top: 10px;
+    padding-right: 1.5%;
+    top: 20%;
+    overflow: hidden;
+    height: 40vw;
+    border-radius: 10px;
+    background-color: transparent;
+    opacity: 0;
+    transition: opacity 150ms ease-in;
+  }
+  
+  ion-card {
+    width: 90%;
+    height: 180px;
+    margin-left: 2%;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+  }
+
+  .pin-button {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    --background: transparent;
+    --border-radius: 50%;
+    --border: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    //move it to right hand corner
+    // margin-left: 90%;
+    // margin-top: -30px;
+  }
+  .pin-icon {
+    font-size: 64px;
+    height: 100%;
+    width: 100%;
+  }
+  // ion-icon {
+  //   font-size: 64px;
+  // }
+  //styling for div with id="house_details"
+  .house_details img {
+    //set image size
+    width: 15px;
+    height: 15px;
+  }
+  
+  
+  
+  #back-arrow {
+    color: #0DAE4F;
+  }
+  
+  #listings-and-map {
+    transition: transform 0.3s ease-in-out;
+    // height: 75vh;
+    margin-bottom: 50px;
+    min-height: 100vh;
+  }
+  
+  
+  
+  ::selection {
+    color: #fff;
+    background: #664AFF;
+  }
+  
+  .slider {
+    position: relative;
+    width: 80%;
+    height: 13px;
+    background-color: rgb(150, 150, 150);
+    border-radius: 5px;
+    margin: 5px;
+    padding-right: 50px;
+  }
+  
+  .progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: green;
+    border-radius: 5px;
+    transition: width 0.3s ease-in-out;
+  }
+
+  .errorProgressBar{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: red;
+    border-radius: 5px;
+    transition: width 0.3s ease-in-out;
+  }
+
+  .warningProgressBar{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #ffcc00;
+    border-radius: 5px;
+    transition: width 0.3s ease-in-out;
+  }
+  
+  .sliderDiv{
+    width: 300px; 
+    margin-left: 1.5%; 
+    margin-right: 5%;
+  }
+
+  // .marker-card {
+    
+  //   width: initial;
+  //   height: initial;
+  //   margin-left: initial;
+  //   margin-top: initial;
+  //   margin-bottom: initial;
+  //   border-radius: initial;
+  // }
+
+  // .marker-header {
+  //   width: initial;
+  // }
+
+  // .marker-listing-image {
+  //   width: 100% !important;
+  //   height: initial !important;
+  //   position: initial !important;
+  //   top: initial !important;
+  //   border-radius: initial !important;
+  // }
+
+  // .marker-content {
+  //   margin-left: initial !important;
+  //   margin-right: initial;
+  //   width: initial;
+  // }
+
+  // .marker-title {
+  //   margin-left: initial;
+  //   padding-top: initial;
+  //   margin-top: initial;
+  // }
+
+  // .marker-subtitle {
+  //   margin-left: initial;
+  // }
+
+  // .marker-details {
+  //   margin: 0 !important;
+  //   width: 100% !important;
+  // }
+
+  // .marker-icon {
+  //   margin: initial;
+  //   width: initial;
+  //   height: initial;
+  //   position: initial;
+  //   top: initial;
+  //   border-radius: initial;
+  // }
+
 }
   
 
 .Mobile {
+  .loading-animation{
+    position: absolute;
+    right: 50%;
+    text-align: center;
+    z-index: 1;
+    top: 60%;
+    // display: block
+  }
+
+  .footer-gap{
+    height: 100vh;
+    position:relative;
+  }
+
   .filter {
     border-radius: 10px;
     //make it smaller so that 4 can fit in 1 line
@@ -499,6 +975,13 @@ ion-card {
     opacity: 1;
   }
   
+  #map {
+    width: 50%;
+    margin-left: 2%;
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+  
   #map1 {
     width: 100%;
     margin-left: 2%;
@@ -615,8 +1098,5 @@ ion-card {
     color: #644bff;
     cursor: pointer;
   }
-  
-  
-  
 }
 

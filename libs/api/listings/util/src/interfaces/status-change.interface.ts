@@ -1,5 +1,6 @@
+import {StatusEnum } from '../enums'
 export interface StatusChange {
-  adminId: string;
-  status: boolean;
+  adminId?: string;
+  status: StatusEnum;
   date: string;
 }

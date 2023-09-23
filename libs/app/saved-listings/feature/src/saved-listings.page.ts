@@ -24,6 +24,8 @@ export class SavedListingsPage implements OnInit {
   isMobile = false;
 
   public savedListings : Listing[] = [];
+  public savedListingsB : Listing[] = [];
+  public savedListingsR : Listing[] = [];
 
   constructor(
     private profileServices : UserProfileService,
@@ -39,7 +41,18 @@ export class SavedListingsPage implements OnInit {
           for(const listing of this.userProfile.savedListings){
             this.listingServices.getListing(listing).then((listing) => {
               if(listing){
-                this.savedListings.push(listing);
+                // this.savedListings.push(listing);
+                this.savedListingsB = [];
+                this.savedListingsR = [];
+
+                if(listing.let_sell=="Sell")
+                {
+                  this.savedListingsB.push(listing);
+                }
+                else
+                {
+                  this.savedListingsR.push(listing);
+                }
               }
             });
           }
@@ -78,7 +91,7 @@ export class SavedListingsPage implements OnInit {
     return false;
   }
 
-  saveListing($event : any, listing_id : string) {
+  saveListing($event : Event, listing_id : string) {
     if(listing_id != ''){
       const heartBut = $event.target as HTMLButtonElement;
       heartBut.style.color = "red";
@@ -96,7 +109,8 @@ export class SavedListingsPage implements OnInit {
     } 
   }
 
-  unsaveListing($event : any, listing_id : string){
+  unsaveListing($event : Event, listing_id : string, side : string){
+    const editedListingArray = side == "buy" ? this.savedListingsB : this.savedListingsR;
     if(listing_id != ''){
       const heartBut = $event.target as HTMLButtonElement;
       heartBut.style.color = "red";
@@ -104,9 +118,11 @@ export class SavedListingsPage implements OnInit {
       if(this.userProfile){
           if(this.userProfile.savedListings){
             this.userProfile.savedListings.splice(this.userProfile.savedListings.indexOf(listing_id), 1);
-            for(const listing of this.savedListings){
+            for(const listing of editedListingArray){
               if(listing.listing_id == listing_id){
-                this.savedListings.splice(this.savedListings.indexOf(listing), 1);
+                editedListingArray.splice(editedListingArray.indexOf(listing), 1);
+                console.log(editedListingArray);
+                console.log(this.savedListingsB);
               }
             }
           }
@@ -114,7 +130,27 @@ export class SavedListingsPage implements OnInit {
           this.profileServices.updateUserProfile(this.userProfile);
       }
     } 
-  } 
+  }
+
+  Change()
+  {
+    const tog1 = document.getElementById("first") as HTMLInputElement;
+    const tog2 = document.getElementById("second") as HTMLInputElement;
+
+    if(tog1.style.display=='block')
+    {
+      
+      tog1.style.display= 'none';
+      tog2.style.display = 'block';
+
+    }
+    else
+    {
+      tog1.style.display= 'block';
+      tog2.style.display = 'none';
+    }
+
+  }
 }
 function isMobile(): boolean {
   return window.innerWidth <= 576;

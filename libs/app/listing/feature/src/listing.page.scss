@@ -114,6 +114,10 @@ swiper-slide img {
   margin-top: 10px;
 }
 
+.poi-image{
+  width: 15%;
+  height: 15%
+}
 
 .poi-details {
   display: flex;
@@ -147,6 +151,8 @@ swiper-slide img {
   font-size: 12px;
   text-align: center;
 }
+
+
 
 #approvalCol {
   // outline: 1px solid red;
@@ -204,6 +210,8 @@ swiper-slide img {
   margin: 0 auto;
   height: 250px;
   left: 1%;
+  -ms-overflow-style: none; 
+  scrollbar-width: none;
 }
 
 .quarter-container-loc-info {
@@ -214,6 +222,10 @@ swiper-slide img {
   margin: 0 auto;
   height: 280px;
   left: 1%;
+}
+
+.quarter-container::-webkit-scrollbar{
+  display: none;
 }
 
 .half-green-container {
@@ -261,10 +273,10 @@ ion-item {
 
 #greenbox-title {
   color: black;
-  font-size: 30px;
+  font-size: 26px;
   font-weight: 600;
   padding-left: 10px;
-  margin-top: 1%;
+  // margin-top: 1%;
   z-index: 1;
 }
 
@@ -342,7 +354,7 @@ ion-item {
 }
 
 .house-titles {
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 400;
   margin-bottom: 5px;
   z-index: 2;
@@ -440,4 +452,108 @@ ion-item {
   display: flex;
   margin: auto;
   margin-top: 10%;
+}
+
+#loader{
+  position: absolute;
+  right: 50%;
+  text-align: center;
+  z-index: 1;
+  top: 40%;
+  opacity: 0;
+}
+
+#show{
+  opacity: 1;
+}
+
+@media (max-width: 800px){
+  swiper-slide img {
+    width: auto;
+    height: 250px;
+    border-radius: 20px;
+    margin: auto;
+    display: flex;
+  }
+
+  .quarter-container {
+    width: 100%;
+    height: auto;
+    left:0;
+  }
+
+  
+}
+
+
+.statusBadge
+{
+  width: 85%;
+  height: 14%;
+  padding-top: 1%;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.ON
+{
+  color: rgba(13, 174, 80, 0.7);
+  background: rgba(13, 174, 79, 0.192);
+  border-left: 2px solid rgba(13, 174, 79, 0.5);
+}
+
+.SOLD
+{
+  color: rgba(13, 174, 80, 0.7);
+  background: rgba(13, 174, 79, 0.192);
+  border-left: 2px solid rgba(13, 174, 79, 0.5);
+}
+
+.RENTED
+{
+  color: rgba(13, 174, 80, 0.7);
+  background: rgba(13, 174, 79, 0.192);
+  border-left: 2px solid rgba(13, 174, 79, 0.5);
+}
+
+.SAVED
+{
+  color: rgba(126, 126, 126, 0.9);
+  background: rgba(126, 126, 126, 0.192);
+  border-left: 2px solid rgba(126, 126, 126, 0.5);
+}
+
+.OFF
+{
+  color: rgba(126, 126, 126, 0.9);
+  background: rgba(126, 126, 126, 0.192);
+  border-left: 2px solid rgba(126, 126, 126, 0.5);
+}
+
+.PENDING
+{
+  color: rgba(255, 164, 0, 0.7);
+  background: rgba(255, 164, 0, 0.192);
+  border-left: 2px solid rgba(255, 164, 0, 0.5);
+}
+
+.EDITED
+{
+  color: rgba(126, 126, 21, 0.857);
+  background: rgba(230, 230, 15, 0.192);
+  border-left: 2px solid rgba(230, 230, 15, 0.5);
+}
+
+.DELETED
+{
+  color: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.377);
+  border-left: 2px solid rgba(0, 0, 0, 0.6);
+}
+
+.DENIED
+{
+  color: rgba(255, 0, 0, 0.7);
+  background: rgba(255, 0, 0, 0.192);
+  border-left: 2px solid rgba(255, 0, 0, 0.5);
 }

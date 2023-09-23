@@ -14,7 +14,13 @@ import {
   GetApprovedListingsQuery,
   EditListingRequest,
   EditListingCommand,
-  EditListingResponse
+  EditListingResponse,
+  GetUnapprovedListingsResponse,
+  GetUnapprovedListingsQuery,
+  SaveListingCommand,
+  GetFilteredListingsResponse,
+  GetFilteredListingsRequest,
+  GetFilteredListingsQuery
 } from '@properproperty/api/listings/util';
 
 @Injectable()
@@ -41,8 +47,19 @@ export class ListingsService {
     return this.queryBus.execute(new GetApprovedListingsQuery());
   }
 
+  async getUnapprovedListings(): Promise<GetUnapprovedListingsResponse>{
+    return this.queryBus.execute(new GetUnapprovedListingsQuery());
+  }
+
   async editListing(req: EditListingRequest): Promise<EditListingResponse>{
     return this.commandBus.execute(new EditListingCommand(req.listing))
   }
-  
+
+  async saveListing(req: CreateListingRequest): Promise<CreateListingResponse>{
+    return this.commandBus.execute(new SaveListingCommand(req.listing));
+  }
+
+  async filterListings(req: GetFilteredListingsRequest): Promise<GetFilteredListingsResponse>{
+    return this.queryBus.execute(new GetFilteredListingsQuery(req))
+  }
 }

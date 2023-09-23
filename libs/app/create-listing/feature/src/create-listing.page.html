@@ -32,6 +32,11 @@
 
 
 <ion-content [fullscreen]="true" *ngIf="!isMobile" class="Desktop">
+  <div id="loader" #loader>
+    <div id="approval-message">{{loadingMessage}}</div>
+    <img src="assets/500.gif">
+  </div>
+  <div class="add-property">
   <ion-grid [fixed]="false" id="full-grid">
     <ion-label class="imageText" id="photoHeading">Add Photos of your Property</ion-label>
     <span class="required-indicator" *ngIf="!photos.length">*</span>
@@ -89,12 +94,20 @@
           <ion-item class="ion-container">
             <div class="container">
               <div class="searchInput">
-                <label position="floating" class="house-text">Property District Municipality<span class="required-indicator"
+                <label position="floating" class="house-text">Property District Municipality 
+                  <a href="https://www.dws.gov.za/niwis2/dwq2" target="_blank" rel="noopener">
+                    <ion-icon id="help-icon" name="help-circle-outline"><div class="tooltip">
+                      <!-- <ion-popover trigger="help-icon" triggerAction="hover" show-backdrop="false" ionBackdropDismiss="false">
+                        <ng-template>
+                          <ion-content>
+                            hello there, general kenobi
+                          </ion-content>
+                        </ng-template>
+                      </ion-popover> -->
+                      <span class="tooltiptext">Use the map to determine your WSA district</span>
+                    </div></ion-icon>
+                  </a><span class="required-indicator"
                   *ngIf="!address">*</span>
-                    <div id="districtHelp">
-                      ?
-                    </div>
-                    <span id="districtHelpSpan">Follow <a href="https://www.dws.gov.za/niwis2/dwq2" target="_blank" rel="noopener">this</a> link an determine your district by zooming into the map</span>
                 </label>
                 <input style="font-weight: 500; padding-left:1%" type="text" class="house-text" id="address"
                   [(ngModel)]="district" placeholder="Enter the district of you listing">
@@ -294,18 +307,24 @@
       </ion-row>
 
       <ion-row style="width:100%">
-        <ion-button *ngIf="!ownerViewing; else ownerView" (click)="addListing()"
-          [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">ADD
+        <ng-container *ngIf="!ownerViewing; else ownerView">
+          <ion-button (click)="addListing('create')"
+          [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking||!district">SUBMIT
           LISTING</ion-button>
+        </ng-container>
         <ng-template #ownerView>
           <ion-button (click)="editListing()"
-            [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">Edit
-            Listing</ion-button>
-        </ng-template>
+          [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking||!district">SUBMIT EDITS
+          </ion-button>
+        </ng-template>&nbsp;&nbsp;
+        <ion-button (click)="addListing('save')"
+        [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking||!district">DRAFT
+        LISTING</ion-button>
       </ion-row>
     </ion-row>
     <div style="height:200px;"></div>
   </ion-grid>
+  </div>
   <properproperty-footer></properproperty-footer>
 
 
@@ -313,6 +332,11 @@
 </ion-content>
 
 <ion-content [fullscreen]="true" *ngIf="isMobile" class="Mobile">
+  <div id="loader" #loader>
+    <div id="approval-message">{{loadingMessage}}</div>
+    <img src="assets/500.gif">
+  </div>
+  <div class="add-property">
   <ion-grid [fixed]="false" id="full-grid">
     <ion-label class="imageText" id="photoHeading">Add Photos of your Property</ion-label>
     <span class="required-indicator" *ngIf="!photos.length">*</span>
@@ -409,13 +433,13 @@
         <ion-col>
           <ion-row class="dropdown">
             <ion-col>
-              <label position="floating" class="house-text" style="margin-left: 3%">Property Type:</label>
+              <label position="floating" class="house-text" style="margin-left: 3%">Type:</label>
             </ion-col>
             <ion-col>
               <select [(ngModel)]="prop_type" class="house-dropdown" aria-label="prop-type" id="prop-type">
                 <option value="House">House</option>
                 <option value="Apartment">Apartment</option>
-                <option value="Commercial">Commercial Property</option>
+                <option value="Commercial">Commercial</option>
               </select>
             </ion-col>
           </ion-row>
@@ -423,7 +447,7 @@
         <ion-col>
           <ion-row class="dropdown">
             <ion-col>
-              <label [(ngModel)]="env_type" position="floating" class="house-text">Community Environment:</label>
+              <label [(ngModel)]="env_type" position="floating" class="house-text">Environment:</label>
             </ion-col>
             <ion-col>
               <select class="house-dropdown" aria-label="env-type">
@@ -445,8 +469,8 @@
             <ion-col>
               <select [(ngModel)]="furnish_type" class="house-dropdown" aria-label="furnishing">
                 <option value="Furnished">Furnished</option>
-                <option value="Partly Furnished">Partly Furnished</option>
-                <option value="Not Furnished">Not Furnished</option>
+                <option value="Partly Furnished">Partly-Furnished</option>
+                <option value="Not Furnished">Not-Furnished</option>
               </select>
             </ion-col>
           </ion-row>
@@ -471,7 +495,7 @@
       <ion-row style="width:100%; border-bottom: 2px solid #0DAE4F;">
         <ion-col>
           <ion-item class="ion-container">
-            <ion-label position="floating" class="house-text">Bathroom Count<span class="required-indicator"
+            <ion-label position="floating" class="house-text">Bathrooms<span class="required-indicator"
                 *ngIf="!bathrooms">*</span></ion-label>
 
             <ion-input type="number" id="bath" [(ngModel)]="bathrooms" required></ion-input>
@@ -480,7 +504,7 @@
         </ion-col>
         <ion-col>
           <ion-item class="ion-container">
-            <ion-label position="floating" class="house-text">Bedroom Count<span class="required-indicator"
+            <ion-label position="floating" class="house-text">Bedrooms<span class="required-indicator"
                 *ngIf="!bedrooms">*</span></ion-label>
 
             <ion-input type="number" id="bed" [(ngModel)]="bedrooms" required></ion-input>
@@ -573,18 +597,24 @@
     </ion-row>
 
       <ion-row style="width:100%">
-        <ion-button *ngIf="!ownerViewing; else ownerView" (click)="addListing()"
-          [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">ADD
+        <ng-container *ngIf="!ownerViewing; else ownerView">
+          <ion-button (click)="addListing('create')"
+          [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">SUBMIT
           LISTING</ion-button>
+        </ng-container>
         <ng-template #ownerView>
           <ion-button (click)="editListing()"
-            [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">Edit
-            Listing</ion-button>
-        </ng-template>
+          [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">SUBMIT EDITS
+          </ion-button>
+        </ng-template>&nbsp;&nbsp;
+        <ion-button (click)="addListing('save')"
+        [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">DRAFT
+        LISTING</ion-button>
       </ion-row>
     </ion-row>
     <div style="height:200px;"></div>
   </ion-grid>
+  </div>
   <properproperty-footer></properproperty-footer>
 
 

@@ -1,4 +1,5 @@
 import { UserProfile } from "@properproperty/api/profile/util";
+import { SubscribeToNotificationsState } from '@properproperty/app/notifications/util';
 import { State, Selector, Store, StateContext, Action } from "@ngxs/store";
 import { Injectable } from "@angular/core";
 import { 
@@ -71,6 +72,8 @@ export class UserProfileState {
       userProfile: docData,
       snapshotListener: listener 
     });
+
+    ctx.dispatch(new SubscribeToNotificationsState(userId))
   }
 
   @Action(UnsubscribeFromUserProfile)

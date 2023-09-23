@@ -1,0 +1,26 @@
+{
+  "name": "api-google-maps-feature",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/google-maps/feature/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/api/google-maps/feature",
+        "main": "libs/api/google-maps/feature/src/index.ts",
+        "tsConfig": "libs/api/google-maps/feature/tsconfig.lib.json",
+        "assets": ["libs/api/google-maps/feature/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/api/google-maps/feature/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

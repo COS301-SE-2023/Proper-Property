@@ -24,10 +24,13 @@ export class ProfilePage implements OnInit {
   isEditingEmail: boolean;
   isEditingName: boolean;
   isEditingPhoneNumber: boolean;
+  isEditingProfilePicture: boolean;
   newEmail: string;
   newFirstName: string;
   newLastName: string;
   newPhoneNumber: string;
+  profilePic = "";
+  saveProfile = false;
   // appPages = [
   //   { title: 'Saved Listings', url: '/saved-listings', icon: 'bookmark' },
   //   { title: 'My Listings', url: '/my-listings', icon: 'list' },
@@ -54,8 +57,7 @@ export class ProfilePage implements OnInit {
       return;
     }
     this.user.email = this.newEmail;
-    // this.userProfileService.updateUserEmail(this.newEmail);
-    // this.authServices.editEmail(this.newEmail);
+
     this.store.dispatch(new UpdateUserProfile({email: this.newEmail}));
     this.newEmail = '';
   }
@@ -72,9 +74,8 @@ export class ProfilePage implements OnInit {
       private readonly router: Router,
       private readonly store: Store
     ) {
-
       
-      this.isMobile = isMobile();
+      this.isMobile = window.innerWidth <= 576;
     // default value cus ngModel cries when the user is null
     this.interests = {
       garden: 50,
@@ -95,7 +96,8 @@ export class ProfilePage implements OnInit {
 
     this.userProfile$.subscribe((profile) => {
       this.user = profile;
-      if (profile) {
+      this.profilePic = profile?.profilePicture ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2t2r3zx8jVPz6isicXtXbueLZFfWIuRMkW8X6KQ3_&s";
+      if(profile) {
         if(profile.interests !== undefined){
           this.interests = profile.interests;
         }
@@ -119,10 +121,11 @@ export class ProfilePage implements OnInit {
         };
       }
     });
-    
+
     this.isEditingEmail = false;
     this.isEditingName = false;
     this.isEditingPhoneNumber = false;
+    this.isEditingProfilePicture = false;
     this.newEmail = '';
     this.newFirstName = '';
     this.newLastName = '';
@@ -138,6 +141,7 @@ export class ProfilePage implements OnInit {
   ngOnInit() {
     console.log ("Linter: Lifecycle methods should not be empty");
   }
+
   async confirmDeleteAccount() {
     const alert = await this.alertController.create({
       header: 'Confirmation',
@@ -164,12 +168,15 @@ export class ProfilePage implements OnInit {
     await alert.present();
   }
 
-  deleteAccount() {
+  async deleteAccount() {
     // Perform validation or additional logic here if needed
-    this.userProfileService.deleteUser(this.userProfileService.currentUser?.userId ?? '');
-    this.authServices.deleteCurrentUser();
-    //redirect to login
-    this.router.navigate(['/register']);
+    if(this.user)
+    {
+      await this.userProfileService.deleteUser(this.user?.userId);
+      this.authServices.deleteCurrentUser();
+      //redirect to login
+      this.router.navigate(['/register']);
+    }
   }
 
   logout(){
@@ -227,7 +234,42 @@ export class ProfilePage implements OnInit {
     this.newPhoneNumber = '';
     this.isEditingPhoneNumber = false;
   }
-}
-function isMobile(): boolean {
-  return window.innerWidth <= 576;
+
+  editProfilePicture(){
+    if(!this.user){
+      return;
+    }
+
+    this.isEditingProfilePicture = true;
+  }
+
+  handleFileInput(event: Event) {
+    if (!event.currentTarget) {
+      return;
+    }
+    const files: FileList | null = (event.currentTarget as HTMLInputElement).files;
+    if (files) {
+      this.saveProfile = true;
+      console.log(files);
+      for (let index = 0; index < files.length; index++) {
+        if (files.item(index)){
+          this.profilePic = URL.createObjectURL(files.item(index) as Blob);
+          document.getElementById("profilePic2")?.setAttribute("style", "margin: 10px; border-radius: 50%; border: 1px solid black; width: 100px; height: 100px; background-image: url('" + this.profilePic + "'); background-size: cover; background-position-x: center; background-position-y: center;")
+          console.log("brooo ",URL.createObjectURL(files.item(index) as Blob));
+        }
+      }
+    }
+  }
+
+
+  async saveProfilePic(){
+    if(this.user){
+      console.log(this.profilePic)
+      console.log("saving profile pic")
+      const response = await this.userProfileService.uploadProfilePic(this.user.userId, this.profilePic);
+      console.log(response);
+      document.getElementById("profilePic2")?.setAttribute("style", "margin: 10px; border-radius: 50%; border: 1px solid black; width: 100px; height: 100px; background-image: url('" + this.profilePic + "'); background-size: cover; background-position-x: center; background-position-y: center;")
+      this.saveProfile = false;
+    }
+  }
 }
