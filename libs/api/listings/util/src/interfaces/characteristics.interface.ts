@@ -10,7 +10,7 @@ export interface characteristics{
     student: boolean;
     lovinIt: boolean;
     farm: boolean;
-    Gym: boolean;
+    gym: boolean;
     owner: boolean;
     leftUmbrella: boolean;
 }

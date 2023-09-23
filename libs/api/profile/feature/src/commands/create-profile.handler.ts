@@ -26,7 +26,7 @@ export class CreateProfileHandler implements ICommandHandler<CreateProfileComman
         student: 50,
         lovinIt: 50,
         farm: 50,
-        Gym: 50,
+        gym: 50,
         owner: 50,
         leftUmbrella: 50
       },

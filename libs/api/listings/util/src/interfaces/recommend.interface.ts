@@ -1,4 +1,4 @@
 export interface Recommend{
     listingID?: string;
-    recommended: string;
+    recommended: boolean;
 }

@@ -160,6 +160,10 @@ export class ListingPage implements OnDestroy {
     loader.style.display = "block";
     const request: GetAnalyticsDataRequest = { listingId: this.list?.listing_id ?? "" };
     const analyticsResponse = (await httpsCallable(this.functions, 'getAnalyticsData')(request)).data;
+    if (typeof analyticsResponse != "string") {
+      console.warn(analyticsResponse);
+      return;
+    }
     const analyticsData = JSON.parse(analyticsResponse as string);
     console.log(analyticsData);
     let totUsers = 0;

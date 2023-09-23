@@ -10,7 +10,7 @@ export interface Interests {
     student: number;
     lovinIt: number;
     farm: number;
-    Gym: number;
+    gym: number;
     owner: number;
     leftUmbrella: number;
 }

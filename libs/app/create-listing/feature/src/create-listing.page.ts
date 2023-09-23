@@ -145,14 +145,14 @@ export class CreateListingPage{
             this.listingAreaTypeSlider = listing.listingAreaType == "Rural" ? true : false;
             this.selectedValue = listing.let_sell == "Sell" ? true : false;
             
-            console.log(this.features);
-            for(let i = 0 ; i < listing.features.length ; i++){
-              if(listing.features[i] == "Pool" || listing.features[i] == "Wifi" || listing.features[i] == "Pets" || listing.features[i] == "Accessible" || listing.features[i] == "Garden"){
-                (document.getElementById(listing.features[i]) as HTMLIonCheckboxElement).checked = true;
-                listing.features.splice(i,1);
-                i--;
-              }
-            }
+            // console.log(this.features);
+            // for(let i = 0 ; i < listing.features.length ; i++){
+            //   if(listing.features[i] == "Pool" || listing.features[i] == "Wifi" || listing.features[i] == "Pets" || listing.features[i] == "Accessible" || listing.features[i] == "Garden"){
+            //     (document.getElementById(listing.features[i]) as HTMLIonCheckboxElement).checked = true;
+            //     listing.features.splice(i,1);
+            //     i--;
+            //   }
+            // }
           }
         });
       }
@@ -419,276 +419,277 @@ onResize(event: Event) {
     {lat: -24.057146033668925, long:30.86003735206916 }, 
   ];
 
-  async setCharacteristics()
-  {
-    //Garden
-    this.garden = this.checkfeature("Garden");
-    // Check for garden image
+  // async setCharacteristics()
+  // {
+  //   return;
+  //   //Garden
+  //   this.garden = this.checkfeature("Garden");
+  //   // Check for garden image
 
-    //party
-    if(await this.checklocationfeatures("bar", 1000) || await this.checklocationfeatures("night_club", 1000) || await this.checklocationfeatures("casino", 2000))
-    {
-      if(await this.checklocationfeaturesCounter("liquor_store", 1000)> 1)
-      {
-        this.party = true;
-      }
+  //   //party
+  //   if(await this.checklocationfeatures("bar", 1000) || await this.checklocationfeatures("night_club", 1000) || await this.checklocationfeatures("casino", 2000))
+  //   {
+  //     if(await this.checklocationfeaturesCounter("liquor_store", 1000)> 1)
+  //     {
+  //       this.party = true;
+  //     }
       
-    }
+  //   }
 
-    //Mansion
+  //   //Mansion
 
-    if(this.floor_size >= 2500 && this.bedrooms >= 4)
-    {
-      this.mansion = true;
-    }
+  //   if(this.floor_size >= 2500 && this.bedrooms >= 4)
+  //   {
+  //     this.mansion = true;
+  //   }
 
-    //accessible
-    for(const feat of this.features)
-    {
-      if(feat == "Accessible")
-      {
-        this.accessible = true;
-      }
-    }
+  //   //accessible
+  //   for(const feat of this.features)
+  //   {
+  //     if(feat == "Accessible")
+  //     {
+  //       this.accessible = true;
+  //     }
+  //   }
 
-    //Foreign
-    if(await this.checkNearTourist())
-    {
-      this.foreign = true;
-    }
+  //   //Foreign
+  //   if(await this.checkNearTourist())
+  //   {
+  //     this.foreign = true;
+  //   }
 
-    //eco-warrior
-    this.eco = this.checkfeature("Solar Panels");
+  //   //eco-warrior
+  //   this.eco = this.checkfeature("Solar Panels");
 
-    //gym
-    if(await this.checklocationfeatures("gym", 3000))
-    {
-      this.gym = true;
-    }
+  //   //gym
+  //   if(await this.checklocationfeatures("gym", 3000))
+  //   {
+  //     this.gym = true;
+  //   }
 
-    //Food
-    this.food = true;
-    const Dansw = this.checklocationfeaturesCounter("meal_delivery", 3000);
-    console.log("Meal Delivery: ", Dansw);
-    if(await Dansw < 2)
-    {
-      this.food = false;
-    }
+  //   //Food
+  //   this.food = true;
+  //   const Dansw = this.checklocationfeaturesCounter("meal_delivery", 3000);
+  //   console.log("Meal Delivery: ", Dansw);
+  //   if(await Dansw < 2)
+  //   {
+  //     this.food = false;
+  //   }
 
-    const Ransw = this.checklocationfeaturesCounter("restaurant", 3000);
-    console.log("Restaurants: ", Ransw);
-    if(await Ransw < 3)
-    {
-      this.food = false;
-    }
+  //   const Ransw = this.checklocationfeaturesCounter("restaurant", 3000);
+  //   console.log("Restaurants: ", Ransw);
+  //   if(await Ransw < 3)
+  //   {
+  //     this.food = false;
+  //   }
 
-    const Cansw = this.checklocationfeaturesCounter("cafe", 3000);
-    console.log("Cafes: ", Cansw);
-    if(await Cansw < 1)
-    {
-      this.food = false;
-    }
+  //   const Cansw = this.checklocationfeaturesCounter("cafe", 3000);
+  //   console.log("Cafes: ", Cansw);
+  //   if(await Cansw < 1)
+  //   {
+  //     this.food = false;
+  //   }
 
-    const Tansw = this.checklocationfeaturesCounter("meal_takeaway", 3000);
-    console.log("Takeawaya: ", Tansw);
-    if(await Tansw < 6)
-    {
-      this.food = false;
-    }
+  //   const Tansw = this.checklocationfeaturesCounter("meal_takeaway", 3000);
+  //   console.log("Takeawaya: ", Tansw);
+  //   if(await Tansw < 6)
+  //   {
+  //     this.food = false;
+  //   }
 
-    //Student
+  //   //Student
 
-    if(await this.checklocationfeatures("university", 5000))
-    {
-      if(this.price < 6000)
-      {
-        if(this.checkfeature("Wifi"))
-        {
-          this.students = true;
-        }
-      }
-    }
+  //   if(await this.checklocationfeatures("university", 5000))
+  //   {
+  //     if(this.price < 6000)
+  //     {
+  //       if(this.checkfeature("Wifi"))
+  //       {
+  //         this.students = true;
+  //       }
+  //     }
+  //   }
 
-    //owner
-    if(this.features.length > 8 && (this.furnish_type== "Furnished"|| this.furnish_type== "Partly Furnished"))
-    {
-      console.log("Is an owner and ", this.furnish_type);
-      this.owner = true;
-    }
+  //   //owner
+  //   if(this.features.length > 8 && (this.furnish_type== "Furnished"|| this.furnish_type== "Partly Furnished"))
+  //   {
+  //     console.log("Is an owner and ", this.furnish_type);
+  //     this.owner = true;
+  //   }
 
-    //PG 13 { crime and school quality still needed }
+  //   //PG 13 { crime and school quality still needed }
 
-    if(await this.checklocationfeatures("amusement_park", 10000) || await this.checklocationfeatures("aquarium", 10000) || await this.checklocationfeatures("bowling_alley", 10000) || await this.checklocationfeatures("zoo", 10000) || await this.checklocationfeatures("park", 1000) || await this.checklocationfeatures("movie_theatre", 10000))
-    {
-      if(await this.checklocationfeatures("school", 10000) || await this.checklocationfeatures("primary_school", 10000))
-      {
-        this.kids = true;
-      }
-    }
+  //   if(await this.checklocationfeatures("amusement_park", 10000) || await this.checklocationfeatures("aquarium", 10000) || await this.checklocationfeatures("bowling_alley", 10000) || await this.checklocationfeatures("zoo", 10000) || await this.checklocationfeatures("park", 1000) || await this.checklocationfeatures("movie_theatre", 10000))
+  //   {
+  //     if(await this.checklocationfeatures("school", 10000) || await this.checklocationfeatures("primary_school", 10000))
+  //     {
+  //       this.kids = true;
+  //     }
+  //   }
 
-    //Middle of nowhere, farm
+  //   //Middle of nowhere, farm
 
-    if(await this.checkNolocationfeatures(10000))
-    {
-      this.farm = true;
-    }
-
-
-  }
-
-  checkfeature(a : string)
-  {
-      for(let x =0; x< this.features.length; x++)
-      {
-        if(a == this.features[x])
-        {
-          return true;
-        }
-      }
-
-      return false;
-  }
+  //   if(await this.checkNolocationfeatures(10000))
+  //   {
+  //     this.farm = true;
+  //   }
 
 
-  async checklocationfeatures(placeType: string, distanceFrom: number)
-  {
-    try {
-      const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
-      if (coordinates) {
-        const results = await this.gmapsService.getNearbyPlaceType(
-          coordinates.latitude,
-          coordinates.longitude,
-          placeType
-        );
+  // }
 
-        console.log(results);
+  // checkfeature(a : string)
+  // {
+  //     for(let x =0; x< this.features.length; x++)
+  //     {
+  //       if(a == this.features[x])
+  //       {
+  //         return true;
+  //       }
+  //     }
 
-        for (const result of results) {
-          if(result.types){
-            for(const type of result.types){
-              if(type == placeType){
-                if(result.vicinity)
-                {
-                  const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
+  //     return false;
+  // }
 
-                  const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
-                  console.log(result.name, distance, "meters away from ", this.address);
-                  if(distance< distanceFrom)
-                  {
-                    return true;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Error retrieving nearby places:', error);
-    }
+
+  // async checklocationfeatures(placeType: string, distanceFrom: number)
+  // {
+  //   try {
+  //     const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
+  //     if (coordinates) {
+  //       const results = await this.gmapsService.getNearbyPlaceType(
+  //         coordinates.latitude,
+  //         coordinates.longitude,
+  //         placeType
+  //       );
+
+  //       console.log(results);
+
+  //       for (const result of results) {
+  //         if(result.types){
+  //           for(const type of result.types){
+  //             if(type == placeType){
+  //               if(result.vicinity)
+  //               {
+  //                 const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
+
+  //                 const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
+  //                 console.log(result.name, distance, "meters away from ", this.address);
+  //                 if(distance< distanceFrom)
+  //                 {
+  //                   return true;
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Error retrieving nearby places:', error);
+  //   }
     
-    return false;
-  }
+  //   return false;
+  // }
 
-  async checklocationfeaturesCounter(placeType: string, distanceFrom: number)
-  {
-    this.count = 0;
-    try {
-      const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
-      if (coordinates) {
-        const results = await this.gmapsService.getNearbyPlaceType(
-          coordinates.latitude,
-          coordinates.longitude,
-          placeType
-        );
+  // async checklocationfeaturesCounter(placeType: string, distanceFrom: number)
+  // {
+  //   this.count = 0;
+  //   try {
+  //     const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
+  //     if (coordinates) {
+  //       const results = await this.gmapsService.getNearbyPlaceType(
+  //         coordinates.latitude,
+  //         coordinates.longitude,
+  //         placeType
+  //       );
 
-        console.log(results);
+  //       console.log(results);
 
-        for (const result of results) {
-          if(result.types){
-            for(const type of result.types){
-              if(type == placeType){
-                if(result.vicinity)
-                {
-                  const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
+  //       for (const result of results) {
+  //         if(result.types){
+  //           for(const type of result.types){
+  //             if(type == placeType){
+  //               if(result.vicinity)
+  //               {
+  //                 const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
 
-                  const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
-                  console.log(result.name, distance, "meters away from ", this.address);
-                  if(distance< distanceFrom)
-                  {
-                    this.count++;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Error retrieving nearby places:', error);
-    }
-    return this.count;
-  }
+  //                 const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
+  //                 console.log(result.name, distance, "meters away from ", this.address);
+  //                 if(distance< distanceFrom)
+  //                 {
+  //                   this.count++;
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Error retrieving nearby places:', error);
+  //   }
+  //   return this.count;
+  // }
 
-  async checkNearTourist()
-  {
+  // async checkNearTourist()
+  // {
 
-    const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
+  //   const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
 
-    for(const pin of this.touristDestinations)
-    {
-      const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, pin.lat, pin.long)
+  //   for(const pin of this.touristDestinations)
+  //   {
+  //     const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, pin.lat, pin.long)
 
-      if(distance< 15000)
-      {
-        console.log("tourist coordinates:", pin.lat, pin.long);
-        return true;
-      }
-    }
+  //     if(distance< 15000)
+  //     {
+  //       console.log("tourist coordinates:", pin.lat, pin.long);
+  //       return true;
+  //     }
+  //   }
 
-    return false;
-  }
+  //   return false;
+  // }
 
   //TODO redo in google -maps.repository using the new stored POIs
-  async checkNolocationfeatures(distanceFrom: number)
-  {
-    return false;
-    // try {
-    //   const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
-    //   if (coordinates) {
-    //     const results = await this.gmapsService.getNearbyPlaces(
-    //       coordinates.latitude,
-    //       coordinates.longitude
-    //     );
+  // async checkNolocationfeatures(distanceFrom: number)
+  // {
+  //   return false;
+  //   // try {
+  //   //   const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
+  //   //   if (coordinates) {
+  //   //     const results = await this.gmapsService.getNearbyPlaces(
+  //   //       coordinates.latitude,
+  //   //       coordinates.longitude
+  //   //     );
 
-    //     console.log(results);
+  //   //     console.log(results);
 
-    //     for (const result of results) {
-    //       if(result.types){
-    //         for(const type of result.types){
-    //           if(type != "cemetery" && type != "campground"){
-    //             if(result.vicinity)
-    //             {
-    //               const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
+  //   //     for (const result of results) {
+  //   //       if(result.types){
+  //   //         for(const type of result.types){
+  //   //           if(type != "cemetery" && type != "campground"){
+  //   //             if(result.vicinity)
+  //   //             {
+  //   //               const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
 
-    //               const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
-    //               console.log(result.name, distance, "meters away from ", this.address);
-    //               if(distance< distanceFrom)
-    //               {
-    //                 return false;
-    //               }
-    //             }
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    // } catch (error) {
-    //   console.error('Error retrieving nearby places:', error);
-    // }
+  //   //               const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
+  //   //               console.log(result.name, distance, "meters away from ", this.address);
+  //   //               if(distance< distanceFrom)
+  //   //               {
+  //   //                 return false;
+  //   //               }
+  //   //             }
+  //   //           }
+  //   //         }
+  //   //       }
+  //   //     }
+  //   //   }
+  //   // } catch (error) {
+  //   //   console.error('Error retrieving nearby places:', error);
+  //   // }
     
-    // return true;
-  }
+  //   // return true;
+  // }
 
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -721,7 +722,7 @@ onResize(event: Event) {
       this.scrollToElement.nativeElement.scrollIntoView({ block: 'center' });
     }
     this.address = (document.getElementById("address") as HTMLInputElement).value;
-   await this.setCharacteristics();
+  //  await this.setCharacteristics();
 
     const score = await this.calculateQualityScore(
       this.photos,
@@ -776,7 +777,7 @@ onResize(event: Event) {
           student: this.students,
           lovinIt: this.food,
           farm: this.farm,
-          Gym: this.gym,
+          gym: this.gym,
           owner: this.owner,
           leftUmbrella: false 
         },
@@ -828,7 +829,7 @@ onResize(event: Event) {
     }
     if(this.currentUser != null && this.listingEditee != null){
 
-      await this.setCharacteristics();
+      // await this.setCharacteristics();
 
       const list : Listing = {
         listing_id: this.listingEditee.listing_id,
@@ -867,7 +868,7 @@ onResize(event: Event) {
           student: this.students,
           lovinIt: this.food,
           farm: this.farm,
-          Gym: this.gym,
+          gym: this.gym,
           owner: this.owner,
           leftUmbrella: false 
         },
@@ -901,12 +902,11 @@ onResize(event: Event) {
     'Pool',
     'Accessible',
     'Security Estate',
-    'Solar Panels',
     'Flatlet',
     'Garden',
-    'Pet-Friendly',
+    'Pet Friendly',
     'Wifi',
-    'Solar-Panel'
+    'Solar Panels'
   ];
   filteredAmenities: string[] = [];
 

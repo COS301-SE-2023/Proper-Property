@@ -83,7 +83,7 @@ export class UserProfileService {
     student: 0,
     lovinIt: 0,
     farm: 0,
-    Gym: 0,
+    gym: 0,
     owner: 0,
     leftUmbrella: 0
   }
@@ -95,7 +95,7 @@ export class UserProfileService {
     console.log("old interests", profile);
     this.calculatePotency(characteristic);
 
-    this.temp.Gym=(await profile).interests.Gym;
+    this.temp.gym=(await profile).interests.gym;
     this.temp.garden =(await profile).interests.garden;
     this.temp.accessible=(await profile).interests.accessible;
     this.temp.party =(await profile).interests.party;
@@ -156,7 +156,7 @@ export class UserProfileService {
     this.temp.student =this.mainIncrease(this.temp.student,(+!!characteristic.student));
 
     this.temp.party =this.allyIncrease(this.temp.party,(+!!characteristic.student));
-    this.temp.Gym =this.allyIncrease(this.temp.Gym,(+!!characteristic.student));
+    this.temp.gym =this.allyIncrease(this.temp.gym,(+!!characteristic.student));
     this.temp.party =this.allyIncrease(this.temp.party,(+!!characteristic.student));
 
     this.temp.farm =this.decay(this.temp.family,(+!!characteristic.student));
@@ -166,10 +166,10 @@ export class UserProfileService {
 
     this.temp.farm = this.decay(this.temp.farm, (+!!characteristic.lovinIt));
 
-    //Gym rats
-    this.temp.Gym =this.mainIncrease(this.temp.Gym,(+!!characteristic.Gym));
+    //gym rats
+    this.temp.gym =this.mainIncrease(this.temp.gym,(+!!characteristic.gym));
 
-    this.temp.farm = this.decay(this.temp.farm, (+!!characteristic.Gym));
+    this.temp.farm = this.decay(this.temp.farm, (+!!characteristic.gym));
 
     //Owner
     this.temp.owner =this.mainIncrease(this.temp.owner,(+!!characteristic.owner));
@@ -189,7 +189,7 @@ export class UserProfileService {
     this.temp.student =this.decay(this.temp.student,(+!!characteristic.farm));
     this.temp.lovinIt =this.decay(this.temp.lovinIt,(+!!characteristic.farm));
 
-    (await profile).interests.Gym = this.temp.Gym;
+    (await profile).interests.gym = this.temp.gym;
     (await profile).interests.accessible = this.temp.accessible;
     (await profile).interests.ecoWarrior = this.temp.ecoWarrior;
     (await profile).interests.family = this.temp.family;
@@ -243,7 +243,7 @@ export class UserProfileService {
 
   calculatePotency(c: characteristics)
   {
-    let loop: boolean[] = [c.garden, c.party, c.mansion, c.accessible, c.foreign, c.ecoWarrior, c.family, c.student, c.lovinIt, c.farm, c.Gym, c.owner];
+    let loop: boolean[] = [c.garden, c.party, c.mansion, c.accessible, c.foreign, c.ecoWarrior, c.family, c.student, c.lovinIt, c.farm, c.gym, c.owner];
     this.vPotency=1;
 
     for(let x=0; x< loop.length; x++)
@@ -258,7 +258,7 @@ export class UserProfileService {
   getInterestArray(profile: UserProfile)
   {
     const inter = profile.interests;
-    const arr: number[] = [inter.garden, inter.party, inter.mansion, inter.accessible, inter.foreign, inter.ecoWarrior, inter.family, inter.student, inter.lovinIt, inter.farm, inter.Gym, inter.owner];
+    const arr: number[] = [inter.garden, inter.party, inter.mansion, inter.accessible, inter.foreign, inter.ecoWarrior, inter.family, inter.student, inter.lovinIt, inter.farm, inter.gym, inter.owner];
     return arr;
   }
 }

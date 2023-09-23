@@ -1,7 +1,7 @@
 
 import * as admin from 'firebase-admin';
 import { Injectable } from '@nestjs/common';
-import { Listing, StatusChangedEvent } from '@properproperty/api/listings/util';
+import { Listing, StatusChangedEvent, characteristics } from '@properproperty/api/listings/util';
 import { DocumentData, QueryDocumentSnapshot } from 'firebase-admin/firestore';
 import { Client, PlaceData, PlacesNearbyResponse, PlacesNearbyRequest, GeocodeRequest } from '@googlemaps/google-maps-services-js';
 import { GetNearbyPlacesResponse, StoredPlaces } from '@properproperty/api/google-maps/util';
@@ -129,6 +129,7 @@ export class GoogleMapsRepository {
   eco = false;
   gym = false;
   owner = false;
+  // TODO use this?
   umbrella = false;
 
   touristDestinations: { lat: number, long: number }[] = [
@@ -163,8 +164,9 @@ export class GoogleMapsRepository {
 
   docData: Listing | undefined;
   async geocodeAddress(address ?: string){
-    const keeeeee = process.env['NX_GOOGLE_MAPS_KEY']
+    const keeeeee = process.env['NX_GOOGLE_MAPS_KEY'];
     if(!keeeeee){
+      console.log("No API key found");
       return;
     }
     const request : GeocodeRequest = {
@@ -177,12 +179,17 @@ export class GoogleMapsRepository {
   }
 
   async addPOIs(event : StatusChangedEvent){
+    console.log(process.env);
+    if (!process.env['NX_GOOGLE_MAPS_KEY']) {
+      return;
+    }
     const updates:{
       geometry?: {
         lat: number,
         lng: number,
       },
-      pointsOfInterestIds: string[]
+      pointsOfInterestIds: string[],
+      characteristics?: characteristics
     } = {
       pointsOfInterestIds: []
     };
@@ -201,11 +208,11 @@ export class GoogleMapsRepository {
 
     if(!this.docData.geometry.lat && !this.docData.geometry.lng){
       geocode = (await this.geocodeAddress(this.docData.address))?.data.results[0].geometry.location;
+      console.log("Geocode: ", geocode);
       updates.geometry = {
         lat: geocode?.lat ?? 0,
         lng: geocode?.lng ?? 0
       }
-      console.log("Geocode: ", geocode)
     }
     
     if(!geocode?.lat || !geocode?.lng){ // tests positive if a listing has lat/long = 0, but the oceans are rising, not receding so w/e
@@ -292,6 +299,8 @@ export class GoogleMapsRepository {
       });
     }
     // TODO set "middle of nowhere" if no POIS added after loop
+    this.farm = poiIDs.length == 0 && this.docData.property_size >= 10000;
+
     let savings = -0.032 * 3;
     for ( let x = 0; x < this.types.length && process.env['NX_ENVIRONMENT']; ++x) {
       const BOOl = this.flags[x];
@@ -300,49 +309,45 @@ export class GoogleMapsRepository {
       }
     }
     if (process.env['NX_RECOMMENDATION']) {
-      // TODO Garden
-      // this.garden = this.checkfeature("Garden");
+      console.log("recommending");
+      const listing = this.docData;
+      this.garden = listing.features.indexOf("Garden") > -1;
 
       // TODO Mansion
-      // if(parseInt(this.floor_size) >= 2500 && parseInt(this.bedrooms)>= 4)
-      // {
-      //   this.mansion = true;
-      // }
+      if(listing.floor_size >= 2500 && listing.bed>= 4){
+        this.mansion = true;
+      }
       
       // TODO accessible
-      // for(const feat of this.features)
-      // {
-      //   if(feat == "Accessible")
-      //   {
-      //     this.accessible = true;
-      //   }
-      // }
+      if(listing.features.indexOf("Accessible") > -1){
+        this.accessible = true;
+      }
 
       // TODO Foreign
-      // if(await this.checkNearTourist())
-      // {
-      //   this.foreign = true;
-      // }
+        for (const touristLocation of this.touristDestinations) {
+          const distance = this.calculateDistanceInMeters(
+            listing.geometry.lat, 
+            listing.geometry.lng, 
+            touristLocation.lat, 
+            touristLocation.long
+          );
+          if (distance < 15000) {
+            this.foreign = true;
+            break;
+          }
+        }
 
       // TODO eco-warrior
-      // this.eco = this.checkfeature("Solar Panels");
+      this.eco = listing.features.indexOf("Solar Panels") > -1;
 
       // TODO owner
-      // if(this.features.length > 8 && (this.furnish_type== "Furnished"|| this.furnish_type== "Partly Furnished"))
-      // {
-      //   console.log("Is an owner and ", this.furnish_type);
-      //   this.owner = true;
-      // }
-
-      //Middle of nowhere, farm
-      // if(await this.checkNolocationfeatures(10000))
-      // {
-      //   this.farm = true;
-      // }
+      if(this.docData.features.length > 8 && (this.docData.furnish_type == "Furnished" || this.docData.furnish_type == "Partly Furnished")){
+        this.owner = true;
+      }
 
       if (pageCounter >= 3 && this.getCharacteristics) {
         this.checkParty();
-        this.checkGym();
+        this.checkgym();
         this.checkFood();
         this.checkUniversity();
         this.checkFamily();
@@ -356,13 +361,29 @@ export class GoogleMapsRepository {
       // TODO add characteristics to listing
     }
     updates['pointsOfInterestIds'] = poiIDs;
+    updates['characteristics'] = {
+      garden: this.garden,
+      farm: this.farm,
+      party: this.party,
+      mansion: this.mansion,
+      foreign: this.foreign,
+      lovinIt: this.food,
+      family: this.kids,
+      student: this.students,
+      accessible: this.accessible,
+      ecoWarrior: this.eco,
+      gym: this.gym,
+      owner: this.owner,
+      leftUmbrella: this.umbrella,
+      openConcept: false,
+    };
     await admin
       .firestore()
       .collection('listings')
       .doc(event.listingId)
-      .update({
+      .set({
         ...updates
-      });
+      }, {merge: true});
     this.addMissingPlaces(poiIDs, places);
     return {status: true, message: "Points of interest added :thumbsupp:"};
   }
@@ -438,32 +459,38 @@ export class GoogleMapsRepository {
     }
     // check bar nearby
     if (this.flags[this.types.indexOf('bar')]) {
+      this.party = true;
       return;
     }
     this.flags[this.types.indexOf('bar')] = await this.checkPlaces('bar', 1000);
     if (this.flags[this.types.indexOf('bar')]) {
+      this.party = true;
       return;
     }
     
     // check night club nearby
     if (this.flags[this.types.indexOf('night_club')]) {
+      this.party = true;
       return;
     }
     this.flags[this.types.indexOf('night_club')] = await this.checkPlaces('night_club', 1000);
     if (this.flags[this.types.indexOf('night_club')]) {
+      this.party = true;
       return;
     }
     // check casino nearby
     if (this.flags[this.types.indexOf('casino')]) {
+      this.party = true;
       return;
     }
     this.flags[this.types.indexOf('casino')] = await this.checkPlaces('casino', 2000);
     if (this.flags[this.types.indexOf('casino')]) {
+      this.party = true;
       return;
     }
   }
 
-  async checkGym() {
+  async checkgym() {
     if (this.flags[this.types.indexOf('gym')]) {
       return;
     }
@@ -498,19 +525,21 @@ export class GoogleMapsRepository {
     if (!this.flags[this.types.indexOf('cafe')]) {
       return;
     }
+    this.food = true;
   }
 
   async checkUniversity() {
-    // TODO: Check price
-    // if(parseInt(this.price) < 6000)
-    //   {
-    //     if(this.checkfeature("Wifi"))
-    //     {
-    //       this.students = true;
-    //     }
-    //   }
+    const listing = this.docData;
+    if (!listing) {
+      return;
+    }
+    if(listing.price > 6000 || listing.features.indexOf("Wifi") == -1) {
+      this.students = false;
+      return
+    }
+
     if (!this.flags[this.types.indexOf('university')]) {
-      this.flags[this.types.indexOf('university')] = await this.checkPlaces('university', 5000);
+      this.students = await this.checkPlaces('university', 5000);
     }
   }
 
@@ -521,7 +550,7 @@ export class GoogleMapsRepository {
     if (!this.flags[this.types.indexOf('school')] && !this.flags[this.types.indexOf('primary_school')]) {
       this.flags[this.types.indexOf('primary_school')] = await this.checkPlaces('primary_school', 10000);
     }
-    if (!this.flags[this.types.indexOf('school')] || !this.flags[this.types.indexOf('primary_school')]) {
+    if (!this.flags[this.types.indexOf('school')] && !this.flags[this.types.indexOf('primary_school')]) {
       return;
     }
 
@@ -529,6 +558,7 @@ export class GoogleMapsRepository {
       this.flags[this.types.indexOf('movie_theater')] = await this.checkPlaces('movie_theater', 10000);
     }
     if (this.flags[this.types.indexOf('movie_theater')]) {
+      this.kids = true;
       return;
     }
 
@@ -536,6 +566,7 @@ export class GoogleMapsRepository {
       this.flags[this.types.indexOf('park')] = await this.checkPlaces('park', 1000);
     }
     if (this.flags[this.types.indexOf('park')]) {
+      this.kids = true;
       return;
     }
     
@@ -543,6 +574,7 @@ export class GoogleMapsRepository {
       this.flags[this.types.indexOf('zoo')] = await this.checkPlaces('zoo', 10000);
     }
     if (this.flags[this.types.indexOf('zoo')]) {
+      this.kids = true;
       return;
     }
     
@@ -550,6 +582,7 @@ export class GoogleMapsRepository {
       this.flags[this.types.indexOf('bowling_alley')] = await this.checkPlaces('bowling_alley', 10000);
     }
     if (this.flags[this.types.indexOf('bowling_alley')]) {
+      this.kids = true;
       return;
     }
     
@@ -557,6 +590,7 @@ export class GoogleMapsRepository {
       this.flags[this.types.indexOf('amusement_park')] = await this.checkPlaces('amusement_park', 10000);
     }
     if (this.flags[this.types.indexOf('amusement_park')]) {
+      this.kids = true;
       return;
     }
     
@@ -564,7 +598,29 @@ export class GoogleMapsRepository {
       this.flags[this.types.indexOf('aquarium')] = await this.checkPlaces('aquarium', 10000);
     }
     if (this.flags[this.types.indexOf('aquarium')]) {
+      this.kids = true;
       return;
     }
+  }
+  calculateDistanceInMeters(lat1: number, lon1: number, lat2: number, lon2: number): number {
+    //https://en.wikipedia.org/wiki/Haversine_formula
+    const latDelta = this.toRad(lat2 - lat1);
+    const lonDelta = this.toRad(lon2 - lon1);
+    const sinLat = Math.sin(latDelta/2);
+    const sinLon = Math.sin(lonDelta/2);
+    // 1.42
+    const _2Radius = 2 * 6378137;
+    const a = sinLat * sinLat + 
+            Math.cos(this.toRad(lat1)) * Math.cos(this.toRad(lat2)) * 
+            sinLon * sinLon;
+
+    const c = Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    const d = _2Radius * c;
+
+    return d;
+  }
+  
+  toRad(degrees: number): number {
+    return degrees * Math.PI / 180;
   }
 }

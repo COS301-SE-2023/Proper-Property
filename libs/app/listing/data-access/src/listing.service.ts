@@ -243,10 +243,21 @@ export class ListingsService {
 
   async recommender(char: characteristics, userVector: number[])
   {
-    let listVector: number[] = [+!!char.garden, +!!char.party, +!!char.mansion, +!!char.accessible, +!!char.foreign, +!!char.ecoWarrior, +!!char.family, +!!char.student, +!!char.lovinIt, +!!char.farm, +!!char.Gym, +!!char.owner];
+    let listVector: number[] = [
+      +!!char.garden, 
+      +!!char.party, 
+      +!!char.mansion, 
+      +!!char.accessible, 
+      +!!char.foreign, 
+      +!!char.ecoWarrior, 
+      +!!char.family, 
+      +!!char.student, 
+      +!!char.lovinIt, 
+      +!!char.farm, 
+      +!!char.gym, 
+      +!!char.owner];
 
-    for(let x=0; x<12; x++)
-    {
+    for(let x=0; x<12; x++){
       listVector[x]= listVector[x]*userVector[x];
     }
 
@@ -254,18 +265,15 @@ export class ListingsService {
     //dot product
     let dotproduct=0;
 
-    for(let x=0; x< 12; x++)
-    {
+    for(let x=0; x< 12; x++){
       dotproduct += listVector[x]*userVector[x];
     }
 
-    if(dotproduct>=this.recommendationMinimum)
-    {
-      ans= "true";
+    if(dotproduct>=this.recommendationMinimum){
+      return true
     }
 
-    ans= "false";
-    return ans;
+    return false;
   }
   
   async getSanitationScore(district : string){

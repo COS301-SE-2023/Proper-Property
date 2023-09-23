@@ -177,26 +177,6 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     //   this.listings = listings;
     //   this.filterProperties();
     // });
-// TODO - move to search properties
-    await this.listingServices.getApprovedListings().then((listings) => {
-      this.listings = listings;
-
-      if(this.userProfile)
-      {
-        this.userInterestVector = this.profileServices.getInterestArray(this.userProfile);
-      }
-
-      for(const list of listings)
-      {
-        this.listingServices.recommender(list.characteristics, this.userInterestVector).then((ans) => {
-          this.recommends.push({listingID: list.listing_id, recommended: ans })
-          console.log("!!!!!!!!!!!!!!!!", list.listing_id, ans);
-        })
-      }
-       
-      this.filterProperties();
-    });
-//////// MOVE TO SEARCH//////////
     setTimeout(function () {
       // Hide the loader
       const load=document.querySelector('.loading-animation') as HTMLElement;
@@ -524,6 +504,7 @@ async loadMap() {
       toast.present();
       return;
     }
+      
     const areaBounds = this.searchQuery?  await this.gmapsService.geocodeAddress(this.searchQuery) : null;
     if (areaBounds) {
       for(const listing of response.listings){
@@ -536,7 +517,21 @@ async loadMap() {
       this.allListings = response.listings;
     }
     console.warn("Oh boy I sure do hope that the listings get filtered");
-    if(this.allListings){
+      if(this.allListings){
+        //Recommendation algo
+        if(this.userProfile)
+        {
+          this.userInterestVector = this.profileServices.getInterestArray(this.userProfile);
+        }
+
+        for(const list of response.listings)
+        {
+          this.listingServices.recommender(list.characteristics, this.userInterestVector).then((ans) => {
+            this.recommends.push({listingID: list.listing_id, recommended: ans })
+            console.log("!!!!!!!!!!!!!!!!", list.listing_id, ans);
+          })
+        }
+
       console.log("Yo");  
       this.filterProperties();
       await this.loadMap();
