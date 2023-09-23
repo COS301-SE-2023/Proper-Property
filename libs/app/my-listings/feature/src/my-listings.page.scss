@@ -190,3 +190,13 @@ ion-card ion-card-content {
   background: rgba(255, 0, 0, 0.192);
   border-left: 2px solid rgba(255, 0, 0, 0.5);
 }
+
+#loader{
+  position: absolute;
+  // right: 45%;
+  text-align: center;
+  z-index: 1;
+  top: 40%;
+  // opacity: 0;
+  width: 100%;
+}

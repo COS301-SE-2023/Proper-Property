@@ -34,6 +34,8 @@ export class MyListingsPage  implements OnInit, OnDestroy  {
   listings: Listing[] = []
   listingsB: Listing[]=[];
   listingsR: Listing[]=[]
+  loading = false;
+  loadingMessage = ";"
 
   constructor(
     private gmaps: GmapsService,
@@ -50,7 +52,11 @@ export class MyListingsPage  implements OnInit, OnDestroy  {
     }
 
   async ngOnInit() {
-    //TODO - get listing addresses from User then collect listings
+    this.loadingMessage = "Loading your listings..."
+    this.listingsB = [];
+    this.listingsR = [];
+    this.listings = [];
+    this.loading = true;
     this.listings = await this.listingServices.getListings(this.currentUser?.uid);
     console.log(this.listings);
     const user_listings: Listing[] = [];
@@ -70,8 +76,10 @@ export class MyListingsPage  implements OnInit, OnDestroy  {
           this.listingsR.push(listing);
       }
     }
-
-    this.listings = user_listings;  
+    
+    setTimeout(() => {
+    this.loading = false;
+    }, 3000);
   }
 
   async redirectToPage(listing : Listing) {

@@ -18,100 +18,87 @@
   </ion-header>
 
   <ion-content [fullscreen]="true">
-    <div id="loader">
-      <img src="assets/500.gif" alt="loading-anim"/>
-    </div>
-    <div id="show">
-      <div *ngIf="admin" id="approvalBox">
-        <ion-grid>
-          <ion-row>
-            <ion-col id="approvalCol">
-              <ion-button class="approveBut" (click)="changeStatus(true)"
-                >Approve</ion-button
-              >
-            </ion-col>
-            <ion-col id="rejectionCol">
-              <ion-button class="rejectBut" (click)="changeStatus(false)"
-                >Reject</ion-button
-              >
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+    <ng-container *ngIf="loading; else loaded">
+      <div id="loader">
+        <img src="assets/500.gif" alt="loading-anim"/>
       </div>
-      <div class="swiper-container-wrapper">
-        <ion-buttons slot="start" class="swiper-button1" #one>
-          <ion-button style="height: 100px" (click)="goPrev()" #one>
-            <img src="assets/icon/arrow1.svg" #back alt="swiper-back"/>
-          </ion-button>
-        </ion-buttons>
-        <swiper-container
-          #swiper
-          (slidechange)="swiperSlideChanged($event)"
-          [loop]="true"
-          [pagination]="true"
-          slides-per-view="1"
-          class="swiper-container"
-        >
-          <swiper-slide *ngFor="let picture of list.photos">
-            <img alt="img" src="{{picture}}" />
-          </swiper-slide>
-        </swiper-container>
-        <ion-buttons slot="end" class="swiper-button2" #two>
-          <ion-button
-            id="next-button"
-            style="height: 100px"
-            (click)="goNext($event)"
-            #two
+    </ng-container>
+    <ng-template #loaded>
+      <div id="show">
+        <div *ngIf="admin" id="approvalBox">
+          <ion-grid>
+            <ion-row>
+              <ion-col id="approvalCol">
+                <ion-button class="approveBut" (click)="changeStatus(true)"
+                  >Approve</ion-button
+                >
+              </ion-col>
+              <ion-col id="rejectionCol">
+                <ion-button class="rejectBut" (click)="changeStatus(false)"
+                  >Reject</ion-button
+                >
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+        <div class="swiper-container-wrapper">
+          <ion-buttons slot="start" class="swiper-button1" #one>
+            <ion-button style="height: 100px" (click)="goPrev()" #one>
+              <img src="assets/icon/arrow1.svg" #back alt="swiper-back"/>
+            </ion-button>
+          </ion-buttons>
+          <swiper-container
+            #swiper
+            (slidechange)="swiperSlideChanged($event)"
+            [loop]="true"
+            [pagination]="true"
+            slides-per-view="1"
+            class="swiper-container"
           >
-            <img src="assets/icon/arrow.svg" #forward alt="swiper-forward"/>
-          </ion-button>
-        </ion-buttons>
-      </div>
+            <swiper-slide *ngFor="let picture of list.photos">
+              <img alt="img" src="{{picture}}" />
+            </swiper-slide>
+          </swiper-container>
+          <ion-buttons slot="end" class="swiper-button2" #two>
+            <ion-button
+              id="next-button"
+              style="height: 100px"
+              (click)="goNext($event)"
+              #two
+            >
+              <img src="assets/icon/arrow.svg" #forward alt="swiper-forward"/>
+            </ion-button>
+          </ion-buttons>
+        </div>
 
-    <ion-grid style="width:80%;">
-      <ion-row style="height:550px">
-        <ion-col>
-          <ion-card class="half-green-container">
-            <ion-grid style="padding-top: 20px; padding-left:20px;">
-              <ion-row>
-                <ion-card-title class="house-titles statusBadge {{list.status}}">{{list.status}}</ion-card-title>
-                <ion-button class="save-button" (click)="saveListing()" [ngClass]="{'red': isRed}"
-                  (click)="toggleColor()" ion-tooltip="Save Listing">
-                  <ion-icon name="save" ion-tooltip="Save Listing"></ion-icon>
-                </ion-button>
-              </ion-row>
-              <ion-row>
-                <ion-card-title
-                  class="house-titles"
-                  style="margin-top: 8px; font-size: 25px"
-                  >{{list.bed}} Bedroom, {{list.parking}} Parking Spaces {{list.prop_type}}</ion-card-title
-                >
-              </ion-row>
-              <ion-row>
-                <ion-card-subtitle class="house-subtitles"
-                  >{{list.address}}</ion-card-subtitle
-                >
-              </ion-row>
-              <ng-template [ngIf]="list.let_sell === 'Sell'">
+      <ion-grid style="width:80%;">
+        <ion-row style="height:550px">
+          <ion-col>
+            <ion-card class="half-green-container">
+              <ion-grid style="padding-top: 20px; padding-left:20px;">
                 <ion-row>
-                  <ion-card-title class="house-titles" style="margin-top: 8px"
-                    >R {{list.price}}</ion-card-title
-                  >
-                  <ion-card-subtitle
-                    class="house-subtitles"
-                    style="
-                      margin-top: 25px;
-                      margin-bottom: 0;
-                      margin-left: 10px;
-                    "
-                    >R {{price_per_sm}}/ m<sup>2</sup></ion-card-subtitle
+                  <ion-card-title class="house-titles statusBadge {{list.status}}">{{list.status}}</ion-card-title>
+                  <ion-button class="save-button" (click)="saveListing()" [ngClass]="{'red': isRed}"
+                    (click)="toggleColor()" ion-tooltip="Save Listing">
+                    <ion-icon name="save" ion-tooltip="Save Listing"></ion-icon>
+                  </ion-button>
+                </ion-row>
+                <ion-row>
+                  <ion-card-title
+                    class="house-titles"
+                    style="margin-top: 8px; font-size: 25px"
+                    >{{list.bed}} Bedroom, {{list.parking}} Parking Spaces {{list.prop_type}}</ion-card-title
                   >
                 </ion-row>
-                </ng-template>
-                <ng-template [ngIf]="list.let_sell === 'Rent'">
+                <ion-row>
+                  <ion-card-subtitle class="house-subtitles"
+                    >{{list.address}}</ion-card-subtitle
+                  >
+                </ion-row>
+                <ng-template [ngIf]="list.let_sell === 'Sell'">
                   <ion-row>
                     <ion-card-title class="house-titles" style="margin-top: 8px"
-                      >R {{list.price}}/pm</ion-card-title
+                      >R {{list.price}}</ion-card-title
                     >
                     <ion-card-subtitle
                       class="house-subtitles"
@@ -123,303 +110,320 @@
                       >R {{price_per_sm}}/ m<sup>2</sup></ion-card-subtitle
                     >
                   </ion-row>
-                </ng-template>
-                <ion-row style="margin-top: 10px">
-                  <ion-col>
-                    <div style="margin: 15px">
-                      <button style="color: #0dae4f">Calculate</button> your
-                      monthly payments below!
-                    </div>
-                  </ion-col>
-                </ion-row>
-                <ion-row>
-                  <ion-card-subtitle class="house-subtitles"
-                    >by {{lister_name}}</ion-card-subtitle
-                  >
-                </ion-row>
-              </ion-grid>
-              <ion-card-title
-                id="greenbox-title"
-                style="padding-top: 4%; padding-left: 5%"
-                >Developement Highlights</ion-card-title
-              >
-              <ion-card-content
-                style="padding: 0; padding-bottom: 4%; padding-left: 3%"
-              >
-                <ion-grid style="z-index: 1">
-                  <ion-row>
+                  </ng-template>
+                  <ng-template [ngIf]="list.let_sell === 'Rent'">
+                    <ion-row>
+                      <ion-card-title class="house-titles" style="margin-top: 8px"
+                        >R {{list.price}}/pm</ion-card-title
+                      >
+                      <ion-card-subtitle
+                        class="house-subtitles"
+                        style="
+                          margin-top: 25px;
+                          margin-bottom: 0;
+                          margin-left: 10px;
+                        "
+                        >R {{price_per_sm}}/ m<sup>2</sup></ion-card-subtitle
+                      >
+                    </ion-row>
+                  </ng-template>
+                  <ion-row style="margin-top: 10px">
                     <ion-col>
-                      <div class="black-text">{{list.orientation}}</div>
-                      <div class="grey-text">House Orientation</div>
-                    </ion-col>
-                    <ion-col>
-                      <div class="black-text">{{list.env_type}}</div>
-                      <div class="grey-text">Community Environment</div>
+                      <div style="margin: 15px">
+                        <button style="color: #0dae4f">Calculate</button> your
+                        monthly payments below!
+                      </div>
                     </ion-col>
                   </ion-row>
                   <ion-row>
-                    <ion-col>
-                      <div class="black-text">{{list.furnish_type}}</div>
-                      <div class="grey-text">Furnishing</div>
-                    </ion-col>
-                    <ion-col>
-                      <div class="black-text">{{list.floor_size}} sq.m</div>
-                      <div class="grey-text">Floor Size</div>
-                    </ion-col>
+                    <ion-card-subtitle class="house-subtitles"
+                      >by {{lister_name}}</ion-card-subtitle
+                    >
                   </ion-row>
+                </ion-grid>
+                <ion-card-title
+                  id="greenbox-title"
+                  style="padding-top: 4%; padding-left: 5%"
+                  >Developement Highlights</ion-card-title
+                >
+                <ion-card-content
+                  style="padding: 0; padding-bottom: 4%; padding-left: 3%"
+                >
+                  <ion-grid style="z-index: 1">
+                    <ion-row>
+                      <ion-col>
+                        <div class="black-text">{{list.orientation}}</div>
+                        <div class="grey-text">House Orientation</div>
+                      </ion-col>
+                      <ion-col>
+                        <div class="black-text">{{list.env_type}}</div>
+                        <div class="grey-text">Community Environment</div>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col>
+                        <div class="black-text">{{list.furnish_type}}</div>
+                        <div class="grey-text">Furnishing</div>
+                      </ion-col>
+                      <ion-col>
+                        <div class="black-text">{{list.floor_size}} sq.m</div>
+                        <div class="grey-text">Floor Size</div>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col>
+                        <div class="black-text">{{list.pos_type}}</div>
+                        <div class="grey-text">Possession Status</div>
+                      </ion-col>
+                      <ion-col>
+                        <div class="black-text">{{list.property_size}} sq.m</div>
+                        <div class="grey-text">Property Size</div>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+            <ion-col>
+              <ion-row>
+                <ion-card style="overflow-y: scroll" class="quarter-container">
+                  <ion-card-header>
+                    <ion-card-title>Points of Interest</ion-card-title>
+                    <ion-card-content>
+                      <ion-grid style="z-index: 1">
+                        <ion-row>
+                          <ion-col
+                            size="3"
+                            class="poi-card"
+                            *ngFor="let poi of pointsOfInterest; let i = index;"
+                          >
+                            <img
+                              [src]="poi.photo"
+                              alt="Place Photo"
+                              class="poi-photo"
+                              *ngIf="poi.photo"
+                            />
+                            <div class="text-small">{{ poi.name }}</div>
+                          </ion-col>
+                        </ion-row>
+                      </ion-grid>
+                    </ion-card-content>
+                  </ion-card-header>
+                </ion-card>
+              </ion-row>
+              <ion-row>
+                <ion-card
+                  class="quarter-container-loc-info"
+                  style="margin-top: 20px"
+                >
+                  <ion-card-header style="padding-bottom: 1px">
+                    <ion-card-title class="house-titles" style="font-size: 25px"
+                      >Area Score:
+                      <span id="areaScore"
+                        >{{areaScore}} / 100</span
+                      ></ion-card-title
+                    >
+                  </ion-card-header>
+                  <ion-card-content>
+                    <ion-grid style="z-index: 1">
+                      <ion-row>
+                        <div class="white-text">Water</div>
+                        <div class="slider">
+                          <div
+                            [class.progress]="list.areaScore.waterScore >= 60"
+                            [class.errorProgressBar]="list.areaScore.waterScore < 25"
+                            [class.warningProgressBar]="list.areaScore.waterScore < 60 && list.areaScore.waterScore >= 25"
+                            [style.width]="list.areaScore.waterScore+'%'"
+                          ></div>
+                        </div>
+                      </ion-row>
+                      <ion-row>
+                        <div class="white-text">Sanitation</div>
+                        <div class="slider">
+                          <div
+                            [class.progress]="list.areaScore.sanitationScore >= 60"
+                            [class.errorProgressBar]="list.areaScore.sanitationScore < 25"
+                            [class.warningProgressBar]="list.areaScore.sanitationScore < 60 && list.areaScore.sanitationScore >= 25"
+                            [style.width]="list.areaScore.sanitationScore+'%'"
+                          ></div>
+                        </div>
+                      </ion-row>
+                      <ion-row>
+                        <div class="white-text">Crime</div>
+                        <div class="slider">
+                          <div
+                            [class.progress]="list.areaScore.crimeScore >= 60"
+                            [class.errorProgressBar]="list.areaScore.crimeScore < 25"
+                            [class.warningProgressBar]="list.areaScore.crimeScore < 60 && list.areaScore.crimeScore >= 25"
+                            [style.width]="list.areaScore.crimeScore+'%'"
+                          ></div>
+                        </div>
+                      </ion-row>
+                      <ion-row>
+                        <div class="white-text">School Quality</div>
+                        <div class="slider">
+                          <div
+                            [class.progress]="list.areaScore.schoolScore >= 60"
+                            [class.errorProgressBar]="list.areaScore.schoolScore < 25"
+                            [class.warningProgressBar]="list.areaScore.schoolScore < 60 && list.areaScore.schoolScore >= 25"
+                            [style.width]="list.areaScore.schoolScore+'%'"
+                          ></div>
+                        </div>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-card-content>
+                </ion-card>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+          <ion-row style="margin-top: 1%">
+            <ion-card class="full-container">
+              <ion-card-header>
+                <ion-card-title>
+                  Unlock the Potential of this Large Family Property - Ideal for
+                  Investment, Subdivision!
+                </ion-card-title>
+              </ion-card-header>
+
+              <ion-card-content style="background: var(--light-grey, #ededed)">
+                <p>{{list.desc}}</p>
+                <ion-grid>
                   <ion-row>
                     <ion-col>
-                      <div class="black-text">{{list.pos_type}}</div>
-                      <div class="grey-text">Possession Status</div>
+                      <ion-list style="background: var(--light-grey, #ededed)">
+                        <ion-list-header>
+                          <ion-label> Amenities: </ion-label>
+                        </ion-list-header>
+                        <ion-item
+                          class="amenities"
+                          *ngFor="let feature of list.features"
+                        >
+                          <ion-label>{{feature}}</ion-label>
+                        </ion-item>
+                      </ion-list>
                     </ion-col>
                     <ion-col>
-                      <div class="black-text">{{list.property_size}} sq.m</div>
-                      <div class="grey-text">Property Size</div>
+                      <ion-button
+                        style="color-scheme: #0dae4f"
+                        (click)="setOpen(true)"
+                        >Lister Contact Details</ion-button
+                      >
+                      <ion-modal class="contactDetails" [isOpen]="isModalOpen">
+                        <ng-template>
+                          <ion-header>
+                            <ion-toolbar>
+                              <ion-title>Lister's Contact Details</ion-title>
+                              <ion-buttons slot="end">
+                                <ion-button (click)="setOpen(false)"
+                                  >Close</ion-button
+                                >
+                              </ion-buttons>
+                            </ion-toolbar>
+                          </ion-header>
+                          <ion-content class="ion-padding">
+                            <ion-grid>
+                              <ion-row class="lister-row" style="margin-top: 1%">
+                                <ion-col size="4">
+                                  <ion-avatar>
+                                    <div
+                                      style="border-radius: 50%; border: 1px solid black; width: 100%; height: 100%; background-image: url({{profilePic}}); background-size: cover; background-position-x: center; background-position-y: center;"
+                                      id="profilePic2"
+                                    ></div>
+                                  </ion-avatar>
+                                </ion-col>
+                                <ion-col>
+                                  <p>{{lister_name}}</p>
+                                </ion-col>
+                              </ion-row>
+                              <ion-row class="lister-row">
+                                <ion-col style="border-right: 1px solid #0dae4f">
+                                  Email:
+                                </ion-col>
+                                <ion-col style="border-left: 1px solid #0dae4f">
+                                  {{lister?.email}}
+                                </ion-col>
+                              </ion-row>
+                              <ion-row class="lister-row">
+                                <ion-col style="border-right: 1px solid #0dae4f">
+                                  Phone:
+                                </ion-col>
+                                <ion-col style="border-left: 1px solid #0dae4f">
+                                  {{lister?.phoneNumber}}
+                                </ion-col>
+                              </ion-row>
+                            </ion-grid>
+                          </ion-content>
+                        </ng-template>
+                      </ion-modal>
                     </ion-col>
                   </ion-row>
                 </ion-grid>
               </ion-card-content>
             </ion-card>
-          </ion-col>
-          <ion-col>
-            <ion-row>
-              <ion-card style="overflow-y: scroll" class="quarter-container">
-                <ion-card-header>
-                  <ion-card-title>Points of Interest</ion-card-title>
-                  <ion-card-content>
-                    <ion-grid style="z-index: 1">
-                      <ion-row>
-                        <ion-col
-                          size="3"
-                          class="poi-card"
-                          *ngFor="let poi of pointsOfInterest; let i = index;"
-                        >
-                          <img
-                            [src]="poi.photo"
-                            alt="Place Photo"
-                            class="poi-photo"
-                            *ngIf="poi.photo"
-                          />
-                          <div class="text-small">{{ poi.name }}</div>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-card-content>
-                </ion-card-header>
-              </ion-card>
-            </ion-row>
-            <ion-row>
-              <ion-card
-                class="quarter-container-loc-info"
-                style="margin-top: 20px"
+          </ion-row>
+          <ion-row id="calculator" style="margin-top: 1%">
+            <ion-card class="full-container">
+              <ion-item>
+                <ion-label position="floating" style="color: #0dae4f"
+                  >Loan Amount (R)</ion-label
+                >
+                <ion-input type="number" [(ngModel)]="loanAmount"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating" style="color: #0dae4f"
+                  >Interest Rate (%)</ion-label
+                >
+                <ion-input type="number" [(ngModel)]="interestRate"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating" style="color: #0dae4f"
+                  >Loan Term (Years)</ion-label
+                >
+                <ion-input type="number" [(ngModel)]="loanTerm"></ion-input>
+              </ion-item>
+
+              <ion-button
+                style="border-radius: 30px; width: 100%; margin: 0 auto"
+                (click)="calculateMortgage()"
+                >Calculate</ion-button
               >
-                <ion-card-header style="padding-bottom: 1px">
-                  <ion-card-title class="house-titles" style="font-size: 25px"
-                    >Area Score:
-                    <span id="areaScore"
-                      >{{areaScore}} / 100</span
-                    ></ion-card-title
-                  >
-                </ion-card-header>
-                <ion-card-content>
-                  <ion-grid style="z-index: 1">
-                    <ion-row>
-                      <div class="white-text">Water</div>
-                      <div class="slider">
-                        <div
-                          [class.progress]="list.areaScore.waterScore >= 60"
-                          [class.errorProgressBar]="list.areaScore.waterScore < 25"
-                          [class.warningProgressBar]="list.areaScore.waterScore < 60 && list.areaScore.waterScore >= 25"
-                          [style.width]="list.areaScore.waterScore+'%'"
-                        ></div>
-                      </div>
-                    </ion-row>
-                    <ion-row>
-                      <div class="white-text">Sanitation</div>
-                      <div class="slider">
-                        <div
-                          [class.progress]="list.areaScore.sanitationScore >= 60"
-                          [class.errorProgressBar]="list.areaScore.sanitationScore < 25"
-                          [class.warningProgressBar]="list.areaScore.sanitationScore < 60 && list.areaScore.sanitationScore >= 25"
-                          [style.width]="list.areaScore.sanitationScore+'%'"
-                        ></div>
-                      </div>
-                    </ion-row>
-                    <ion-row>
-                      <div class="white-text">Crime</div>
-                      <div class="slider">
-                        <div
-                          [class.progress]="list.areaScore.crimeScore >= 60"
-                          [class.errorProgressBar]="list.areaScore.crimeScore < 25"
-                          [class.warningProgressBar]="list.areaScore.crimeScore < 60 && list.areaScore.crimeScore >= 25"
-                          [style.width]="list.areaScore.crimeScore+'%'"
-                        ></div>
-                      </div>
-                    </ion-row>
-                    <ion-row>
-                      <div class="white-text">School Quality</div>
-                      <div class="slider">
-                        <div
-                          [class.progress]="list.areaScore.schoolScore >= 60"
-                          [class.errorProgressBar]="list.areaScore.schoolScore < 25"
-                          [class.warningProgressBar]="list.areaScore.schoolScore < 60 && list.areaScore.schoolScore >= 25"
-                          [style.width]="list.areaScore.schoolScore+'%'"
-                        ></div>
-                      </div>
-                    </ion-row>
-                  </ion-grid>
-                </ion-card-content>
-              </ion-card>
-            </ion-row>
-          </ion-col>
-        </ion-row>
-        <ion-row style="margin-top: 1%">
-          <ion-card class="full-container">
-            <ion-card-header>
-              <ion-card-title>
-                Unlock the Potential of this Large Family Property - Ideal for
-                Investment, Subdivision!
-              </ion-card-title>
-            </ion-card-header>
 
-            <ion-card-content style="background: var(--light-grey, #ededed)">
-              <p>{{list.desc}}</p>
-              <ion-grid>
-                <ion-row>
-                  <ion-col>
-                    <ion-list style="background: var(--light-grey, #ededed)">
-                      <ion-list-header>
-                        <ion-label> Amenities: </ion-label>
-                      </ion-list-header>
-                      <ion-item
-                        class="amenities"
-                        *ngFor="let feature of list.features"
-                      >
-                        <ion-label>{{feature}}</ion-label>
-                      </ion-item>
-                    </ion-list>
-                  </ion-col>
-                  <ion-col>
-                    <ion-button
-                      style="color-scheme: #0dae4f"
-                      (click)="setOpen(true)"
-                      >Lister Contact Details</ion-button
-                    >
-                    <ion-modal class="contactDetails" [isOpen]="isModalOpen">
-                      <ng-template>
-                        <ion-header>
-                          <ion-toolbar>
-                            <ion-title>Lister's Contact Details</ion-title>
-                            <ion-buttons slot="end">
-                              <ion-button (click)="setOpen(false)"
-                                >Close</ion-button
-                              >
-                            </ion-buttons>
-                          </ion-toolbar>
-                        </ion-header>
-                        <ion-content class="ion-padding">
-                          <ion-grid>
-                            <ion-row class="lister-row" style="margin-top: 1%">
-                              <ion-col size="4">
-                                <ion-avatar>
-                                  <div
-                                    style="border-radius: 50%; border: 1px solid black; width: 100%; height: 100%; background-image: url({{profilePic}}); background-size: cover; background-position-x: center; background-position-y: center;"
-                                    id="profilePic2"
-                                  ></div>
-                                </ion-avatar>
-                              </ion-col>
-                              <ion-col>
-                                <p>{{lister_name}}</p>
-                              </ion-col>
-                            </ion-row>
-                            <ion-row class="lister-row">
-                              <ion-col style="border-right: 1px solid #0dae4f">
-                                Email:
-                              </ion-col>
-                              <ion-col style="border-left: 1px solid #0dae4f">
-                                {{lister?.email}}
-                              </ion-col>
-                            </ion-row>
-                            <ion-row class="lister-row">
-                              <ion-col style="border-right: 1px solid #0dae4f">
-                                Phone:
-                              </ion-col>
-                              <ion-col style="border-left: 1px solid #0dae4f">
-                                {{lister?.phoneNumber}}
-                              </ion-col>
-                            </ion-row>
-                          </ion-grid>
-                        </ion-content>
-                      </ng-template>
-                    </ion-modal>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-            </ion-card-content>
-          </ion-card>
-        </ion-row>
-        <ion-row id="calculator" style="margin-top: 1%">
-          <ion-card class="full-container">
-            <ion-item>
-              <ion-label position="floating" style="color: #0dae4f"
-                >Loan Amount (R)</ion-label
-              >
-              <ion-input type="number" [(ngModel)]="loanAmount"></ion-input>
-            </ion-item>
+              <ion-item>
+                <ion-label>Monthly Payment:</ion-label>
+                <ion-text>{{ monthlyPayment | currency: 'R' }}</ion-text>
+              </ion-item>
 
-            <ion-item>
-              <ion-label position="floating" style="color: #0dae4f"
-                >Interest Rate (%)</ion-label
-              >
-              <ion-input type="number" [(ngModel)]="interestRate"></ion-input>
-            </ion-item>
+              <ion-item>
+                <ion-label>Total Once-off Costs:</ion-label>
+                <ion-text>{{ totalOnceOffCosts | currency: 'R' }}</ion-text>
+              </ion-item>
 
-            <ion-item>
-              <ion-label position="floating" style="color: #0dae4f"
-                >Loan Term (Years)</ion-label
-              >
-              <ion-input type="number" [(ngModel)]="loanTerm"></ion-input>
-            </ion-item>
-
-            <ion-button
-              style="border-radius: 30px; width: 100%; margin: 0 auto"
-              (click)="calculateMortgage()"
-              >Calculate</ion-button
-            >
-
-            <ion-item>
-              <ion-label>Monthly Payment:</ion-label>
-              <ion-text>{{ monthlyPayment | currency: 'R' }}</ion-text>
-            </ion-item>
-
-            <ion-item>
-              <ion-label>Total Once-off Costs:</ion-label>
-              <ion-text>{{ totalOnceOffCosts | currency: 'R' }}</ion-text>
-            </ion-item>
-
-            <ion-item>
-              <ion-label>Min Gross Monthly Income:</ion-label>
-              <ion-text>{{ minGrossMonthlyIncome | currency: 'R' }}</ion-text>
-            </ion-item>
-          </ion-card>
-        </ion-row>
-        <ion-row >
-          <div style="align-content: space-evenly; margin-top: 1%">
-            <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
-            <ion-button (click)="editListing()">Edit Listing</ion-button>
-          </div>
-          <div class="graph-animation">
-            <img src="assets/loader1.gif" alt="analytics-loader"/>
-          </div>
-          <canvas id="lineGraph" class="graph"></canvas>
-          <div class="data-calc" *ngIf="showData">
-            <h3>Average engagement per user:</h3>
-            <ion-input type="string" [(ngModel)]="avgEnagement"></ion-input>
-          </div>
-        </ion-row>
-        <properproperty-footer></properproperty-footer>
-      </ion-grid>
-    </div>
+              <ion-item>
+                <ion-label>Min Gross Monthly Income:</ion-label>
+                <ion-text>{{ minGrossMonthlyIncome | currency: 'R' }}</ion-text>
+              </ion-item>
+            </ion-card>
+          </ion-row>
+          <ion-row >
+            <div style="align-content: space-evenly; margin-top: 1%">
+              <ion-button (click)="showAnalytics()">Show Analytics</ion-button>
+              <ion-button (click)="editListing()">Edit Listing</ion-button>
+            </div>
+            <div class="graph-animation">
+              <img src="assets/loader1.gif" alt="analytics-loader"/>
+            </div>
+            <canvas id="lineGraph" class="graph"></canvas>
+            <div class="data-calc" *ngIf="showData">
+              <h3>Average engagement per user:</h3>
+              <ion-input type="string" [(ngModel)]="avgEnagement"></ion-input>
+            </div>
+          </ion-row>
+          <properproperty-footer></properproperty-footer>
+        </ion-grid>
+      </div>
+    </ng-template>
   </ion-content>
 </ion-template>
 

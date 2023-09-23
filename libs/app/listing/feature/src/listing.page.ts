@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild, HostListener, OnDestroy } from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { Listing, StatusEnum } from '@properproperty/api/listings/util';
+import { ChangeStatusResponse, Listing, StatusEnum } from '@properproperty/api/listings/util';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
@@ -10,8 +10,9 @@ import { Select } from '@ngxs/store';
 import { httpsCallable, Functions } from '@angular/fire/functions';
 import { Chart, registerables } from 'chart.js';
 import { Unsubscribe } from 'firebase/auth';
-import { IonContent } from '@ionic/angular';
+import { IonContent, ToastOptions } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
+import { ToastController } from '@ionic/angular';
 
 register();
 export interface GetAnalyticsDataRequest {
@@ -43,6 +44,7 @@ export class ListingPage implements OnDestroy {
   public ownerViewing$: Observable<boolean> = of(false);
   coordinates: { latitude: number, longitude: number } | null = null;
   profilePic = "";
+  loading = false;
 
   price_per_sm = 0;
   lister_name = "";
@@ -74,7 +76,9 @@ export class ListingPage implements OnDestroy {
     private userServices: UserProfileService,
     public gmapsService: GmapsService,
     private functions: Functions,
-    private profileServices: UserProfileService) {
+    private profileServices: UserProfileService,
+    private toastController: ToastController
+    ) {
     let list_id = "";
     let admin = "";
 
@@ -239,16 +243,31 @@ export class ListingPage implements OnDestroy {
     return;
   }
 
+  successfulChange = {
+    message: " successfully completed",
+    duration: 3000, // Duration in milliseconds
+    color: 'primary', // Use 'danger' to display in red
+    position: 'bottom'
+  } as ToastOptions;
+
+  failedChange = {
+    message: " failed",
+    duration: 3000, // Duration in milliseconds
+    color: 'danger', // Use 'danger' to display in red
+    position: 'bottom'
+  } as ToastOptions;
+
   async changeStatus(approved : boolean){
+    this.loading = true;
+    // const show = document.querySelector('#show') as HTMLDivElement;
+    // show.style.opacity = "0";
+    // const load = document.querySelector('#loader') as HTMLElement;
+    // load.style.opacity = "1";
     if(this.list && this.adminId != ""){
       let crimeScore;
       let schoolScore;
       let waterScore;
       let sanitationScore;
-      const show = document.querySelector('#show') as HTMLDivElement;
-      show.style.opacity = "0";
-      const load = document.querySelector('#loader') as HTMLElement;
-      load.style.opacity = "1";
       if (this.list.geometry.lat == 0 || this.list.geometry.lat) {
         const geocodeResult = await this.gmapsService.geocodeAddress(this.list.address);
         this.list.geometry = {
@@ -266,6 +285,7 @@ export class ListingPage implements OnDestroy {
 
 
       console.log("Changing status");
+      let result : ChangeStatusResponse | null;
       if(
         approved
         && (this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED)
@@ -275,24 +295,34 @@ export class ListingPage implements OnDestroy {
         && sanitationScore != undefined
       ){
         console.log("Adding to market")
-        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, crimeScore, waterScore, sanitationScore, schoolScore);
+        result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, crimeScore, waterScore, sanitationScore, schoolScore);
       } 
       else if((this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED) && approved){
         console.log("Adding to market")
-        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, 0, 0, 0, 0);
+        result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, 0, 0, 0, 0);
       }
       else{
         console.log("Denied")
-        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.DENIED, 0, 0, 0, 0);
+        result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.DENIED, 0, 0, 0, 0);
       }
-      setTimeout( function finishLoading(){
-        if(!show){
-          console.log("Show does not exist");
-        }
-        load.style.opacity="0";
-        show.style.opacity="1";
-      }, 500)
-      this.router.navigate(['/admin']);
+
+      setTimeout( async () => {
+        this.loading = false;
+      }, 2000)
+
+      // this.loading = false;
+      if(result.success){
+        this.router.navigate(['/admin']);
+        this.successfulChange.message = approved? "Approval" : "Rejection" + this.successfulChange.message;
+        const toast = await this.toastController.create(this.successfulChange);
+        toast.present();
+        return;
+      }
+
+      this.successfulChange.message = approved? "Approval" : "Rejection" + this.successfulChange.message;
+      const toast = await this.toastController.create(this.failedChange);
+      toast.present();
+      return;
     }
   }
 

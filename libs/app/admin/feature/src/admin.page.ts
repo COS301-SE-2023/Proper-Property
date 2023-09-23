@@ -32,7 +32,8 @@ export class AdminPage implements OnInit{
   muniFiles: FileList | null = null;
   muniUploaded = false;
   selectedFiles: string[] = [];
-
+  loading = false;
+  loadingMessage = "";
   nonAppListings : Listing[] = [];
   appListings : Listing[] = [];
   isPopoverOpen = false;
@@ -75,38 +76,42 @@ export class AdminPage implements OnInit{
   }
 
   async ngOnInit() {
-    const show=document.querySelector('#show') as HTMLDivElement;
-    show.style.opacity="0";
-    const load=document.querySelector('#loader') as HTMLElement;
-    load.style.opacity="1";
+    // const show=document.querySelector('#show') as HTMLDivElement;
+    // show.style.opacity="0";
+    // const load=document.querySelector('#loader') as HTMLElement;
+    // load.style.opacity="1";
+    this.loadingMessage = "Loading Unapproved Listings...";
+    this.loading = true;
     this.nonAppListings = [];      
-    this.listingServices.getUnapprovedListings().then((response) => {
-      this.nonAppListings = response;
+    this.nonAppListings = await this.listingServices.getUnapprovedListings();
 
-      this.nonAppListings = this.nonAppListings.sort((a, b) => {
-        const tempA = new Date(a.listingDate);
-        const tempB = new Date(b.listingDate);
-        if(tempA > tempB){
-          return -1
-        }
-        else if(tempA < tempB){
-          return 1;
-        }
-        else{
-          return 0;
-        }
-      })
-    });
-  
-    setTimeout( function finishLoading(){
-      const show=document.querySelector('#show') as HTMLDivElement;
-      const load=document.querySelector('#loader') as HTMLElement;
-      if(!show){
-        console.log("Show does not exist");
+    this.nonAppListings = this.nonAppListings.sort((a, b) => {
+      const tempA = new Date(a.listingDate);
+      const tempB = new Date(b.listingDate);
+      if(tempA > tempB){
+        return -1
       }
-      load.style.opacity="0";
-      show.style.opacity="1";
-    }, 1000)
+      else if(tempA < tempB){
+        return 1;
+      }
+      else{
+        return 0;
+      }
+    })
+
+    setTimeout(async () => {
+      this.loading = false;
+    }, 3000)
+  
+    // setTimeout( function finishLoading(){
+    //   const show=document.querySelector('#show') as HTMLDivElement;
+    //   const load=document.querySelector('#loader') as HTMLElement;
+    //   if(!show){
+    //     console.log("Show does not exist");
+    //   }
+    //   load.style.opacity="0";
+    //   show.style.opacity="1";
+    // }, 1000)
   }
 
   addData(){

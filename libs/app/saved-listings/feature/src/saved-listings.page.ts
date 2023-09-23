@@ -26,6 +26,8 @@ export class SavedListingsPage implements OnInit {
   public savedListings : Listing[] = [];
   public savedListingsB : Listing[] = [];
   public savedListingsR : Listing[] = [];
+  loading = false;
+  loadingMessage = "Loading your saved listings...";
 
   constructor(
     private profileServices : UserProfileService,
@@ -35,29 +37,6 @@ export class SavedListingsPage implements OnInit {
       this.savedListings = [];
     this.userProfile$.subscribe((profile) => {
       this.userProfile = profile;
-      if(this.userProfile){
-        //Todo - Change this to send an array of IDs
-        if(this.userProfile && this.userProfile.savedListings){
-          for(const listing of this.userProfile.savedListings){
-            this.listingServices.getListing(listing).then((listing) => {
-              if(listing){
-                // this.savedListings.push(listing);
-                this.savedListingsB = [];
-                this.savedListingsR = [];
-
-                if(listing.let_sell=="Sell")
-                {
-                  this.savedListingsB.push(listing);
-                }
-                else
-                {
-                  this.savedListingsR.push(listing);
-                }
-              }
-            });
-          }
-        }
-      }
     });
     // Update listener whenever is changes such that it can be unsubscribed from
     // when the window is unloaded
@@ -66,9 +45,37 @@ export class SavedListingsPage implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     console.log ("Linter: Lifecycle methods should not be empty");
     this.isMobile = isMobile();
+    this.loading = true;
+    if(this.userProfile){
+      //Todo - Change this to send an array of IDs
+      if(this.userProfile && this.userProfile.savedListings){
+        for(const listing of this.userProfile.savedListings){
+          await this.listingServices.getListing(listing).then((listing) => {
+            if(listing){
+              // this.savedListings.push(listing);
+              this.savedListingsB = [];
+              this.savedListingsR = [];
+
+              if(listing.let_sell=="Sell")
+              {
+                this.savedListingsB.push(listing);
+              }
+              else
+              {
+                this.savedListingsR.push(listing);
+              }
+            }
+          });
+        }
+      }
+    }
+
+    setTimeout(() => {
+      this.loading = false;
+    }, 3000);
   }
 
   async redirectToPage(listing : Listing) {
