@@ -1,0 +1,19 @@
+.notification-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+  
+    ion-icon {
+      font-size: 3em;
+      color: #888;
+      margin-bottom: 10px;
+    }
+  
+    p {
+      font-size: 1.2em;
+      color: #888;
+    }
+  }

@@ -93,6 +93,9 @@
         <ion-button fill="clear" routerLink="search" routerDirection="root" routerLinkActive="active" class="link" style="display: block;">
           View Listings
         </ion-button>
+        <ion-button *ngIf="this.loggedIn" fill="clear" routerLink="/alerts" routerDirection="root" routerLinkActive="active" class="link" style="display: block;">
+          Alerts
+        </ion-button>
         <ion-button *ngIf="this.loggedIn" fill="clear" routerLink="/profile" routerDirection="root" routerLinkActive="active" class="link" style="display: block;">
           Profile
         </ion-button>
