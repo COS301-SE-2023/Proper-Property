@@ -9,6 +9,7 @@ import { characteristics } from '@properproperty/api/listings/util';
 import { Firestore, doc, deleteDoc, updateDoc } from '@angular/fire/firestore';
 import { httpsCallable, Functions, HttpsCallableResult } from '@angular/fire/functions';
 import { Storage, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
+import { SendQREmailRequest } from '@properproperty/api/notifications/util';
 
 @Injectable({
   providedIn: 'root'
@@ -69,8 +70,12 @@ export class UserProfileService {
     return photoURL;
   }
 
-  async qrListingRead(){
-    console.log("qrListingRead");
+  async qrListingRead(request : SendQREmailRequest) {
+    const resp: HttpsCallableResult = await httpsCallable<
+      SendQREmailRequest,
+      {}
+    >(this.functions, 'sendNotification')(request);
+    console.log(resp);
   }
 
   vPotency = 0;

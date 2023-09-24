@@ -91,14 +91,11 @@ export class ListingPage implements OnDestroy {
       admin = params['admin'];
       this.listingId = list_id;
 
-      console.log("QR viewing: " + qr)
-      if(qr){
-        this.userServices.qrListingRead();
-      }
 
       this.listingServices.getListing(list_id).then((list) => {
         console.warn(list);
         this.list = list;
+        console.log("QR viewing: " + qr)
       }).then(() => {
         if (admin) {
           this.admin = true;
@@ -118,6 +115,15 @@ export class ListingPage implements OnDestroy {
         this.userServices.getUser("" + this.list?.user_id).then((user : UserProfile) => {
           this.lister = user;
           this.lister_name = user.firstName + " " + user.lastName;
+
+          if(qr && this.list){            
+            console.log(window.location.href, " ", this.router.url);
+            this.userServices.qrListingRead({
+              address: this.list.address,
+              url: window.location.href.substring(0, window.location.href.indexOf(";qr")),
+              lister: this.lister,
+            });
+          }
         });
 
         this.userProfile$.subscribe((profile) => {
