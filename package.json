@@ -5,7 +5,7 @@
   "scripts": {
     "start:app:dev": "npx env-cmd -f .env nx run app:serve --configuration=development",
     "start:api:dev": "npx env-cmd -f .env nx run api:serve --configuration=development",
-    "build:app:dev": "npx env-cmd -f .env nx run app:build --configuration=development",
+    "build:app:dev": "npx env-cmd -f .env nx run app:build --configuration=development --skip-nx-cache",
     "build:api:dev": "npx env-cmd -f .env nx run api:build --configuration=development --skip-nx-cache",
     "build:app:prod": "npx env-cmd -f .env.prod nx run app:build --configuration=production",
     "build:api:prod": "npx env-cmd -f .env.prod nx run api:build --configuration=production",

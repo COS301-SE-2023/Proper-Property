@@ -83,13 +83,11 @@ export class ListingPage implements OnDestroy {
     let admin = "";
 
     this.route.params.subscribe((params) => {
-      console.warn(params);
       list_id = params['list'];
       admin = params['admin'];
       this.listingId = list_id;
 
       this.listingServices.getListing(list_id).then((list) => {
-        console.warn(list);
         this.list = list;
       }).then(() => {
         if (admin) {
@@ -99,7 +97,6 @@ export class ListingPage implements OnDestroy {
 
         
         // TODO
-        console.log(this.list);
 
         if (!this.list?.price || !this.list?.property_size) {
           console.error("Both Property Size and Price need to be specified");
@@ -155,7 +152,6 @@ export class ListingPage implements OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    console.log(event);
     this.isMobile = window.innerWidth <= 576;
   }
 
@@ -165,11 +161,9 @@ export class ListingPage implements OnDestroy {
     const request: GetAnalyticsDataRequest = { listingId: this.list?.listing_id ?? "" };
     const analyticsResponse = (await httpsCallable(this.functions, 'getAnalyticsData')(request)).data;
     if (typeof analyticsResponse != "string") {
-      console.warn(analyticsResponse);
       return;
     }
     const analyticsData = JSON.parse(analyticsResponse as string);
-    console.log(analyticsData);
     let totUsers = 0;
     let totEngagement = 0;
     let dates: string[] = [];
@@ -227,6 +221,7 @@ export class ListingPage implements OnDestroy {
         data: data,
       });
 
+      // TODO proper error handling
       if (chart) {
         console.log("Chart created")
       }
@@ -280,11 +275,9 @@ export class ListingPage implements OnDestroy {
         schoolScore = await this.getSchoolRating(this.list.geometry);
         waterScore = await this.getWaterScore();
         sanitationScore = await this.getSanitationScore();
-        console.log(crimeScore, schoolScore, waterScore, sanitationScore);
       }
 
 
-      console.log("Changing status");
       let result : ChangeStatusResponse | null;
       if(
         approved
@@ -294,15 +287,12 @@ export class ListingPage implements OnDestroy {
         && waterScore != undefined
         && sanitationScore != undefined
       ){
-        console.log("Adding to market")
         result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, crimeScore, waterScore, sanitationScore, schoolScore);
       } 
       else if((this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED) && approved){
-        console.log("Adding to market")
         result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, 0, 0, 0, 0);
       }
       else{
-        console.log("Denied")
         result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.DENIED, 0, 0, 0, 0);
       }
 
@@ -354,7 +344,6 @@ export class ListingPage implements OnDestroy {
       try {
         if (coordinates) {
           const response = await this.gmapsService.getNearbySchools(coordinates.lat, coordinates.lng);
-          // console.log("schools: " + schools);
           if (response.length > 0) {
             let totalRating = 0;
             for (let i = 0; i < response.length; i++) {
@@ -395,7 +384,6 @@ export class ListingPage implements OnDestroy {
   async getSanitationScore(): Promise<number> {
     if (this.list) {
       const response = await this.listingServices.getSanitationScore(this.list.district)
-      console.log("SANITATION SCORE:", (response.percentage ? response.percentage : 0) * 100);
       return (response.percentage ? response.percentage : 0) * 100;
     }
 
@@ -422,7 +410,6 @@ export class ListingPage implements OnDestroy {
 
   async getWaterScore(): Promise<number> {
     if (this.list) {
-      console.log("Calculating water score")
       const response = await this.listingServices.getWaterScore(this.list.district
         , this.list.listingAreaType
         , this.list.prop_type
@@ -456,8 +443,6 @@ export class ListingPage implements OnDestroy {
     if (this.list) {
       try {
         const response = await this.listingServices.getCrimeScore({ lat: this.list.geometry.lat, long: this.list.geometry.lng });
-        console.log("CRIME SCORE:", response.percentage ? response.percentage * 100 : "error");
-        console.log(response);
         return (response.percentage ? response.percentage : 0) * 100;
       }
       catch (error) {
@@ -487,25 +472,18 @@ export class ListingPage implements OnDestroy {
   }
   
   goNext(event: Event) {
-    console.log(event)
     if (this.swiperRef) {
       this.swiperRef.nativeElement.swiper.slideNext();
-    }
-    else {
-      console.log("Swiper undefined");
     }
   }
   goPrev() {
     if (this.swiperRef) {
       this.swiperRef.nativeElement.swiper.slidePrev();
     }
-    else {
-      console.log("Swiper undefined");
-    }
   }
 
   swiperSlideChanged(e: Event) {
-    console.log('changed', e)
+    // console.log('changed', e)
   }
 
   loanAmount: number;
@@ -529,21 +507,6 @@ export class ListingPage implements OnDestroy {
     this.minGrossMonthlyIncome = this.monthlyPayment * 3; // Assuming minimum income requirement is 3 times the monthly payment
   }
 
-  // async getNearbyPlaces() {
-  //   try {
-  //     if(this.list?.geometry){
-  //       const results = await this.gmapsService.getNearbyPlaces(
-  //         this.list.geometry.lat,
-  //         this.list.geometry.lng
-  //       );
-  //       // Process the nearby places results here
-  //       console.log('Nearby places:', results);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error retrieving nearby places:', error);
-  //   }
-  // }
-
   toggleColor() {
     if (this.isRed)
       this.unsaveListing();
@@ -558,7 +521,6 @@ export class ListingPage implements OnDestroy {
     if (this.userProfile) {
       if (this.userProfile.savedListings) {
         if (this.userProfile.savedListings.includes(listing_id)) {
-          console.log("Listing found in saved: " + listing_id);
           return true;
         }
       }
@@ -609,7 +571,6 @@ export class ListingPage implements OnDestroy {
 
   scrollToBottom() {
     if (this.content && document.getElementById('calculator')) {
-      console.log(document.getElementById('calculator')?.getBoundingClientRect().top);
       const calculatorRow = document.getElementById('calculator')?.getBoundingClientRect().top;
       this.content.scrollToPoint(0, ((calculatorRow ?? 100)), 500);
     }
@@ -622,7 +583,6 @@ export class ListingPage implements OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log("Listing page being destroyed");
     this.list = null;
   }
 }

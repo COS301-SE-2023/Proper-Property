@@ -35,23 +35,10 @@ export class LoginPage implements OnInit {
   password: string;
 
   async login() {
-    // this.authService.emailLogin(this.email, this.password).then(async (res) => {
-    //   if(res != null){
-    //     await this.userService.loginUser(res.uid);
-    //     this.router.navigate(['/home']);
-    //   }
-    // })
-    // .catch((err) => console.log(err.message));
     this.store.dispatch(new Login(this.email, this.password));
   }
 
   googleLogin(){
-    // this.authService.GoogleAuth()
-    //   .then((res) => {
-    //     if (res !== null)
-    //       this.router.navigate(['/home']);
-    //   })
-    //   .catch((err) => console.log(err));
     this.store.dispatch(new AuthProviderLogin());
 
     this.user$.subscribe((user) => {

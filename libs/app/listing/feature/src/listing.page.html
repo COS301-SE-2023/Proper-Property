@@ -1,7 +1,4 @@
 <ion-template *ngIf="list&&!isMobile">
-  <script>
-    console.log('Desktop view');
-  </script>
   <ion-header [translucent]="true">
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -87,13 +84,14 @@
                   <ion-card-title
                     class="house-titles"
                     style="margin-top: 8px; font-size: 25px"
-                    >{{list.bed}} Bedroom, {{list.parking}} Parking Spaces {{list.prop_type}}</ion-card-title
+                    >{{list.bed}} Bedroom, {{list.bath}} Bathroom {{list.prop_type}}</ion-card-title
                   >
                 </ion-row>
                 <ion-row>
-                  <ion-card-subtitle class="house-subtitles"
-                    >{{list.address}}</ion-card-subtitle
-                  >
+                  <ion-card-subtitle class="house-subtitles">{{list.parking}} Parking Spaces</ion-card-subtitle>
+                </ion-row>
+                <ion-row>
+                  <ion-card-subtitle class="house-subtitles">{{list.address}}</ion-card-subtitle>
                 </ion-row>
                 <ng-template [ngIf]="list.let_sell === 'Sell'">
                   <ion-row>
@@ -279,9 +277,8 @@
           <ion-row style="margin-top: 1%">
             <ion-card class="full-container">
               <ion-card-header>
-                <ion-card-title>
-                  Unlock the Potential of this Large Family Property - Ideal for
-                  Investment, Subdivision!
+                <ion-card-title *ngIf="list.heading">
+                  {{list.heading}} 
                 </ion-card-title>
               </ion-card-header>
 
@@ -420,17 +417,14 @@
               <ion-input type="string" [(ngModel)]="avgEnagement"></ion-input>
             </div>
           </ion-row>
-          <properproperty-footer></properproperty-footer>
         </ion-grid>
       </div>
     </ng-template>
+    <properproperty-footer></properproperty-footer>
   </ion-content>
 </ion-template>
 
 <ion-template *ngIf="list&&isMobile">
-  <script>
-    console.log('Mobile view');
-  </script>
   <ion-header [translucent]="true">
     <ion-toolbar>
       <ion-buttons slot="start">

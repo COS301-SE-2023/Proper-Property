@@ -300,10 +300,22 @@
           </ion-item>
         </ion-col>
         <ion-col size="6">
-          <ion-label class="house-text">Property Description</ion-label>
-          <textarea [(ngModel)]="description" id="desc" rows="10" cols="50">{{description}}</textarea><br>
-          <ion-button (click)="generateDesc()">AI Generated Description</ion-button>
-        </ion-col>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-label class="house-text">Property Heading</ion-label>
+                <textarea [(ngModel)]="heading" id="desc" rows="3" cols="50">{{heading}}</textarea><br>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-label class="house-text">Property Description</ion-label>
+                <textarea [(ngModel)]="description" id="desc" rows="10" cols="50">{{description}}</textarea><br>
+                <ion-button (click)="generateDesc()">AI Generated Description</ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>  
+        </ion-col>   
       </ion-row>
 
       <ion-row style="width:100%">

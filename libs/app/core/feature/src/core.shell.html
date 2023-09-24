@@ -47,7 +47,7 @@
               don't click &gt;:0
             </ion-button> -->
 
-            <ion-button fill="clear" (click)="toggleNotifications()" class="link">
+            <ion-button fill="clear" *ngIf="this.loggedIn" (click)="toggleNotifications()" class="link">
               Notifications
               <ion-badge slot="end" style="margin-left:10px">{{ notifications.length }}</ion-badge>
             </ion-button>

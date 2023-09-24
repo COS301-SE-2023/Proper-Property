@@ -97,7 +97,7 @@ export class CreateListingPage{
     this.predictions = [];
     // this.defaultBounds = new google.maps.LatLngBounds();
     if (isDevMode()) {
-      this.address = "123 Fake Street";
+      this.address = "3 Curzon Place, la Lucia, Umhlanga";
       this.price = 1000000;
       this.floor_size = 100;
       this.erf_size = 100;
@@ -110,6 +110,8 @@ export class CreateListingPage{
       this.furnish_type = "Furnished";
       this.orientation = "North";
       this.description = "This is a description";
+      this.heading = "This is a heading";
+      this.district = 'eThekwini'
     }
     this.user$.subscribe((user: User | null) => {
       this.currentUser =  user;
@@ -144,15 +146,6 @@ export class CreateListingPage{
             this.district = listing.district;
             this.listingAreaTypeSlider = listing.listingAreaType == "Rural" ? true : false;
             this.selectedValue = listing.let_sell == "Sell" ? true : false;
-            
-            // console.log(this.features);
-            // for(let i = 0 ; i < listing.features.length ; i++){
-            //   if(listing.features[i] == "Pool" || listing.features[i] == "Wifi" || listing.features[i] == "Pets" || listing.features[i] == "Accessible" || listing.features[i] == "Garden"){
-            //     (document.getElementById(listing.features[i]) as HTMLIonCheckboxElement).checked = true;
-            //     listing.features.splice(i,1);
-            //     i--;
-            //   }
-            // }
           }
         });
       }
@@ -169,23 +162,16 @@ export class CreateListingPage{
 @HostListener('window:resize', ['$event'])
 onResize(event: Event) {
   this.isMobile = window.innerWidth <= 576;
-
-  if(!event)
-    console.log(event);
 }
 
   features: string[] = [];
 
   timeout : NodeJS.Timeout | undefined;
   async handleInputChange(event: Event): Promise<void> {
-    console.log("handleInput");
     this.maps = this.maps ?? await this.gmapsService.loadGoogleMaps();
-    console.log(this.maps);
-    // return;
     // Ur going 100 in a 60 zone, buddy
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
-      console.log("timeout");
       const input = event.target as HTMLInputElement;
  
       if(input.value.length <=0){
@@ -194,9 +180,6 @@ onResize(event: Event) {
       else {
         this.gmapsService.handleInput(input, new this.maps.LatLngBounds()).then(() => {
           this.predictions = this.gmapsService.predictions;
-          // this.address = input.value;
-          
-          // this.handleAddressChange(input.value);
         });
       }
     }, 1500);
@@ -217,9 +200,7 @@ onResize(event: Event) {
   //   this.predictions = [];
   // }
 
-  replaceInputText(event: MouseEvent | undefined, prediction: string) {
-    console.log("your prediction: ",prediction);
-    
+  replaceInputText(event: MouseEvent | undefined, prediction: string) {    
     if (event) {
       event.preventDefault(); // Prevent the default behavior of the <a> tag
     }
@@ -248,7 +229,6 @@ onResize(event: Event) {
       for (let index = 0; index < files.length; index++) {
         if (files.item(index))
           this.photos.push(URL.createObjectURL(files.item(index) as Blob));
-          console.log("brooo ",URL.createObjectURL(files.item(index) as Blob));
       }
     }
   }
@@ -275,7 +255,6 @@ onResize(event: Event) {
   
   removeImage(index: number) {
     this.photos.splice(index, 1);
-    console.log(this.photos);
   }
 
   selectPhotos() {
@@ -301,22 +280,6 @@ onResize(event: Event) {
   }
 
   async generateDesc(){
-    // const add_in = document.getElementById('address') as HTMLInputElement;
-    const add_in = document.getElementById('address') as HTMLInputElement;
-    const price_in = document.getElementById('price') as HTMLInputElement;
-    const pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
-    const env_type_in = document.getElementById('env-type') as HTMLInputElement;
-    const prop_type_in = document.getElementById('prop-type') as HTMLInputElement;
-    const furnish_type_in = document.getElementById('furnish-type') as HTMLInputElement;
-    const orientation_in = document.getElementById('orientation') as HTMLInputElement;
-    const floor_size_in = document.getElementById('floor-size') as HTMLInputElement;
-    const property_size_in = document.getElementById('property-size') as HTMLInputElement;
-    const bath_in = document.getElementById('bath') as HTMLInputElement;
-    const bed_in = document.getElementById('bed') as HTMLInputElement;
-    const parking_in = document.getElementById('parking') as HTMLInputElement;
-
-
-    
     let feats = "";
     for(let i = 0; i < this.features.length; i++){
       feats += this.features[i] + ", ";
@@ -325,34 +288,25 @@ onResize(event: Event) {
     if(this.address && this.price && this.pos_type && this.env_type && this.prop_type 
       && this.furnish_type && this.orientation && this.floor_size && this.erf_size 
       && this.bathrooms && this.bedrooms && this.parking){
-      const info = "Address: " + add_in.value + "\n" 
-      + "Price: " + price_in.value + "\n"
-      + "Possession type: " + pos_type_in.value + "\n"
-      + "Environment type: " + env_type_in.value + "\n"
-      + "Property type: " + prop_type_in.value + "\n"
-      + "Furnishing state: " + furnish_type_in.value + "\n"
-      + "Orientation of the house: " + orientation_in.value + "\n"
-      + "Floor size: " + floor_size_in.value + "\n"
-      + "Property size: " + property_size_in.value + "\n"
-      + "Number of bathrooms: " + bath_in.value + "\n"
-      + "Number of bedrooms" + bed_in.value + "\n"
-      + "Number of parking spots: " + parking_in.value + "\n";
+      const info = "Address: " + this.address + "\n" 
+      + "Price: " + this.price + "\n"
+      + "Possession type: " + this.pos_type + "\n"
+      + "Environment type: " + this.env_type + "\n"
+      + "Property type: " + this.prop_type + "\n"
+      + "Furnishing state: " + this.furnish_type + "\n"
+      + "Orientation of the house: " + this.orientation + "\n"
+      + "Floor size: " + this.floor_size + "\n"
+      + "Property size: " + this.erf_size + "\n"
+      + "Number of bathrooms: " + this.bathrooms + "\n"
+      + "Number of bedrooms" + this.bedrooms + "\n"
+      + "Number of parking spots: " + this.parking + "\n";
       + "Features: " + feats + "\n";
 
-      this.openAIService.descriptionCall("Give me a description of a property with the following information: \n" + info 
-      + "Be as descriptive as possible such that I would want to buy the house after reading the description").then((res : string) => {
-        if(res == "" || !res){
-          console.log("OOPSIE WHOOPSIE, redactedEY WUCKY")
-        }
-        else{
-          this.description = res;
-        }
-      });
-
-      this.openAIService.headingCall(this.description).then((res : string) => {
-        console.log(res);
-        this.heading = res;
-      });
+      const response = await this.openAIService.getHeadingAndDesc("Give me a description of a property with the following information: \n" + info 
+      + "Be as descriptive as possible such that I would want to buy the house after reading the description")
+      
+      this.description = response.description;
+      this.heading = response.head;
     }
   }
   addFeature() {
@@ -458,8 +412,6 @@ onResize(event: Event) {
   //     this.foreign = true;
   //   }
 
-  //   //eco-warrior
-  //   this.eco = this.checkfeature("Solar Panels");
 
   //   //gym
   //   if(await this.checklocationfeatures("gym", 3000))
@@ -517,15 +469,6 @@ onResize(event: Event) {
   //     this.owner = true;
   //   }
 
-  //   //PG 13 { crime and school quality still needed }
-
-  //   if(await this.checklocationfeatures("amusement_park", 10000) || await this.checklocationfeatures("aquarium", 10000) || await this.checklocationfeatures("bowling_alley", 10000) || await this.checklocationfeatures("zoo", 10000) || await this.checklocationfeatures("park", 1000) || await this.checklocationfeatures("movie_theatre", 10000))
-  //   {
-  //     if(await this.checklocationfeatures("school", 10000) || await this.checklocationfeatures("primary_school", 10000))
-  //     {
-  //       this.kids = true;
-  //     }
-  //   }
 
   //   //Middle of nowhere, farm
 
@@ -772,8 +715,8 @@ onResize(event: Event) {
           accessible: this.accessible,
           foreign: this.foreign,
           openConcept: false,
-          ecoWarrior: this.eco,
-          family: this.kids,
+          ecoWarrior: false,
+          family: false,
           student: this.students,
           lovinIt: this.food,
           farm: this.farm,
@@ -795,26 +738,21 @@ onResize(event: Event) {
         }
       }
 
-      console.log(list);
-
       if(creationType == "create"){
-        console.log("Creating listing")
         await this.listingService.createListing(list);
       }
       else if(creationType == "save"){
-        console.log("Saving listing")
         if(this.listingEditee)
           list.listing_id = this.listingEditee.listing_id;
 
-        const response = await this.listingService.saveListing(list);
-        console.log(response);
+        await this.listingService.saveListing(list);
       }
       loader.style.opacity="0";
       property.style.opacity="1";
       this.router.navigate(['/home']);
     }
     else{
-      console.log("Error in create-lisitng.page.ts");
+      console.log("Error in create-lisitng.page.ts - there is no current user");
     }
   }
 
@@ -827,7 +765,7 @@ onResize(event: Event) {
     if (this.scrollToElement && this.scrollToElement.nativeElement) {
       this.scrollToElement.nativeElement.scrollIntoView({ block: 'center' });
     }
-    if(this.currentUser != null && this.listingEditee != null){
+    if(this.currentUser != null && this.listingEditee != null && this.listingEditee.user_id == this.currentUser.uid){
 
       // await this.setCharacteristics();
 
@@ -863,8 +801,8 @@ onResize(event: Event) {
           accessible: this.accessible,
           foreign: this.foreign,
           openConcept: false,
-          ecoWarrior: this.eco,
-          family: this.kids,
+          ecoWarrior: false,
+          family: false,
           student: this.students,
           lovinIt: this.food,
           farm: this.farm,

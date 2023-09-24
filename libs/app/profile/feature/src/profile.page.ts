@@ -134,7 +134,6 @@ export class ProfilePage implements OnInit {
 
    @HostListener('window:resize', ['$event'])
    onResize(event: Event) {
-     console.log(event);
      this.isMobile = window.innerWidth <= 576;
    }
    
@@ -250,12 +249,10 @@ export class ProfilePage implements OnInit {
     const files: FileList | null = (event.currentTarget as HTMLInputElement).files;
     if (files) {
       this.saveProfile = true;
-      console.log(files);
       for (let index = 0; index < files.length; index++) {
         if (files.item(index)){
           this.profilePic = URL.createObjectURL(files.item(index) as Blob);
           document.getElementById("profilePic2")?.setAttribute("style", "margin: 10px; border-radius: 50%; border: 1px solid black; width: 100px; height: 100px; background-image: url('" + this.profilePic + "'); background-size: cover; background-position-x: center; background-position-y: center;")
-          console.log("brooo ",URL.createObjectURL(files.item(index) as Blob));
         }
       }
     }
@@ -264,10 +261,7 @@ export class ProfilePage implements OnInit {
 
   async saveProfilePic(){
     if(this.user){
-      console.log(this.profilePic)
-      console.log("saving profile pic")
       const response = await this.userProfileService.uploadProfilePic(this.user.userId, this.profilePic);
-      console.log(response);
       document.getElementById("profilePic2")?.setAttribute("style", "margin: 10px; border-radius: 50%; border: 1px solid black; width: 100px; height: 100px; background-image: url('" + this.profilePic + "'); background-size: cover; background-position-x: center; background-position-y: center;")
       this.saveProfile = false;
     }

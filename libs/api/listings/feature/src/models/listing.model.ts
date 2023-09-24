@@ -140,7 +140,6 @@ export class ListingModel extends AggregateRoot implements Listing {
       }
     }
 
-    console.log(change);
     this.statusChanges = this.statusChanges ?? [];
     this.statusChanges.push(change);
     if (!this.listing_id) {

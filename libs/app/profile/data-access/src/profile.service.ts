@@ -27,10 +27,8 @@ export class UserProfileService {
   }
 
   async deleteUser(uid: string) {
-    console.log("Deleting doc")
     const userRef = doc(this.firestore, `users/${uid}`);
     const response = await deleteDoc(userRef);
-    console.log(response);
   }
 
   async getUser(uid: string) : Promise<UserProfile>{
@@ -41,7 +39,6 @@ export class UserProfileService {
       this.functions, 
       'getUserProfile'
     )({userId: uid})).data;
-    console.log(resp);
     return resp.user as UserProfile;  
   }
 
@@ -50,7 +47,6 @@ export class UserProfileService {
       UpdateUserProfileRequest,
       UpdateUserProfileResponse
     >(this.functions, 'updateUserProfile')({user: uProfile});
-    console.log(resp);
   }
 
   async uploadProfilePic(userID : string, input: string) {
@@ -60,8 +56,6 @@ export class UserProfileService {
     .then(async (blob : Blob) => {
       photoURL = await getDownloadURL((await uploadBytes(storageRef, blob)).ref);
     })
-
-    console.log(photoURL)
 
     // TODO Add this via CQRS
     const userRef = doc(this.firestore, `users/${userID}`);
@@ -92,7 +86,7 @@ export class UserProfileService {
   async updateInterests(characteristic : characteristics, userID: string)
   {
     const profile = this.getUser(userID);
-    console.log("old interests", profile);
+    // console.log("old interests", profile);
     this.calculatePotency(characteristic);
 
     this.temp.gym=(await profile).interests.gym;
@@ -201,9 +195,9 @@ export class UserProfileService {
     (await profile).interests.owner = this.temp.owner;
     (await profile).interests.party = this.temp.party;
     (await profile).interests.student = this.temp.student;
-    console.log("new interest1", profile);
+    // console.log("new interest1", profile);
     this.updateUserProfile(await profile);
-    console.log("new interest2", profile);
+    // console.log("new interest2", profile);
   }
 
   mainIncrease(fixed: number, boolCharacteristic: number)
@@ -213,7 +207,7 @@ export class UserProfileService {
     {
       updates=100;
     }
-    console.log("after ", updates);
+    // console.log("after ", updates);
     return updates;
   }
 
@@ -225,7 +219,7 @@ export class UserProfileService {
       ally=100;
     }
 
-    console.log("after ", ally);
+    // console.log("after ", ally);
     
     return ally;
   }
@@ -237,7 +231,7 @@ export class UserProfileService {
     {
       enemy=0;
     }
-    console.log("after ", enemy);
+    // console.log("after ", enemy);
     return enemy;
   }
 
@@ -258,7 +252,7 @@ export class UserProfileService {
   getInterestArray(profile: UserProfile)
   {
     const inter = profile.interests;
-    const arr: number[] = [inter.garden, inter.party, inter.mansion, inter.accessible, inter.foreign, inter.ecoWarrior, inter.family, inter.student, inter.lovinIt, inter.farm, inter.gym, inter.owner];
+    const arr: number[] = [inter.garden, inter.party, inter.mansion, inter.accessible, inter.foreign, inter.student, inter.lovinIt, inter.farm, inter.gym, inter.owner];
     return arr;
   }
 }

@@ -46,7 +46,6 @@ export class SavedListingsPage implements OnInit {
   }
 
   async ngOnInit() {
-    console.log ("Linter: Lifecycle methods should not be empty");
     this.isMobile = isMobile();
     this.loading = true;
     if(this.userProfile){
@@ -79,7 +78,6 @@ export class SavedListingsPage implements OnInit {
   }
 
   async redirectToPage(listing : Listing) {
-    console.log(listing.listing_id);
     this.router.navigate(['/listing', {list : listing.listing_id}]);
   }
 
@@ -90,9 +88,6 @@ export class SavedListingsPage implements OnInit {
           return true;
         }
       }
-    }
-    else{
-      console.log("Profile not found");
     }
 
     return false;
@@ -128,8 +123,6 @@ export class SavedListingsPage implements OnInit {
             for(const listing of editedListingArray){
               if(listing.listing_id == listing_id){
                 editedListingArray.splice(editedListingArray.indexOf(listing), 1);
-                console.log(editedListingArray);
-                console.log(this.savedListingsB);
               }
             }
           }

@@ -49,23 +49,19 @@ export class ListingsService {
       CreateListingResponse
     >(this.functions, 'createListing')(request)).data;
 
-    console.warn(response);
     if (response.status) {
       this.uploadImages(response.message, list.photos);
     }
   }
 
   async saveListing(list : Listing){
-    console.log(list);
     if(list.listing_id){
-      console.log(list.listing_id + " exists, now saving");
       const request: CreateListingRequest = {listing: list};
       const response: CreateListingResponse = (await httpsCallable<
         CreateListingRequest,
         CreateListingResponse
       >(this.functions, 'saveListing')(request)).data;
 
-      console.warn(response);
       if (response.status) {
         this.updateImages(list.listing_id, list.photos);
       }
@@ -224,7 +220,6 @@ export class ListingsService {
   async updateImages(listingId : string, images : string[]){
     const photoURLs : string[] = [];
     const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId);
-    console.log(storageRef.toString());
 
     for(let i = 0; i < images.length; i++){
       const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId + "/image" + i);
@@ -239,41 +234,49 @@ export class ListingsService {
       await updateDoc(listingRef, {photos: photoURLs});
   }
 
-  recommendationMinimum = 100000;
+  recommendationMinimum = .55;
 
   async recommender(char: characteristics, userVector: number[])
   {
-    let listVector: number[] = [
-      +!!char.garden, 
-      +!!char.party, 
-      +!!char.mansion, 
-      +!!char.accessible, 
-      +!!char.foreign, 
-      +!!char.ecoWarrior, 
-      +!!char.family, 
-      +!!char.student, 
-      +!!char.lovinIt, 
-      +!!char.farm, 
-      +!!char.gym, 
-      +!!char.owner];
+    try {
+      let listVector: number[] = [
+        +!!char.garden, 
+        +!!char.party, 
+        +!!char.mansion, 
+        +!!char.accessible, 
+        +!!char.foreign, 
+        +!!char.student, 
+        +!!char.lovinIt, 
+        +!!char.farm, 
+        +!!char.gym, 
+        +!!char.owner
+      ];
 
-    for(let x=0; x<12; x++){
-      listVector[x]= listVector[x]*userVector[x];
+      for(let x=0; x<10; x++){
+        listVector[x]= listVector[x]*userVector[x];
+      }
+  
+      //dot product
+      let dotproduct=0;
+  
+      for(let x=0; x< 10; x++){
+        dotproduct += listVector[x]*userVector[x];
+      }
+
+      // sigmoid function
+      let e = Math.E;
+      let finalAnswer = 0;
+      finalAnswer = 1/(1+ e**(-dotproduct));
+
+  
+      if(finalAnswer>=this.recommendationMinimum){
+        return true
+      }
+  
+      return false;
+    } catch (e) {
+      return false;
     }
-
-    let ans: string;
-    //dot product
-    let dotproduct=0;
-
-    for(let x=0; x< 12; x++){
-      dotproduct += listVector[x]*userVector[x];
-    }
-
-    if(dotproduct>=this.recommendationMinimum){
-      return true
-    }
-
-    return false;
   }
   
   async getSanitationScore(district : string){
@@ -282,7 +285,6 @@ export class ListingsService {
       GetLocInfoDataResponse
     >(this.functions, 'getLocInfoData')({type: "sanitation", district: district})).data;
 
-    console.log("Listing services", response);
     return response;
   }
 
@@ -292,7 +294,6 @@ export class ListingsService {
       GetLocInfoDataResponse
     >(this.functions, 'getLocInfoData')({type: "water", district: district, listingAreaType: listingAreaType, listingType: listingType, latlong: coordinates})).data;
 
-    console.log("Listing services", response);
     return response;
   }
 
@@ -302,7 +303,6 @@ export class ListingsService {
       GetLocInfoDataResponse
     >(this.functions, 'getLocInfoData')({type: "crime", latlong: coordinates})).data;
 
-    console.log("Listing services", response);
     return response;
   }
 

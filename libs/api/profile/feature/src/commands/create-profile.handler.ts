@@ -9,7 +9,6 @@ import { ProfileRepository } from '@properproperty/api/profile/data-access';
 export class CreateProfileHandler implements ICommandHandler<CreateProfileCommand> {
   constructor(private readonly profileRepo: ProfileRepository) {}
   async execute(command: CreateProfileCommand) {
-    console.log(CreateProfileHandler.name);
     const temp: UserProfile = {
       userId: command.user.uid,
       email: command.user.email,

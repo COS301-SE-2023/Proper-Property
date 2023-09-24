@@ -31,8 +31,7 @@ export class GoogleMapsRepository {
       .doc(listingId)
       .get()).data();
     if (!docData?.pointsOfInterestIds) {
-      console.log("Hablo no listing por favor")
-      throw new Error("Hablo no listing por favor");
+      throw new Error("No listings were found");
     }
     const pointIDs = docData.pointsOfInterestIds ?? [];
     if (pointIDs.length == 0) {
@@ -166,7 +165,6 @@ export class GoogleMapsRepository {
   async geocodeAddress(address ?: string){
     const keeeeee = process.env['NX_GOOGLE_MAPS_KEY'];
     if(!keeeeee){
-      console.log("No API key found");
       return;
     }
     const request : GeocodeRequest = {
@@ -179,7 +177,6 @@ export class GoogleMapsRepository {
   }
 
   async addPOIs(event : StatusChangedEvent){
-    console.log(process.env);
     if (!process.env['NX_GOOGLE_MAPS_KEY']) {
       return;
     }
@@ -193,11 +190,9 @@ export class GoogleMapsRepository {
     } = {
       pointsOfInterestIds: []
     };
-    console.log(GoogleMapsRepository.name, "::addPOIs 1");
     let geocode = undefined;
     this.docData = (await this.listingRepo.getListing(event.listingId)).listings[0];
     if (!this.docData) {
-      console.log("Listing doc not found");
       return {status: false, message: "Listing doc not found"};
     }
     // I love javascript
@@ -208,7 +203,6 @@ export class GoogleMapsRepository {
 
     if(!this.docData.geometry.lat && !this.docData.geometry.lng){
       geocode = (await this.geocodeAddress(this.docData.address))?.data.results[0].geometry.location;
-      console.log("Geocode: ", geocode);
       updates.geometry = {
         lat: geocode?.lat ?? 0,
         lng: geocode?.lng ?? 0
@@ -216,26 +210,18 @@ export class GoogleMapsRepository {
     }
     
     if(!geocode?.lat || !geocode?.lng){ // tests positive if a listing has lat/long = 0, but the oceans are rising, not receding so w/e
-      console.log("Geocoding of address could not be calculated");
       return {status : false, message: "Geocoding failed, bro lives in Narnia"};
     }
 
-    console.log(GoogleMapsRepository.name, "::addPOIs");
     const ids = this.docData?.pointsOfInterestIds ?? [];
     if(ids.length > 0){
-      console.log("Points of interest already exist");
       return {status: false, message: "Points of interest found"};
     }
 
-    console.log(GoogleMapsRepository.name, "::addPOIs 3");
     if(!process.env['NX_GOOGLE_MAPS_KEY']){
-      console.log("No google maps API key");
       throw new Error("No API key found")
     }
 
-    console.log(GoogleMapsRepository.name, "::addPOIs 4");
-
-    console.log("requests are starting for poi")
     let response: PlacesNearbyResponse | undefined;
     let token: string | undefined;
     let pageFlag = true;
@@ -261,8 +247,6 @@ export class GoogleMapsRepository {
       try {
         response = await this.mapsClient.placesNearby(request);
       } catch (e) {
-        console.log("NearbyPlaces Failed: ");
-        console.log(e);
         return {status: false, message: e};
       }
       if (!response) {
@@ -270,10 +254,8 @@ export class GoogleMapsRepository {
       }
       token = response.data.next_page_token;
       if (token) {
-        console.log(pageCounter, ": But wait (10-ish seconds)! There's more!");
         pageFlag = true;
         await sleep(10000);
-        console.log("Waiting finished");
       }
       
       response.data.results.forEach((place) => {
@@ -309,7 +291,6 @@ export class GoogleMapsRepository {
       }
     }
     if (process.env['NX_RECOMMENDATION']) {
-      console.log("recommending");
       const listing = this.docData;
       this.garden = listing.features.indexOf("Garden") > -1;
 
@@ -352,12 +333,8 @@ export class GoogleMapsRepository {
         this.checkUniversity();
         this.checkFamily();
       }
-      
-      for(let i = 0; i < this.types.length; i++) {
-        console.log(this.types[i] + ": " + this.flags[i]);
-      }
 
-      console.log("Saved a grand total of: " + savings);
+      // console.log("Saved a grand total of: " + savings);
       // TODO add characteristics to listing
     }
     updates['pointsOfInterestIds'] = poiIDs;
@@ -414,7 +391,6 @@ export class GoogleMapsRepository {
 
   async addPlace(place: Partial<PlaceData>) {
     if (!place.place_id) {
-      console.log("Place has no ID");
       return;
     }
     admin

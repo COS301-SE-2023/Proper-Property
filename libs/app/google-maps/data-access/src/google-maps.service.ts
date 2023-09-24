@@ -50,9 +50,6 @@ export class GmapsService {
   
         const selectedPlace = places[0];
         input.value = selectedPlace.formatted_address;
-  
-        // Handle the selected place(s) here
-        console.log('Selected place:', places[0]);
       });
     });
   }
@@ -78,7 +75,6 @@ export class GmapsService {
   }
 
   geocodeAddress(address: string): Promise<google.maps.GeocoderResult | null> {
-    console.warn("Geocodeing address: ", address);
     return this.getGeocoder().then((geocoder) => {
       return new Promise<google.maps.GeocoderResult | null>((resolve, reject) => {
         geocoder.geocode({ address: address }, (results, status) => {
@@ -111,7 +107,6 @@ export class GmapsService {
         if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
           // Process the predictions here
           this.predictions = predictions.filter((prediction) => !prediction.types.includes('street_address'));
-          console.log('Autocomplete predictions:', this.predictions);
         } else {
           this.predictions = [];
         }
@@ -197,9 +192,6 @@ export class GmapsService {
   
         const selectedPlace = places[0];
         input.value = selectedPlace.formatted_address;
-  
-        // Handle the selected place(s) here
-        console.log('Selected place:', places[0]);
       });
     });
   }
@@ -355,7 +347,6 @@ export class GmapsService {
         service.nearbySearch(request, (results: google.maps.places.PlaceResult[], status: google.maps.places.PlacesServiceStatus) => {
           if (status === maps.places.PlacesServiceStatus.OK) {
             resolve(results); // Places found
-            console.log("results: ",results)
           } else {
             reject('Failed to retrieve nearby places');
           }
@@ -378,7 +369,6 @@ export class GmapsService {
         service.nearbySearch(request, (results: google.maps.places.PlaceResult[], status: google.maps.places.PlacesServiceStatus) => {
           if (status === maps.places.PlacesServiceStatus.OK) {
             resolve(results);
-            console.log("results: ",results)
           } else {
             reject('Failed to retrieve nearby schools. Places Search responded with status: ' + status);
           }
@@ -401,7 +391,6 @@ export class GmapsService {
         service.nearbySearch(request, (results: google.maps.places.PlaceResult[], status: google.maps.places.PlacesServiceStatus) => {
           if (status === maps.places.PlacesServiceStatus.OK) {
             resolve(results);
-            console.log("Police stations: ",results)
           } else {
             reject('Failed to retrieve nearby police stations');
           }

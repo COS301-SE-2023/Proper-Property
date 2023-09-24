@@ -18,7 +18,6 @@ export class SearchListingsHandler implements IQueryHandler<
   async execute(
     query: SearchListingsQuery
   ): Promise<SearchListingsResponse> {
-    console.log(SearchListingsHandler.name);
     return this.repo.searchListings(query.request);
   }
 }
