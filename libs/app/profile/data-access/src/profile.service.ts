@@ -69,6 +69,10 @@ export class UserProfileService {
     return photoURL;
   }
 
+  async qrListingRead(){
+    console.log("qrListingRead");
+  }
+
   vPotency = 0;
 
   temp: Interests={
