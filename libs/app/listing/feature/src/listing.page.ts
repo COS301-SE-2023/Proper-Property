@@ -168,6 +168,10 @@ export class ListingPage implements OnDestroy {
     let totEngagement = 0;
     let dates: string[] = [];
     let pageViews: number[] = [];
+    let obj : {
+      date: string,
+      pageView: number
+    }[] = [];
 
     const rows = analyticsData.rows ?? [];
     for(let i = 0; rows && i < rows.length; i++){
@@ -179,19 +183,29 @@ export class ListingPage implements OnDestroy {
 
 
         const tempDate = new Date(year, month, day)
-
-        dates[i] = tempDate.getDate() + " " + this.Months[tempDate.getMonth() - 1];
-
         const metricValue = rows[i].metricValues[0].value;
-        pageViews[i] = Number(metricValue);
+
+        obj.push({
+          date: tempDate.getDate() + " " + this.Months[tempDate.getMonth() - 1],
+          pageView: Number(metricValue)
+
+        });
 
         totEngagement += Number(rows[i].metricValues[1].value);
         totUsers += Number(rows[i].metricValues[2].value);
       }
     }
 
-    dates = dates.reverse();
-    pageViews = pageViews.reverse();
+    obj.sort((a, b) => {
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    })
+
+    for(let i of obj){
+      dates.push(i.date);
+      pageViews.push(i.pageView);
+    }
+    
+    console.log(obj)
 
     const data = {
       labels: dates,
@@ -230,7 +244,7 @@ export class ListingPage implements OnDestroy {
     const minutes = Math.floor(avgPerUser / 60);
     const seconds = (avgPerUser - minutes * 60).toPrecision(2);
 
-    this.avgEnagement = minutes + " min " + seconds + " sec";
+    this.avgEnagement = seconds? minutes + " min " + seconds + " sec" : "There is no data to show yet";
     this.showData = true;
     const element = document.querySelector(".graph") as HTMLElement;
     loader.style.display = "none";
