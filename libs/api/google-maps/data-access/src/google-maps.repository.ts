@@ -18,7 +18,7 @@ function sleep(ms: number) {
 export class GoogleMapsRepository {
 
   constructor(private readonly listingRepo: ListingsRepository){}
-  private getCharacteristics = false;
+  private getCharacteristics = true;
   private mapsClient: Client = new Client({});
   async getPointsOfInterest(listingId: string): Promise<GetNearbyPlacesResponse> {
     const docData = (await admin
@@ -113,7 +113,17 @@ export class GoogleMapsRepository {
     "shopping_mall",
     "tourist_attraction",
     "train_station",
-    "university"
+    "university",
+    "primary_school",
+    "restaurant",
+    "night_club",
+    "meal_delivery",
+    "meal_takeaway",
+    "amusement_park",
+    "aquarium",
+    "bowling_alley",
+    "zoo",
+    "movie_theater",
   ];
   
   garden = false;
@@ -130,7 +140,12 @@ export class GoogleMapsRepository {
   owner = false;
   // TODO use this?
   umbrella = false;
-
+  // foodTypecounts = {
+  //   "restaurant": 0,
+  //   "cafe": 0,
+  //   "meal_takeaway": 0,
+  //   "meal_delivery": 0,
+  // }
   touristDestinations: { lat: number, long: number }[] = [
     {lat:-34.176050 , long:18.342900 },
     {lat: -34.195390, long:18.448440 },
@@ -162,6 +177,10 @@ export class GoogleMapsRepository {
   ];
 
   docData: Listing | undefined;
+  geometry: {
+    lat: number,
+    lng: number
+  } | undefined = undefined;
   async geocodeAddress(address ?: string){
     const keeeeee = process.env['NX_GOOGLE_MAPS_KEY'];
     if(!keeeeee){
@@ -190,26 +209,26 @@ export class GoogleMapsRepository {
     } = {
       pointsOfInterestIds: []
     };
-    let geocode = undefined;
+    this.geometry = undefined;
     this.docData = (await this.listingRepo.getListing(event.listingId)).listings[0];
     if (!this.docData) {
       return {status: false, message: "Listing doc not found"};
     }
     // I love javascript
-    geocode = {
+    this.geometry = {
       lat: this.docData?.geometry.lat,
       lng: this.docData?.geometry.lng
     }
 
     if(!this.docData.geometry.lat && !this.docData.geometry.lng){
-      geocode = (await this.geocodeAddress(this.docData.address))?.data.results[0].geometry.location;
+      this.geometry = (await this.geocodeAddress(this.docData.address))?.data.results[0].geometry.location;
       updates.geometry = {
-        lat: geocode?.lat ?? 0,
-        lng: geocode?.lng ?? 0
+        lat: this.geometry?.lat ?? 0,
+        lng: this.geometry?.lng ?? 0
       }
     }
     
-    if(!geocode?.lat || !geocode?.lng){ // tests positive if a listing has lat/long = 0, but the oceans are rising, not receding so w/e
+    if(!this.geometry?.lat || !this.geometry?.lng){ // tests positive if a listing has lat/long = 0, but the oceans are rising, not receding so w/e
       return {status : false, message: "Geocoding failed, bro lives in Narnia"};
     }
 
@@ -234,8 +253,8 @@ export class GoogleMapsRepository {
       const request: PlacesNearbyRequest = {
         params:{
           location :{
-            lat: geocode.lat, 
-            lng: geocode.lng
+            lat: this.geometry.lat, 
+            lng: this.geometry.lng
           },
           key: process.env['NX_GOOGLE_MAPS_KEY'],
           radius: 10000
@@ -325,13 +344,13 @@ export class GoogleMapsRepository {
       if(this.docData.features.length > 8 && (this.docData.furnish_type == "Furnished" || this.docData.furnish_type == "Partly Furnished")){
         this.owner = true;
       }
-
-      if (pageCounter >= 3 && this.getCharacteristics) {
-        this.checkParty();
-        this.checkgym();
-        this.checkFood();
-        this.checkUniversity();
-        this.checkFamily();
+      // check that all pages weren't exhausted, and that we're in prod or we want to test characteristics in development
+      if (pageCounter >= 3 && (process.env['NX_ENVIRONMENT'] == 'production' || this.getCharacteristics)) {
+        await this.checkParty();
+        await this.checkgym();
+        await this.checkFood();
+        await this.checkUniversity();
+        await this.checkFamily();
       }
 
       // console.log("Saved a grand total of: " + savings);
@@ -362,7 +381,7 @@ export class GoogleMapsRepository {
         ...updates
       }, {merge: true});
     this.addMissingPlaces(poiIDs, places);
-    return {status: true, message: "Points of interest added :thumbsupp:"};
+    return {status: true, message: "Points of interest added"};
   }
 
   async addMissingPlaces(ids: string[], places: Partial<PlaceData>[]) {
@@ -408,21 +427,23 @@ export class GoogleMapsRepository {
 
   async checkPlaces(type: string, radius: number, size?: number): Promise<boolean> {
     size = size ?? 1;
-    if (!this.docData || !process.env['NX_GOOGLE_MAPS_KEY']) {
+    if (!this.docData || !process.env['NX_GOOGLE_MAPS_KEY'] || !this.geometry) {
       return false;
     }
     const request: PlacesNearbyRequest = {
       params:{
         location :{
-          lat: this.docData.geometry.lat, 
-          lng: this.docData.geometry.lng
+          lat: this.geometry.lat, 
+          lng: this.geometry.lng
         },
         radius: radius,
         key: process.env['NX_GOOGLE_MAPS_KEY'],
         type: type
       }
     };
+    console.log(request);
     const response = await this.mapsClient.placesNearby(request);
+    console.log("Num found: ", response.data.results.length);
     return (response.data.results.length >= size);
   }
   async checkParty() {
@@ -470,7 +491,8 @@ export class GoogleMapsRepository {
     if (this.flags[this.types.indexOf('gym')]) {
       return;
     }
-    this.flags[this.types.indexOf('gym')] = await this.checkPlaces('gym', 3000);
+    this.gym = await this.checkPlaces('gym', 3000);
+    
   }
 
   async checkFood() {
@@ -507,16 +529,21 @@ export class GoogleMapsRepository {
   async checkUniversity() {
     const listing = this.docData;
     if (!listing) {
+      console.log("No doc");
       return;
     }
     if(listing.price > 6000 || listing.features.indexOf("Wifi") == -1) {
+      console.log("Price: ", listing.price, " | Wifi: ", listing.features.indexOf("Wifi"));
       this.students = false;
       return
     }
 
-    if (!this.flags[this.types.indexOf('university')]) {
-      this.students = await this.checkPlaces('university', 5000);
+    if (this.flags[this.types.indexOf('university')]) {
+      this.students = true;
+      return;
     }
+
+    this.students = await this.checkPlaces('university', 5000);
   }
 
   async checkFamily() {
