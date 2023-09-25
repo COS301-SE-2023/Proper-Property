@@ -22,6 +22,7 @@ export class UploadLocInfoDataHandler implements ICommandHandler<UploadLocInfoDa
       return this.locInfoRepo.uploadSaniStats(command.req.request as UploadSaniStatsRequest);
     }
     else if(command.req.path.includes('district')){
+      console.log("district");
       return this.locInfoRepo.uploadDistrictData(command.req.request as UploadDistrictDataRequest);
     }
     else if(command.req.path.includes('wwq')){

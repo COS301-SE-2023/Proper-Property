@@ -7,6 +7,7 @@ export class AddPOIHandler implements ICommandHandler<AddPOICommand> {
   constructor(private readonly gmapsRepo : GoogleMapsRepository){}
 
   async execute(command: AddPOICommand){
+    console.log(AddPOIHandler.name)
     if (command.event?.change.status == StatusEnum.ON_MARKET){
       return await this.gmapsRepo.addPOIs(command.event);
     }

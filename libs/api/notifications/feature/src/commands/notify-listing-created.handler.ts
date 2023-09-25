@@ -16,14 +16,18 @@ export class NotifyListingCreatedHandler implements ICommandHandler<NotifyListin
     private readonly profileRepo: ProfileRepository 
   ){}
   async execute(command: NotifyListingCreatedCommand) {
+    console.log('---NotifyListingCreatedCommand: ' + command.event.listing.status);
     const profile = (await this.profileRepo.getUserProfile(command.event.listing.user_id)).user;
     if (!profile) {
+      console.log('---User profile not found');
       return;
     }
     if (!profile.email) {
+      console.log('---User profile email not found');
       return;
     }
     const cred_path = path.join(__dirname, '..', '..', '..', 'victorias-secret-google-credentials', 'spambot-9000-inator.json');
+    console.log(cred_path);
     
     const creds = JSON.parse(fs.readFileSync(cred_path, 'utf8'));
     const transporter = nodemailer.createTransport({
@@ -60,7 +64,9 @@ export class NotifyListingCreatedHandler implements ICommandHandler<NotifyListin
     transporter.sendMail(mailoptions, (err, info) => {
       if (err) {
         console.log(err);
-      } 
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
     });
 
     const notificationsDoc = await this.notifRepo.getNotifications(command.event.listing.user_id);

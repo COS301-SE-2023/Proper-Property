@@ -60,6 +60,7 @@ export class NotificationsState {
           ctx.patchState({ notifications: notifications });
         }
       );
+      console.log('subscribed to notifications');
     }
     // Update state
     ctx.patchState({ 

@@ -101,10 +101,11 @@ export class LocInfoRepository {
           }
         }
         catch(error : any){
-          return {status: false, type: "crime", error: error.message ?? "No error message"};
+          console.log("Error when calculating leven score: ", error.message ?? "No error message");
         }
 
         if (correctDistrict === "") {
+          console.log(station.district + " not found");
           continue;
         }
 
@@ -172,6 +173,7 @@ export class LocInfoRepository {
       return {type: "crime", status: true};
     }
     catch(e : any){
+      console.log(e);
       return {type: "crime", status: false, error: e ? e.message : "No error message available"};
     }
   }
@@ -580,6 +582,7 @@ export class LocInfoRepository {
             reliabilityScore = parseInt(response.data()?.['ruralPopReliable'])/parseInt(response.data()?.['ruralPopAccess']);
           }
           else{
+            console.log("None for you - rural");
             reliabilityScore = 0;
           } 
         }
@@ -588,8 +591,12 @@ export class LocInfoRepository {
             reliabilityScore = parseInt(response.data()?.['urbanPopReliable'])/parseInt(response.data()?.['urbanPopAccess']);
           }
           else{
+            console.log("None for you - urban");
             reliabilityScore = 0;
           } 
+        }
+        else{
+          console.log("Could not determine listingAreaType");
         }
       })
 
@@ -691,6 +698,9 @@ export class LocInfoRepository {
               correctStation = station.toLowerCase();
               break;
             }
+          }
+          if (correctStation === "") {
+            console.log("Could not find station", foundStation);
           }
         }
       });

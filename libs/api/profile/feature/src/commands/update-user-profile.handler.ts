@@ -14,6 +14,8 @@ implements ICommandHandler<
   ) {}
 
   async execute(command: UpdateUserProfileCommand) {
+    console.log(UpdateUserProfileHandler.name);
+    console.log(command);
     const user = (await this.profileRepo.getUserProfile(command.user.userId)).user;
     if (!user) {
       return {success: false};

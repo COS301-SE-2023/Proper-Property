@@ -10,10 +10,9 @@ export const getAnalyticsData = functions.region("europe-west1").https.onCall(
   async ({listingId} : GetAnalyticsDataRequest) => {
     if(listingId != ""){
       const cred_path = path.join(__dirname, '..', '..', '..', 'victorias-secret-google-credentials', 'homework.json');
-
-      const client = new BetaAnalyticsDataClient({
-        keyFilename: cred_path
-      });
+      console.log(cred_path);
+      process.env['GOOGLE_APPLICATION_CREDENTIALS'] = cred_path;
+      const client = new BetaAnalyticsDataClient();
       // get json data from file at cred_path
       const creds = JSON.parse(fs.readFileSync(cred_path, 'utf8'));
         let response: any = undefined;
@@ -51,6 +50,7 @@ export const getAnalyticsData = functions.region("europe-west1").https.onCall(
       } catch (error) {
         return error;
       }
+      console.log(response.rows);
       // TODO return stuff I guess
       return JSON.stringify(response);
     }

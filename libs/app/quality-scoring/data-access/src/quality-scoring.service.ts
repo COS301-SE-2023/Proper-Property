@@ -110,6 +110,18 @@ export class QualityScoreService {
         URL.revokeObjectURL(blobUrl); // Revoke the blob URL
         return canvas.toDataURL(); // Convert to a regular data URL
       }
+      
+    //   getImageDimensions(imageUrl: string): void {
+    //     const image = new Image();
+    //     image.src = imageUrl;
+      
+    //     image.onload = () => {
+    //       const width = image.naturalWidth;
+    //       const height = image.naturalHeight;
+      
+    //       console.log(`Image dimensions: ${width} x ${height} pixels`);
+    //     };
+    //   }
 
     async checkGeocodableAddress(address: string): Promise<boolean> {
         try {

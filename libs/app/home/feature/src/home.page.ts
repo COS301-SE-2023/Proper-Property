@@ -30,6 +30,9 @@ export class HomePage implements OnInit {
   swiperRef: ElementRef | undefined;
   swiper?: Swiper;
 
+  swiperSlideChanged(e:Event) {
+    console.log('changed', e)
+  }
   predictionDisplay() {
     return this.predictions.length > 0;
   }
@@ -49,10 +52,12 @@ export class HomePage implements OnInit {
 
     if(loginBut && signupBut){
       if(this.currentUser === null){
+        console.log("Home page - onInit: Current user is null");
         loginBut.style.visibility = 'visible';
         signupBut.style.visibility = 'visible';
       }
       else{
+        console.log("Home page - onInit: " + this.userService.printCurrentUser());
         loginBut.style.visibility = 'hidden';
         signupBut.style.visibility = 'hidden';
       }
@@ -71,6 +76,7 @@ export class HomePage implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
+    console.log(event);
     this.isMobile = window.innerWidth <= 576;
   }
   

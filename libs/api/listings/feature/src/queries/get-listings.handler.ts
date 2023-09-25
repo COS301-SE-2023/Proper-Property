@@ -6,6 +6,7 @@ import { ListingsRepository } from '@properproperty/api/listings/data-access';
 export class GetListingsHandler implements IQueryHandler<GetListingsQuery> {
   constructor(private readonly listingsRepository: ListingsRepository) {}
   async execute(query: GetListingsQuery) {
+    console.log(GetListingsHandler.name);
     const req = query.request;
     if (req.userId) {
       return this.listingsRepository.getListings(req);

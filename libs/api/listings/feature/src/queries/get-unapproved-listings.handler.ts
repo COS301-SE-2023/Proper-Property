@@ -10,6 +10,8 @@ export class GetUnapprovedListingsHandler implements IQueryHandler<
   constructor(private readonly listingsRepository: ListingsRepository) {}
   
   async execute(query: GetUnapprovedListingsQuery) {
+    console.log(GetUnapprovedListingsHandler.name);
+    console.log(query);
     return this.listingsRepository.getUnapprovedListings();
   }
 }

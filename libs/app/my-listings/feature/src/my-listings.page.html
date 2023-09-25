@@ -43,244 +43,237 @@
     </ion-segment>
   </section>
 
-  <ng-container *ngIf="loading; else loaded">
-    <div id="loader">
-      <h2>{{loadingMessage}}</h2>
-      <br>
-      <img src="assets/500.gif">
-    </div>
-  </ng-container>
-  <ng-template #loaded>
-    <section id="first">
-      <ion-grid>
-        <ion-row>
-          <ion-col class="rightBorder" size="6">
-            <ion-card *ngFor="let listing of listingsB" >
-              <ion-card-header (click)="redirectToPage(listing)">
-                <img src="{{listing.photos[0]}}" alt="house1">
-                <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
-              </ion-card-header>
-              <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
-              <ion-card-content (click)="redirectToPage(listing)">
-              
-                <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-                  {{listing.bed}} bedroom/{{listing.prop_type}}
-                </p>
-                <p>For Sale!</p>
-                <p id="house_description">
-                {{listing.desc}}
-                </p>
-                <br>
-                <div id="house_details">
-                  <img src="assets/icon/bedrooms.png">
-                  {{listing.bed}}
-                  &nbsp; &nbsp;&nbsp;
-                  <img src="assets/icon/bathrooms.png">
-                  {{listing.bath}}
-                  &nbsp; &nbsp;&nbsp;
-                  <img src="assets/icon/floorplan.png">
-                  {{listing.floor_size}} m<sup>2</sup>
-                  &nbsp; &nbsp;&nbsp;
-                  <img src="assets/icon/erf.png">
-                  {{listing.property_size}} m<sup>2</sup>
-                </div>
-              </ion-card-content>
-            </ion-card>
-          
-          </ion-col>
-          <ion-col size="6">
-            <ion-card *ngFor="let listing of listingsR" >
-              <ion-card-header (click)="redirectToPage(listing)">
-                <img src="{{listing.photos[0]}}" alt="house1">  
-                <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
-              </ion-card-header>
-              <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
-              <ion-card-content (click)="redirectToPage(listing)">
-              
-                <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-                  {{listing.bed}} bedroom/{{listing.prop_type}}
-                </p>
-                <p>To Let!</p>
-                <p id="house_description">
-                {{listing.desc}}
-                </p>
-                <br>
-                <div id="house_details">
-                  <img src="assets/icon/bedrooms.png" alt="bedroom-icon">
-                  {{listing.bed}}
-                  &nbsp; &nbsp;&nbsp;
-                  <img src="assets/icon/bathrooms.png" alt="bathroom-icon">
-                  {{listing.bath}}
-                  &nbsp; &nbsp;&nbsp;
-                  <img src="assets/icon/floorplan.png" alt="floorplan-icon">
-                  {{listing.floor_size}} m<sup>2</sup>
-                  &nbsp; &nbsp;&nbsp;
-                  <img src="assets/icon/erf.png" alt="erf-icon">
-                  {{listing.property_size}} m<sup>2</sup>
-                </div>
-              </ion-card-content>
-            </ion-card>
-    
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </section>
-  
-    <section id="second">
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-card *ngFor="let listing of listingsB">
-              <ion-card-header (click)="redirectToPage(listing)">
-    
+  <section id="first">
+    <ion-grid>
+      <ion-row>
+        <ion-col class="rightBorder">
+          <ion-card *ngFor="let listing of listingsB" >
+            <ion-card-header (click)="redirectToPage(listing)">
               <img src="{{listing.photos[0]}}" alt="house1">
-                
-                <ion-card-title style="color: #0DAE4F;">Area Ratings</ion-card-title>
-              </ion-card-header>
-              <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
-              <ion-card-content (click)="redirectToPage(listing)">
-              
-                <ion-grid style="z-index:1;">
-                  <ion-row>
-                    <ion-col>
-                      <div class="white-text">Water</div>
-                        <div class="slider">
-                          <div 
-                            [class.progress]="listing.areaScore.waterScore >= 60" 
-                            [class.errorProgressBar]="listing.areaScore.waterScore < 25" 
-                            [class.warningProgressBar]="listing.areaScore.waterScore < 60 && listing.areaScore.waterScore >= 25" 
-                            [style.width]="listing.areaScore.waterScore+'%'"
-                          ></div>
-                        </div>
-                    </ion-col>
-                    <ion-col>
-                    <div class="white-text">Sanitation</div>
-                    <div class="slider">
-                      <div 
-                        [class.progress]="listing.areaScore.sanitationScore >= 60" 
-                        [class.errorProgressBar]="listing.areaScore.sanitationScore < 25" 
-                        [class.warningProgressBar]="listing.areaScore.sanitationScore < 60 && listing.areaScore.sanitationScore >= 25" 
-                        [style.width]="listing.areaScore.sanitationScore+'%'"
-                      ></div>
-                    </div>
-                    </ion-col>
-                  </ion-row>
-    
-                  <ion-row>
-                    <ion-col>
-                    <div class="white-text">Crime</div>
-                    <div class="slider">
-                      <div 
-                        [class.progress]="listing.areaScore.crimeScore >= 60" 
-                        [class.errorProgressBar]="listing.areaScore.crimeScore < 25" 
-                        [class.warningProgressBar]="listing.areaScore.crimeScore < 60 && listing.areaScore.crimeScore >= 25" 
-                        [style.width]="listing.areaScore.crimeScore+'%'"
-                      ></div>
-                    </div>
-                    </ion-col>
-                    <ion-col>
-                    <div class="white-text">School Quality</div>
-                    <div class="slider">
-                      <div 
-                        [class.progress]="listing.areaScore.schoolScore >= 60"  
-                        [class.errorProgressBar]="listing.areaScore.schoolScore < 25"  
-                        [class.warningProgressBar]="listing.areaScore.schoolScore < 60 && listing.areaScore.schoolScore >= 25" 
-                        [style.width]="listing.areaScore.schoolScore+'%'"
-                      ></div>
-                    </div>                  
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-                <br>
-                <div id="house_details">
-                  Address: {{listing.address}}
-                </div>
-              </ion-card-content>
-            </ion-card>
-  
-          </ion-col>
-          <ion-col>
-            <ion-card *ngFor="let listing of listingsR">
-              <ion-card-header (click)="redirectToPage(listing)">
-    
+              <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
+            </ion-card-header>
+            <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
+            <ion-card-content (click)="redirectToPage(listing)">
+            
+              <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+                {{listing.bed}} bedroom/{{listing.prop_type}}
+              </p>
+              <p>For Sale!</p>
+              <p>
+              {{listing.desc}}
+              </p>
+              <br>
+              <div id="house_details">
+                <img src="assets/icon/bedrooms.png">
+                {{listing.bed}}
+                &nbsp; &nbsp;&nbsp;
+                <img src="assets/icon/bathrooms.png">
+                {{listing.bath}}
+                &nbsp; &nbsp;&nbsp;
+                <img src="assets/icon/floorplan.png">
+                {{listing.floor_size}} m<sup>2</sup>
+                &nbsp; &nbsp;&nbsp;
+                <img src="assets/icon/erf.png">
+                {{listing.property_size}} m<sup>2</sup>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        
+        </ion-col>
+        <ion-col>
+          <ion-card *ngFor="let listing of listingsR" >
+            <ion-card-header (click)="redirectToPage(listing)">
               <img src="{{listing.photos[0]}}" alt="house1">
-                
-                <ion-card-title style="color: #0DAE4F;">Area Ratings</ion-card-title>
-              </ion-card-header>
-              <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
-              <ion-card-content (click)="redirectToPage(listing)">
+              <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
+            </ion-card-header>
+            <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
+            <ion-card-content (click)="redirectToPage(listing)">
+            
+              <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+                {{listing.bed}} bedroom/{{listing.prop_type}}
+              </p>
+              <p>To Let!</p>
+              <p>
+              {{listing.desc}}
+              </p>
+              <br>
+              <div id="house_details">
+                <img src="assets/icon/bedrooms.png" alt="bedroom-icon">
+                {{listing.bed}}
+                &nbsp; &nbsp;&nbsp;
+                <img src="assets/icon/bathrooms.png" alt="bathroom-icon">
+                {{listing.bath}}
+                &nbsp; &nbsp;&nbsp;
+                <img src="assets/icon/floorplan.png" alt="floorplan-icon">
+                {{listing.floor_size}} m<sup>2</sup>
+                &nbsp; &nbsp;&nbsp;
+                <img src="assets/icon/erf.png" alt="erf-icon">
+                {{listing.property_size}} m<sup>2</sup>
+              </div>
+            </ion-card-content>
+          </ion-card>
+  
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </section>
+
+  <section id="second">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-card *ngFor="let listing of listingsB">
+            <ion-card-header (click)="redirectToPage(listing)">
+  
+            <img src="{{listing.photos[0]}}" alt="house1">
               
-                <ion-grid style="z-index:1;">
-                  <ion-row>
-                    <ion-col>
-                      <div class="white-text">Water</div>
-                        <div class="slider">
-                          <div 
-                            [class.progress]="listing.areaScore.waterScore >= 60" 
-                            [class.errorProgressBar]="listing.areaScore.waterScore < 25" 
-                            [class.warningProgressBar]="listing.areaScore.waterScore < 60 && listing.areaScore.waterScore >= 25" 
-                            [style.width]="listing.areaScore.waterScore+'%'"
-                          ></div>
-                        </div>
-                    </ion-col>
-                    <ion-col>
-                    <div class="white-text">Sanitation</div>
-                    <div class="slider">
-                      <div 
-                        [class.progress]="listing.areaScore.sanitationScore >= 60" 
-                        [class.errorProgressBar]="listing.areaScore.sanitationScore < 25" 
-                        [class.warningProgressBar]="listing.areaScore.sanitationScore < 60 && listing.areaScore.sanitationScore >= 25" 
-                        [style.width]="listing.areaScore.sanitationScore+'%'"
-                      ></div>
-                    </div>
-                    </ion-col>
-                  </ion-row>
-    
-                  <ion-row>
-                    <ion-col>
-                    <div class="white-text">Crime</div>
-                    <div class="slider">
-                      <div 
-                        [class.progress]="listing.areaScore.crimeScore >= 60" 
-                        [class.errorProgressBar]="listing.areaScore.crimeScore < 25" 
-                        [class.warningProgressBar]="listing.areaScore.crimeScore < 60 && listing.areaScore.crimeScore >= 25" 
-                        [style.width]="listing.areaScore.crimeScore+'%'"
-                      ></div>
-                    </div>
-                    </ion-col>
-                    <ion-col>
-                    <div class="white-text">School Quality</div>
-                    <div class="slider">
-                      <div 
-                        [class.progress]="listing.areaScore.schoolScore >= 60"  
-                        [class.errorProgressBar]="listing.areaScore.schoolScore < 25"  
-                        [class.warningProgressBar]="listing.areaScore.schoolScore < 60 && listing.areaScore.schoolScore >= 25" 
-                        [style.width]="listing.areaScore.schoolScore+'%'"
-                      ></div>
-                    </div>                  
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-                <br>
-                <div id="house_details">
-                  Address: {{listing.address}}
-                </div>
-              </ion-card-content>
-            </ion-card>
+              <ion-card-title style="color: #0DAE4F;">Area Ratings</ion-card-title>
+            </ion-card-header>
+            <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
+            <ion-card-content (click)="redirectToPage(listing)">
+            
+              <ion-grid style="z-index:1;">
+                <ion-row>
+                  <ion-col>
+                    <div class="white-text">Water</div>
+                      <div class="slider">
+                        <div 
+                          [class.progress]="listing.areaScore.waterScore >= 60" 
+                          [class.errorProgressBar]="listing.areaScore.waterScore < 25" 
+                          [class.warningProgressBar]="listing.areaScore.waterScore < 60 && listing.areaScore.waterScore >= 25" 
+                          [style.width]="listing.areaScore.waterScore+'%'"
+                        ></div>
+                      </div>
+                  </ion-col>
+                  <ion-col>
+                  <div class="white-text">Sanitation</div>
+                  <div class="slider">
+                    <div 
+                      [class.progress]="listing.areaScore.sanitationScore >= 60" 
+                      [class.errorProgressBar]="listing.areaScore.sanitationScore < 25" 
+                      [class.warningProgressBar]="listing.areaScore.sanitationScore < 60 && listing.areaScore.sanitationScore >= 25" 
+                      [style.width]="listing.areaScore.sanitationScore+'%'"
+                    ></div>
+                  </div>
+                  </ion-col>
+                </ion-row>
   
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </section>
+                <ion-row>
+                  <ion-col>
+                  <div class="white-text">Crime</div>
+                  <div class="slider">
+                    <div 
+                      [class.progress]="listing.areaScore.crimeScore >= 60" 
+                      [class.errorProgressBar]="listing.areaScore.crimeScore < 25" 
+                      [class.warningProgressBar]="listing.areaScore.crimeScore < 60 && listing.areaScore.crimeScore >= 25" 
+                      [style.width]="listing.areaScore.crimeScore+'%'"
+                    ></div>
+                  </div>
+                  </ion-col>
+                  <ion-col>
+                  <div class="white-text">School Quality</div>
+                  <div class="slider">
+                    <div 
+                      [class.progress]="listing.areaScore.schoolScore >= 60"  
+                      [class.errorProgressBar]="listing.areaScore.schoolScore < 25"  
+                      [class.warningProgressBar]="listing.areaScore.schoolScore < 60 && listing.areaScore.schoolScore >= 25" 
+                      [style.width]="listing.areaScore.schoolScore+'%'"
+                    ></div>
+                  </div>                  
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <br>
+              <div id="house_details">
+                Address: {{listing.address}}
+              </div>
+            </ion-card-content>
+          </ion-card>
+
+        </ion-col>
+        <ion-col>
+          <ion-card *ngFor="let listing of listingsR">
+            <ion-card-header (click)="redirectToPage(listing)">
   
-    <ion-button id="saved" routerLink="/saved-listings" routerDirection="root">
-      <ion-icon name="heart-outline" size="large" color="primary"></ion-icon>
-      <ion-label>Saved Listings</ion-label>
-      <ion-icon name="chevron-forward-outline" size="large" color="primary"></ion-icon>
-    </ion-button>
+            <img src="{{listing.photos[0]}}" alt="house1">
+              
+              <ion-card-title style="color: #0DAE4F;">Area Ratings</ion-card-title>
+            </ion-card-header>
+            <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
+            <ion-card-content (click)="redirectToPage(listing)">
+            
+              <ion-grid style="z-index:1;">
+                <ion-row>
+                  <ion-col>
+                    <div class="white-text">Water</div>
+                      <div class="slider">
+                        <div 
+                          [class.progress]="listing.areaScore.waterScore >= 60" 
+                          [class.errorProgressBar]="listing.areaScore.waterScore < 25" 
+                          [class.warningProgressBar]="listing.areaScore.waterScore < 60 && listing.areaScore.waterScore >= 25" 
+                          [style.width]="listing.areaScore.waterScore+'%'"
+                        ></div>
+                      </div>
+                  </ion-col>
+                  <ion-col>
+                  <div class="white-text">Sanitation</div>
+                  <div class="slider">
+                    <div 
+                      [class.progress]="listing.areaScore.sanitationScore >= 60" 
+                      [class.errorProgressBar]="listing.areaScore.sanitationScore < 25" 
+                      [class.warningProgressBar]="listing.areaScore.sanitationScore < 60 && listing.areaScore.sanitationScore >= 25" 
+                      [style.width]="listing.areaScore.sanitationScore+'%'"
+                    ></div>
+                  </div>
+                  </ion-col>
+                </ion-row>
   
-    <ion-button id="swap" (click)="Change()">
-      <ion-icon name="swap-horizontal-outline"></ion-icon>
-    </ion-button>
-  </ng-template>
+                <ion-row>
+                  <ion-col>
+                  <div class="white-text">Crime</div>
+                  <div class="slider">
+                    <div 
+                      [class.progress]="listing.areaScore.crimeScore >= 60" 
+                      [class.errorProgressBar]="listing.areaScore.crimeScore < 25" 
+                      [class.warningProgressBar]="listing.areaScore.crimeScore < 60 && listing.areaScore.crimeScore >= 25" 
+                      [style.width]="listing.areaScore.crimeScore+'%'"
+                    ></div>
+                  </div>
+                  </ion-col>
+                  <ion-col>
+                  <div class="white-text">School Quality</div>
+                  <div class="slider">
+                    <div 
+                      [class.progress]="listing.areaScore.schoolScore >= 60"  
+                      [class.errorProgressBar]="listing.areaScore.schoolScore < 25"  
+                      [class.warningProgressBar]="listing.areaScore.schoolScore < 60 && listing.areaScore.schoolScore >= 25" 
+                      [style.width]="listing.areaScore.schoolScore+'%'"
+                    ></div>
+                  </div>                  
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+              <br>
+              <div id="house_details">
+                Address: {{listing.address}}
+              </div>
+            </ion-card-content>
+          </ion-card>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </section>
+
+  <ion-button id="saved" routerLink="/saved-listings" routerDirection="root">
+    <ion-icon name="heart-outline" size="large" color="primary"></ion-icon>
+    <ion-label>Saved Listings</ion-label>
+    <ion-icon name="chevron-forward-outline" size="large" color="primary"></ion-icon>
+  </ion-button>
+
+  <ion-button id="swap" (click)="Change()">
+    <ion-icon name="swap-horizontal-outline"></ion-icon>
+  </ion-button>
+
+
 </ion-content>

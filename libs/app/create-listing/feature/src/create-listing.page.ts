@@ -97,7 +97,7 @@ export class CreateListingPage{
     this.predictions = [];
     // this.defaultBounds = new google.maps.LatLngBounds();
     if (isDevMode()) {
-      this.address = "3 Curzon Place, la Lucia, Umhlanga";
+      this.address = "123 Fake Street";
       this.price = 1000000;
       this.floor_size = 100;
       this.erf_size = 100;
@@ -110,8 +110,6 @@ export class CreateListingPage{
       this.furnish_type = "Furnished";
       this.orientation = "North";
       this.description = "This is a description";
-      this.heading = "This is a heading";
-      this.district = 'eThekwini'
     }
     this.user$.subscribe((user: User | null) => {
       this.currentUser =  user;
@@ -149,7 +147,7 @@ export class CreateListingPage{
           }
         });
       }
-    }); 
+    });
   }
 
   private _filter(value: string): string[] {
@@ -162,18 +160,23 @@ export class CreateListingPage{
 @HostListener('window:resize', ['$event'])
 onResize(event: Event) {
   this.isMobile = window.innerWidth <= 576;
+
+  if(!event)
+    console.log(event);
 }
 
   features: string[] = [];
 
-  loadingAddress = false;
   timeout : NodeJS.Timeout | undefined;
   async handleInputChange(event: Event): Promise<void> {
-    this.loadingAddress = true;
+    console.log("handleInput");
     this.maps = this.maps ?? await this.gmapsService.loadGoogleMaps();
+    console.log(this.maps);
+    // return;
     // Ur going 100 in a 60 zone, buddy
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
+      console.log("timeout");
       const input = event.target as HTMLInputElement;
  
       if(input.value.length <=0){
@@ -182,11 +185,12 @@ onResize(event: Event) {
       else {
         this.gmapsService.handleInput(input, new this.maps.LatLngBounds()).then(() => {
           this.predictions = this.gmapsService.predictions;
-          this.loadingAddress = false;
+          // this.address = input.value;
+          
+          // this.handleAddressChange(input.value);
         });
       }
     }, 1500);
-
   }
   
   
@@ -204,7 +208,9 @@ onResize(event: Event) {
   //   this.predictions = [];
   // }
 
-  replaceInputText(event: MouseEvent | undefined, prediction: string) {    
+  replaceInputText(event: MouseEvent | undefined, prediction: string) {
+    console.log("your prediction: ",prediction);
+    
     if (event) {
       event.preventDefault(); // Prevent the default behavior of the <a> tag
     }
@@ -224,6 +230,7 @@ onResize(event: Event) {
 //    this.address = address;
 // }
 
+
   handleFileInput(event: Event) {
     if (!event.currentTarget) {
       return;
@@ -233,6 +240,7 @@ onResize(event: Event) {
       for (let index = 0; index < files.length; index++) {
         if (files.item(index))
           this.photos.push(URL.createObjectURL(files.item(index) as Blob));
+          console.log("brooo ",URL.createObjectURL(files.item(index) as Blob));
       }
     }
   }
@@ -259,6 +267,7 @@ onResize(event: Event) {
   
   removeImage(index: number) {
     this.photos.splice(index, 1);
+    console.log(this.photos);
   }
 
   selectPhotos() {
@@ -283,9 +292,23 @@ onResize(event: Event) {
     // this.price = this.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
-  descriptionLoading = false;
   async generateDesc(){
-    this.descriptionLoading = true;
+    // const add_in = document.getElementById('address') as HTMLInputElement;
+    const add_in = document.getElementById('address') as HTMLInputElement;
+    const price_in = document.getElementById('price') as HTMLInputElement;
+    const pos_type_in = document.getElementById('pos-type') as HTMLInputElement;
+    const env_type_in = document.getElementById('env-type') as HTMLInputElement;
+    const prop_type_in = document.getElementById('prop-type') as HTMLInputElement;
+    const furnish_type_in = document.getElementById('furnish-type') as HTMLInputElement;
+    const orientation_in = document.getElementById('orientation') as HTMLInputElement;
+    const floor_size_in = document.getElementById('floor-size') as HTMLInputElement;
+    const property_size_in = document.getElementById('property-size') as HTMLInputElement;
+    const bath_in = document.getElementById('bath') as HTMLInputElement;
+    const bed_in = document.getElementById('bed') as HTMLInputElement;
+    const parking_in = document.getElementById('parking') as HTMLInputElement;
+
+
+    
     let feats = "";
     for(let i = 0; i < this.features.length; i++){
       feats += this.features[i] + ", ";
@@ -294,28 +317,35 @@ onResize(event: Event) {
     if(this.address && this.price && this.pos_type && this.env_type && this.prop_type 
       && this.furnish_type && this.orientation && this.floor_size && this.erf_size 
       && this.bathrooms && this.bedrooms && this.parking){
-      const info = "Address: " + this.address + "\n" 
-      + "Price: " + this.price + "\n"
-      + "Possession type: " + this.pos_type + "\n"
-      + "Environment type: " + this.env_type + "\n"
-      + "Property type: " + this.prop_type + "\n"
-      + "Furnishing state: " + this.furnish_type + "\n"
-      + "Orientation of the house: " + this.orientation + "\n"
-      + "Floor size: " + this.floor_size + "\n"
-      + "Property size: " + this.erf_size + "\n"
-      + "Number of bathrooms: " + this.bathrooms + "\n"
-      + "Number of bedrooms" + this.bedrooms + "\n"
-      + "Number of parking spots: " + this.parking + "\n";
+      const info = "Address: " + add_in.value + "\n" 
+      + "Price: " + price_in.value + "\n"
+      + "Possession type: " + pos_type_in.value + "\n"
+      + "Environment type: " + env_type_in.value + "\n"
+      + "Property type: " + prop_type_in.value + "\n"
+      + "Furnishing state: " + furnish_type_in.value + "\n"
+      + "Orientation of the house: " + orientation_in.value + "\n"
+      + "Floor size: " + floor_size_in.value + "\n"
+      + "Property size: " + property_size_in.value + "\n"
+      + "Number of bathrooms: " + bath_in.value + "\n"
+      + "Number of bedrooms" + bed_in.value + "\n"
+      + "Number of parking spots: " + parking_in.value + "\n";
       + "Features: " + feats + "\n";
 
-      const response = await this.openAIService.getHeadingAndDesc("Give me a description of a property with the following information: \n" + info 
-      + "Be as descriptive as possible such that I would want to buy the house after reading the description")
-      
-      this.description = response.description;
-      this.heading = response.head;
-    }
+      this.openAIService.descriptionCall("Give me a description of a property with the following information: \n" + info 
+      + "Be as descriptive as possible such that I would want to buy the house after reading the description").then((res : string) => {
+        if(res == "" || !res){
+          console.log("OOPSIE WHOOPSIE, redactedEY WUCKY")
+        }
+        else{
+          this.description = res;
+        }
+      });
 
-    this.descriptionLoading = false;
+      this.openAIService.headingCall(this.description).then((res : string) => {
+        console.log(res);
+        this.heading = res;
+      });
+    }
   }
   addFeature() {
     const feat_in = document.getElementById('feat-in') as HTMLInputElement;
@@ -332,318 +362,9 @@ onResize(event: Event) {
   removeFeature(index: number) {
     this.features.splice(index, 1);
   }
+
   selectedValue = true;
   listingAreaTypeSlider = true;
-  ////////////////////////////// Recommendation System Add-Ons ////////////////////////////////////////
-
-  garden = false;
-  farm = false;
-  party = false;
-  mansion = false;
-  foreign = false;
-  food = false;
-  kids = false;
-  students = false;
-  accessible = false;
-  eco = false;
-  gym = false;
-  owner = false;
-  umbrella = false;
-
-  touristDestinations: { lat: number, long: number }[] = [
-    
-    {lat:-34.176050 , long:18.342900 },
-    {lat: -34.195390, long:18.448440 },
-    {lat: -33.905883288483416, long:18.419559881341613 },
-    {lat: -34.027445620027166, long:18.423969494340202 },
-    {lat: -33.392068620368626, long:22.214438260829674 },
-    {lat: -33.96514937559787, long: 23.647563426763526},
-    {lat: -33.63071315123244, long: 22.16256336631636},
-    {lat: -34.03129778606299, long:23.268054710171135 },
-    {lat: -34.059403776473296, long: 24.925173425242086}, 
-    {lat: -28.739026512440127, long: 24.75851569159852},
-    {lat: -28.591087302842954, long: 20.340018582987643}, 
-    {lat: -26.237620540599668, long:28.008435662716852  },
-    {lat: -26.235801689082212, long:28.013123779328716 },
-    {lat: -26.1559515206671, long:28.08378026658916 },
-    {lat: -25.749179107587615, long: 27.89070119780269},
-    {lat:-26.10722590098277 , long: 28.054846836406742},
-    {lat: -26.024251206632584, long:28.01180037855904 },
-    {lat: -25.77601429876691, long: 28.1757716231563}, 
-    {lat: -25.966873618607902, long: 27.6625737674743},
-    {lat: -26.016628111537738, long:27.7335727936381 },
-    {lat: -25.357142891151142, long:27.100530200731004 },
-    {lat: -25.253891585249146, long: 27.219679545822608}, 
-    {lat: -29.86710808840616, long: 31.045841467231135},
-    {lat: -29.846719768113445, long:31.036797371292593 }, 
-    {lat: -34.07715084394336, long: 18.891699304113544}, 
-    {lat: -24.572030884249113, long: 30.79878685209525},  
-    {lat: -24.057146033668925, long:30.86003735206916 }, 
-  ];
-
-  // async setCharacteristics()
-  // {
-  //   return;
-  //   //Garden
-  //   this.garden = this.checkfeature("Garden");
-  //   // Check for garden image
-
-  //   //party
-  //   if(await this.checklocationfeatures("bar", 1000) || await this.checklocationfeatures("night_club", 1000) || await this.checklocationfeatures("casino", 2000))
-  //   {
-  //     if(await this.checklocationfeaturesCounter("liquor_store", 1000)> 1)
-  //     {
-  //       this.party = true;
-  //     }
-      
-  //   }
-
-  //   //Mansion
-
-  //   if(this.floor_size >= 2500 && this.bedrooms >= 4)
-  //   {
-  //     this.mansion = true;
-  //   }
-
-  //   //accessible
-  //   for(const feat of this.features)
-  //   {
-  //     if(feat == "Accessible")
-  //     {
-  //       this.accessible = true;
-  //     }
-  //   }
-
-  //   //Foreign
-  //   if(await this.checkNearTourist())
-  //   {
-  //     this.foreign = true;
-  //   }
-
-
-  //   //gym
-  //   if(await this.checklocationfeatures("gym", 3000))
-  //   {
-  //     this.gym = true;
-  //   }
-
-  //   //Food
-  //   this.food = true;
-  //   const Dansw = this.checklocationfeaturesCounter("meal_delivery", 3000);
-  //   console.log("Meal Delivery: ", Dansw);
-  //   if(await Dansw < 2)
-  //   {
-  //     this.food = false;
-  //   }
-
-  //   const Ransw = this.checklocationfeaturesCounter("restaurant", 3000);
-  //   console.log("Restaurants: ", Ransw);
-  //   if(await Ransw < 3)
-  //   {
-  //     this.food = false;
-  //   }
-
-  //   const Cansw = this.checklocationfeaturesCounter("cafe", 3000);
-  //   console.log("Cafes: ", Cansw);
-  //   if(await Cansw < 1)
-  //   {
-  //     this.food = false;
-  //   }
-
-  //   const Tansw = this.checklocationfeaturesCounter("meal_takeaway", 3000);
-  //   console.log("Takeawaya: ", Tansw);
-  //   if(await Tansw < 6)
-  //   {
-  //     this.food = false;
-  //   }
-
-  //   //Student
-
-  //   if(await this.checklocationfeatures("university", 5000))
-  //   {
-  //     if(this.price < 6000)
-  //     {
-  //       if(this.checkfeature("Wifi"))
-  //       {
-  //         this.students = true;
-  //       }
-  //     }
-  //   }
-
-  //   //owner
-  //   if(this.features.length > 8 && (this.furnish_type== "Furnished"|| this.furnish_type== "Partly Furnished"))
-  //   {
-  //     console.log("Is an owner and ", this.furnish_type);
-  //     this.owner = true;
-  //   }
-
-
-  //   //Middle of nowhere, farm
-
-  //   if(await this.checkNolocationfeatures(10000))
-  //   {
-  //     this.farm = true;
-  //   }
-
-
-  // }
-
-  // checkfeature(a : string)
-  // {
-  //     for(let x =0; x< this.features.length; x++)
-  //     {
-  //       if(a == this.features[x])
-  //       {
-  //         return true;
-  //       }
-  //     }
-
-  //     return false;
-  // }
-
-
-  // async checklocationfeatures(placeType: string, distanceFrom: number)
-  // {
-  //   try {
-  //     const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
-  //     if (coordinates) {
-  //       const results = await this.gmapsService.getNearbyPlaceType(
-  //         coordinates.latitude,
-  //         coordinates.longitude,
-  //         placeType
-  //       );
-
-  //       console.log(results);
-
-  //       for (const result of results) {
-  //         if(result.types){
-  //           for(const type of result.types){
-  //             if(type == placeType){
-  //               if(result.vicinity)
-  //               {
-  //                 const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
-
-  //                 const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
-  //                 console.log(result.name, distance, "meters away from ", this.address);
-  //                 if(distance< distanceFrom)
-  //                 {
-  //                   return true;
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('Error retrieving nearby places:', error);
-  //   }
-    
-  //   return false;
-  // }
-
-  // async checklocationfeaturesCounter(placeType: string, distanceFrom: number)
-  // {
-  //   this.count = 0;
-  //   try {
-  //     const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
-  //     if (coordinates) {
-  //       const results = await this.gmapsService.getNearbyPlaceType(
-  //         coordinates.latitude,
-  //         coordinates.longitude,
-  //         placeType
-  //       );
-
-  //       console.log(results);
-
-  //       for (const result of results) {
-  //         if(result.types){
-  //           for(const type of result.types){
-  //             if(type == placeType){
-  //               if(result.vicinity)
-  //               {
-  //                 const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
-
-  //                 const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
-  //                 console.log(result.name, distance, "meters away from ", this.address);
-  //                 if(distance< distanceFrom)
-  //                 {
-  //                   this.count++;
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('Error retrieving nearby places:', error);
-  //   }
-  //   return this.count;
-  // }
-
-  // async checkNearTourist()
-  // {
-
-  //   const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
-
-  //   for(const pin of this.touristDestinations)
-  //   {
-  //     const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, pin.lat, pin.long)
-
-  //     if(distance< 15000)
-  //     {
-  //       console.log("tourist coordinates:", pin.lat, pin.long);
-  //       return true;
-  //     }
-  //   }
-
-  //   return false;
-  // }
-
-  //TODO redo in google -maps.repository using the new stored POIs
-  // async checkNolocationfeatures(distanceFrom: number)
-  // {
-  //   return false;
-  //   // try {
-  //   //   const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
-  //   //   if (coordinates) {
-  //   //     const results = await this.gmapsService.getNearbyPlaces(
-  //   //       coordinates.latitude,
-  //   //       coordinates.longitude
-  //   //     );
-
-  //   //     console.log(results);
-
-  //   //     for (const result of results) {
-  //   //       if(result.types){
-  //   //         for(const type of result.types){
-  //   //           if(type != "cemetery" && type != "campground"){
-  //   //             if(result.vicinity)
-  //   //             {
-  //   //               const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
-
-  //   //               const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
-  //   //               console.log(result.name, distance, "meters away from ", this.address);
-  //   //               if(distance< distanceFrom)
-  //   //               {
-  //   //                 return false;
-  //   //               }
-  //   //             }
-  //   //           }
-  //   //         }
-  //   //       }
-  //   //     }
-  //   //   }
-  //   // } catch (error) {
-  //   //   console.error('Error retrieving nearby places:', error);
-  //   // }
-    
-  //   // return true;
-  // }
-
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   changeListingType(){
     if(this.selectedValue){
@@ -680,8 +401,6 @@ onResize(event: Event) {
       this.scrollToElement.nativeElement.scrollIntoView({ block: 'center' });
     }
     this.address = (document.getElementById("address") as HTMLInputElement).value;
-  //  await this.setCharacteristics();
-
     const score = await this.calculateQualityScore(
       this.photos,
       this.address,
@@ -697,6 +416,8 @@ onResize(event: Event) {
       this.furnish_type,
       this.orientation
     );
+  
+
 
     if(this.currentUser != null){
       const list : Listing = {
@@ -723,22 +444,6 @@ onResize(event: Event) {
         statusChanges: [],
         quality_rating: score,
         status: creationType == "save" ? StatusEnum.SAVED : StatusEnum.PENDING_APPROVAL,
-        characteristics: {
-          garden: this.garden,
-          party: this.party,
-          mansion:  this.mansion,
-          accessible: this.accessible,
-          foreign: this.foreign,
-          openConcept: false,
-          ecoWarrior: false,
-          family: false,
-          student: this.students,
-          lovinIt: this.food,
-          farm: this.farm,
-          gym: this.gym,
-          owner: this.owner,
-          leftUmbrella: false 
-        },
         listingDate: "" + new Date(),
         geometry: {
           lat: 0,
@@ -753,21 +458,26 @@ onResize(event: Event) {
         }
       }
 
+      console.log(list);
+
       if(creationType == "create"){
+        console.log("Creating listing")
         await this.listingService.createListing(list);
       }
       else if(creationType == "save"){
+        console.log("Saving listing")
         if(this.listingEditee)
           list.listing_id = this.listingEditee.listing_id;
 
-        await this.listingService.saveListing(list);
+        const response = await this.listingService.saveListing(list);
+        console.log(response);
       }
       loader.style.opacity="0";
       property.style.opacity="1";
       this.router.navigate(['/home']);
     }
     else{
-      console.log("Error in create-lisitng.page.ts - there is no current user");
+      console.log("Error in create-lisitng.page.ts");
     }
   }
 
@@ -780,10 +490,7 @@ onResize(event: Event) {
     if (this.scrollToElement && this.scrollToElement.nativeElement) {
       this.scrollToElement.nativeElement.scrollIntoView({ block: 'center' });
     }
-    if(this.currentUser != null && this.listingEditee != null && this.listingEditee.user_id == this.currentUser.uid){
-
-      // await this.setCharacteristics();
-
+    if(this.currentUser != null && this.listingEditee != null){
       const list : Listing = {
         listing_id: this.listingEditee.listing_id,
         statusChanges: this.listingEditee.statusChanges,
@@ -809,22 +516,6 @@ onResize(event: Event) {
         let_sell: this.listingType,
         listingAreaType: this.listingAreaType,
         status: this.listingEditee.status === StatusEnum.SAVED ? StatusEnum.PENDING_APPROVAL : StatusEnum.EDITED,
-        characteristics: {
-          garden: this.garden,
-          party: this.party,
-          mansion:  this.mansion,
-          accessible: this.accessible,
-          foreign: this.foreign,
-          openConcept: false,
-          ecoWarrior: false,
-          family: false,
-          student: this.students,
-          lovinIt: this.food,
-          farm: this.farm,
-          gym: this.gym,
-          owner: this.owner,
-          leftUmbrella: false 
-        },
         listingDate: "" + new Date(),
         geometry: {
           lat: this.geometry.lat,
@@ -853,13 +544,11 @@ onResize(event: Event) {
   selectedAmenity = '';
   amenities: string[] = [
     'Pool',
-    'Accessible',
     'Security Estate',
+    'Solar panels',
     'Flatlet',
     'Garden',
     'Pet Friendly',
-    'Wifi',
-    'Solar Panels'
   ];
   filteredAmenities: string[] = [];
 

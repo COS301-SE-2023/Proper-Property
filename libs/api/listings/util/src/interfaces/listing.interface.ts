@@ -1,5 +1,4 @@
 import { StatusChange, areaScore } from './index';
-import { characteristics } from './index';
 import { StatusEnum } from '../enums/status.enum';
 
 export interface Listing{
@@ -33,6 +32,5 @@ export interface Listing{
     lng: number
   },
   pointsOfInterestIds: string[];
-  characteristics: characteristics;
   areaScore: areaScore;
 }

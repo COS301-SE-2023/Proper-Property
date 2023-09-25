@@ -53,26 +53,37 @@ export class AuthService {
   async AuthLogin(provider : AuthProvider) {
     const result = await signInWithPopup(this.auth, provider);
     return result.user;
+      // .catch((error) => {
+      //   console.log(error);
+      //   return null;
+      // });
   }
 
   async emailLogin(email : string, password : string){
     return signInWithEmailAndPassword(this.auth, email, password).then((userCredential) => {
       return userCredential.user;
     });
+    // .catch((error : any) => {
+    //   const errorCode = error.code; // 64:13  warning  'errorCode' is assigned a value but never used
+    //   const errorMessage = error.message; // 65:13  warning  'errorMessage' is assigned a value but never used
+    // }); 
   }
   async register(email: string, password: string) {
     return createUserWithEmailAndPassword(this.auth, email, password).then((userCredential) => {
       return userCredential.user;
-    });
+      });
   }
 
   deleteCurrentUser() {
     const user = this.auth.currentUser;
     if (user) {
       return deleteUser(user)
-      .catch((error) => {
-        console.log(error);
-      });
+        .then(() => {
+          console.log('User deleted successfully!');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
     return Promise.reject('No user is currently authenticated.'); // Return a rejected promise if no user is found
   }
@@ -81,9 +92,12 @@ export class AuthService {
     const user = this.auth.currentUser;
     if (user) {
       return updateEmail(user, newEmail)
-      .catch((error) => {
-        console.log(error);
-      });
+        .then(() => {
+          console.log('Email updated successfully!');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
     return Promise.reject('No user is currently authenticated.'); // Return a rejected promise if no user is found
   }

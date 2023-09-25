@@ -9,25 +9,17 @@ import { ProfileRepository } from '@properproperty/api/profile/data-access';
 export class CreateProfileHandler implements ICommandHandler<CreateProfileCommand> {
   constructor(private readonly profileRepo: ProfileRepository) {}
   async execute(command: CreateProfileCommand) {
+    console.log(CreateProfileHandler.name);
     const temp: UserProfile = {
       userId: command.user.uid,
       email: command.user.email,
       listings: [],
       interests: {
         garden: 50,
-        party: 50,
         mansion: 50,
         accessible: 50,
-        foreign: 50,
         openConcept: 50,
-        ecoWarrior: 50,
-        family: 50,
-        student: 50,
-        lovinIt: 50,
-        farm: 50,
-        gym: 50,
-        owner: 50,
-        leftUmbrella: 50
+        ecoWarrior: 50
       },
       admin: false
     };

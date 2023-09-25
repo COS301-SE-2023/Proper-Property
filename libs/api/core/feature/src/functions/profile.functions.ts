@@ -19,6 +19,10 @@ export const updateUserProfile = functions.region('europe-west1').https.onCall(
   async (
     request: UpdateUserProfileRequest
   ): Promise<UpdateUserProfileResponse> => {
+    if (process.env['NX_USE_EMULATORS']) {
+      console.log("UpdateUserProfile");
+      console.log(request);
+    }
     const appContext = await NestFactory.createApplicationContext(CoreModule)
     const profileService = appContext.get(ProfileService);
     return profileService

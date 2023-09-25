@@ -99,6 +99,7 @@ export class ListingsRepository {
         };
       })
       .catch((error) => {
+        console.log(error);
         return {
           status: false,
           message: error.message
@@ -107,6 +108,7 @@ export class ListingsRepository {
   }
 
   async saveListing(listing : Listing){
+    console.log(listing);
     if(listing.listing_id){
       await admin
       .firestore()
@@ -137,6 +139,7 @@ export class ListingsRepository {
         }
       });
     } catch(error) {
+      console.log(error);
       return {
         success: true,
         statusChange: change
@@ -253,11 +256,11 @@ export class ListingsRepository {
               && (!req.property_size_max || (req.property_size_max && data.property_size <= req.property_size_max ))
             ))
           ){
-            // for (const listing of response.listings) {
-            //   if (listing.listing_id == data.listing_id) {
-            //     console.log("what");
-            //   }
-            // }
+            for (const listing of response.listings) {
+              if (listing.listing_id == data.listing_id) {
+                console.log("what");
+              }
+            }
             response.listings.push(data);
           }
 

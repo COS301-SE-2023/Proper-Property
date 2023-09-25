@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild, HostListener, OnDestroy } from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { ChangeStatusResponse, Listing, StatusEnum } from '@properproperty/api/listings/util';
+import { Listing, StatusEnum } from '@properproperty/api/listings/util';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
@@ -10,9 +10,8 @@ import { Select } from '@ngxs/store';
 import { httpsCallable, Functions } from '@angular/fire/functions';
 import { Chart, registerables } from 'chart.js';
 import { Unsubscribe } from 'firebase/auth';
-import { IonContent, IonModal, ToastOptions } from '@ionic/angular';
+import { IonContent } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
-import { ToastController } from '@ionic/angular';
 
 register();
 export interface GetAnalyticsDataRequest {
@@ -24,7 +23,6 @@ export interface GetAnalyticsDataRequest {
   styleUrls: ['./listing.page.scss'],
 })
 export class ListingPage implements OnDestroy {
-  
   @ViewChild(IonContent) content: IonContent | undefined;
   // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
 
@@ -45,7 +43,6 @@ export class ListingPage implements OnDestroy {
   public ownerViewing$: Observable<boolean> = of(false);
   coordinates: { latitude: number, longitude: number } | null = null;
   profilePic = "";
-  loading = false;
 
   price_per_sm = 0;
   lister_name = "";
@@ -77,23 +74,19 @@ export class ListingPage implements OnDestroy {
     private userServices: UserProfileService,
     public gmapsService: GmapsService,
     private functions: Functions,
-    private profileServices: UserProfileService,
-    private toastController: ToastController
-    ) {
+    private profileServices: UserProfileService) {
     let list_id = "";
     let admin = "";
-    let qr = false;
 
     this.route.params.subscribe((params) => {
+      console.warn(params);
       list_id = params['list'];
-      qr = params['qr'];
       admin = params['admin'];
       this.listingId = list_id;
 
-
       this.listingServices.getListing(list_id).then((list) => {
+        console.warn(list);
         this.list = list;
-        console.log("QR viewing: " + qr)
       }).then(() => {
         if (admin) {
           this.admin = true;
@@ -102,6 +95,7 @@ export class ListingPage implements OnDestroy {
 
         
         // TODO
+        console.log(this.list);
 
         if (!this.list?.price || !this.list?.property_size) {
           console.error("Both Property Size and Price need to be specified");
@@ -112,15 +106,6 @@ export class ListingPage implements OnDestroy {
         this.userServices.getUser("" + this.list?.user_id).then((user : UserProfile) => {
           this.lister = user;
           this.lister_name = user.firstName + " " + user.lastName;
-
-          // if(qr && this.list){            
-          //   console.log(window.location.href, " ", this.router.url);
-          //   this.userServices.qrListingRead({
-          //     address: this.list.address,
-          //     url: window.location.href.substring(0, window.location.href.indexOf(";qr")),
-          //     lister: this.lister,
-          //   });
-          // }
         });
 
         this.userProfile$.subscribe((profile) => {
@@ -166,6 +151,7 @@ export class ListingPage implements OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
+    console.log(event);
     this.isMobile = window.innerWidth <= 576;
   }
 
@@ -174,19 +160,12 @@ export class ListingPage implements OnDestroy {
     loader.style.display = "block";
     const request: GetAnalyticsDataRequest = { listingId: this.list?.listing_id ?? "" };
     const analyticsResponse = (await httpsCallable(this.functions, 'getAnalyticsData')(request)).data;
-    if (typeof analyticsResponse != "string") {
-      return;
-    }
-    
     const analyticsData = JSON.parse(analyticsResponse as string);
+    console.log(analyticsData);
     let totUsers = 0;
     let totEngagement = 0;
     let dates: string[] = [];
     let pageViews: number[] = [];
-    let obj : {
-      date: string,
-      pageView: number
-    }[] = [];
 
     const rows = analyticsData.rows ?? [];
     for(let i = 0; rows && i < rows.length; i++){
@@ -198,29 +177,19 @@ export class ListingPage implements OnDestroy {
 
 
         const tempDate = new Date(year, month, day)
+
+        dates[i] = tempDate.getDate() + " " + this.Months[tempDate.getMonth() - 1];
+
         const metricValue = rows[i].metricValues[0].value;
-
-        obj.push({
-          date: tempDate.getDate() + " " + this.Months[tempDate.getMonth() - 1],
-          pageView: Number(metricValue)
-
-        });
+        pageViews[i] = Number(metricValue);
 
         totEngagement += Number(rows[i].metricValues[1].value);
         totUsers += Number(rows[i].metricValues[2].value);
       }
     }
 
-    obj.sort((a, b) => {
-      return new Date(a.date).getTime() - new Date(b.date).getTime();
-    })
-
-    for(let i of obj){
-      dates.push(i.date);
-      pageViews.push(i.pageView);
-    }
-    
-    console.log(obj)
+    dates = dates.reverse();
+    pageViews = pageViews.reverse();
 
     const data = {
       labels: dates,
@@ -250,7 +219,6 @@ export class ListingPage implements OnDestroy {
         data: data,
       });
 
-      // TODO proper error handling
       if (chart) {
         console.log("Chart created")
       }
@@ -259,8 +227,7 @@ export class ListingPage implements OnDestroy {
     const minutes = Math.floor(avgPerUser / 60);
     const seconds = (avgPerUser - minutes * 60).toPrecision(2);
 
-    this.avgEnagement = seconds? minutes + " min " + seconds + " sec" : "There is no data to show yet";
-    console.log(this.avgEnagement)
+    this.avgEnagement = minutes + " min " + seconds + " sec";
     this.showData = true;
     const element = document.querySelector(".graph") as HTMLElement;
     loader.style.display = "none";
@@ -268,31 +235,16 @@ export class ListingPage implements OnDestroy {
     return;
   }
 
-  successfulChange = {
-    message: " successfully completed",
-    duration: 3000, // Duration in milliseconds
-    color: 'primary', // Use 'danger' to display in red
-    position: 'bottom'
-  } as ToastOptions;
-
-  failedChange = {
-    message: " failed",
-    duration: 3000, // Duration in milliseconds
-    color: 'danger', // Use 'danger' to display in red
-    position: 'bottom'
-  } as ToastOptions;
-
   async changeStatus(approved : boolean){
-    this.loading = true;
-    // const show = document.querySelector('#show') as HTMLDivElement;
-    // show.style.opacity = "0";
-    // const load = document.querySelector('#loader') as HTMLElement;
-    // load.style.opacity = "1";
     if(this.list && this.adminId != ""){
       let crimeScore;
       let schoolScore;
       let waterScore;
       let sanitationScore;
+      const show = document.querySelector('#show') as HTMLDivElement;
+      show.style.opacity = "0";
+      const load = document.querySelector('#loader') as HTMLElement;
+      load.style.opacity = "1";
       if (this.list.geometry.lat == 0 || this.list.geometry.lat) {
         const geocodeResult = await this.gmapsService.geocodeAddress(this.list.address);
         this.list.geometry = {
@@ -305,10 +257,11 @@ export class ListingPage implements OnDestroy {
         schoolScore = await this.getSchoolRating(this.list.geometry);
         waterScore = await this.getWaterScore();
         sanitationScore = await this.getSanitationScore();
+        console.log(crimeScore, schoolScore, waterScore, sanitationScore);
       }
 
 
-      let result : ChangeStatusResponse | null;
+      console.log("Changing status");
       if(
         approved
         && (this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED)
@@ -317,32 +270,25 @@ export class ListingPage implements OnDestroy {
         && waterScore != undefined
         && sanitationScore != undefined
       ){
-        result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, crimeScore, waterScore, sanitationScore, schoolScore);
+        console.log("Adding to market")
+        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, crimeScore, waterScore, sanitationScore, schoolScore);
       } 
       else if((this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED) && approved){
-        result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, 0, 0, 0, 0);
+        console.log("Adding to market")
+        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, 0, 0, 0, 0);
       }
       else{
-        result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.DENIED, 0, 0, 0, 0);
+        console.log("Denied")
+        await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.DENIED, 0, 0, 0, 0);
       }
-
-      setTimeout( async () => {
-        this.loading = false;
-      }, 2000)
-
-      // this.loading = false;
-      if(result.success){
-        this.router.navigate(['/admin']);
-        this.successfulChange.message = approved? "Approval" : "Rejection" + this.successfulChange.message;
-        const toast = await this.toastController.create(this.successfulChange);
-        toast.present();
-        return;
-      }
-
-      this.successfulChange.message = approved? "Approval" : "Rejection" + this.successfulChange.message;
-      const toast = await this.toastController.create(this.failedChange);
-      toast.present();
-      return;
+      setTimeout( function finishLoading(){
+        if(!show){
+          console.log("Show does not exist");
+        }
+        load.style.opacity="0";
+        show.style.opacity="1";
+      }, 500)
+      this.router.navigate(['/admin']);
     }
   }
 
@@ -374,6 +320,7 @@ export class ListingPage implements OnDestroy {
       try {
         if (coordinates) {
           const response = await this.gmapsService.getNearbySchools(coordinates.lat, coordinates.lng);
+          // console.log("schools: " + schools);
           if (response.length > 0) {
             let totalRating = 0;
             for (let i = 0; i < response.length; i++) {
@@ -414,6 +361,7 @@ export class ListingPage implements OnDestroy {
   async getSanitationScore(): Promise<number> {
     if (this.list) {
       const response = await this.listingServices.getSanitationScore(this.list.district)
+      console.log("SANITATION SCORE:", (response.percentage ? response.percentage : 0) * 100);
       return (response.percentage ? response.percentage : 0) * 100;
     }
 
@@ -440,6 +388,7 @@ export class ListingPage implements OnDestroy {
 
   async getWaterScore(): Promise<number> {
     if (this.list) {
+      console.log("Calculating water score")
       const response = await this.listingServices.getWaterScore(this.list.district
         , this.list.listingAreaType
         , this.list.prop_type
@@ -473,6 +422,8 @@ export class ListingPage implements OnDestroy {
     if (this.list) {
       try {
         const response = await this.listingServices.getCrimeScore({ lat: this.list.geometry.lat, long: this.list.geometry.lng });
+        console.log("CRIME SCORE:", response.percentage ? response.percentage * 100 : "error");
+        console.log(response);
         return (response.percentage ? response.percentage : 0) * 100;
       }
       catch (error) {
@@ -502,18 +453,25 @@ export class ListingPage implements OnDestroy {
   }
   
   goNext(event: Event) {
+    console.log(event)
     if (this.swiperRef) {
       this.swiperRef.nativeElement.swiper.slideNext();
+    }
+    else {
+      console.log("Swiper undefined");
     }
   }
   goPrev() {
     if (this.swiperRef) {
       this.swiperRef.nativeElement.swiper.slidePrev();
     }
+    else {
+      console.log("Swiper undefined");
+    }
   }
 
   swiperSlideChanged(e: Event) {
-    // console.log('changed', e)
+    console.log('changed', e)
   }
 
   loanAmount: number;
@@ -537,6 +495,21 @@ export class ListingPage implements OnDestroy {
     this.minGrossMonthlyIncome = this.monthlyPayment * 3; // Assuming minimum income requirement is 3 times the monthly payment
   }
 
+  // async getNearbyPlaces() {
+  //   try {
+  //     if(this.list?.geometry){
+  //       const results = await this.gmapsService.getNearbyPlaces(
+  //         this.list.geometry.lat,
+  //         this.list.geometry.lng
+  //       );
+  //       // Process the nearby places results here
+  //       console.log('Nearby places:', results);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error retrieving nearby places:', error);
+  //   }
+  // }
+
   toggleColor() {
     if (this.isRed)
       this.unsaveListing();
@@ -551,6 +524,7 @@ export class ListingPage implements OnDestroy {
     if (this.userProfile) {
       if (this.userProfile.savedListings) {
         if (this.userProfile.savedListings.includes(listing_id)) {
+          console.log("Listing found in saved: " + listing_id);
           return true;
         }
       }
@@ -570,14 +544,6 @@ export class ListingPage implements OnDestroy {
         }
 
         this.profileServices.updateUserProfile(this.userProfile);
-
-        if(this.list && this.list.characteristics)
-        {
-          this.profileServices.updateInterests(this.list.characteristics, this.userProfile.userId);
-        
-        }
-        
-        
       }
     }
   }
@@ -601,6 +567,7 @@ export class ListingPage implements OnDestroy {
 
   scrollToBottom() {
     if (this.content && document.getElementById('calculator')) {
+      console.log(document.getElementById('calculator')?.getBoundingClientRect().top);
       const calculatorRow = document.getElementById('calculator')?.getBoundingClientRect().top;
       this.content.scrollToPoint(0, ((calculatorRow ?? 100)), 500);
     }
@@ -613,43 +580,8 @@ export class ListingPage implements OnDestroy {
   }
 
   ngOnDestroy() {
+    console.log("Listing page being destroyed");
     this.list = null;
-  }
-
-  qrGenerated = false;
-  generateQRCode() {
-    const QRCode = require('qrcode')
-    console.log("Test")
-    const qrCodeCanvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
-    if(qrCodeCanvas){
-        QRCode.toCanvas(qrCodeCanvas, window.location.href + ";qr=true", function (error :any) {
-        if (error){
-          console.error(error)
-          return;
-        } 
-
-        console.log('success!');
-      })
-      this.qrGenerated = true;
-
-      return;
-    }
-    
-    console.log("Whoopes")
-  }
-
-  downloadImage(){
-    const canvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
-
-    if(canvas){
-      var dataURL = canvas.toDataURL("image/png");
-      console.log(dataURL);
-  
-      var a = document.createElement('a');
-      a.href = dataURL
-      a.download = this.list?.address.trim().replace(/,/g, "").replace(/ /g, "-") + '-qr-download.jpeg';
-      a.click();
-    }
   }
 }
 function isMobile(): boolean {

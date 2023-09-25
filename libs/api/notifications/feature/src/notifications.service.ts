@@ -3,9 +3,7 @@ import { CommandBus } from '@nestjs/cqrs';
 // import { StatusChange, StatusEnum } from '@properproperty/api/listings/util';
 import {
   NotifyStatusChangeCommand,
-  NotifyViewDropCommand,
-  SendQREmailCommand,
-  SendQREmailRequest
+  NotifyViewDropCommand
 } from '@properproperty/api/notifications/util';
 import * as admin from 'firebase-admin';
 @Injectable()
@@ -33,7 +31,4 @@ export class NotificationsService {
     this.commandBus.execute(new NotifyViewDropCommand(listingId, userId));
   }
 
-  async sendQREmail(request : SendQREmailRequest) {
-    this.commandBus.execute(new SendQREmailCommand(request));
-  }
 }

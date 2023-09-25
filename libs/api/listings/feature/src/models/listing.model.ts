@@ -10,8 +10,7 @@ import {
   areaScore, 
   ChangeStatusRequest,
   StatusEnum,
-  ListingCreatedEvent,
-  characteristics
+  ListingCreatedEvent
 } from '@properproperty/api/listings/util';
 
 export class ListingModel extends AggregateRoot implements Listing {
@@ -37,7 +36,6 @@ export class ListingModel extends AggregateRoot implements Listing {
     public listingAreaType: string,
     public heading: string,
     public listingDate: string,
-    public characteristics: characteristics,
     public geometry: {
       lat: number,
       lng: number
@@ -75,7 +73,6 @@ export class ListingModel extends AggregateRoot implements Listing {
       listing.listingAreaType,
       listing.heading,
       listing.listingDate,
-      listing.characteristics,
       listing.geometry,
       listing.pointsOfInterestIds,
       listing.areaScore,
@@ -114,7 +111,6 @@ export class ListingModel extends AggregateRoot implements Listing {
     this.listing_id = listing.listing_id;
     this.status = listing.status;
     this.quality_rating = listing.quality_rating;
-    this.characteristics = listing.characteristics;
     this.statusChanges = this.statusChanges ?? [];
     this.statusChanges.push({
       adminId: 'SYSTEM',
@@ -140,6 +136,7 @@ export class ListingModel extends AggregateRoot implements Listing {
       }
     }
 
+    console.log(change);
     this.statusChanges = this.statusChanges ?? [];
     this.statusChanges.push(change);
     if (!this.listing_id) {
@@ -180,7 +177,6 @@ export class ListingModel extends AggregateRoot implements Listing {
       listingAreaType: this.listingAreaType,
       geometry: this.geometry,
       pointsOfInterestIds: this.pointsOfInterestIds,
-        characteristics: this.characteristics
     };
   }
 

@@ -12,15 +12,6 @@ ion-card-header{
 
 }
 
-#house_description{
-  // height: 10% !important;
-  width: 87%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-
 //make the img in ion-card-header smaller
 ion-card-header img {
   width: 50%;
@@ -198,14 +189,4 @@ ion-card ion-card-content {
   color: rgba(255, 0, 0, 0.7);
   background: rgba(255, 0, 0, 0.192);
   border-left: 2px solid rgba(255, 0, 0, 0.5);
-}
-
-#loader{
-  position: absolute;
-  // right: 45%;
-  text-align: center;
-  z-index: 1;
-  top: 40%;
-  // opacity: 0;
-  width: 100%;
 }

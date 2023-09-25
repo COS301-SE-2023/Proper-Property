@@ -5,4 +5,3 @@ export * from './get-approved-listings.response';
 export * from './edit-listing.response';
 export * from './get-unapproved-listings.response'
 export * from './get-filtered-listings.response';
-export * from './generate-listing-description.response';

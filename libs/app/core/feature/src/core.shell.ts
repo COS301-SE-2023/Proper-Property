@@ -54,7 +54,6 @@ export class CoreShellComponent implements OnInit, OnDestroy {
     private profileServices : UserProfileService,
     private readonly notificationsService: NotificationsService
   ) {
-    console.log("OPEN AI: ", process.env['NX_OPEN_AI']);
     this.dev = isDevMode();
     this.loggedIn = this.userProfile$ != null && this.userProfile$ != undefined;
 
@@ -74,7 +73,8 @@ export class CoreShellComponent implements OnInit, OnDestroy {
     });
 
     this.notifications$.subscribe((notifications) => {
-      this.notifications = notifications?.reverse() ?? [];
+      console.log("notifications", notifications);
+      this.notifications = notifications ?? [];
     });
     this.userProfile$.subscribe((profile) => {
       this.userProfile = profile;
@@ -112,6 +112,7 @@ export class CoreShellComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
+    console.log(event);
     this.isMobile = window.innerWidth <= 576;
   }
 
@@ -119,6 +120,7 @@ export class CoreShellComponent implements OnInit, OnDestroy {
 
     if (isDevMode()) {
       alert ("OI");
+      console.log(this.NotificationToken);
       this.notificationsService.sendNotification(this.NotificationToken, "this is a title", "this is a body");
     }
   }

@@ -65,6 +65,10 @@ export class AdminService {
       }
     }
 
+    for(let i = 0; i < stations.length; i++){
+      console.log(stations[i]);
+    }
+
     const request: UploadCrimeStatsRequest = {
       stationStats: stations,
       quarter: ""
@@ -74,6 +78,12 @@ export class AdminService {
       UploadLocInfoDataRequest,
       UploadLocInfoDataResponse
     >(this.functions, 'uploadLocInfoData')({request: request, path: 'crime'})).data;
+    if (response.status) {
+      console.log(response);
+    }
+    else {
+      console.error(response);
+    }
 
     return response;
   }
@@ -87,6 +97,8 @@ export class AdminService {
         WSA: saniData[i]['WSA'],
         percentageBasicSani: saniData[i]['% Basic Sanitation'].includes("%") ? saniData[i]['% Basic Sanitation'].substring(0, saniData[i]['% Basic Sanitation'].length - 1)/100 : null
       })
+
+      console.log(WSAs[WSAs.length - 1]);
     }
 
     const request : UploadSaniStatsRequest = {
@@ -109,6 +121,8 @@ export class AdminService {
         physicalPerc:  WWQData[i]['Physical'].includes("%") ? WWQData[i]['Physical'].substring(0, WWQData[i]['Physical'].length - 1)/100 : null,
         monitoringPerc: WWQData[i]['Monitoring'].includes("%") ? WWQData[i]['Monitoring'].substring(0, WWQData[i]['Monitoring'].length - 1)/100 : null
       })
+
+      console.log(WSAs[WSAs.length - 1]);
     }
 
     const request : UploadWWQStatsRequest = {
@@ -160,6 +174,8 @@ export class AdminService {
       metadata: encounteredDistricts
     }
 
+    console.log(districts);
+
     return (await httpsCallable<
       UploadLocInfoDataRequest,
       UploadLocInfoDataResponse
@@ -174,6 +190,8 @@ export class AdminService {
         population: data[i]['Population'],
         accessPercentage: data[i]['%Population  with access'].includes("%") ? data[i]['%Population  with access'].substring(0, data[i]['%Population  with access'].length - 1)/100 : null
       })
+
+      console.log(WSAs[WSAs.length - 1]);
     }
 
     const request : UploadWaterAccessDataRequest = {
@@ -198,6 +216,8 @@ export class AdminService {
         chemicalOperational: data[i]['Chemical : Operational'].includes("%") ? data[i]['Chemical : Operational'].substring(0, data[i]['Chemical : Operational'].length - 1)/100 : null,
         microbiological: data[i]['Microbiological : Acute Health'].includes("%") ? data[i]['Microbiological : Acute Health'].substring(0, data[i]['Microbiological : Acute Health'].length - 1)/100 : null
       })
+
+      console.log(WSAs[WSAs.length - 1]);
     }
 
     const request : UploadWaterQualityDataRequest = {
@@ -208,6 +228,8 @@ export class AdminService {
       UploadLocInfoDataRequest,
       UploadLocInfoDataResponse
     >(this.functions, 'uploadLocInfoData')({request: request, path : 'waterQuality'})).data;
+
+    console.log("ADMIN SERVICES - WATER QUALITY RESPONSE: ", response)
     return response;
   }
 
@@ -223,6 +245,8 @@ export class AdminService {
         urbanPopReliable: data[i]['Urban Population Reliable Supply'],
         ruralPopReliable: data[i]['Rural Population Reliable Supply']
       })
+
+      console.log(WSAs[WSAs.length - 1]);
     }
 
     const request : UploadWaterReliabilityDataRequest = {
@@ -244,6 +268,8 @@ export class AdminService {
         irrigationTariff: data[i]['Irrigation c/m3'],
         forestryTariff: data[i]['Forestry c/m3']
       })
+
+      console.log(WSAs[WSAs.length - 1]);
     }
 
     const request : UploadWaterTariffDataRequest = {

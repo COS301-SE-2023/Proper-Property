@@ -23,6 +23,7 @@ implements ICommandHandler<
       response = listingModel.changeStatus(command.req);
       listingModel.commit();
     } catch (error) {
+      console.log(error);
       response = {success: false, statusChange: undefined}; 
     }
     

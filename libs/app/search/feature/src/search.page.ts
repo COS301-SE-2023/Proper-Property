@@ -17,11 +17,10 @@ import {
 } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
-import { GetFilteredListingsRequest, Listing, characteristics } from '@properproperty/api/listings/util';
-import { Recommend } from '@properproperty/api/listings/util';
+import { GetFilteredListingsRequest, Listing } from '@properproperty/api/listings/util';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { Unsubscribe, User, user } from '@angular/fire/auth';
+import { Unsubscribe } from '@angular/fire/auth';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { ActivatedRoute } from '@angular/router';
@@ -73,23 +72,20 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   public areaScore : number | null = null;
   public property_size_values: {lower: number, upper: number} = {lower: 0, upper: 99999999};
   public property_price_values: {lower: number, upper: number} = {lower: 0, upper: 99999999};
-  private profile: UserProfile | null = null;  
-  public recommends: Recommend[]=[];
-  userInterestVector: number[]=[];
-  recommendationMinimum = 100000;
-
-
-
+  private profile: UserProfile | null = null;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
   private userProfile : UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
 
   async setCentre(coordinates?: google.maps.LatLngLiteral) {
+    console.log(this.listings);
     if(coordinates){
+      console.log("Setting center with coords")
       this.center = coordinates;
     }
     else if (!this.searchQuery && this.listings.length > 0) {
+      console.log("Getting average");
       const geoSum = {
         lat: 0,
         lng: 0
@@ -111,7 +107,9 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
         this.center.lng = coord.geometry.location.lng();
       }
     }
-
+    else {
+      console.warn("Yo what '",this.searchQuery, "' ", this.listings.length);
+    }
     if (this.map) {
       this.map.setCenter(new this.googleMaps.LatLng(this.center.lat ?? -25.7477, this.center.lng ?? 28.2433));
     }
@@ -160,6 +158,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
     @HostListener('window:resize', ['$event'])
     onResize(event: Event) {
+      console.log(event);
       this.isMobile = window.innerWidth <= 576;
   }
     
@@ -167,23 +166,24 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     return this.predictions.length > 0;
   }
   async ngOnInit() {
- 
     // await this.listingServices.getApprovedListings().then((listings) => {
     //   this.listings = listings;
     //   this.filterProperties();
     // });
+    // const footerGap=document.querySelector('.footer-gap') as HTMLElement;
+    // footerGap.style.display="none";
     setTimeout(function () {
       // Hide the loader
       const load=document.querySelector('.loading-animation') as HTMLElement;
       // load.style.display="none";
-      load.style.display="none";
-      // const footerGap=document.querySelector('.footer-gap') as HTMLElement;
-      // footerGap.style.display="none";
+      load.style.opacity="0";
+      const footerGap=document.querySelector('.footer-gap') as HTMLElement;
+      footerGap.style.display="none";
 
       // Display the map listing
-      const maplisting=document.querySelector('.show') as HTMLElement;
+      const maplisting=document.querySelector('#listings-and-map') as HTMLElement;
       // maplisting.style.display="block";
-      maplisting.style.opacity="1";
+      maplisting.style.display="block";
     }, 2000);
 
 
@@ -192,6 +192,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   // TODO add input latency to reduce api calls
   timeout: NodeJS.Timeout | undefined = undefined;
   async handleInputChange(event: Event) {
+    // console.log(event.target as HTMLInputElement);
     // return;
     // const input = event.target as HTMLInputElement;
     // this.gmapsService.handleRegionInput(input, this.defaultBounds);
@@ -214,20 +215,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       this.timeout = undefined;
     }, 1000);
   }
-  getRecommendation(ID: string|undefined)
-  {
-    if (!ID) return false;
-    
-    for(const list of this.recommends)
-    {
-      if(list.listingID==ID)
-      {
-        return list.recommended;
-      }
-    }
 
-    return false;
-  }
   replaceInputText(event: MouseEvent | undefined, prediction: string) {
     // this.address = prediction;
     //set the text in HTML element with id=hello to predictions
@@ -249,6 +237,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       this.setCentre();
       this.loadMap();
     }
+    console.log(this.listings);
 
     const inputElementId = this.isMobile ? 'address1' : 'address';
     // this.gmapsService.setupRegionSearchBox(inputElementId);
@@ -269,6 +258,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   }
 async loadMap() {
   try {
+  console.log(this.center);
     //const addressInput = document.getElementById("address") as HTMLInputElement;
    
     const mapElementRef1 = document.getElementById("map1") as HTMLElement;
@@ -361,6 +351,7 @@ async loadMap() {
   }
   mapMarkerClicked(event: Event, listingId?: string) {
     const el = event.target as HTMLElement;
+    console.log(el);
     event.stopPropagation();
     if (listingId) {
       this.router.navigate(['/listing', { list: listingId }]);
@@ -401,6 +392,7 @@ async loadMap() {
         x.position.lat() == marker.position.lat() &&
         x.position.lng() == marker.position.lng()
     );
+    console.log('is marker already: ', index);
     if (index >= 0) {
       this.markers[index].setMap(null);
       this.markers.splice(index, 1);
@@ -440,6 +432,7 @@ async loadMap() {
   }
 
   async redirectToPage(listing: Listing) {
+    console.log(listing.listing_id);
     this.router.navigate(['/listing', { list: listing.listing_id }]);
   }
 
@@ -478,7 +471,9 @@ async loadMap() {
       price_max : this.property_price_values.upper ? this.property_price_values.upper : null,
       areaScore : this.areaScore? this.areaScore : null
     } as GetFilteredListingsRequest
+    console.log(request);
     const response = (await this.listingServices.getFilteredListings(request));
+    console.log(response);
     this.allListings = [];
 
 
@@ -493,7 +488,6 @@ async loadMap() {
       toast.present();
       return;
     }
-      
     const areaBounds = this.searchQuery?  await this.gmapsService.geocodeAddress(this.searchQuery) : null;
     if (areaBounds) {
       for(const listing of response.listings){
@@ -505,27 +499,9 @@ async loadMap() {
     } else {
       this.allListings = response.listings;
     }
+    console.warn("Oh boy I sure do hope that the listings get filtered");
     if(this.allListings){
-      //Recommendation algo
-      if(this.userProfile)
-      {
-        this.userInterestVector = this.profileServices.getInterestArray(this.userProfile);
-      }
-
-      for(const list of response.listings)
-      {
-        console.log(list.characteristics);
-        this.recommends.push({
-          listingID: list.listing_id,
-          recommended: await this.listingServices.recommender(
-            list.characteristics, 
-            this.userInterestVector
-            )
-          })
-      }
-      
-      console.warn(this.recommends);
-
+      console.log("Yo");  
       this.filterProperties();
       await this.loadMap();
       await this.addMarkersToMap();
@@ -535,6 +511,7 @@ async loadMap() {
   }
 
   async addMarkersToMap() {
+    // console.log(this.listings)
     for (const listing of this.listings) {
       const coordinates = listing.geometry
       if (coordinates) {
@@ -544,6 +521,7 @@ async loadMap() {
   }
 
 addMMarker(listing: Listing) {
+  // console.log(listing);
   const googleMaps: any = this.googleMaps;
   // const icon = {
   //   url: 'assets/icon/locationpin.png',
@@ -571,6 +549,7 @@ addMMarker(listing: Listing) {
       if (infoWindowElement) {
         infoWindowElement.addEventListener('click', (event: Event) => {
           event.stopPropagation();
+          // console.log(event);
           // if (event.target != event.currentTarget) {
           //   return;
           // }
@@ -666,6 +645,8 @@ sortListings() {
     this.searchQuery = '';
     this.features = [];
     this.filterProperties();
+
+    console.log(this.listings);
   }
 
   toggleAdditionalFilters(): void {

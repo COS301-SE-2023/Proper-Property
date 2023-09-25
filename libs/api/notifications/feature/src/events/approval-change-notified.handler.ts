@@ -8,6 +8,8 @@ export class ApprovalChangeNotifiedHandler
     constructor(private readonly notifRepo: NotificationsRepository) {}
 
   handle(event: ApprovalChangeNotifiedEvent) {
+    console.log('ApprovalChangeNotifiedHandler... event', event);
+
     this.notifRepo.updateNotifications(event.notification);
   }
 }

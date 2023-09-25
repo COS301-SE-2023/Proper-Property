@@ -11,6 +11,7 @@ import { PlaceInputType } from '@googlemaps/google-maps-services-js/dist/common'
 import { Listing } from '@properproperty/api/listings/util';
 export class SearchRepository {
   async searchListings(req: SearchListingsRequest): Promise<SearchListingsResponse>{
+    console.log(process.env);
     let searchResults: SearchListingsResponse = {
       listings: []
     };
@@ -49,6 +50,27 @@ export class SearchRepository {
       return searchResults;
     }
 
+    // If query is passed, get data from Google Maps API
+    // and return the listings that match the data
+    // const config = {
+    //   method: 'get',
+    //   url: `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?`
+    //         + `input=${req.query}`
+    //         + `&inputtype=textquery`
+    //         + `&fields=formatted_address,geometry`
+    //         + `&key=${process.env['NX_GOOGLE_MAPS_KEY']}`,
+    //   headers: {},
+    // };
+    // try {
+    //   const testReq: AxiosResponse<FindPlaceFromTextResponse, any> = await axios<FindPlaceFromTextResponse>(config);
+    //   console.log(testReq);
+    //   console.log(testReq.data);
+    //   return {listings: [], apiRes: testReq.data};
+    // } catch (e) {
+    //   console.log("one", e);
+    // }
+    // const axios = new Axios(config);
+    console.log(req);
     const apiClient = new Client({});
     const apiKey = process.env['NX_GOOGLE_MAPS_KEY'] ?? 'oopsie whoopsie';
     const apiRequest: FindPlaceFromTextRequest = {
@@ -66,8 +88,11 @@ export class SearchRepository {
     let apiResponse: FindPlaceFromTextResponseData| undefined;
     try {
       apiResponse = (await apiClient.findPlaceFromText(apiRequest)).data;
+      console.log(apiResponse);
       // return {listings: [], apiRes: apiResponse};
-    } catch (e) {}
+    } catch (e) {
+      console.log("two", e);
+    }
 
     if (apiResponse && apiResponse.candidates.length > 0 && apiResponse.candidates[0].place_id) {
       try {
@@ -84,7 +109,9 @@ export class SearchRepository {
         };
         const detailsRes: PlaceDetailsResponseData = (await apiClient.placeDetails(detailsReq)).data;
         return {listings: [], apiRes: detailsRes};
-      } catch (e) {}
+      } catch (e) {
+        console.log("three", e);
+      }
     }
 
     return {listings: []};
