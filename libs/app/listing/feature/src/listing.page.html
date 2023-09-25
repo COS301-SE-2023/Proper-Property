@@ -320,7 +320,7 @@
                           <ion-content class="ion-padding">
                             <ion-grid>
                               <ion-row class="lister-row" style="margin-top: 1%">
-                                <ion-col size="4">
+                                <ion-col style="border-right: 1px solid #0dae4f;">
                                   <ion-avatar>
                                     <div
                                       style="border-radius: 50%; border: 1px solid black; width: 100%; height: 100%; background-image: url({{profilePic}}); background-size: cover; background-position-x: center; background-position-y: center;"
@@ -328,7 +328,7 @@
                                     ></div>
                                   </ion-avatar>
                                 </ion-col>
-                                <ion-col>
+                                <ion-col style="border-left: 1px solid #0dae4f;">
                                   <p>{{lister_name}}</p>
                                 </ion-col>
                               </ion-row>
@@ -336,7 +336,7 @@
                                 <ion-col style="border-right: 1px solid #0dae4f">
                                   Email:
                                 </ion-col>
-                                <ion-col style="border-left: 1px solid #0dae4f">
+                                <ion-col class="listerDetails">
                                   {{lister?.email}}
                                 </ion-col>
                               </ion-row>
@@ -344,8 +344,19 @@
                                 <ion-col style="border-right: 1px solid #0dae4f">
                                   Phone:
                                 </ion-col>
-                                <ion-col style="border-left: 1px solid #0dae4f">
+                                <ion-col class="listerDetails">
                                   {{lister?.phoneNumber}}
+                                </ion-col>
+                              </ion-row>
+                              <ion-row *ngIf="ownerViewing$" id="qrCodeRow" class="lister-row">
+                                <ion-col id="qrCodeCol">
+                                  <canvas id="qrCanvas"></canvas>
+                                  <ion-button (click)="generateQRCode()">Generate QR Code</ion-button>
+                                </ion-col>
+                                <ion-col id="shareQrCol">
+                                  <ng-container *ngIf="qrGenerated">
+                                    <ion-button (click)="downloadImage()">Download QR Code</ion-button>
+                                  </ng-container>
                                 </ion-col>
                               </ion-row>
                             </ion-grid>
@@ -711,7 +722,7 @@
                       (click)="setOpen(true)"
                       >Lister Contact Details</ion-button
                     >
-                    <ion-modal class="contactDetails" [isOpen]="isModalOpen">
+                    <ion-modal class="contactDetails" onload="generateQRCode()" [isOpen]="isModalOpen">
                       <ng-template>
                         <ion-header>
                           <ion-toolbar>

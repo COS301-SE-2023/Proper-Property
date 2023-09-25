@@ -10,7 +10,7 @@ import { Select } from '@ngxs/store';
 import { httpsCallable, Functions } from '@angular/fire/functions';
 import { Chart, registerables } from 'chart.js';
 import { Unsubscribe } from 'firebase/auth';
-import { IonContent, ToastOptions } from '@ionic/angular';
+import { IonContent, IonModal, ToastOptions } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
 import { ToastController } from '@ionic/angular';
 
@@ -24,6 +24,7 @@ export interface GetAnalyticsDataRequest {
   styleUrls: ['./listing.page.scss'],
 })
 export class ListingPage implements OnDestroy {
+  
   @ViewChild(IonContent) content: IonContent | undefined;
   // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
 
@@ -81,14 +82,18 @@ export class ListingPage implements OnDestroy {
     ) {
     let list_id = "";
     let admin = "";
+    let qr = false;
 
     this.route.params.subscribe((params) => {
       list_id = params['list'];
+      qr = params['qr'];
       admin = params['admin'];
       this.listingId = list_id;
 
+
       this.listingServices.getListing(list_id).then((list) => {
         this.list = list;
+        console.log("QR viewing: " + qr)
       }).then(() => {
         if (admin) {
           this.admin = true;
@@ -107,6 +112,15 @@ export class ListingPage implements OnDestroy {
         this.userServices.getUser("" + this.list?.user_id).then((user : UserProfile) => {
           this.lister = user;
           this.lister_name = user.firstName + " " + user.lastName;
+
+          if(qr && this.list){            
+            console.log(window.location.href, " ", this.router.url);
+            this.userServices.qrListingRead({
+              address: this.list.address,
+              url: window.location.href.substring(0, window.location.href.indexOf(";qr")),
+              lister: this.lister,
+            });
+          }
         });
 
         this.userProfile$.subscribe((profile) => {
@@ -600,6 +614,42 @@ export class ListingPage implements OnDestroy {
 
   ngOnDestroy() {
     this.list = null;
+  }
+
+  qrGenerated = false;
+  generateQRCode() {
+    const QRCode = require('qrcode')
+    console.log("Test")
+    const qrCodeCanvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
+    if(qrCodeCanvas){
+        QRCode.toCanvas(qrCodeCanvas, window.location.href + ";qr=true", function (error :any) {
+        if (error){
+          console.error(error)
+          return;
+        } 
+
+        console.log('success!');
+      })
+      this.qrGenerated = true;
+
+      return;
+    }
+    
+    console.log("Whoopes")
+  }
+
+  downloadImage(){
+    const canvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
+
+    if(canvas){
+      var dataURL = canvas.toDataURL("image/png");
+      console.log(dataURL);
+  
+      var a = document.createElement('a');
+      a.href = dataURL
+      a.download = this.list?.address.trim().replace(/,/g, "").replace(/ /g, "-") + '-qr-download.jpeg';
+      a.click();
+    }
   }
 }
 function isMobile(): boolean {

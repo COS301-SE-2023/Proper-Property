@@ -10,6 +10,26 @@
   justify-content: center;
 }
 
+#qrCodeRow{
+  // border: 1px solid;
+  height: 250px;
+}
+
+#qrCodeCol{
+  height: 100%;
+  text-align: center;
+  border-right: 1px solid #0dae4f;
+}
+
+#shareQrCol{
+  border-left: 1px solid #0dae4f;
+  text-align: center;
+}
+
+.listerDetails{
+  border-left: 1px solid #0dae4f;
+}
+
 #approvalCol ion-button::part(native) {
   width: 100%;
   height: 100%;
