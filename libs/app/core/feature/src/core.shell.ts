@@ -74,7 +74,7 @@ export class CoreShellComponent implements OnInit, OnDestroy {
     });
 
     this.notifications$.subscribe((notifications) => {
-      this.notifications = notifications ?? [];
+      this.notifications = notifications?.reverse() ?? [];
     });
     this.userProfile$.subscribe((profile) => {
       this.userProfile = profile;

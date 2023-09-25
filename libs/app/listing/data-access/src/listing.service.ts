@@ -234,7 +234,8 @@ export class ListingsService {
       await updateDoc(listingRef, {photos: photoURLs});
   }
 
-  recommendationMinimum = .55;
+  // recommendationMinimum = .75;
+  recommendationMinimum = 100000;
 
   async recommender(char: characteristics, userVector: number[])
   {
@@ -251,23 +252,25 @@ export class ListingsService {
         +!!char.gym, 
         +!!char.owner
       ];
-
+      console.warn(listVector);
+      console.warn(userVector);
       for(let x=0; x<10; x++){
         listVector[x]= listVector[x]*userVector[x];
       }
-  
+      console.log(listVector)
       //dot product
       let dotproduct=0;
   
       for(let x=0; x< 10; x++){
         dotproduct += listVector[x]*userVector[x];
       }
-
+      console.warn(dotproduct);
       // sigmoid function
-      let e = Math.E;
+      // let e = Math.E;
       let finalAnswer = 0;
-      finalAnswer = 1/(1+ e**(-dotproduct));
-
+      // finalAnswer = 1/(1+ e**(-dotproduct));
+      finalAnswer = dotproduct;
+      // console.warn(finalAnswer);
   
       if(finalAnswer>=this.recommendationMinimum){
         return true
