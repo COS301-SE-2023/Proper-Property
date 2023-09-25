@@ -235,7 +235,7 @@ export class ListingsService {
   }
 
   // recommendationMinimum = .75;
-  recommendationMinimum = 100000;
+  recommendationMinimum = 75000;
 
   async recommender(char: characteristics, userVector: number[])
   {
