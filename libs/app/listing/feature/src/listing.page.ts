@@ -113,14 +113,14 @@ export class ListingPage implements OnDestroy {
           this.lister = user;
           this.lister_name = user.firstName + " " + user.lastName;
 
-          if(qr && this.list){            
-            console.log(window.location.href, " ", this.router.url);
-            this.userServices.qrListingRead({
-              address: this.list.address,
-              url: window.location.href.substring(0, window.location.href.indexOf(";qr")),
-              lister: this.lister,
-            });
-          }
+          // if(qr && this.list){            
+          //   console.log(window.location.href, " ", this.router.url);
+          //   this.userServices.qrListingRead({
+          //     address: this.list.address,
+          //     url: window.location.href.substring(0, window.location.href.indexOf(";qr")),
+          //     lister: this.lister,
+          //   });
+          // }
         });
 
         this.userProfile$.subscribe((profile) => {
