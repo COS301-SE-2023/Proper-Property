@@ -54,7 +54,6 @@ export class CoreShellComponent implements OnInit, OnDestroy {
     private profileServices : UserProfileService,
     private readonly notificationsService: NotificationsService
   ) {
-    console.log("OPEN AI: ", process.env['NX_OPEN_AI']);
     this.dev = isDevMode();
     this.loggedIn = this.userProfile$ != null && this.userProfile$ != undefined;
 

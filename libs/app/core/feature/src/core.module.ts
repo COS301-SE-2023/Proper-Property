@@ -147,8 +147,6 @@ if (NX_ENVIRONMENT === 'development') {
     NgxsReduxDevtoolsPluginModule.forRoot({
       disabled: NX_ENVIRONMENT === 'production',
     }),
-    NgxsLoggerPluginModule.forRoot(),
-    NgxsRouterPluginModule.forRoot(),
     AuthModule,
     UserProfileModule,
     GoogleMapsModule,
