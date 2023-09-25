@@ -2,7 +2,7 @@
 
 
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
@@ -20,7 +20,7 @@ import { AuthState } from '@properproperty/app/auth/data-access';
   templateUrl: './my-listings.page.html',
   styleUrls: ['./my-listings.page.scss'],
 })
-export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
+export class MyListingsPage  implements OnInit, OnDestroy  {
   @Select(AuthState.user) user$!: Observable<User | null>;
   currentUser: User | null = null;
   @ViewChild('map', { static: true })
@@ -32,7 +32,10 @@ export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
   markerClickListener: any;
   markers: any[] = [];
   listings: Listing[] = []
-
+  listingsB: Listing[]=[];
+  listingsR: Listing[]=[]
+  loading = false;
+  loadingMessage = ";"
 
   constructor(
     private gmaps: GmapsService,
@@ -45,148 +48,40 @@ export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
       this.user$.subscribe((user: User | null) => {
         this.currentUser =  user;
       });
-      //this.userServices.getCurrentUser()?.user_id 
-      const user_listings: Listing[] = [];
-
-      //for i = 0; i< listings size i++
-       for (let i = 0; i < this.listings.length; i++) {
-
-        //get the user_id of the listing
-        const user_ID = this.listings[i].user_id;
-
-        //declare a listing[] array
-
-        if (this.currentUser?.uid == user_ID) {
-          user_listings.push(this.listings[i]);
-        }
-        
-       }
-
-       this.listings = user_listings;
-  
+      //this.userServices.getCurrentUser()?.user_id      
     }
 
   async ngOnInit() {
-    await this.listingServices.getListings().then((listings) => {
-      this.listings = listings;
-    });
-
+    this.loadingMessage = "Loading your listings..."
+    this.listingsB = [];
+    this.listingsR = [];
+    this.listings = [];
+    this.loading = true;
+    this.listings = await this.listingServices.getListings(this.currentUser?.uid);
     const user_listings: Listing[] = [];
 
     //for i = 0; i< listings size i++
-     for (let i = 0; i < this.listings.length; i++) {
-
+    for (const listing of this.listings) {
       //get the user_id of the listing
-      const user_ID = this.listings[i].user_id;
-
+      const user_ID = listing.user_id;
       //declare a listing[] array
-      
-
-
       if (this.currentUser?.uid == user_ID) {
-        user_listings.push(this.listings[i]);
+        user_listings.push(listing);
+        // Forgive me father for I have sinned
+        // (listing.let_sell=="Sell" ? this.listingsB : this.listingsR).push(listing);
+        if (listing.let_sell=="Sell")
+          this.listingsB.push(listing);
+        else
+          this.listingsR.push(listing);
       }
-      
-     }
-
-     this.listings = user_listings;
-  
-  }
-
-  ngAfterViewInit() {
-    this.loadMap();
-  }
-
-  async loadMap() {
-    try {
-      const googleMaps: any = await this.gmaps.loadGoogleMaps();
-      this.googleMaps = googleMaps;
-      const mapEl = this.mapElementRef.nativeElement;
-      const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
-      this.map = new googleMaps.Map(mapEl, {
-        center: location,
-        zoom: 12,
-      });
-      this.renderer.addClass(mapEl, 'visible');
-      this.addMarker(location);
-      this.onMapClick();
-    } catch(e) {
-      console.log(e);
     }
-  }
-
-  onMapClick() {
-    this.mapClickListener = this.googleMaps.event.addListener(this.map, "click", (mapsMouseEvent: { latLng: { toJSON: () => any; }; }) => {
-      console.log(mapsMouseEvent.latLng.toJSON());
-      this.addMarker(mapsMouseEvent.latLng);
-    });
-  }
-
-  addMarker(location: any) {
-    const googleMaps: any = this.googleMaps;
-    const icon = {
-      url: 'assets/icon/map_card.png',
-      scaledSize: new googleMaps.Size(100, 50), 
-    };
-    const marker = new googleMaps.Marker({
-      position: location,
-      map: this.map,
-      icon: icon,
-      // draggable: true,
-      animation: googleMaps.Animation.DROP
-    });
-    this.markers.push(marker);
-    // this.presentActionSheet();
-    this.markerClickListener = this.googleMaps.event.addListener(marker, 'click', () => {
-      console.log('markerclick', marker);
-      this.checkAndRemoveMarker(marker);
-      console.log('markers: ', this.markers);
-    });
-  }
-
-  checkAndRemoveMarker(marker: { position: { lat: () => any; lng: () => any; }; }) {
-    const index = this.markers.findIndex(x => x.position.lat() == marker.position.lat() && x.position.lng() == marker.position.lng());
-    console.log('is marker already: ', index);
-    if(index >= 0) {
-      this.markers[index].setMap(null);
-      this.markers.splice(index, 1);
-      return;
-    }
-  }
-
-  async presentActionSheet() {
-    const actionSheet = await this.actionSheetCtrl.create({
-      header: 'Added Marker',
-      subHeader: '',
-      buttons: [
-        {
-          text: 'Remove',
-          role: 'destructive',
-          data: {
-            action: 'delete',
-          },
-        },
-        {
-          text: 'Save',
-          data: {
-            action: 'share',
-          },
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          data: {
-            action: 'cancel',
-          },
-        },
-      ],
-    });
-
-    await actionSheet.present();
+    
+    setTimeout(() => {
+    this.loading = false;
+    }, 3000);
   }
 
   async redirectToPage(listing : Listing) {
-    console.log(listing.listing_id);
     this.router.navigate(['/listing', {list : listing.listing_id}]);
   }
 
@@ -210,7 +105,24 @@ export class MyListingsPage  implements OnInit, OnDestroy, AfterViewInit  {
     this.isLiked = false;
   }
 
-  
+  Change(){
+    const tog1 = document.getElementById("first") as HTMLInputElement;
+    const tog2 = document.getElementById("second") as HTMLInputElement;
+
+    if(tog1.style.display=='block')
+    {
+      
+      tog1.style.display= 'none';
+      tog2.style.display = 'block';
+
+    }
+    else
+    {
+      tog1.style.display= 'block';
+      tog2.style.display = 'none';
+    }
+
+  }
 }
   
 

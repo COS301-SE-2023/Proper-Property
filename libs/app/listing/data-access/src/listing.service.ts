@@ -1,7 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Listing, CreateListingRequest, CreateListingResponse, GetListingsRequest, GetListingsResponse, ChangeStatusResponse, ChangeStatusRequest, GetApprovedListingsResponse, EditListingRequest, EditListingResponse } from '@properproperty/api/listings/util';
+import { Listing,
+  CreateListingRequest,
+  CreateListingResponse,
+  GetListingsRequest,
+  GetListingsResponse,
+  ChangeStatusResponse,
+  ChangeStatusRequest,
+  GetApprovedListingsResponse,
+  EditListingRequest,
+  EditListingResponse, 
+  GetUnapprovedListingsResponse,
+  StatusEnum,
+  GetFilteredListingsResponse,
+  GetFilteredListingsRequest} from '@properproperty/api/listings/util';
+import { GetLocInfoDataRequest,
+  GetLocInfoDataResponse } from '@properproperty/api/loc-info/util';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
-import { Storage, deleteObject, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
+import { characteristics } from '@properproperty/api/listings/util';
+import { Storage, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { Observable } from 'rxjs';
@@ -33,12 +49,28 @@ export class ListingsService {
       CreateListingResponse
     >(this.functions, 'createListing')(request)).data;
 
-    console.warn(response);
     if (response.status) {
       this.uploadImages(response.message, list.photos);
     }
   }
 
+  async saveListing(list : Listing){
+    if(list.listing_id){
+      const request: CreateListingRequest = {listing: list};
+      const response: CreateListingResponse = (await httpsCallable<
+        CreateListingRequest,
+        CreateListingResponse
+      >(this.functions, 'saveListing')(request)).data;
+
+      if (response.status) {
+        this.updateImages(list.listing_id, list.photos);
+      }
+    }
+    else{
+      await this.createListing(list);
+    }
+  }
+  
   async uploadImages(listingID : string, input: string[]) {
     const photoURLs : string[] = [];
     for(let i = 0; i < input.length; i++){
@@ -54,7 +86,23 @@ export class ListingsService {
       await updateDoc(listingRef, {photos: photoURLs});
   }
 
-  async getListings(){
+  async getListings(userId?: string){
+    const request = userId? {userId: userId} : {};
+    const response = (await httpsCallable<
+      GetListingsRequest,
+      GetListingsResponse
+    >(
+      this.functions, 
+      'getListings'
+    )(request)).data;
+    if (response.listings.length > 0){
+      return response.listings;
+    }
+    return [];
+   
+  }
+
+  async getRecentListings(){
     const response = (await httpsCallable<
       GetListingsRequest,
       GetListingsResponse
@@ -63,7 +111,7 @@ export class ListingsService {
       'getListings'
     )({})).data;
     if (response.listings.length > 0){
-      return response.listings;
+      return response.listings.slice(0, 5);
     }
     return [];
    
@@ -71,7 +119,7 @@ export class ListingsService {
 
   async getApprovedListings(){
     const response = (await httpsCallable<
-      null,
+      undefined,
       GetApprovedListingsResponse
     >(
       this.functions, 
@@ -80,6 +128,22 @@ export class ListingsService {
 
     if(response.approvedListings.length > 0){
       return response.approvedListings;
+    }
+
+    return [];
+  }
+
+  async getUnapprovedListings(){
+    const response = (await httpsCallable<
+      undefined,
+      GetUnapprovedListingsResponse
+    >(
+      this.functions,
+      'getUnapprovedListings'
+    )()).data;
+  
+    if(response.unapprovedListings.length > 0){
+      return response.unapprovedListings;
     }
 
     return [];
@@ -99,14 +163,36 @@ export class ListingsService {
     return null;
   }
 
-  async changeStatus(listingId : string, admin : string){
+  async changeStatus(listingId : string, admin : string, status: StatusEnum, crimeScore?: number, waterScore?: number, sanitationScore?: number, schoolScore?: number){
+    let request : ChangeStatusRequest;
+    if(crimeScore && waterScore && sanitationScore && schoolScore){
+      request = {
+        listingId : listingId,
+        adminId : admin,
+        status: status,
+        crimeScore: crimeScore,
+        schoolScore: schoolScore,
+        waterScore: waterScore,
+        sanitationScore: sanitationScore
+      }
+    }
+    else{
+      request = {
+        listingId : listingId,
+        adminId : admin,
+        status: status,
+        reason: "git gud"
+      }
+    }
     const response: ChangeStatusResponse = (await httpsCallable<
       ChangeStatusRequest,
       ChangeStatusResponse
     >(
       this.functions,
       'changeStatus'
-    )({listingId : listingId, adminId : admin})).data;
+    )(
+        request
+      )).data;
 
     return response;
   }
@@ -133,8 +219,7 @@ export class ListingsService {
 
   async updateImages(listingId : string, images : string[]){
     const photoURLs : string[] = [];
-    const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId);
-    deleteObject(storageRef);
+    // const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId);
 
     for(let i = 0; i < images.length; i++){
       const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId + "/image" + i);
@@ -147,5 +232,89 @@ export class ListingsService {
     // TODO Add this via CQRS
     const listingRef = doc(this.firestore, `listings/${listingId}`);
       await updateDoc(listingRef, {photos: photoURLs});
+  }
+
+  // recommendationMinimum = .75;
+  recommendationMinimum = 75000;
+
+  async recommender(char: characteristics, userVector: number[])
+  {
+    try {
+      const listVector: number[] = [
+        +!!char.garden, 
+        +!!char.party, 
+        +!!char.mansion, 
+        +!!char.accessible, 
+        +!!char.foreign, 
+        +!!char.student, 
+        +!!char.lovinIt, 
+        +!!char.farm, 
+        +!!char.gym, 
+        +!!char.owner
+      ];
+      console.warn(listVector);
+      console.warn(userVector);
+      for(let x=0; x<10; x++){
+        listVector[x]= listVector[x]*userVector[x];
+      }
+      console.log(listVector)
+      //dot product
+      let dotproduct=0;
+  
+      for(let x=0; x< 10; x++){
+        dotproduct += listVector[x]*userVector[x];
+      }
+      console.warn(dotproduct);
+      // sigmoid function
+      // let e = Math.E;
+      let finalAnswer = 0;
+      // finalAnswer = 1/(1+ e**(-dotproduct));
+      finalAnswer = dotproduct;
+      // console.warn(finalAnswer);
+  
+      if(finalAnswer>=this.recommendationMinimum){
+        return true
+      }
+  
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+  
+  async getSanitationScore(district : string){
+    const response: GetLocInfoDataResponse = (await httpsCallable<
+      GetLocInfoDataRequest,
+      GetLocInfoDataResponse
+    >(this.functions, 'getLocInfoData')({type: "sanitation", district: district})).data;
+
+    return response;
+  }
+
+  async getWaterScore(district : string, listingAreaType: string, listingType: string, coordinates: {lat: number, long: number}){
+    const response: GetLocInfoDataResponse = (await httpsCallable<
+      GetLocInfoDataRequest,
+      GetLocInfoDataResponse
+    >(this.functions, 'getLocInfoData')({type: "water", district: district, listingAreaType: listingAreaType, listingType: listingType, latlong: coordinates})).data;
+
+    return response;
+  }
+
+  async getCrimeScore(coordinates: {lat: number, long: number}){
+    const response: GetLocInfoDataResponse = (await httpsCallable<
+      GetLocInfoDataRequest,
+      GetLocInfoDataResponse
+    >(this.functions, 'getLocInfoData')({type: "crime", latlong: coordinates})).data;
+
+    return response;
+  }
+
+  async getFilteredListings(req : GetFilteredListingsRequest){
+    const response: GetFilteredListingsResponse = (await httpsCallable<
+      GetFilteredListingsRequest,
+      GetFilteredListingsResponse
+    >(this.functions, 'filterListings')(req)).data;
+
+    return response;
   }
 }

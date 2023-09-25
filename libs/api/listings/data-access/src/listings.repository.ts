@@ -1,15 +1,20 @@
 import * as admin from 'firebase-admin';
+import { DocumentSnapshot, FieldValue } from 'firebase-admin/firestore';
 import { Injectable } from '@nestjs/common';
 import { GetListingsRequest,
   Listing,
   CreateListingResponse,
+  ChangeStatusRequest,
+  ChangeStatusResponse,
   GetListingsResponse, 
-  ChangeStatusRequest, 
-  ChangeStatusResponse, 
   GetApprovedListingsResponse,
-  EditListingResponse
+  EditListingResponse,
+  StatusChange,
+  GetUnapprovedListingsResponse,
+  StatusEnum,
+  GetFilteredListingsRequest,
+  GetFilteredListingsResponse
 } from '@properproperty/api/listings/util';
-// import { FieldValue, FieldPath } from 'firebase-admin/firestore';
 @Injectable()
 export class ListingsRepository {
 
@@ -29,7 +34,7 @@ export class ListingsRepository {
   }
 
   async getListings(req: GetListingsRequest): Promise<GetListingsResponse>{
-    let collection = admin.firestore().collection('listings');
+    const collection = admin.firestore().collection('listings');
     let query: admin.firestore.Query;
 
     if(req.userId){
@@ -76,7 +81,7 @@ export class ListingsRepository {
     //   });
 
     // you
-    let listingRef = admin
+    const listingRef = admin
       .firestore()
       .collection('listings')
       .withConverter<Listing>({
@@ -94,7 +99,6 @@ export class ListingsRepository {
         };
       })
       .catch((error) => {
-        console.log(error);
         return {
           status: false,
           message: error.message
@@ -102,38 +106,55 @@ export class ListingsRepository {
     });
   }
 
-  async changeStatus(req : ChangeStatusRequest): Promise<ChangeStatusResponse>{
-    console.log("Its show time");
-    const listingDoc = admin
-    .firestore()
-    .doc(`listings/${req.listingId}`)
-    .withConverter<Listing>({
-      fromFirestore: (snapshot) => snapshot.data() as Listing,
-      toFirestore: (listing: Listing) => listing
-    }).get();
+  async saveListing(listing : Listing){
+    if(listing.listing_id){
+      await admin
+      .firestore()
+      .collection('listings')
+      .doc(listing.listing_id)
+      .set(listing);
 
-    listingDoc.then((doc) => {
-      let tempStatusChanges = doc.data()?.statusChanges;
-      if(tempStatusChanges){
-        tempStatusChanges.push({adminId : req.adminId, status : !doc.data()?.approved, date : new Date().toISOString()});
+      return {status: true, message: listing.listing_id};
+    }
+    
+    return {status: false, message: "FAILURE"};
+  }
+
+  async changeStatus(listingId: string, change: StatusChange, req : ChangeStatusRequest): Promise<ChangeStatusResponse>{
+    try {
+      await admin
+      .firestore()
+      .collection('listings')
+      .doc(listingId)
+      .update({
+        statusChanges: FieldValue.arrayUnion(change),
+        status: req.status,
+        areaScore: {
+          crimeScore: req.crimeScore,
+          waterScore: req.waterScore,
+          sanitationScore: req.sanitationScore,
+          schoolScore: req.schoolScore
+        }
+      });
+    } catch(error) {
+      return {
+        success: true,
+        statusChange: change
       }
-      else{
-        tempStatusChanges = [{adminId : req.adminId, status : !doc.data()?.approved, date : new Date().toISOString()}];
-      }
+    }
 
-      admin.firestore().doc(`listings/${req.listingId}`).update({approved : !doc.data()?.approved, statusChanges : tempStatusChanges});
-      return {statusChange : tempStatusChanges[tempStatusChanges.length - 1]};
-    })
-
-    return {statusChange : {adminId : "", status : false, date : ""}};
+    return {
+      success: true,
+      statusChange: change
+    };
   }
 
   async getApprovedListings(): Promise<GetApprovedListingsResponse>{
-    let query = admin
+    const query = admin
     .firestore()
-    .collection('listings').where("approved", "==", true);
+    .collection('listings').where("status", "==", StatusEnum.ON_MARKET);
     
-    let listings : Listing[] = [];
+    const listings : Listing[] = [];
     (await query.get()).docs.map((doc) => {
       doc.data() as Listing;
       listings.push(doc.data() as Listing);
@@ -154,5 +175,102 @@ export class ListingsRepository {
     }
 
     return {listingId : "FAILIRE"}
+  }
+
+  async getUnapprovedListings(): Promise<GetUnapprovedListingsResponse>{
+    const query = admin
+    .firestore()
+    .collection('listings')
+    .where("status", "in", [StatusEnum.PENDING_APPROVAL, StatusEnum.EDITED]);
+    
+    const listings : Listing[] = [];
+    (await query.get()).docs.forEach((doc) => {
+      doc.data() as Listing;
+      listings.push(doc.data() as Listing);
+    })
+
+    return {unapprovedListings : listings};
+  }
+
+  async getFilteredListings(req: GetFilteredListingsRequest): Promise<GetFilteredListingsResponse>{
+    try{
+      let query = admin
+        .firestore()
+        .collection('listings')
+        .withConverter<Listing>({
+          fromFirestore: (snapshot) => snapshot.data() as Listing,
+          toFirestore: (listing: Listing) => listing
+        })
+        .where('status', '==', StatusEnum.ON_MARKET)
+        .orderBy('quality_rating')
+        query.limit(12);
+
+      
+      if (req.lastListingId) {
+        const lastListingDoc = (await admin
+          .firestore()
+          .collection('listings')
+          .doc(req.lastListingId)
+          .get());
+        if (lastListingDoc.exists) {
+          query = query.startAfter(lastListingDoc);
+        }
+      }
+
+      if(req.prop_type){
+        query = query.where("prop_type", "==", req.prop_type);
+      }
+
+      if(req.features){
+        query = query.where("features", "array-contains-any", req.features);
+      }
+
+      const response: GetFilteredListingsResponse = {
+        status: true,
+        listings: []
+      }
+
+      let loopLimit = 0;
+      // let lastListing: Listing | undefined = undefined;
+      // let lastQualityRating = 0;
+      let lastSnapshot: DocumentSnapshot | undefined = undefined 
+      while (response.listings.length < 12 && loopLimit < 25) {
+        const queryData = await query.get();
+        ++loopLimit;
+        // queryData.forEach((docSnapshot) => {
+        for(const docSnapshot of queryData.docs){
+          const data = docSnapshot.data();
+          if ( //double eww
+              (!req.bath || (req.bath && data.bath >= req.bath))
+            && (!req.bed || (req.bed && data.bed >= req.bed))
+            && (!req.parking || (req.parking && data.parking >= req.parking))
+            && (
+              (!req.price_min || (req.price_min && data.price >= req.price_min) )
+              && (!req.price_max || (req.price_max && data.price <= req.price_max)
+            )
+            && (
+              (!req.property_size_min || (req.property_size_min && data.property_size >= req.property_size_min ) )
+              && (!req.property_size_max || (req.property_size_max && data.property_size <= req.property_size_max ))
+            ))
+          ){
+            // for (const listing of response.listings) {
+            //   if (listing.listing_id == data.listing_id) {
+            //     console.log("what");
+            //   }
+            // }
+            response.listings.push(data);
+          }
+
+          lastSnapshot = docSnapshot;
+        }
+        if (lastSnapshot)
+          query = query.startAfter(lastSnapshot);
+      }
+    
+      return response;
+    }
+    catch(e: any){
+      return {status: false, listings: [], error: e.message}
+    }
   }
 }

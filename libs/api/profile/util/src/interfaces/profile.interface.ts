@@ -10,4 +10,5 @@ export interface UserProfile{
   interests: Interests;
   admin?: boolean;
   savedListings? : string[];
+  profilePicture?: string;
 }

@@ -1,72 +1,37 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
-interface OpenAIResponse {
-  id: string;
-  object: string;
-  created: number;
-  model: string;
-  choices: {
-    text: string;
-    index: number;
-    logprobs: number;
-    finish_reason: string;
-  }[];
-  usage: {
-    prompt_tokens: number;
-    completion_tokens: number;
-    total_tokens: number;
-  };
-}
+import { OPEN_AI_API_KEY_TOKEN } from '.';
+import { GenerateListingDescriptionRequest, GenerateListingDescriptionResponse } from '@properproperty/api/listings/util';
+import { Functions, httpsCallable } from '@angular/fire/functions';
 @Injectable({
   providedIn: 'root'
 })
 export class OpenAIService {
-
   apiUrl = 'https://api.openai.com/v1/completions';
-  headers = new HttpHeaders()
-    .set('Content-Type', 'application/json')
-    .set('Authorization', `Bearer `);
+  headers : HttpHeaders | undefined = undefined;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(OPEN_AI_API_KEY_TOKEN) private apiKey: string,
+    private readonly functions: Functions
+  ) {}
 
-  async descriptionCall(prompt : string) : Promise<string>{
-    return new Promise<string>((resolve) =>{
-      const data = {
-        model: "text-davinci-003",
+  async getHeadingAndDesc(prompt : string){
+    // call google cloud function called generateListingDescription
+    const response = (await httpsCallable<
+      GenerateListingDescriptionRequest, 
+      GenerateListingDescriptionResponse
+    >(this.functions, 'generateListingDescription')({
+      description: {
         prompt: prompt,
-        max_tokens: 1000,
+        max_tokens: 500,
+        temperature: 0.3,
+      },
+      head: {
+        max_tokens: 75,
         temperature: 0.3
       }
-
-      let desc = "";
-      this.http.post<OpenAIResponse>(this.apiUrl, data, {headers : this.headers}).subscribe((response: OpenAIResponse) => {
-        desc = response['choices'][0]['text'];
-        console.log(desc)
-        resolve(desc);
-      }, error => {
-        console.log(error);
-      });
-    })
-  }
-
-  async headingCall(prompt : string) : Promise<string>{
-    return new Promise<string>((resolve) =>{
-      const data = {
-        model: "text-davinci-003",
-        prompt: "Create a short heading for a listing based on this description of the property: " + prompt,
-        max_tokens: 50,
-        temperature: 0.3
-      }
-
-      let desc = "";
-      this.http.post<OpenAIResponse>(this.apiUrl, data, {headers : this.headers}).subscribe((response: OpenAIResponse) => {
-        desc = response['choices'][0]['text'];
-        console.log(desc)
-        resolve(desc);
-      }, error => {
-        console.log(error);
-      });
-    })
+    })).data;
+    return response
   }
 }

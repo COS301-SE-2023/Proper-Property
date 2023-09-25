@@ -8,6 +8,7 @@
 ![Github issues](https://img.shields.io/github/issues-closed/COS301-SE-2023/Proper-Property.svg)
 ![Monitoring](https://img.shields.io/uptimerobot/status/m794412596-b37953dcaaa4df17641a8a80?style=plastic)
 [![Testing...](https://github.com/COS301-SE-2023/Proper-Property/actions/workflows/tester.yml/badge.svg)](https://github.com/COS301-SE-2023/Proper-Property/actions/workflows/tester.yml)
+[![codecov](https://codecov.io/gh/COS301-SE-2023/Proper-Property/branch/main/graph/badge.svg?token=274GR552X4)](https://codecov.io/gh/COS301-SE-2023/Proper-Property)
 
 ---
 <strong><h3 style="font-family: Jetbrains Mono">PROJECT BOARD:</h3></strong>

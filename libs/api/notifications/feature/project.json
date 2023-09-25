@@ -1,0 +1,26 @@
+{
+  "name": "api-notifications-feature",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/notifications/feature/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/api/notifications/feature",
+        "main": "libs/api/notifications/feature/src/index.ts",
+        "tsConfig": "libs/api/notifications/feature/tsconfig.lib.json",
+        "assets": ["libs/api/notifications/feature/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/api/notifications/feature/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

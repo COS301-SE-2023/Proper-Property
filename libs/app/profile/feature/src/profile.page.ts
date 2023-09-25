@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,HostListener } from '@angular/core';
 import { UserProfileState, UserProfileService } from '@properproperty/app/profile/data-access';
 import {AuthService} from '@properproperty/app/auth/data-access';
 import { Logout } from '@properproperty/app/auth/util';
@@ -17,16 +17,20 @@ import { UpdateUserProfile, RemoveCurrentUser } from '@properproperty/app/profil
 })
 export class ProfilePage implements OnInit {
 
+  isMobile:boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   user: UserProfile | null = null;
   interests: Interests; // Needs to not be nullable cus ngModel no like
   isEditingEmail: boolean;
   isEditingName: boolean;
   isEditingPhoneNumber: boolean;
+  isEditingProfilePicture: boolean;
   newEmail: string;
   newFirstName: string;
   newLastName: string;
   newPhoneNumber: string;
+  profilePic = "";
+  saveProfile = false;
   // appPages = [
   //   { title: 'Saved Listings', url: '/saved-listings', icon: 'bookmark' },
   //   { title: 'My Listings', url: '/my-listings', icon: 'list' },
@@ -53,8 +57,7 @@ export class ProfilePage implements OnInit {
       return;
     }
     this.user.email = this.newEmail;
-    // this.userProfileService.updateUserEmail(this.newEmail);
-    // this.authServices.editEmail(this.newEmail);
+
     this.store.dispatch(new UpdateUserProfile({email: this.newEmail}));
     this.newEmail = '';
   }
@@ -71,19 +74,30 @@ export class ProfilePage implements OnInit {
       private readonly router: Router,
       private readonly store: Store
     ) {
-
+      
+      this.isMobile = window.innerWidth <= 576;
     // default value cus ngModel cries when the user is null
     this.interests = {
-      garden: 0,
-      mansion: 0,
-      accessible: 0,
-      openConcept: 0,
-      ecoWarrior: 0,
+      garden: 50,
+        party: 50,
+        mansion: 50,
+        accessible: 50,
+        foreign: 50,
+        openConcept: 50,
+        ecoWarrior: 50,
+        family: 50,
+        student: 50,
+        lovinIt: 50,
+        farm: 50,
+        gym: 50,
+        owner: 50,
+        leftUmbrella: 50
     };
 
     this.userProfile$.subscribe((profile) => {
       this.user = profile;
-      if (profile) {
+      this.profilePic = profile?.profilePicture ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2t2r3zx8jVPz6isicXtXbueLZFfWIuRMkW8X6KQ3_&s";
+      if(profile) {
         if(profile.interests !== undefined){
           this.interests = profile.interests;
         }
@@ -91,39 +105,42 @@ export class ProfilePage implements OnInit {
       else {
         this.interests = {
           garden: 50,
-          mansion: 20,
-          accessible: 60,
-          openConcept: 90,
-          ecoWarrior: 75,
+          party: 50,
+          mansion: 50,
+          accessible: 50,
+          foreign: 50,
+          openConcept: 50,
+          ecoWarrior: 50,
+          family: 50,
+          student: 50,
+          lovinIt: 50,
+          farm: 50,
+          gym: 50,
+          owner: 50,
+          leftUmbrella: 50
         };
       }
     });
 
-    // this.user = {
-    //   email:"john@example.com",
-    //   name: 'John',
-    //   surname: 'Doe',
-    //   interests: {
-    //     garden: 50,
-    //     mansion: 75,
-    //     accessible: 25,
-    //     openConcept: 90,
-    //     ecoWarrior: 60,
-    //   },
-    // };
-    
     this.isEditingEmail = false;
     this.isEditingName = false;
     this.isEditingPhoneNumber = false;
+    this.isEditingProfilePicture = false;
     this.newEmail = '';
     this.newFirstName = '';
     this.newLastName = '';
     this.newPhoneNumber = '';
    }
 
+   @HostListener('window:resize', ['$event'])
+   onResize() {
+     this.isMobile = window.innerWidth <= 576;
+   }
+   
   ngOnInit() {
     console.log ("Linter: Lifecycle methods should not be empty");
   }
+
   async confirmDeleteAccount() {
     const alert = await this.alertController.create({
       header: 'Confirmation',
@@ -150,12 +167,15 @@ export class ProfilePage implements OnInit {
     await alert.present();
   }
 
-  deleteAccount() {
+  async deleteAccount() {
     // Perform validation or additional logic here if needed
-    this.userProfileService.deleteUser(this.userProfileService.currentUser?.userId ?? '');
-    this.authServices.deleteCurrentUser();
-    //redirect to login
-    this.router.navigate(['/register']);
+    if(this.user)
+    {
+      await this.userProfileService.deleteUser(this.user?.userId);
+      this.authServices.deleteCurrentUser();
+      //redirect to login
+      this.router.navigate(['/register']);
+    }
   }
 
   logout(){
@@ -168,6 +188,7 @@ export class ProfilePage implements OnInit {
     if (!this.user) {
       return;
     }
+    
     this.isEditingName = true;
     this.newFirstName = this.user.firstName ?? '';
     this.newLastName = this.user.lastName ?? '';
@@ -211,5 +232,38 @@ export class ProfilePage implements OnInit {
   discardPhoneNumber() {
     this.newPhoneNumber = '';
     this.isEditingPhoneNumber = false;
+  }
+
+  editProfilePicture(){
+    if(!this.user){
+      return;
+    }
+
+    this.isEditingProfilePicture = true;
+  }
+
+  handleFileInput(event: Event) {
+    if (!event.currentTarget) {
+      return;
+    }
+    const files: FileList | null = (event.currentTarget as HTMLInputElement).files;
+    if (files) {
+      this.saveProfile = true;
+      for (let index = 0; index < files.length; index++) {
+        if (files.item(index)){
+          this.profilePic = URL.createObjectURL(files.item(index) as Blob);
+          document.getElementById("profilePic2")?.setAttribute("style", "margin: 10px; border-radius: 50%; border: 1px solid black; width: 100px; height: 100px; background-image: url('" + this.profilePic + "'); background-size: cover; background-position-x: center; background-position-y: center;")
+        }
+      }
+    }
+  }
+
+
+  async saveProfilePic(){
+    if(this.user){
+      await this.userProfileService.uploadProfilePic(this.user.userId, this.profilePic);
+      document.getElementById("profilePic2")?.setAttribute("style", "margin: 10px; border-radius: 50%; border: 1px solid black; width: 100px; height: 100px; background-image: url('" + this.profilePic + "'); background-size: cover; background-position-x: center; background-position-y: center;")
+      this.saveProfile = false;
+    }
   }
 }

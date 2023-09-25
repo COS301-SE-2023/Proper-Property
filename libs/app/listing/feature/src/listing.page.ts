@@ -1,49 +1,51 @@
-import { Component, ElementRef, ViewChild} from '@angular/core';
+import { Component, ElementRef, ViewChild, HostListener, OnDestroy } from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { Listing } from '@properproperty/api/listings/util';
-import Swiper from 'swiper';
+import { ChangeStatusResponse, Listing, StatusEnum } from '@properproperty/api/listings/util';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { Observable, of } from 'rxjs';
-// import { Unsubscribe } from '@angular/fire/firestore';
 import { Select } from '@ngxs/store';
 import { httpsCallable, Functions } from '@angular/fire/functions';
 import { Chart, registerables } from 'chart.js';
-import { GetAnalyticsDataRequest } from '@properproperty/api/core/feature';
-import { AuthState } from '@properproperty/app/auth/data-access';
-import { Unsubscribe, User } from 'firebase/auth';
-import { IonContent } from '@ionic/angular';
+import { Unsubscribe } from 'firebase/auth';
+import { IonContent, ToastOptions } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
-register();
+import { ToastController } from '@ionic/angular';
 
+register();
+export interface GetAnalyticsDataRequest {
+  listingId: string;
+}
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.page.html',
   styleUrls: ['./listing.page.scss'],
 })
-export class ListingPage{
+export class ListingPage implements OnDestroy {
+  
   @ViewChild(IonContent) content: IonContent | undefined;
   // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
 
-  @Select(AuthState.user) user$!: Observable<User | null>;
+  isMobile: boolean;
+  @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
-  private user: User | null = null;
-  private profile : UserProfile | null = null;
-  private userProfile : UserProfile | null = null;
+  private userProfile: UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
   @ViewChild('swiper')
   swiperRef: ElementRef | undefined;
-  swiper?: Swiper;
-  list : Listing | null = null;
-  listerId  = "";
+  list: Listing | null = null;
+  lister: UserProfile | null = null
+  listerId = "";
   listingId = "";
   pointsOfInterest: { photo: string | undefined, name: string }[] = [];
   admin = false;
   adminId = "";
-  public ownerViewing$ : Observable<boolean> = of(false);
-  lister : UserProfile | null = null;
+  public ownerViewing$: Observable<boolean> = of(false);
+  coordinates: { latitude: number, longitude: number } | null = null;
+  profilePic = "";
+  loading = false;
 
   price_per_sm = 0;
   lister_name = "";
@@ -67,61 +69,81 @@ export class ListingPage{
   isRed = false;
   showData = false;
 
+  areaScore = 0;
+
   constructor(private router: Router,
     private route: ActivatedRoute,
-    private listingServices : ListingsService,
-    private userServices : UserProfileService,
+    private listingServices: ListingsService,
+    private userServices: UserProfileService,
     public gmapsService: GmapsService,
     private functions: Functions,
-    private profileServices : UserProfileService) {
+    private profileServices: UserProfileService,
+    private toastController: ToastController
+    ) {
     let list_id = "";
     let admin = "";
-   
+    let qr = false;
+
     this.route.params.subscribe((params) => {
-      console.warn(params); 
       list_id = params['list'];
+      qr = params['qr'];
       admin = params['admin'];
       this.listingId = list_id;
-      
+
+
       this.listingServices.getListing(list_id).then((list) => {
-        console.warn(list);
         this.list = list;
+        console.log("QR viewing: " + qr)
       }).then(() => {
-        if(admin){
+        if (admin) {
           this.admin = true;
           this.adminId = admin;
         }
 
         
         // TODO
-        console.log(this.list);
-        this.price_per_sm = Number(this.list?.price) / Number(this.list?.property_size);
+
+        if (!this.list?.price || !this.list?.property_size) {
+          console.error("Both Property Size and Price need to be specified");
+          return
+        }
+        this.price_per_sm = this.list?.price / this.list?.property_size;
   
         this.userServices.getUser("" + this.list?.user_id).then((user : UserProfile) => {
           this.lister = user;
           this.lister_name = user.firstName + " " + user.lastName;
+
+          // if(qr && this.list){            
+          //   console.log(window.location.href, " ", this.router.url);
+          //   this.userServices.qrListingRead({
+          //     address: this.list.address,
+          //     url: window.location.href.substring(0, window.location.href.indexOf(";qr")),
+          //     lister: this.lister,
+          //   });
+          // }
         });
 
-        this.user$.subscribe((user) => {
-          this.user = user;
-          if(user && this.list && this.user?.uid == this.list?.user_id){
+        this.userProfile$.subscribe((profile) => {
+          this.userProfile = profile;
+          this.isRed = this.isSaved(this.listingId);
+          if (profile && this.list && this.userProfile?.userId == this.list?.user_id) {
             this.ownerViewing$ = of(true);
-          }
-
-          if(this.user){
-            this.profileServices.getUser(this.user.uid).then((profile) =>{
-              this.profile = profile;
-              this.isRed = this.isSaved(this.listingId);
-            });
+            this.profilePic = this.userProfile?.profilePicture ?? "";
           }
         });
 
-              // when the window is unloaded
-      this.userProfileListener$.subscribe((listener) => {
-        this.userProfileListener = listener;
-      });
+        // when the window is unloaded
+        this.userProfileListener$.subscribe((listener) => {
+          this.userProfileListener = listener;
+        });
 
+      if(this.list?.geometry && this.list?.status == StatusEnum.ON_MARKET){
         this.getNearbyPointsOfInterest();
+        this.setCrimeScore();
+        this.setSanitationScore();
+        this.setSchoolRating();
+        this.setWaterScore();
+      }
       });
     });
 
@@ -138,47 +160,69 @@ export class ListingPage{
     this.userProfileListener$.subscribe((listener) => {
       this.userProfileListener = listener;
     });
+
+    this.isMobile = isMobile();
   }
 
-  async showAnalytics(){
-    this.showData = true;
-    const request : GetAnalyticsDataRequest = {listingId : this.list?.listing_id ?? ""};
-    const analyticsData = JSON.parse((await httpsCallable(this.functions, 'getAnalyticsData')(request)).data as string);
-    if(analyticsData == null){
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    if (!event) console.log(event);
+    this.isMobile = window.innerWidth <= 576;
+  }
+
+  async showAnalytics() {
+    const loader = document.querySelector(".graph-animation") as HTMLElement;
+    loader.style.display = "block";
+    const request: GetAnalyticsDataRequest = { listingId: this.list?.listing_id ?? "" };
+    const analyticsResponse = (await httpsCallable(this.functions, 'getAnalyticsData')(request)).data;
+    if (typeof analyticsResponse != "string") {
       return;
     }
-
+    
+    const analyticsData = JSON.parse(analyticsResponse as string);
     let totUsers = 0;
     let totEngagement = 0;
-
-    console.log(analyticsData);
-    let dates : string[] = [];
-    let pageViews : number[] = [];
+    const dates: string[] = [];
+    const pageViews: number[] = [];
+    const obj : {
+      date: string,
+      pageView: number
+    }[] = [];
 
     const rows = analyticsData.rows ?? [];
     for(let i = 0; rows && i < rows.length; i++){
-      if (rows[i] && rows[i].dimensionValues[1] && rows[i].metricValues[0]) {
+      if (rows[i]?.dimensionValues[1] && rows[i]?.metricValues[0]) {
         const dimensionValue = rows[i].dimensionValues[1].value;
-        const year  = Number(dimensionValue.substring(0,4));
-        const month  = Number(dimensionValue.substring(4,6));
-        const day  = Number(dimensionValue.substring(6,8));
-      
-      
+        const year = Number(dimensionValue.substring(0, 4));
+        const month = Number(dimensionValue.substring(4, 6));
+        const day = Number(dimensionValue.substring(6, 8));
+
+
         const tempDate = new Date(year, month, day)
-
-        dates[i] = tempDate.getDate() + " " + this.Months[tempDate.getMonth() - 1];
-
         const metricValue = rows[i].metricValues[0].value;
-        pageViews[i] = Number(metricValue);
+
+        obj.push({
+          date: tempDate.getDate() + " " + this.Months[tempDate.getMonth() - 1],
+          pageView: Number(metricValue)
+
+        });
 
         totEngagement += Number(rows[i].metricValues[1].value);
         totUsers += Number(rows[i].metricValues[2].value);
       }
     }
 
-    dates = dates.reverse();
-    pageViews = pageViews.reverse();
+    obj.sort((a, b) => {
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    })
+
+    for(const i of obj){
+      dates.push(i.date);
+      pageViews.push(i.pageView);
+    }
     
+    console.log(obj)
+
     const data = {
       labels: dates,
       datasets: [{
@@ -190,7 +234,7 @@ export class ListingPage{
         options: {
           scales: {
             y: {
-              ticks:{
+              ticks: {
                 stepSize: 10,
               }
             }
@@ -201,13 +245,14 @@ export class ListingPage{
 
     const canvas = document.getElementById('lineGraph');
 
-    if(canvas){
+    if (canvas) {
       const chart = new Chart(canvas as HTMLCanvasElement, {
         type: 'line',
         data: data,
       });
 
-      if(chart){
+      // TODO proper error handling
+      if (chart) {
         console.log("Chart created")
       }
     }
@@ -215,122 +260,263 @@ export class ListingPage{
     const minutes = Math.floor(avgPerUser / 60);
     const seconds = (avgPerUser - minutes * 60).toPrecision(2);
 
-    this.avgEnagement = minutes + " min " + seconds + " sec";
-    
+    this.avgEnagement = seconds? minutes + " min " + seconds + " sec" : "There is no data to show yet";
+    console.log(this.avgEnagement)
+    this.showData = true;
+    const element = document.querySelector(".graph") as HTMLElement;
+    loader.style.display = "none";
+    element.style.display = "block";
     return;
   }
 
-  async changeStatus(){
+  successfulChange = {
+    message: " successfully completed",
+    duration: 3000, // Duration in milliseconds
+    color: 'primary', // Use 'danger' to display in red
+    position: 'bottom'
+  } as ToastOptions;
+
+  failedChange = {
+    message: " failed",
+    duration: 3000, // Duration in milliseconds
+    color: 'danger', // Use 'danger' to display in red
+    position: 'bottom'
+  } as ToastOptions;
+
+  async changeStatus(approved : boolean){
+    this.loading = true;
+    // const show = document.querySelector('#show') as HTMLDivElement;
+    // show.style.opacity = "0";
+    // const load = document.querySelector('#loader') as HTMLElement;
+    // load.style.opacity = "1";
     if(this.list && this.adminId != ""){
-      this.listingServices.changeStatus("" + this.list.listing_id, this.adminId).then((response) => {
-        console.log("Listing page: " + response);
-        this.router.navigate(['/admin', {statusChange : response}]);
-      });
+      let crimeScore;
+      let schoolScore;
+      let waterScore;
+      let sanitationScore;
+      if (this.list.geometry.lat == 0 || this.list.geometry.lat) {
+        const geocodeResult = await this.gmapsService.geocodeAddress(this.list.address);
+        this.list.geometry = {
+          lat: geocodeResult?.geometry.location.lat() ?? 0,
+          lng: geocodeResult?.geometry.location.lng() ?? 0
+        }
+      }
+      if ((this.list.status == StatusEnum.PENDING_APPROVAL || this.list.status == StatusEnum.EDITED) && approved) {
+        crimeScore = await this.getCrimeScore();
+        schoolScore = await this.getSchoolRating(this.list.geometry);
+        waterScore = await this.getWaterScore();
+        sanitationScore = await this.getSanitationScore();
+      }
+
+
+      let result : ChangeStatusResponse | null;
+      if(
+        approved
+        && (this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED)
+        && crimeScore != undefined 
+        && schoolScore != undefined 
+        && waterScore != undefined
+        && sanitationScore != undefined
+      ){
+        result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, crimeScore, waterScore, sanitationScore, schoolScore);
+      } 
+      else if((this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED) && approved){
+        result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, 0, 0, 0, 0);
+      }
+      else{
+        result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.DENIED, 0, 0, 0, 0);
+      }
+
+      setTimeout( async () => {
+        this.loading = false;
+      }, 2000)
+
+      // this.loading = false;
+      if(result.success){
+        this.router.navigate(['/admin']);
+        this.successfulChange.message = approved? "Approval" : "Rejection" + this.successfulChange.message;
+        const toast = await this.toastController.create(this.successfulChange);
+        toast.present();
+        return;
+      }
+
+      this.successfulChange.message = approved? "Approval" : "Rejection" + this.successfulChange.message;
+      const toast = await this.toastController.create(this.failedChange);
+      toast.present();
+      return;
     }
   }
 
   async getNearbyPointsOfInterest() {
-    if (this.list && this.list.address) {
+    if (this.list?.listing_id) {
       try {
-        const coordinates = await this.gmapsService.getLatLongFromAddress(this.list.address);
-        if (coordinates) {
-          const results = await this.gmapsService.getNearbyPlaces(
-            coordinates.latitude,
-            coordinates.longitude
-          );
-          
-          this.processPointsOfInterestResults(results,coordinates.latitude, coordinates.longitude);
-          // const testing = await this.gmapsService.getLatLongFromAddress("Durban, South Africa");
-
-          // await this.gmapsService.calculateDistanceInMeters(coordinates.latitude,coordinates.longitude,testing.latitude,testing.longitude).then((distanceInMeters) => {
-          //   console.log('Distance between the two coordinates:', distanceInMeters, 'meters');
-          // });
-
-        }
+        const response = await this.gmapsService.getNearbyPlaces2(this.list.listing_id)
+        response.forEach((place) => {
+          let distance = -1;
+          if(this.list?.geometry.lat){
+            distance = this.gmapsService.calculateDistanceInMeters(
+              this.list?.geometry.lat,
+              this.list?.geometry.lng,
+              place.geometry.lat,
+              place.geometry.lng
+            );
+          }
+          const naam = place.name + " ("+ (distance / 1000).toFixed(2)+"km)";
+          this.pointsOfInterest.push({photo : place.photos, name : naam})
+        })
       } catch (error) {
         console.error('Error retrieving nearby places:', error);
       }
     }
   }
 
-  
-  async processPointsOfInterestResults(results: google.maps.places.PlaceResult[], address_lat:number, address_lng:number) {
-    console.log(results);
-    // Clear the existing points of interest
-    this.pointsOfInterest = [];
-    const wantedTypes : string[] = [
-      "airport",
-      "school",
-      "liquor_store",
-      "atm", // so I can pay for my liquor
-      "bar",
-      "casino",
-      "pharmacy", //for the hangover
-      "car_repair", // to deal with the consequences of my actions
-      "hospital", // for the liver poisoning I will have
-      "cemetary", // consequences of my actions
-      "laundry", // to clean up the mess
-      "bakery", // for those late night munchies
-      "bank", // to plead for a loan for liquour  
-      "bus_station",
-      "cafe",
-      "church",
-      "drugstore",
-      "gym",
-      "park",
-      "shopping_mall",
-      "tourist_attraction",
-      "train_station",
-      "university"
-    ]
-
-    // Iterate over the results and extract the icons and names of the places
-    for (const result of results) {
-      if(result.photos && result.photos.length > 0 && result.name && result.types){
-        for(const type of result.types){
-          if(wantedTypes.includes(type)){
-            let dist = 0;
-
-            await this.gmapsService.getLatLongFromAddress(result.vicinity+"").then((coord)=> {
-              console.log("these are the coords ",coord);
-  
-  
-                this.gmapsService.calculateDistanceInMeters(
-                  address_lat,
-                  address_lng,
-                  coord.latitude,
-                  coord.longitude
-                ).then((distanceInMeters) => {
-                console.log('Distance between the two coordinates:', distanceInMeters, 'meters');
-                dist = distanceInMeters;
-              });
-            });
-
-            const naam = result.name + " ("+ (dist / 1000).toFixed(2)+"km)";
-            this.pointsOfInterest.push({ photo : result.photos[0].getUrl(), name : naam });
-            break;
+  async getSchoolRating(coordinates: { lat: number, lng: number }): Promise<number> {
+    if (this.list) {
+      try {
+        if (coordinates) {
+          const response = await this.gmapsService.getNearbySchools(coordinates.lat, coordinates.lng);
+          if (response.length > 0) {
+            let totalRating = 0;
+            for (let i = 0; i < response.length; i++) {
+              totalRating += response[i].rating ?? 0;
+            }
+            return (totalRating / response.length) * 20;
           }
+
+          return 0;
         }
+      }
+      catch (error) {
+        console.error('Error retrieving nearby places:', error);
       }
     }
 
-    console.log("Accepted: " + this.pointsOfInterest);
+    return 0;
   }
 
-  swiperReady() {
-    this.swiper = this.swiperRef?.nativeElement.swiper;
-    console.log(this.swiperRef?.nativeElement.swiper);
+  setSchoolRating() {
+    if (this.list) {
+      if (this.list?.areaScore.schoolScore < 25) {
+        document.getElementById("schoolProgress")?.setAttribute("style", "width: " + this.list?.areaScore.schoolScore + "%;");
+        document.getElementById("schoolProgress")?.setAttribute("class", "errorProgressBar");
+      }
+      else if (this.list?.areaScore.schoolScore < 60) {
+        document.getElementById("schoolProgress")?.setAttribute("style", "width: " + this.list?.areaScore.schoolScore + "%;");
+        document.getElementById("schoolProgress")?.setAttribute("class", "warningProgressBar");
+      }
+      else {
+        document.getElementById("schoolProgress")?.setAttribute("style", "width: " + this.list?.areaScore.schoolScore + "%");
+      }
+
+      this.areaScore = parseInt(((this.areaScore + this.list?.areaScore.schoolScore) / 2).toFixed(2));
+    }
   }
 
-  goNext() {
-    this.swiper?.slideNext();
+  async getSanitationScore(): Promise<number> {
+    if (this.list) {
+      const response = await this.listingServices.getSanitationScore(this.list.district)
+      return (response.percentage ? response.percentage : 0) * 100;
+    }
+
+    return 0;
+  }
+
+  setSanitationScore() {
+    if (this.list) {
+      if (this.list?.areaScore.sanitationScore < 25) {
+        document.getElementById("sanitationProgress")?.setAttribute("style", "width: " + this.list?.areaScore.sanitationScore + "%;");
+        document.getElementById("sanitationProgress")?.setAttribute("class", "errorProgressBar");
+      }
+      else if (this.list?.areaScore.sanitationScore < 60) {
+        document.getElementById("sanitationProgress")?.setAttribute("style", "width: " + this.list?.areaScore.sanitationScore + "%;");
+        document.getElementById("sanitationProgress")?.setAttribute("class", "warningProgressBar");
+      }
+      else {
+        document.getElementById("sanitationProgress")?.setAttribute("style", "width: " + this.list?.areaScore.sanitationScore + "%");
+      }
+
+      this.areaScore = parseInt(((this.areaScore + this.list?.areaScore.sanitationScore) / 2).toFixed(2));
+    }
+  }
+
+  async getWaterScore(): Promise<number> {
+    if (this.list) {
+      const response = await this.listingServices.getWaterScore(this.list.district
+        , this.list.listingAreaType
+        , this.list.prop_type
+        , { lat: this.list.geometry.lat , long: this.list.geometry.lng })
+      return (response.percentage ? response.percentage : 0) * 100;
+    }
+
+    return 0;
+  }
+
+  setWaterScore() {
+    if (this.list) {
+      if (this.list?.areaScore.waterScore < 25) {
+        document.getElementById("waterProgress")?.setAttribute("style", "width: " + this.list?.areaScore.waterScore + "%;");
+        document.getElementById("waterProgress")?.setAttribute("class", "errorProgressBar");
+      }
+      else if (this.list?.areaScore.waterScore < 60) {
+        document.getElementById("waterProgress")?.setAttribute("style", "width: " + this.list?.areaScore.waterScore + "%;");
+        document.getElementById("waterProgress")?.setAttribute("class", "warningProgressBar");
+      }
+      else {
+        document.getElementById("waterProgress")?.setAttribute("style", "width: " + this.list?.areaScore.waterScore + "%");
+      }
+
+      this.areaScore = parseInt(((this.areaScore + this.list?.areaScore.waterScore) / 2).toFixed(2));
+    }
+  }
+
+
+  async getCrimeScore(): Promise<number> {
+    if (this.list) {
+      try {
+        const response = await this.listingServices.getCrimeScore({ lat: this.list.geometry.lat, long: this.list.geometry.lng });
+        return (response.percentage ? response.percentage : 0) * 100;
+      }
+      catch (error) {
+        console.error('Error retrieving nearby places:', error);
+      }
+    }
+
+    return 0;
+  }
+
+  setCrimeScore() {
+    if (this.list) {
+      if (this.list?.areaScore.crimeScore < 25) {
+        document.getElementById("crimeProgress")?.setAttribute("style", "width: " + this.list?.areaScore.crimeScore + "%;");
+        document.getElementById("crimeProgress")?.setAttribute("class", "errorProgressBar");
+      }
+      else if (this.list?.areaScore.crimeScore < 60) {
+        document.getElementById("crimeProgress")?.setAttribute("style", "width: " + this.list?.areaScore.crimeScore + "%;");
+        document.getElementById("crimeProgress")?.setAttribute("class", "warningProgressBar");
+      }
+      else {
+        document.getElementById("crimeProgress")?.setAttribute("style", "width: " + this.list?.areaScore.crimeScore + "%");
+      }
+
+      this.areaScore = parseInt(((this.areaScore + this.list?.areaScore.crimeScore) / 2).toFixed(2));
+    }
+  }
+  
+  goNext(event: Event) {
+    if (!event) console.log(event);
+    if (this.swiperRef) {
+      this.swiperRef.nativeElement.swiper.slideNext();
+    }
   }
   goPrev() {
-    this.swiper?.slidePrev();
+    if (this.swiperRef) {
+      this.swiperRef.nativeElement.swiper.slidePrev();
+    }
   }
 
-  swiperSlideChanged(e:Event) {
-    console.log('changed', e)
+  swiperSlideChanged(e: Event) {
+    if (!e) console.log(e);
+    // console.log('changed', e)
   }
 
   loanAmount: number;
@@ -354,24 +540,8 @@ export class ListingPage{
     this.minGrossMonthlyIncome = this.monthlyPayment * 3; // Assuming minimum income requirement is 3 times the monthly payment
   }
 
-  async getNearbyPlaces() {
-    try {
-      const coordinates = await this.gmapsService.getLatLongFromAddress(
-        this.list?.address + ""
-      );
-      const results = await this.gmapsService.getNearbyPlaces(
-        coordinates.latitude,
-        coordinates.longitude
-      );
-      // Process the nearby places results here
-      console.log('Nearby places:', results);
-    } catch (error) {
-      console.error('Error retrieving nearby places:', error);
-    }
-  }
-
   toggleColor() {
-    if(this.isRed)
+    if (this.isRed)
       this.unsaveListing();
     else
       this.saveListing();
@@ -380,11 +550,10 @@ export class ListingPage{
     this.isRed = !this.isRed;
   }
 
-  isSaved(listing_id : string){
-    if(this.profile){
-      if(this.profile.savedListings){
-        if(this.profile.savedListings.includes(listing_id)){
-          console.log("Listing found in saved: " + listing_id);
+  isSaved(listing_id: string) {
+    if (this.userProfile) {
+      if (this.userProfile.savedListings) {
+        if (this.userProfile.savedListings.includes(listing_id)) {
           return true;
         }
       }
@@ -394,27 +563,35 @@ export class ListingPage{
   }
 
   saveListing() {
-    if(!this.isSaved(this.listingId)){
-      if(this.profile){
-        if(this.profile.savedListings){
-          this.profile.savedListings.push(this.listingId);
+    if (!this.isSaved(this.listingId)) {
+      if (this.userProfile) {
+        if (this.userProfile.savedListings) {
+          this.userProfile.savedListings.push(this.listingId);
         }
-        else{
-          this.profile.savedListings = [this.listingId];
+        else {
+          this.userProfile.savedListings = [this.listingId];
         }
 
-        this.profileServices.updateUserProfile(this.profile);
+        this.profileServices.updateUserProfile(this.userProfile);
+
+        if(this.list && this.list.characteristics)
+        {
+          this.profileServices.updateInterests(this.list.characteristics, this.userProfile.userId);
+        
+        }
+        
+        
       }
     }
   }
 
-  unsaveListing(){
-    if(this.isSaved(this.listingId)){
-        if(this.profile){
-          if(this.profile.savedListings){
-            this.profile.savedListings.splice(this.profile.savedListings.indexOf(this.listingId), 1);
-          }
-          this.profileServices.updateUserProfile(this.profile);
+  unsaveListing() {
+    if (this.isSaved(this.listingId)) {
+      if (this.userProfile) {
+        if (this.userProfile.savedListings) {
+          this.userProfile.savedListings.splice(this.userProfile.savedListings.indexOf(this.listingId), 1);
+        }
+        this.profileServices.updateUserProfile(this.userProfile);
       }
     }
   }
@@ -426,15 +603,58 @@ export class ListingPage{
   }
 
   scrollToBottom() {
-    if(this.content && document.getElementById('calculator')) {
-      console.log(document.getElementById('calculator')?.getBoundingClientRect().top);
-      const calculatorRow =  document.getElementById('calculator')?.getBoundingClientRect().top;
+    if (this.content && document.getElementById('calculator')) {
+      const calculatorRow = document.getElementById('calculator')?.getBoundingClientRect().top;
       this.content.scrollToPoint(0, ((calculatorRow ?? 100)), 500);
     }
   }
 
   //editing listing
-  editListing(){
-    this.router.navigate(['/create-listing', {listingId : this.listingId}]);
+  async editListing() {
+    this.router.navigate(['/create-listing', { listingId: this.listingId }]);
+    this.ngOnDestroy();
   }
+
+  ngOnDestroy() {
+    this.list = null;
+  }
+
+  qrGenerated = false;
+  generateQRCode() {
+    const QRCode = require('qrcode');
+    console.log("Test")
+    const qrCodeCanvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
+    if(qrCodeCanvas){
+        QRCode.toCanvas(qrCodeCanvas, window.location.href + ";qr=true", function (error :any) {
+        if (error){
+          console.error(error)
+          return;
+        } 
+
+        console.log('success!');
+      })
+      this.qrGenerated = true;
+
+      return;
+    }
+    
+    console.log("Whoopes")
+  }
+
+  downloadImage(){
+    const canvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
+
+    if(canvas){
+      const dataURL = canvas.toDataURL("image/png");
+      console.log(dataURL);
+  
+      const a = document.createElement('a');
+      a.href = dataURL
+      a.download = this.list?.address.trim().replace(/,/g, "").replace(/ /g, "-") + '-qr-download.jpeg';
+      a.click();
+    }
+  }
+}
+function isMobile(): boolean {
+  return window.innerWidth <= 576;
 }

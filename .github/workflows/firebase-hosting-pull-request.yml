@@ -25,6 +25,15 @@ jobs:
           NX_FIREBASE_APP_ID: ${{ secrets.NX_FIREBASE_APP_ID }}
           NX_FIREBASE_MEASUREMENT_ID: ${{ secrets.NX_FIREBASE_MEASUREMENT_ID }}
           NX_GOOGLE_MAPS_KEY: ${{ secrets.NX_GOOGLE_MAPS_KEY }}
+          NX_OPEN_AI: ${{ secrets.NX_OPEN_AI }}
+          NX_SPAMBOT_ADDRESS: ${{ secrets.NX_SPAMBOT_ADDRESS }}
+          NX_SPAMBOT_APP_PASSWORD: ${{ secrets.NX_SPAMBOT_APP_PASSWORD }}
+          NX_SERVICE_ACCOUNT_PRIVATE_KEY_ID: ${{ secrets.NX_SERVICE_ACCOUNT_PRIVATE_KEY_ID }}
+          NX_SERVICE_ACCOUNT_PRIVATE_KEY: ${{ secrets.NX_SERVICE_ACCOUNT_PRIVATE_KEY }}
+          NX_SERVICE_ACCOUNT_CLIENT_EMAIL: ${{ secrets.NX_SERVICE_ACCOUNT_CLIENT_EMAIL }}
+          NX_SERVICE_ACCOUNT_CLIENT_ID: ${{ secrets.NX_SERVICE_ACCOUNT_CLIENT_ID }}
+          NX_SERVICE_ACCOUNT_CLIENT_CERT_URL: ${{ secrets.NX_SERVICE_ACCOUNT_CLIENT_CERT_URL }}
+          NX_SERVICE_ACCOUNT_PROPERTY_ID: ${{ secrets.NX_SERVICE_ACCOUNT_PROPERTY_ID }}
         run: |
           cat <<EOF > .env.prod
           NX_ENVIRONMENT=production
@@ -38,9 +47,30 @@ jobs:
           NX_FIREBASE_APP_ID="$NX_FIREBASE_APP_ID"
           NX_FIREBASE_MEASUREMENT_ID="$NX_FIREBASE_MEASUREMENT_ID"
           NX_GOOGLE_MAPS_KEY="$NX_GOOGLE_MAPS_KEY"
+          NX_OPEN_AI: "$NX_OPEN_AI"
+          NX_SPAMBOT_ADDRESS: "$NX_SPAMBOT_ADDRESS"
+          NX_SPAMBOT_ADDRESS: "$NX_SPAMBOT_APP_PASSWORD"
           EOF
           echo "cat .env.prod"
-          npm install --no-package-lock
+          mkdir -p ./victorias-secret-google-credentials
+          cat <<EOF > ./victorias-secret-google-credentials/homework.json
+          {
+            "type": "service_account",
+            "project_id": "$NX_FIREBASE_PROJECT_ID",
+            "private_key_id": "$NX_SERVICE_ACCOUNT_PRIVATE_KEY_ID",
+            "private_key": "$NX_SERVICE_ACCOUNT_PRIVATE_KEY",
+            "client_email": "$NX_SERVICE_ACCOUNT_CLIENT_EMAIL",
+            "client_id": "$NX_SERVICE_ACCOUNT_CLIENT_ID",
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+            "client_x509_cert_url": "$NX_SERVICE_ACCOUNT_CLIENT_CERT_URL",
+            "universe_domain": "googleapis.com",
+            "propertyID": "$NX_SERVICE_ACCOUNT_PROPERTY_ID"
+          }
+          EOF
+          echo "cat ./victorias-secret-google-credentials/homework.json"
+          npm install
       - run: 'npm run build:app:prod && npm run build:api:prod'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:

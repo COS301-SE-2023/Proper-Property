@@ -1,9 +1,33 @@
-/************************* Sec 1******************************/
-
+.Desktop {
+  /************************* Sec 1******************************/
+  .prediction-result-list {
+    position: absolute;
+    top: 100%;
+    margin-top: 2px;
+    left: 0;
+    border-radius: 25px;
+    width: 68%;
+    padding: 0;
+    background: rgba(0,0,0,0);
+    .prediction-result {
+      cursor: pointer;
+      padding: 0 0;
+      border: 2px solid grey;
+      border-radius: 24px;
+      // height: 20px;
+      font-size: 14px;
+      --inner-padding-top: 0;
+      --inner-padding-bottom: 0;
+      --padding-top: 0;
+      --padding-bottom: 0;
+    }
+  }
 .sec1 {
   width: 100%;
   height: 93vh;
   background: rgba(13, 174, 79, 0.40);
+  z-index: 1;
+  position: relative;
 
   .slogan {
     position: absolute;
@@ -55,21 +79,38 @@
     // padding-left: 2%;
   }
 
-  #address {
+  #query {
     border: 0;
     width: 68%;
     height: 100%;
-    border-radius: 30px;
-    padding-left: 4%;
-  }
+    border-radius: 30px !important;
+    padding-left: 10px;
+    --padding-start: 20px;
+    --highlight-color-focused: none;
+    --highlight-color-valid: none;
+    --highlight-color-invalid: none;
+    box-sizing: border-box !important;
+    input {
 
+    display: border-box !important;
+    }
+  }
+  // #query.has-focus{
+  //   border: 2px solid black;
+  // }
   #search-button {
     height: 100%;
     --border-radius: 30px;
+    --padding-start: 0;
+    --padding-end: 0;
     width: 32%;
     margin-right: 0;
     --margin: 0;
+    .search-icon{
+      padding: 10%;
+    }
   }
+
 
   #search-button-text {
     font-size: 26px;
@@ -206,7 +247,6 @@
   // margin-top: 10%;
   top: 124%;
   background-color: #EDEDED;
-  padding-top: 2%;
 
   .sec3 h2 {
     margin-bottom: 4rem;
@@ -224,7 +264,7 @@
   .case-container .case-box {
     position: relative;
     width: 80%;
-    height: 200px;
+    height: auto;
     border-radius: 30px;
     overflow: hidden;
     display: flex;
@@ -233,6 +273,7 @@
     padding: 5%;
     // border-radius: 30px;
     transition: background-color 0.5s ease;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   }
 
   .case-container .case-box:hover {
@@ -264,4 +305,152 @@ ion-footer ion-col {
 .sec3 ion-row {
   text-align: center;
   justify-content: center;
+}
+}
+
+.Mobile {
+  /************************* Sec 1 ******************************/
+
+  .sec1 {
+    img.homeCover {
+      height: 50%;
+      width: 50%;
+    }
+  
+    width: 100%;
+    padding: 5%;
+    background: rgba(13, 174, 79, 0.40);
+    height: 50vh;
+
+    .slogan {
+      text-align: center;
+    }
+
+    .mainHeading {
+      font-size: 30px;
+      font-weight: 500;
+      
+      
+    }
+
+    #caption {
+      font-size: 18px;
+      font-weight: 500;
+      color: #797979;
+      margin-bottom: 20px;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+
+      #query1 {
+        width: 70%;
+        padding: 8px;
+        border-radius: 20px;
+        margin-right: 10px;
+      }
+
+
+      #search-button {
+        width: 30%;
+        --border-radius: 20px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #search-button-text {
+        font-size: 18px;
+        font-weight: 500;
+      }
+    }
+
+
+  }
+
+  /************************ Sec 2 ******************************/
+
+  .sec2 {
+    width: 100%;
+    padding: 5%;
+
+    height: 50vh; /* Adjusted height to take half of the viewport height */
+
+    .serv-box {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: 2px solid #0DAE4F;
+      border-radius: 10px;
+      text-align: center;
+      transition: background-color 0.5s ease, transform 0.3s ease;
+
+      h3 {
+        color: var(--ion-color-primary);
+      }
+    }
+
+    .serv-box:hover {
+      background-color: rgb(240, 255, 240);
+      transform: scale(1.02);
+    }
+
+    .serv-box img {
+      width: 80px;
+      height: 80px;
+    }
+
+    p {
+      font-size: 14px;
+      text-align: center;
+      margin-top: 10px;
+    }
+  }
+
+  /************************ Mid Section ******************************/
+
+  .mid-section {
+    padding: 5%;
+    background: linear-gradient(180deg, rgba(237, 237, 237, 0.00) 0%, #EDEDED 100%);
+  }
+
+  /************************ Sec 3 ******************************/
+
+  .sec3 {
+    width: 100%;
+    padding: 5%;
+    background-color: #EDEDED;
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .case-box {
+      margin: 20px 0;
+      padding: 10px;
+      border: 2px solid #0DAE4F;
+      border-radius: 10px;
+      text-align: center;
+      transition: background-color 0.5s ease;
+
+      h4 {
+        font-size: 18px;
+        color: white;
+        margin: 10px 0;
+      }
+
+      p {
+        font-size: 16px;
+        color: white;
+        margin: 10px 0;
+      }
+    }
+
+    .case-box:hover {
+      background-color: rgba(13, 174, 79, 0.40);
+    }
+  }
 }

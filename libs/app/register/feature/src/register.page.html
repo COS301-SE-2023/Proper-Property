@@ -1,22 +1,30 @@
-<ion-content style="position: relative;">
+<ion-content style="position: relative;" *ngIf = "!isMobile" class="Desktop">
 
   <section class="registering">
-    <div class = "Member">
-      <div class="leftPanel">
-        <div class="content">
-          <h3>Already Have an Account</h3>
-          <p>Log In! Your World Is But a Few Clicks Away</p>
-          <div class="LogIn">
-            <a routerLink="/login">Log In</a>
-          </div>
-        </div> 
-      </div>
-    </div>
+
     <div class = "container">
       <div class="reg">
         <ion-list>
           <h2>Create Account</h2>
   
+          <!-- <ion-item>
+          <div >
+            <ion-button class="button-centerer2" size="default" (click)="googleLogin()" shape="round">
+              <ion-icon name="logo-google"></ion-icon>
+                 Sign up with Google
+            </ion-button>
+          </div>
+        
+          <p class="or-text">or</p>
+
+          <ion-item>
+            <ion-input type="name" [(ngModel)]="name" placeholder="Enter Name"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input type="name" [(ngModel)]="surname" placeholder="Enter Surname"></ion-input>
+          </ion-item> -->
+          
           <ion-item>
             <ion-input type="email" [(ngModel)]="email" placeholder="Enter Email"></ion-input>
           </ion-item>
@@ -35,15 +43,90 @@
         Passwords do not match!.
         </div>
 
-        <div class="button-centerer">
+      </div>
+      <div class="button-centerer">
+
+        <div >
+          <ion-button class="button-centerer1"(click)="register()" shape="round">Sign Up</ion-button>
+        </div>
+    
+      </div>
+    </div>
+    <div class = "Member">
+      <div class="leftPanel">
+        <div class="content">
+          <h3>Already Have an Account</h3>
+          <p>Log In! Your World Is But a Few Clicks Away</p>
+          <div class="LogIn">
+            <a routerLink="/login">Log In</a>
+          </div>
+        </div> 
+      </div>
+    </div>
+  </section>
+</ion-content>
+<ion-content style="position: relative;" *ngIf = "isMobile" class="Mobile">
+
+  <section class="registering">
+    <div class = "container">
+
+        <div class="logo-container">
+          <img src="assets/Logo_v1.png" alt="Proper Property Logo">
+      </div>
+  
+      <div class="reg">
+        <ion-list>
+          <h2 class="sign-up-text">Create Account</h2>
+  
+          <div >
+            <ion-button class="button-centerer2" size="default" (click)="googleLogin()" shape="round">
+              <ion-icon name="logo-google"></ion-icon>
+                 Sign up with Google
+            </ion-button>
+          </div>
+          <p class="or-text">or</p>
+
+          <ion-item>
+            <ion-input type="name" [(ngModel)]="name" placeholder="Enter Name"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input type="name" [(ngModel)]="surname" placeholder="Enter Surname"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input type="email" [(ngModel)]="email" placeholder="Enter Email"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input type="password" [(ngModel)]="password" placeholder="Enter Password"></ion-input>
+          </ion-item>
+
+          <ion-item [class.invalid]="!passwordMatch">
+            <ion-input type="password" [(ngModel)]="confirm_password" placeholder="Confirm Password"></ion-input>
+          </ion-item>
+
+        </ion-list>
+
+        <div *ngIf="!passwordMatch" class="invalid-feedback">
+        Passwords do not match!.
+        </div>
+
 
           <div >
             <ion-button class="button-centerer1"(click)="register()" shape="round">Sign Up</ion-button>
           </div>
       
-        </div>
 
       </div>
+      <div class="Member">
+        <div class="rightPanel">
+          <div class="content"> 
+            <p>Already have an account? <a routerLink="/login">login</a></p>
+          </div> 
+        </div>
+      </div>
     </div>
+
   </section>
 </ion-content>

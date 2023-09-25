@@ -1,6 +1,7 @@
 import { UserProfile } from '@properproperty/api/profile/util';
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
+import { NotificationsDoc } from '@properproperty/api/notifications/util';
 
 @Injectable()
 export class ProfileRepository {
@@ -10,6 +11,15 @@ export class ProfileRepository {
       .collection('users')
       .doc(profile.userId)
       .set(profile);
+    const notifDoc: NotificationsDoc = {
+      userId: profile.userId,
+      notifications: []
+    };
+    await admin
+      .firestore()
+      .collection('notifications')
+      .doc(profile.userId)
+      .set(notifDoc);
   }
 
   async getUserProfile(userId: string) {

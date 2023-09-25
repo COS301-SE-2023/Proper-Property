@@ -75,6 +75,9 @@ import { AuthState } from '@properproperty/app/auth/data-access'
 
 import { AuthModule } from '@properproperty/app/auth/data-access';
 import { UserProfileState, UserProfileModule } from '@properproperty/app/profile/data-access';
+import { NotificationsModule, NotificationsState } from '@properproperty/app/notifications/data-access';
+import { GoogleMapsModule } from '@properproperty/app/google-maps/data-access';
+import { SkynetModule, OPEN_AI_API_KEY_TOKEN } from '@properproperty/app/open-ai/data-access';
 
 const NX_ENVIRONMENT = process.env['NX_ENVIRONMENT'] || 'development';
 const USE_EMULATORS = JSON.parse(process.env['NX_USE_EMULATORS'] || 'true');
@@ -137,7 +140,7 @@ if (NX_ENVIRONMENT === 'development') {
       }
       return storage;
     }),
-    NgxsModule.forRoot([AuthState, UserProfileState]),
+    NgxsModule.forRoot([AuthState, UserProfileState, NotificationsState]),
     NgxsLoggerPluginModule.forRoot({
       disabled: NX_ENVIRONMENT === 'production',
     }),
@@ -148,6 +151,9 @@ if (NX_ENVIRONMENT === 'development') {
     NgxsRouterPluginModule.forRoot(),
     AuthModule,
     UserProfileModule,
+    GoogleMapsModule,
+    NotificationsModule,
+    SkynetModule
   ],
   // exports: [CoreShell],
   // 
@@ -155,6 +161,7 @@ if (NX_ENVIRONMENT === 'development') {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     // TODO See if better way exists to hide key
     { provide: API_KEY_TOKEN, useValue: process.env['NX_GOOGLE_MAPS_KEY'] },
+    { provide: OPEN_AI_API_KEY_TOKEN, useValue: process.env['NX_OPEN_AI'] },
   ],
   bootstrap: [CoreShellComponent],
 })
