@@ -29,7 +29,7 @@ export class UserProfileService {
 
   async deleteUser(uid: string) {
     const userRef = doc(this.firestore, `users/${uid}`);
-    const response = await deleteDoc(userRef);
+    await deleteDoc(userRef);
   }
 
   async getUser(uid: string) : Promise<UserProfile>{
@@ -44,7 +44,7 @@ export class UserProfileService {
   }
 
   async updateUserProfile(uProfile: UserProfile) {
-    const resp: HttpsCallableResult = await httpsCallable<
+    await httpsCallable<
       UpdateUserProfileRequest,
       UpdateUserProfileResponse
     >(this.functions, 'updateUserProfile')({user: uProfile});
@@ -67,7 +67,7 @@ export class UserProfileService {
   async qrListingRead(request : SendQREmailRequest) {
     const resp: HttpsCallableResult = await httpsCallable<
       SendQREmailRequest,
-      {}
+      void
     >(this.functions, 'sendNotification')(request);
     console.log(resp);
   }
@@ -246,7 +246,7 @@ export class UserProfileService {
 
   calculatePotency(c: characteristics)
   {
-    let loop: boolean[] = [c.garden, c.party, c.mansion, c.accessible, c.foreign, c.ecoWarrior, c.family, c.student, c.lovinIt, c.farm, c.gym, c.owner];
+    const loop: boolean[] = [c.garden, c.party, c.mansion, c.accessible, c.foreign, c.ecoWarrior, c.family, c.student, c.lovinIt, c.farm, c.gym, c.owner];
     this.vPotency=1;
 
     for(let x=0; x< loop.length; x++)

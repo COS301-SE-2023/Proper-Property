@@ -6,5 +6,7 @@ import { ListingsRepository } from '@properproperty/api/listings/data-access';
 export class ListingCreatedHandler implements IEventHandler<ListingCreatedEvent> {
   constructor(private readonly listingRepo: ListingsRepository) {}
 
-  async handle(event: ListingCreatedEvent) {}
+  async handle(event: ListingCreatedEvent) {
+    console.log(event);
+  }
 }

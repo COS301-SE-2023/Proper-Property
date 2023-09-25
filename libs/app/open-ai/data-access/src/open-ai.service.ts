@@ -3,23 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { OPEN_AI_API_KEY_TOKEN } from '.';
 import { GenerateListingDescriptionRequest, GenerateListingDescriptionResponse } from '@properproperty/api/listings/util';
 import { Functions, httpsCallable } from '@angular/fire/functions';
-interface OpenAIResponse {
-  id: string;
-  object: string;
-  created: number;
-  model: string;
-  choices: {
-    text: string;
-    index: number;
-    logprobs: number;
-    finish_reason: string;
-  }[];
-  usage: {
-    prompt_tokens: number;
-    completion_tokens: number;
-    total_tokens: number;
-  };
-}
 @Injectable({
   providedIn: 'root'
 })

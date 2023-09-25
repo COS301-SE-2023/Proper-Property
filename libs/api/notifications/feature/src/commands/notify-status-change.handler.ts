@@ -3,5 +3,7 @@ import { NotifyStatusChangeCommand } from '@properproperty/api/notifications/uti
 
 @CommandHandler(NotifyStatusChangeCommand)
 export class NotifyStatusChangeHandler implements ICommandHandler<NotifyStatusChangeCommand> {
-  async execute(command: NotifyStatusChangeCommand) {}
+  async execute(command: NotifyStatusChangeCommand) {
+    console.log(command);
+  }
 }

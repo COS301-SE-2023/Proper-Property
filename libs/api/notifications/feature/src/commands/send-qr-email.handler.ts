@@ -1,20 +1,11 @@
-import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { NotifyApprovalChangeCommand, Notification, SendQREmailCommand, NotifyViewDropCommand } from '@properproperty/api/notifications/util';
-import { Timestamp } from 'firebase-admin/firestore';
-import { NotificationsDocModel } from '../models/notifications.model';
-import { NotificationsRepository } from '@properproperty/api/notifications/data-access';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { SendQREmailCommand } from '@properproperty/api/notifications/util';
 import  * as nodemailer  from 'nodemailer';
 import * as fs from 'fs';
 import * as path from 'path';
-import { ProfileRepository } from '@properproperty/api/profile/data-access';
 
 @CommandHandler(SendQREmailCommand)
 export class SendQREmailHandler implements ICommandHandler<SendQREmailCommand> {
-  constructor(
-    private readonly notifRepo: NotificationsRepository,
-    private readonly eventPublisher: EventPublisher,
-    private readonly profileRepo: ProfileRepository 
-  ){}
   async execute(command: SendQREmailCommand) {
     console.log('---NotifyApprovalChangeCommand: ' + command.req.address);
     if (!command.req.lister) {

@@ -71,6 +71,7 @@ export class HomePage implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
+    if (!event) console.log(event);
     this.isMobile = window.innerWidth <= 576;
   }
   

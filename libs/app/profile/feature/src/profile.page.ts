@@ -133,7 +133,7 @@ export class ProfilePage implements OnInit {
    }
 
    @HostListener('window:resize', ['$event'])
-   onResize(event: Event) {
+   onResize() {
      this.isMobile = window.innerWidth <= 576;
    }
    
@@ -261,7 +261,7 @@ export class ProfilePage implements OnInit {
 
   async saveProfilePic(){
     if(this.user){
-      const response = await this.userProfileService.uploadProfilePic(this.user.userId, this.profilePic);
+      await this.userProfileService.uploadProfilePic(this.user.userId, this.profilePic);
       document.getElementById("profilePic2")?.setAttribute("style", "margin: 10px; border-radius: 50%; border: 1px solid black; width: 100px; height: 100px; background-image: url('" + this.profilePic + "'); background-size: cover; background-position-x: center; background-position-y: center;")
       this.saveProfile = false;
     }

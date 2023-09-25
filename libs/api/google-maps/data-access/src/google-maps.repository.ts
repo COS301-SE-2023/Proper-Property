@@ -45,7 +45,7 @@ export class GoogleMapsRepository {
       // console.log("There are no points of interest found")
       return { response: []};
     }
-    const response2 = new Promise<GetNearbyPlacesResponse>(async (resolve, reject) => {
+    const response2 = new Promise<GetNearbyPlacesResponse>(async (resolve) => {
       const results: StoredPlaces[] = [];
       for (let startIndex = 0; startIndex < pointIDs.length; startIndex += 30) {
         // console.log("Start index: ", startIndex, ": ", pointIDs.slice(startIndex, Math.min(startIndex+ 29, pointIDs.length)));
@@ -359,7 +359,7 @@ export class GoogleMapsRepository {
         await this.checkFamily();
       }
 
-      // console.log("Saved a grand total of: " + savings);
+      console.log("Saved a grand total of: " + savings);
       // TODO add characteristics to listing
     }
     updates['pointsOfInterestIds'] = this.poiIDs;
@@ -391,7 +391,7 @@ export class GoogleMapsRepository {
   }
 
   async filterUnwantedPlaces(toFilter: Partial<PlaceData>[]) {
-    const before = this.places.length;
+    // const before = this.places.length;
     toFilter.forEach((place) => {
       // if no place id, or if the place id is already in the list, or if the place doesn't have a wanted type
       if(!place.place_id || this.poiIDs.indexOf(place?.place_id) > -1 || !place.types?.some((type) => this.wantedTypes.includes(type))){

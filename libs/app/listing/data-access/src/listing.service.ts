@@ -219,7 +219,7 @@ export class ListingsService {
 
   async updateImages(listingId : string, images : string[]){
     const photoURLs : string[] = [];
-    const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId);
+    // const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId);
 
     for(let i = 0; i < images.length; i++){
       const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId + "/image" + i);
@@ -240,7 +240,7 @@ export class ListingsService {
   async recommender(char: characteristics, userVector: number[])
   {
     try {
-      let listVector: number[] = [
+      const listVector: number[] = [
         +!!char.garden, 
         +!!char.party, 
         +!!char.mansion, 

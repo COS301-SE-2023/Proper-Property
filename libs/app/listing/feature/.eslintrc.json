@@ -25,12 +25,7 @@
             "style": "kebab-case"
           }
         ],
-        "@typescript-eslint/no-explicit-any": [
-          "off",
-          {
-            "ignoreRestArgs": true
-          }
-        ]
+        "@typescript-eslint/no-var-requires": 0
       },
       "extends": [
         "plugin:@nx/angular",

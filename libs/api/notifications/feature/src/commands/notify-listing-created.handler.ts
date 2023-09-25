@@ -58,6 +58,7 @@ export class NotifyListingCreatedHandler implements ICommandHandler<NotifyListin
     };
     
     transporter.sendMail(mailoptions, (err, info) => {
+      if (!info) console.log(info);
       if (err) {
         console.log(err);
       } 

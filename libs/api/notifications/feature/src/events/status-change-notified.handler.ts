@@ -4,5 +4,7 @@ import { StatusChangeNotifiedEvent } from '@properproperty/api/notifications/uti
 @EventsHandler(StatusChangeNotifiedEvent)
 export class StatusChangeNotifiedHandler
   implements IEventHandler<StatusChangeNotifiedEvent> {
-  handle(event: StatusChangeNotifiedEvent) {}
+  handle(event: StatusChangeNotifiedEvent) {
+    if (!event) console.log(event);
+  }
 }

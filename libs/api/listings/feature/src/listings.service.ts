@@ -90,7 +90,7 @@ export class ListingsService {
     //   console.log(error);
     // });
     // redo above http call using axios
-    let client = new Axios({
+    const client = new Axios({
       transformRequest: axios.defaults.transformRequest,
       transformResponse: axios.defaults.transformResponse
     });

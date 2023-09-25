@@ -58,6 +58,7 @@ export class NotifyApprovalChangeHandler implements ICommandHandler<NotifyApprov
     };
     
     transporter.sendMail(mailoptions, (err, info) => {
+      if (!info) console.log(info);
       if (err) {
         console.log(err);
       } 

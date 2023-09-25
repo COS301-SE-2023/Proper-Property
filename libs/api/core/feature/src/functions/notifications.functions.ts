@@ -1,5 +1,4 @@
 import * as functions from 'firebase-functions';
-import * as admin from 'firebase-admin';
 import { NestFactory } from '@nestjs/core';
 import { CoreModule } from '../core.module';
 import { NotificationsService } from '@properproperty/api/notifications/feature';

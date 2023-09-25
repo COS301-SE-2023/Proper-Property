@@ -17,11 +17,11 @@ import {
 } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
-import { GetFilteredListingsRequest, Listing, characteristics } from '@properproperty/api/listings/util';
+import { GetFilteredListingsRequest, Listing } from '@properproperty/api/listings/util';
 import { Recommend } from '@properproperty/api/listings/util';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { Unsubscribe, User, user } from '@angular/fire/auth';
+import { Unsubscribe} from '@angular/fire/auth';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { ActivatedRoute } from '@angular/router';
@@ -159,7 +159,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     }
 
     @HostListener('window:resize', ['$event'])
-    onResize(event: Event) {
+    onResize() {
       this.isMobile = window.innerWidth <= 576;
   }
     
@@ -360,7 +360,6 @@ async loadMap() {
     this.markers.push(marker);
   }
   mapMarkerClicked(event: Event, listingId?: string) {
-    const el = event.target as HTMLElement;
     event.stopPropagation();
     if (listingId) {
       this.router.navigate(['/listing', { list: listingId }]);
