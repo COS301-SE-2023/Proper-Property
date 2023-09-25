@@ -23,9 +23,6 @@ export class NotifyListingEditedHandler implements ICommandHandler<NotifyListing
     if (!profile.email) {
       return;
     }
-    const cred_path = path.join(__dirname, '..', '..', '..', 'victorias-secret-google-credentials', 'spambot-9000-inator.json');
-    
-    const creds = JSON.parse(fs.readFileSync(cred_path, 'utf8'));
     const transporter = nodemailer.createTransport({
       secure: true,
       service: 'gmail',
@@ -51,7 +48,7 @@ export class NotifyListingEditedHandler implements ICommandHandler<NotifyListing
     };
 
     const mailoptions = {
-      from: creds.user,
+      from: process.env['NX_SPAMBOT_ADDRESS'],
       to: profile.email,
       subject: notification.head,
       text: notification.body
