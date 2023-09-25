@@ -52,6 +52,9 @@ jobs:
           NX_SPAMBOT_ADDRESS: "$NX_SPAMBOT_APP_PASSWORD"
           EOF
           echo "cat .env.prod"
+      - name: Create Service Worker Credential File
+        run: |
+          mkdir -p ./victorias-secret-google-credentials
           cat <<EOF > ./victorias-secret-google-credentials/homework.json
           {
             "type": "service_account",
