@@ -12,6 +12,15 @@ ion-card-header{
 
 }
 
+#house_description{
+  // height: 10% !important;
+  width: 87%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
 //make the img in ion-card-header smaller
 ion-card-header img {
   width: 50%;

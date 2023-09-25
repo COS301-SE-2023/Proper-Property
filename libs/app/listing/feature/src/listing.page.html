@@ -127,7 +127,7 @@
                   </ng-template>
                   <ion-row style="margin-top: 10px">
                     <ion-col>
-                      <div style="margin: 15px">
+                      <div>
                         <button style="color: #0dae4f">Calculate</button> your
                         monthly payments below!
                       </div>
@@ -414,7 +414,7 @@
             <canvas id="lineGraph" class="graph"></canvas>
             <div class="data-calc" *ngIf="showData">
               <h3>Average engagement per user:</h3>
-              <ion-input type="string" [(ngModel)]="avgEnagement"></ion-input>
+              <ion-input disabled="true" type="string" [(ngModel)]="avgEnagement" id="engagement-label"></ion-input>
             </div>
           </ion-row>
         </ion-grid>

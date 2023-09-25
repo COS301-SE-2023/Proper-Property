@@ -54,7 +54,7 @@
     <section id="first">
       <ion-grid>
         <ion-row>
-          <ion-col class="rightBorder">
+          <ion-col class="rightBorder" size="6">
             <ion-card *ngFor="let listing of listingsB" >
               <ion-card-header (click)="redirectToPage(listing)">
                 <img src="{{listing.photos[0]}}" alt="house1">
@@ -67,7 +67,7 @@
                   {{listing.bed}} bedroom/{{listing.prop_type}}
                 </p>
                 <p>For Sale!</p>
-                <p>
+                <p id="house_description">
                 {{listing.desc}}
                 </p>
                 <br>
@@ -88,10 +88,10 @@
             </ion-card>
           
           </ion-col>
-          <ion-col>
+          <ion-col size="6">
             <ion-card *ngFor="let listing of listingsR" >
               <ion-card-header (click)="redirectToPage(listing)">
-                <img src="{{listing.photos[0]}}" alt="house1">
+                <img src="{{listing.photos[0]}}" alt="house1">  
                 <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
               </ion-card-header>
               <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
@@ -101,7 +101,7 @@
                   {{listing.bed}} bedroom/{{listing.prop_type}}
                 </p>
                 <p>To Let!</p>
-                <p>
+                <p id="house_description">
                 {{listing.desc}}
                 </p>
                 <br>

@@ -163,6 +163,7 @@ export class ListingPage implements OnDestroy {
     if (typeof analyticsResponse != "string") {
       return;
     }
+    
     const analyticsData = JSON.parse(analyticsResponse as string);
     let totUsers = 0;
     let totEngagement = 0;
@@ -245,6 +246,7 @@ export class ListingPage implements OnDestroy {
     const seconds = (avgPerUser - minutes * 60).toPrecision(2);
 
     this.avgEnagement = seconds? minutes + " min " + seconds + " sec" : "There is no data to show yet";
+    console.log(this.avgEnagement)
     this.showData = true;
     const element = document.querySelector(".graph") as HTMLElement;
     loader.style.display = "none";
