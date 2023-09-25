@@ -52,8 +52,6 @@ jobs:
           NX_SPAMBOT_ADDRESS: "$NX_SPAMBOT_APP_PASSWORD"
           EOF
           echo "cat .env.prod"
-      - name: Create Service Worker Credential File
-        run: |
           mkdir -p ./victorias-secret-google-credentials
           cat <<EOF > ./victorias-secret-google-credentials/homework.json
           {
@@ -72,7 +70,7 @@ jobs:
           }
           EOF
           echo "cat ./victorias-secret-google-credentials/homework.json"
-          npm install --no-package-lock
+          npm install
       - run: 'npm run build:app:prod && npm run build:api:prod'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:

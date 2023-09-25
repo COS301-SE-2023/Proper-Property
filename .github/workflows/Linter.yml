@@ -11,10 +11,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - run: npm install --no-package-lock
+      - run: npm install
       - name: Run ESLint
         run: npx eslint .
-      - name: Create environment file
+      - name: Create environment files
         env:
           NX_FIREBASE_KEY: ${{ secrets.NX_FIREBASE_KEY }}
           NX_FIREBASE_AUTH_DOMAIN: ${{ secrets.NX_FIREBASE_AUTH_DOMAIN }}
@@ -52,8 +52,6 @@ jobs:
           NX_SPAMBOT_ADDRESS: "$NX_SPAMBOT_APP_PASSWORD"
           EOF
           echo "cat .env.prod"
-      - name: Create Service Worker Credential File
-        run: |
           mkdir -p ./victorias-secret-google-credentials
           cat <<EOF > ./victorias-secret-google-credentials/homework.json
           {
