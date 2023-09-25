@@ -30,8 +30,8 @@ export class NotifyListingEditedHandler implements ICommandHandler<NotifyListing
       secure: true,
       service: 'gmail',
       auth: {
-        user: creds.auth.user,
-        pass: creds.auth.pass
+        user: process.env['NX_SPAMBOT_ADDRESS'],
+        pass: process.env['NX_SPAMBOT_APP_PASSWORD']
       }
     });
     
