@@ -20,7 +20,12 @@ export class GoogleMapsRepository {
   constructor(private readonly listingRepo: ListingsRepository){}
   private getCharacteristics = true;
   private mapsClient: Client = new Client({});
+  private poiIDs: string[] = [];
+  private places: Partial<PlaceData>[] = [];
+  private storedPlaces: StoredPlaces[] = [];
+  private recalculating = false;
   async getPointsOfInterest(listingId: string): Promise<GetNearbyPlacesResponse> {
+    // console.log("getPointsOfInterest", listingId);
     const docData = (await admin
       .firestore()
       .collection('listings')
@@ -30,23 +35,39 @@ export class GoogleMapsRepository {
       })
       .doc(listingId)
       .get()).data();
+    // console.log(docData);
     if (!docData?.pointsOfInterestIds) {
+      // console.log("No points of interest found")
       throw new Error("No listings were found");
     }
     const pointIDs = docData.pointsOfInterestIds ?? [];
     if (pointIDs.length == 0) {
+      // console.log("There are no points of interest found")
       return { response: []};
     }
-    const snapshot = await admin
-      .firestore()
-      .collection('pointsOfInterest')
-      .where('id', 'in', pointIDs)
-      .get();
-    const results: StoredPlaces[] = [];
-    snapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
-      results.push(doc.data() as StoredPlaces);
+    const response2 = new Promise<GetNearbyPlacesResponse>(async (resolve, reject) => {
+      const results: StoredPlaces[] = [];
+      for (let startIndex = 0; startIndex < pointIDs.length; startIndex += 30) {
+        // console.log("Start index: ", startIndex, ": ", pointIDs.slice(startIndex, Math.min(startIndex+ 29, pointIDs.length)));
+
+        const queryRes = (await admin
+          .firestore()
+          .collection('pointsOfInterest')
+          .where('id', 'in', pointIDs.slice(startIndex, Math.min(startIndex+ 29, pointIDs.length)))
+          .get());
+
+        queryRes.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
+          const place = doc.data() as StoredPlaces;
+          results.push(place);
+        })
+        // console.log(results.length);
+      }
+      // console.log("Num results: ", results.length)
+      resolve({response: results});
     });
-    return {response: results};
+
+    // console.log(response2);
+    return (response2);
   }
   
   // TODO Actually use this maybe?
@@ -211,7 +232,7 @@ export class GoogleMapsRepository {
     };
     this.geometry = undefined;
     this.docData = (await this.listingRepo.getListing(event.listingId)).listings[0];
-    if (!this.docData) {
+    if (!this.docData?.listing_id) {
       return {status: false, message: "Listing doc not found"};
     }
     // I love javascript
@@ -234,7 +255,13 @@ export class GoogleMapsRepository {
 
     const ids = this.docData?.pointsOfInterestIds ?? [];
     if(ids.length > 0){
-      return {status: false, message: "Points of interest found"};
+      this.recalculating = true;
+      this.storedPlaces = (await this.getPointsOfInterest(this.docData.listing_id)).response ?? [];
+      // Should always be the case but type wrangling
+      if (this.storedPlaces.length > 0) {
+        await this.recalculateCharacteristicsOnly();
+      }
+      return {status: false, message: "Points of interest found, and characteristcs recalculated"};
     }
 
     if(!process.env['NX_GOOGLE_MAPS_KEY']){
@@ -244,9 +271,9 @@ export class GoogleMapsRepository {
     let response: PlacesNearbyResponse | undefined;
     let token: string | undefined;
     let pageFlag = true;
-    const poiIDs : string[] = [];
-    const places: Partial<PlaceData>[] = [];
     let pageCounter = 0; // fail-safe
+    this.places = [];
+    this.poiIDs = [];
     while (pageFlag && pageCounter < 3) {
       ++pageCounter;
       pageFlag = false;
@@ -276,31 +303,10 @@ export class GoogleMapsRepository {
         pageFlag = true;
         await sleep(10000);
       }
-      
-      response.data.results.forEach((place) => {
-        if(!place.place_id || !place.types?.some((type) => this.wantedTypes.includes(type))){
-          return;
-        }
-        place.types?.forEach((type) => {
-          const index = this.types.indexOf(type);
-          if (index > -1) {
-            // TODO Lern tu cownt restaronts
-            this.flags[index] = true;
-          }
-        });
-        // TODO simplify
-        poiIDs.push(place.place_id);
-        places.push({
-          place_id: place.place_id,
-          name: place.name,
-          geometry: place.geometry,
-          types: place.types,
-          icon: place.icon,
-        });
-      });
+      await this.filterUnwantedPlaces(response.data.results);
     }
     // TODO set "middle of nowhere" if no POIS added after loop
-    this.farm = poiIDs.length == 0 && this.docData.property_size >= 10000;
+    this.farm = this.poiIDs.length == 0 && this.docData.property_size >= 10000;
 
     let savings = -0.032 * 3;
     for ( let x = 0; x < this.types.length && process.env['NX_ENVIRONMENT']; ++x) {
@@ -356,7 +362,7 @@ export class GoogleMapsRepository {
       // console.log("Saved a grand total of: " + savings);
       // TODO add characteristics to listing
     }
-    updates['pointsOfInterestIds'] = poiIDs;
+    updates['pointsOfInterestIds'] = this.poiIDs;
     updates['characteristics'] = {
       garden: this.garden,
       farm: this.farm,
@@ -380,27 +386,124 @@ export class GoogleMapsRepository {
       .set({
         ...updates
       }, {merge: true});
-    this.addMissingPlaces(poiIDs, places);
+    this.addMissingPlaces();
     return {status: true, message: "Points of interest added"};
   }
 
-  async addMissingPlaces(ids: string[], places: Partial<PlaceData>[]) {
-    if (ids.length == 0) {
+  async filterUnwantedPlaces(toFilter: Partial<PlaceData>[]) {
+    const before = this.places.length;
+    toFilter.forEach((place) => {
+      // if no place id, or if the place id is already in the list, or if the place doesn't have a wanted type
+      if(!place.place_id || this.poiIDs.indexOf(place?.place_id) > -1 || !place.types?.some((type) => this.wantedTypes.includes(type))){
+        return;
+      }
+      place.types?.forEach((type) => {
+        const index = this.types.indexOf(type);
+        if (index > -1) {
+          // TODO Lern tu cownt restaronts
+          this.flags[index] = true;
+        }
+      });
+      // TODO simplify
+      this.poiIDs.push(place.place_id);
+      this.places.push({
+        place_id: place.place_id,
+        name: place.name,
+        geometry: place.geometry,
+        types: place.types,
+        icon: place.icon,
+      });
+    });
+    // console.log("Before | after: ", before, "->", this.places.length)
+  }
+
+  async recalculateCharacteristicsOnly() {
+    if (!this.docData?.listing_id) {
       return;
     }
-    const queryRes = (await admin
+    this.garden = this.docData.features.indexOf("Garden") > -1;
+
+    // TODO Mansion
+    if(this.docData.floor_size >= 2500 && this.docData.bed>= 4){
+      this.mansion = true;
+    }
+    
+    // TODO accessible
+    if(this.docData.features.indexOf("Accessible") > -1){
+      this.accessible = true;
+    }
+
+  // TODO Foreign
+    for (const touristLocation of this.touristDestinations) {
+      const distance = this.calculateDistanceInMeters(
+        this.docData.geometry.lat, 
+        this.docData.geometry.lng, 
+        touristLocation.lat, 
+        touristLocation.long
+      );
+      if (distance < 15000) {
+        this.foreign = true;
+        break;
+      }
+    }
+
+    // TODO eco-warrior
+    this.eco = this.docData.features.indexOf("Solar Panels") > -1;
+
+    // TODO owner
+    if(this.docData.features.length > 8 && (this.docData.furnish_type == "Furnished" || this.docData.furnish_type == "Partly Furnished")){
+      this.owner = true;
+    }
+    // check that all pages weren't exhausted, and that we're in prod or we want to test characteristics in de
+    await this.checkParty();
+    await this.checkgym();
+    await this.checkFood();
+    await this.checkUniversity();
+    await this.checkFamily();
+    await admin
       .firestore()
-      .collection('pointsOfinterest')
-      .where('id', 'in', ids)
-      .get());
-
+      .collection('listings')
+      .doc(this.docData.listing_id)
+      .set({
+        characteristics: {
+          garden: this.garden,
+          farm: this.farm,
+          party: this.party,
+          mansion: this.mansion,
+          foreign: this.foreign,
+          lovinIt: this.food,
+          family: this.kids,
+          student: this.students,
+          accessible: this.accessible,
+          ecoWarrior: this.eco,
+          gym: this.gym,
+          owner: this.owner,
+          leftUmbrella: this.umbrella,
+          openConcept: false,
+        }
+      }, {merge: true});
+  }
+  async addMissingPlaces() {
+    // console.log("Adding places: ", this.poiIDs.length, " ", this.places.length);
+    if (this.poiIDs.length == 0) {
+      return;
+    }
     const storedIds: string[] = [];
-    queryRes.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
-      const place = doc.data() as StoredPlaces;
-      storedIds.push(place.id);
-    })
+    for (let startIndex = 0; startIndex < this.poiIDs.length; startIndex += 30) {
 
-    places.forEach((place) => {
+      const queryRes = (await admin
+        .firestore()
+        .collection('pointsOfInterest')
+        .where('id', 'in', this.poiIDs.slice(startIndex, Math.min(startIndex+ 29, this.poiIDs.length)))
+        .get());
+
+      queryRes.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
+        const place = doc.data() as StoredPlaces;
+        storedIds.push(place.id);
+      })
+    }
+
+    this.places.forEach((place) => {
       if (storedIds.indexOf(place.place_id ?? "") > -1) {
         return;
       }
@@ -430,6 +533,18 @@ export class GoogleMapsRepository {
     if (!this.docData || !process.env['NX_GOOGLE_MAPS_KEY'] || !this.geometry) {
       return false;
     }
+    if (this.recalculating) {
+      let counter = 0;
+      for (const place of this.storedPlaces) {
+        if (place.types?.includes(type) && this.calculateDistanceInMeters(this.geometry.lat, this.geometry.lng, place.geometry.lat, place.geometry.lng) <= radius) {
+          ++counter;
+        }
+        if (counter >= size) {
+          return true;
+        }
+      }
+      return false;
+    }
     const request: PlacesNearbyRequest = {
       params:{
         location :{
@@ -441,9 +556,10 @@ export class GoogleMapsRepository {
         type: type
       }
     };
-    console.log(request);
+    // console.log(request);
     const response = await this.mapsClient.placesNearby(request);
-    console.log("Num found: ", response.data.results.length);
+    // console.log("Num found: ", response.data.results.length);
+    this.filterUnwantedPlaces(response.data.results);
     return (response.data.results.length >= size);
   }
   async checkParty() {
@@ -529,11 +645,11 @@ export class GoogleMapsRepository {
   async checkUniversity() {
     const listing = this.docData;
     if (!listing) {
-      console.log("No doc");
+      // console.log("No doc");
       return;
     }
     if(listing.price > 6000 || listing.features.indexOf("Wifi") == -1) {
-      console.log("Price: ", listing.price, " | Wifi: ", listing.features.indexOf("Wifi"));
+      // console.log("Price: ", listing.price, " | Wifi: ", listing.features.indexOf("Wifi"));
       this.students = false;
       return
     }
