@@ -176,14 +176,14 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       // Hide the loader
       const load=document.querySelector('.loading-animation') as HTMLElement;
       // load.style.display="none";
-      load.style.opacity="0";
-      const footerGap=document.querySelector('.footer-gap') as HTMLElement;
-      footerGap.style.display="none";
+      load.style.display="none";
+      // const footerGap=document.querySelector('.footer-gap') as HTMLElement;
+      // footerGap.style.display="none";
 
       // Display the map listing
-      const maplisting=document.querySelector('#listings-and-map') as HTMLElement;
+      const maplisting=document.querySelector('.show') as HTMLElement;
       // maplisting.style.display="block";
-      maplisting.style.display="block";
+      maplisting.style.opacity="1";
     }, 2000);
 
 
