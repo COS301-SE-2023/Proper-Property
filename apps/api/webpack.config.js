@@ -39,22 +39,17 @@
 // };
 const { composePlugins, withNx } = require('@nx/webpack');
 const webpack = require('webpack');
-const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
 function getClientEnvironment() {
   // Grab NX_* environment variables and prepare them to be injected
   // into the application via DefinePlugin in webpack configuration.
   const NX_APP = /^(NX_|GOOGLE_)/i;
-  const cred_path = path.join(__dirname, '..', '..', '..', 'victorias-secret-google-credentials', 'homework.json');
   // const GOOG_CREDS = /^GOOGLE_/i; || GOOG_CREDS.test(key)
   const raw = Object.keys(process.env)
     .filter((key) => NX_APP.test(key) || true)
     .reduce((env, key) => {
-      if (key == 'GOOGLE_APPLICATION_CREDENTIALS') {
-        env[key] = cred_path;
-      } else {
-        env[key] = process.env[key];
-      }
+      env[key] = process.env[key];
       return env;
     }, {});
   
@@ -71,5 +66,17 @@ module.exports = composePlugins(withNx(), (config, { options, context }) => {
   config.mode = process.env.NODE_ENV || config.mode;
   // customize webpack config here
   config.plugins.push(new webpack.DefinePlugin(getClientEnvironment()));
+  config.plugins.push(
+    new CopyPlugin({
+      patterns: [
+        {
+          from: '../../.env.prod', 
+          to: '.env',
+          toType: 'template',
+          force: true,
+        }
+      ]
+    })
+  );
   return config;
 });

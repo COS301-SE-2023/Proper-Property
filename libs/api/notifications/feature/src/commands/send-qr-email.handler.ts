@@ -16,10 +16,6 @@ export class SendQREmailHandler implements ICommandHandler<SendQREmailCommand> {
       console.log('---User profile email not found');
       return;
     }
-    const cred_path = path.join(__dirname, '..', '..', '..', 'victorias-secret-google-credentials', 'spambot-9000-inator.json');
-    console.log(cred_path);
-    
-    const creds = JSON.parse(fs.readFileSync(cred_path, 'utf8'));
     const transporter = nodemailer.createTransport({
       secure: true,
       service: 'gmail',
@@ -50,7 +46,7 @@ export class SendQREmailHandler implements ICommandHandler<SendQREmailCommand> {
      
     // fair enough
     const mailoptions = {
-      from: creds.user,
+      from: process.env['NX_SPAMBOT_ADDRESS'],
       to: command.req.lister.email,
       subject: headBody.head,
       text: headBody.body

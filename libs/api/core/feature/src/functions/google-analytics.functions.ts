@@ -9,17 +9,19 @@ export interface GetAnalyticsDataRequest {
 export const getAnalyticsData = functions.region("europe-west1").https.onCall(
   async ({listingId} : GetAnalyticsDataRequest) => {
     if(listingId != ""){
-      const cred_path = path.join(__dirname, '..', '..', '..', 'victorias-secret-google-credentials', 'homework.json');
-
+      // pass service worker credentials from env to client without path
       const client = new BetaAnalyticsDataClient({
-        keyFilename: cred_path
+        credentials: {
+          client_email: process.env['NX_SERVICE_ACCOUNT_CLIENT_EMAIL'],
+          private_key: process.env['NX_SERVICE_ACCOUNT_PRIVATE_KEY'],
+        },
       });
       // get json data from file at cred_path
-      const creds = JSON.parse(fs.readFileSync(cred_path, 'utf8'));
         let response: any = undefined;
       try {
         [response] = await client.runReport({
-          property: `properties/${creds.propertyID}`,
+          property: `properties/${process.env['NX_SERVICE_ACCOUNT_PROPERTY_ID']}`,
+          // property: `properties/${creds.propertyID}`,
           dateRanges: [{
             startDate: "30daysAgo",
             endDate: "today"
