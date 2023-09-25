@@ -166,8 +166,10 @@ onResize(event: Event) {
 
   features: string[] = [];
 
+  loadingAddress = false;
   timeout : NodeJS.Timeout | undefined;
   async handleInputChange(event: Event): Promise<void> {
+    this.loadingAddress = true;
     this.maps = this.maps ?? await this.gmapsService.loadGoogleMaps();
     // Ur going 100 in a 60 zone, buddy
     clearTimeout(this.timeout);
@@ -180,9 +182,11 @@ onResize(event: Event) {
       else {
         this.gmapsService.handleInput(input, new this.maps.LatLngBounds()).then(() => {
           this.predictions = this.gmapsService.predictions;
+          this.loadingAddress = false;
         });
       }
     }, 1500);
+
   }
   
   
@@ -279,7 +283,9 @@ onResize(event: Event) {
     // this.price = this.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
+  descriptionLoading = false;
   async generateDesc(){
+    this.descriptionLoading = true;
     let feats = "";
     for(let i = 0; i < this.features.length; i++){
       feats += this.features[i] + ", ";
@@ -308,6 +314,8 @@ onResize(event: Event) {
       this.description = response.description;
       this.heading = response.head;
     }
+
+    this.descriptionLoading = false;
   }
   addFeature() {
     const feat_in = document.getElementById('feat-in') as HTMLInputElement;

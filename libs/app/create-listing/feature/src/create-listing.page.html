@@ -72,7 +72,7 @@
         <ion-item class="ion-container">
           <div class="container">
             <div class="searchInput">
-              <label position="floating" class="house-text">Property Residential Address<span class="required-indicator"
+              <label position="floating" class="house-text">Property Residential Address <ion-spinner name="crescent" color="black" *ngIf="loadingAddress"></ion-spinner><span class="required-indicator"
                   *ngIf="!address">*</span></label>
               <ion-input (ionInput)="handleInputChange($event)" type="text" class="house-text" id="address"
               [(ngModel)]="address" placeholder="Enter an address" ></ion-input>
@@ -311,7 +311,12 @@
               <ion-col>
                 <ion-label class="house-text">Property Description</ion-label>
                 <textarea [(ngModel)]="description" id="desc" rows="10" cols="50">{{description}}</textarea><br>
-                <ion-button (click)="generateDesc()">AI Generated Description</ion-button>
+                <ng-container *ngIf="descriptionLoading; else generateButton">
+                  <ion-button ><ion-spinner name="crescent" color="black" class="search-icon"></ion-spinner></ion-button>
+                </ng-container>
+                <ng-template #generateButton>
+                  <ion-button  (click)="generateDesc()">AI Generated Description</ion-button>
+                </ng-template>
               </ion-col>
             </ion-row>
           </ion-grid>  
