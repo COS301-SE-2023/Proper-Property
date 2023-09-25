@@ -7,7 +7,6 @@ export class UserProfileUpdatedHandler implements IEventHandler<UserProfileUpdat
   constructor(private readonly profileRepository: ProfileRepository) {}
 
   async handle(event: UserProfileUpdatedEvent) {
-    console.log(UserProfileUpdatedHandler.name);
     await this.profileRepository.updateUserProfile(event.user);
   }
 }

@@ -7,14 +7,6 @@ import { GetLocInfoDataResponse,
   UploadLocInfoDataRequest,
   UploadLocInfoDataResponse} from '@properproperty/api/loc-info/util';
 
-
-export const getCrimeRating = functions.region("europe-west1").https.onCall(
-  async (district : string) => {
-    console.log(district);
-  }
-);
-
-
 export const uploadLocInfoData = functions.region('europe-west1').https.onCall(
   async(
     request: UploadLocInfoDataRequest

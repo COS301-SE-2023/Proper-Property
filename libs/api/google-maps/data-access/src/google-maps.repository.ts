@@ -1,7 +1,7 @@
 
 import * as admin from 'firebase-admin';
 import { Injectable } from '@nestjs/common';
-import { Listing, StatusChangedEvent } from '@properproperty/api/listings/util';
+import { Listing, StatusChangedEvent, characteristics } from '@properproperty/api/listings/util';
 import { DocumentData, QueryDocumentSnapshot } from 'firebase-admin/firestore';
 import { Client, PlaceData, PlacesNearbyResponse, PlacesNearbyRequest, GeocodeRequest } from '@googlemaps/google-maps-services-js';
 import { GetNearbyPlacesResponse, StoredPlaces } from '@properproperty/api/google-maps/util';
@@ -31,8 +31,7 @@ export class GoogleMapsRepository {
       .doc(listingId)
       .get()).data();
     if (!docData?.pointsOfInterestIds) {
-      console.log("Hablo no listing por favor")
-      throw new Error("Hablo no listing por favor");
+      throw new Error("No listings were found");
     }
     const pointIDs = docData.pointsOfInterestIds ?? [];
     if (pointIDs.length == 0) {
@@ -116,9 +115,55 @@ export class GoogleMapsRepository {
     "train_station",
     "university"
   ];
+  
+  garden = false;
+  farm = false;
+  party = false;
+  mansion = false;
+  foreign = false;
+  food = false;
+  kids = false;
+  students = false;
+  accessible = false;
+  eco = false;
+  gym = false;
+  owner = false;
+  // TODO use this?
+  umbrella = false;
+
+  touristDestinations: { lat: number, long: number }[] = [
+    {lat:-34.176050 , long:18.342900 },
+    {lat: -34.195390, long:18.448440 },
+    {lat: -33.905883288483416, long:18.419559881341613 },
+    {lat: -34.027445620027166, long:18.423969494340202 },
+    {lat: -33.392068620368626, long:22.214438260829674 },
+    {lat: -33.96514937559787, long: 23.647563426763526},
+    {lat: -33.63071315123244, long: 22.16256336631636},
+    {lat: -34.03129778606299, long:23.268054710171135 },
+    {lat: -34.059403776473296, long: 24.925173425242086}, 
+    {lat: -28.739026512440127, long: 24.75851569159852},
+    {lat: -28.591087302842954, long: 20.340018582987643}, 
+    {lat: -26.237620540599668, long:28.008435662716852  },
+    {lat: -26.235801689082212, long:28.013123779328716 },
+    {lat: -26.1559515206671, long:28.08378026658916 },
+    {lat: -25.749179107587615, long: 27.89070119780269},
+    {lat:-26.10722590098277 , long: 28.054846836406742},
+    {lat: -26.024251206632584, long:28.01180037855904 },
+    {lat: -25.77601429876691, long: 28.1757716231563}, 
+    {lat: -25.966873618607902, long: 27.6625737674743},
+    {lat: -26.016628111537738, long:27.7335727936381 },
+    {lat: -25.357142891151142, long:27.100530200731004 },
+    {lat: -25.253891585249146, long: 27.219679545822608}, 
+    {lat: -29.86710808840616, long: 31.045841467231135},
+    {lat: -29.846719768113445, long:31.036797371292593 }, 
+    {lat: -34.07715084394336, long: 18.891699304113544}, 
+    {lat: -24.572030884249113, long: 30.79878685209525},  
+    {lat: -24.057146033668925, long:30.86003735206916 }, 
+  ];
+
   docData: Listing | undefined;
   async geocodeAddress(address ?: string){
-    const keeeeee = process.env['NX_GOOGLE_MAPS_KEY']
+    const keeeeee = process.env['NX_GOOGLE_MAPS_KEY'];
     if(!keeeeee){
       return;
     }
@@ -132,20 +177,22 @@ export class GoogleMapsRepository {
   }
 
   async addPOIs(event : StatusChangedEvent){
+    if (!process.env['NX_GOOGLE_MAPS_KEY']) {
+      return;
+    }
     const updates:{
       geometry?: {
         lat: number,
         lng: number,
       },
-      pointsOfInterestIds: string[]
+      pointsOfInterestIds: string[],
+      characteristics?: characteristics
     } = {
       pointsOfInterestIds: []
     };
-    console.log(GoogleMapsRepository.name, "::addPOIs 1");
     let geocode = undefined;
     this.docData = (await this.listingRepo.getListing(event.listingId)).listings[0];
     if (!this.docData) {
-      console.log("Listing doc not found");
       return {status: false, message: "Listing doc not found"};
     }
     // I love javascript
@@ -160,30 +207,21 @@ export class GoogleMapsRepository {
         lat: geocode?.lat ?? 0,
         lng: geocode?.lng ?? 0
       }
-      console.log("Geocode: ", geocode)
     }
     
     if(!geocode?.lat || !geocode?.lng){ // tests positive if a listing has lat/long = 0, but the oceans are rising, not receding so w/e
-      console.log("Geocoding of address could not be calculated");
       return {status : false, message: "Geocoding failed, bro lives in Narnia"};
     }
 
-    console.log(GoogleMapsRepository.name, "::addPOIs");
     const ids = this.docData?.pointsOfInterestIds ?? [];
     if(ids.length > 0){
-      console.log("Points of interest already exist");
       return {status: false, message: "Points of interest found"};
     }
 
-    console.log(GoogleMapsRepository.name, "::addPOIs 3");
     if(!process.env['NX_GOOGLE_MAPS_KEY']){
-      console.log("No google maps API key");
       throw new Error("No API key found")
     }
 
-    console.log(GoogleMapsRepository.name, "::addPOIs 4");
-
-    console.log("requests are starting for poi")
     let response: PlacesNearbyResponse | undefined;
     let token: string | undefined;
     let pageFlag = true;
@@ -209,8 +247,6 @@ export class GoogleMapsRepository {
       try {
         response = await this.mapsClient.placesNearby(request);
       } catch (e) {
-        console.log("NearbyPlaces Failed: ");
-        console.log(e);
         return {status: false, message: e};
       }
       if (!response) {
@@ -218,10 +254,8 @@ export class GoogleMapsRepository {
       }
       token = response.data.next_page_token;
       if (token) {
-        console.log(pageCounter, ": But wait (10-ish seconds)! There's more!");
         pageFlag = true;
         await sleep(10000);
-        console.log("Waiting finished");
       }
       
       response.data.results.forEach((place) => {
@@ -231,6 +265,7 @@ export class GoogleMapsRepository {
         place.types?.forEach((type) => {
           const index = this.types.indexOf(type);
           if (index > -1) {
+            // TODO Lern tu cownt restaronts
             this.flags[index] = true;
           }
         });
@@ -245,6 +280,8 @@ export class GoogleMapsRepository {
         });
       });
     }
+    // TODO set "middle of nowhere" if no POIS added after loop
+    this.farm = poiIDs.length == 0 && this.docData.property_size >= 10000;
 
     let savings = -0.032 * 3;
     for ( let x = 0; x < this.types.length && process.env['NX_ENVIRONMENT']; ++x) {
@@ -254,29 +291,76 @@ export class GoogleMapsRepository {
       }
     }
     if (process.env['NX_RECOMMENDATION']) {
+      const listing = this.docData;
+      this.garden = listing.features.indexOf("Garden") > -1;
+
+      // TODO Mansion
+      if(listing.floor_size >= 2500 && listing.bed>= 4){
+        this.mansion = true;
+      }
+      
+      // TODO accessible
+      if(listing.features.indexOf("Accessible") > -1){
+        this.accessible = true;
+      }
+
+      // TODO Foreign
+        for (const touristLocation of this.touristDestinations) {
+          const distance = this.calculateDistanceInMeters(
+            listing.geometry.lat, 
+            listing.geometry.lng, 
+            touristLocation.lat, 
+            touristLocation.long
+          );
+          if (distance < 15000) {
+            this.foreign = true;
+            break;
+          }
+        }
+
+      // TODO eco-warrior
+      this.eco = listing.features.indexOf("Solar Panels") > -1;
+
+      // TODO owner
+      if(this.docData.features.length > 8 && (this.docData.furnish_type == "Furnished" || this.docData.furnish_type == "Partly Furnished")){
+        this.owner = true;
+      }
+
       if (pageCounter >= 3 && this.getCharacteristics) {
         this.checkParty();
-        this.checkGym();
+        this.checkgym();
         this.checkFood();
         this.checkUniversity();
         this.checkFamily();
       }
-      
-      for(let i = 0; i < this.types.length; i++) {
-        console.log(this.types[i] + ": " + this.flags[i]);
-      }
 
-      console.log("Saved a grand total of: " + savings);
+      // console.log("Saved a grand total of: " + savings);
       // TODO add characteristics to listing
     }
     updates['pointsOfInterestIds'] = poiIDs;
+    updates['characteristics'] = {
+      garden: this.garden,
+      farm: this.farm,
+      party: this.party,
+      mansion: this.mansion,
+      foreign: this.foreign,
+      lovinIt: this.food,
+      family: this.kids,
+      student: this.students,
+      accessible: this.accessible,
+      ecoWarrior: this.eco,
+      gym: this.gym,
+      owner: this.owner,
+      leftUmbrella: this.umbrella,
+      openConcept: false,
+    };
     await admin
       .firestore()
       .collection('listings')
       .doc(event.listingId)
-      .update({
+      .set({
         ...updates
-      });
+      }, {merge: true});
     this.addMissingPlaces(poiIDs, places);
     return {status: true, message: "Points of interest added :thumbsupp:"};
   }
@@ -307,7 +391,6 @@ export class GoogleMapsRepository {
 
   async addPlace(place: Partial<PlaceData>) {
     if (!place.place_id) {
-      console.log("Place has no ID");
       return;
     }
     admin
@@ -352,32 +435,38 @@ export class GoogleMapsRepository {
     }
     // check bar nearby
     if (this.flags[this.types.indexOf('bar')]) {
+      this.party = true;
       return;
     }
     this.flags[this.types.indexOf('bar')] = await this.checkPlaces('bar', 1000);
     if (this.flags[this.types.indexOf('bar')]) {
+      this.party = true;
       return;
     }
     
     // check night club nearby
     if (this.flags[this.types.indexOf('night_club')]) {
+      this.party = true;
       return;
     }
     this.flags[this.types.indexOf('night_club')] = await this.checkPlaces('night_club', 1000);
     if (this.flags[this.types.indexOf('night_club')]) {
+      this.party = true;
       return;
     }
     // check casino nearby
     if (this.flags[this.types.indexOf('casino')]) {
+      this.party = true;
       return;
     }
     this.flags[this.types.indexOf('casino')] = await this.checkPlaces('casino', 2000);
     if (this.flags[this.types.indexOf('casino')]) {
+      this.party = true;
       return;
     }
   }
 
-  async checkGym() {
+  async checkgym() {
     if (this.flags[this.types.indexOf('gym')]) {
       return;
     }
@@ -398,7 +487,7 @@ export class GoogleMapsRepository {
     if (!this.flags[this.types.indexOf('restaurant')]) {
       return;
     }
-    
+    // TODO, maybe replace with uber eats? Everywhere has delivery
     if (!this.flags[this.types.indexOf('meal_delivery')]) {
       this.flags[this.types.indexOf('meal_delivery')] = await this.checkPlaces('meal_delivery', 3000, 2);
     }
@@ -412,11 +501,21 @@ export class GoogleMapsRepository {
     if (!this.flags[this.types.indexOf('cafe')]) {
       return;
     }
+    this.food = true;
   }
 
   async checkUniversity() {
+    const listing = this.docData;
+    if (!listing) {
+      return;
+    }
+    if(listing.price > 6000 || listing.features.indexOf("Wifi") == -1) {
+      this.students = false;
+      return
+    }
+
     if (!this.flags[this.types.indexOf('university')]) {
-      this.flags[this.types.indexOf('university')] = await this.checkPlaces('university', 5000);
+      this.students = await this.checkPlaces('university', 5000);
     }
   }
 
@@ -427,7 +526,7 @@ export class GoogleMapsRepository {
     if (!this.flags[this.types.indexOf('school')] && !this.flags[this.types.indexOf('primary_school')]) {
       this.flags[this.types.indexOf('primary_school')] = await this.checkPlaces('primary_school', 10000);
     }
-    if (!this.flags[this.types.indexOf('school')] || !this.flags[this.types.indexOf('primary_school')]) {
+    if (!this.flags[this.types.indexOf('school')] && !this.flags[this.types.indexOf('primary_school')]) {
       return;
     }
 
@@ -435,6 +534,7 @@ export class GoogleMapsRepository {
       this.flags[this.types.indexOf('movie_theater')] = await this.checkPlaces('movie_theater', 10000);
     }
     if (this.flags[this.types.indexOf('movie_theater')]) {
+      this.kids = true;
       return;
     }
 
@@ -442,6 +542,7 @@ export class GoogleMapsRepository {
       this.flags[this.types.indexOf('park')] = await this.checkPlaces('park', 1000);
     }
     if (this.flags[this.types.indexOf('park')]) {
+      this.kids = true;
       return;
     }
     
@@ -449,6 +550,7 @@ export class GoogleMapsRepository {
       this.flags[this.types.indexOf('zoo')] = await this.checkPlaces('zoo', 10000);
     }
     if (this.flags[this.types.indexOf('zoo')]) {
+      this.kids = true;
       return;
     }
     
@@ -456,6 +558,7 @@ export class GoogleMapsRepository {
       this.flags[this.types.indexOf('bowling_alley')] = await this.checkPlaces('bowling_alley', 10000);
     }
     if (this.flags[this.types.indexOf('bowling_alley')]) {
+      this.kids = true;
       return;
     }
     
@@ -463,6 +566,7 @@ export class GoogleMapsRepository {
       this.flags[this.types.indexOf('amusement_park')] = await this.checkPlaces('amusement_park', 10000);
     }
     if (this.flags[this.types.indexOf('amusement_park')]) {
+      this.kids = true;
       return;
     }
     
@@ -470,7 +574,29 @@ export class GoogleMapsRepository {
       this.flags[this.types.indexOf('aquarium')] = await this.checkPlaces('aquarium', 10000);
     }
     if (this.flags[this.types.indexOf('aquarium')]) {
+      this.kids = true;
       return;
     }
+  }
+  calculateDistanceInMeters(lat1: number, lon1: number, lat2: number, lon2: number): number {
+    //https://en.wikipedia.org/wiki/Haversine_formula
+    const latDelta = this.toRad(lat2 - lat1);
+    const lonDelta = this.toRad(lon2 - lon1);
+    const sinLat = Math.sin(latDelta/2);
+    const sinLon = Math.sin(lonDelta/2);
+    // 1.42
+    const _2Radius = 2 * 6378137;
+    const a = sinLat * sinLat + 
+            Math.cos(this.toRad(lat1)) * Math.cos(this.toRad(lat2)) * 
+            sinLon * sinLon;
+
+    const c = Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    const d = _2Radius * c;
+
+    return d;
+  }
+  
+  toRad(degrees: number): number {
+    return degrees * Math.PI / 180;
   }
 }

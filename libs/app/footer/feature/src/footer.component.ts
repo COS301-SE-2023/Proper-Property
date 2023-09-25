@@ -17,7 +17,6 @@ export class FooterComponent implements OnInit{
 
   async getHelpGuide(){
     const response = await getDownloadURL(ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + "/help-guide/help-guide.pdf"));
-    console.log(response)
     return response;
   }
 }

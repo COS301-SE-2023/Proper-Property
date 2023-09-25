@@ -8,6 +8,7 @@ import { ListingPageRoutingModule } from './listing.routing';
 import { ListingModule as ListingDataAccessModule } from '@properproperty/app/listing/data-access'
 import { ListingPage } from './listing.page';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FooterModule } from '@properproperty/app/footer/feature';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     FormsModule,
     IonicModule,
     ListingPageRoutingModule,
-    ListingDataAccessModule
+    ListingDataAccessModule,
+    FooterModule
   ],
   declarations: [ListingPage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

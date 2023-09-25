@@ -15,9 +15,6 @@ implements ICommandHandler<
   ) {}
 
   async execute(command: EditListingCommand) {
-    console.log(EditListingHandler.name);
-    console.log(command);
-
     if(!command.listing.listing_id){
       return {listingId: "FAILURE"};
     }

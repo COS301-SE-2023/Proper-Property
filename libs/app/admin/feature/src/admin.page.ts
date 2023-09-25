@@ -32,7 +32,8 @@ export class AdminPage implements OnInit{
   muniFiles: FileList | null = null;
   muniUploaded = false;
   selectedFiles: string[] = [];
-
+  loading = false;
+  loadingMessage = "";
   nonAppListings : Listing[] = [];
   appListings : Listing[] = [];
   isPopoverOpen = false;
@@ -75,38 +76,32 @@ export class AdminPage implements OnInit{
   }
 
   async ngOnInit() {
-    const show=document.querySelector('#show') as HTMLDivElement;
-    show.style.opacity="0";
-    const load=document.querySelector('#loader') as HTMLElement;
-    load.style.opacity="1";
+    // const show=document.querySelector('#show') as HTMLDivElement;
+    // show.style.opacity="0";
+    // const load=document.querySelector('#loader') as HTMLElement;
+    // load.style.opacity="1";
+    this.loadingMessage = "Loading Unapproved Listings...";
+    this.loading = true;
     this.nonAppListings = [];      
-    this.listingServices.getUnapprovedListings().then((response) => {
-      this.nonAppListings = response;
+    this.nonAppListings = await this.listingServices.getUnapprovedListings();
 
-      this.nonAppListings = this.nonAppListings.sort((a, b) => {
-        const tempA = new Date(a.listingDate);
-        const tempB = new Date(b.listingDate);
-        if(tempA > tempB){
-          return -1
-        }
-        else if(tempA < tempB){
-          return 1;
-        }
-        else{
-          return 0;
-        }
-      })
-    });
-  
-    setTimeout( function finishLoading(){
-      const show=document.querySelector('#show') as HTMLDivElement;
-      const load=document.querySelector('#loader') as HTMLElement;
-      if(!show){
-        console.log("Show does not exist");
+    this.nonAppListings = this.nonAppListings.sort((a, b) => {
+      const tempA = new Date(a.listingDate);
+      const tempB = new Date(b.listingDate);
+      if(tempA > tempB){
+        return -1
       }
-      load.style.opacity="0";
-      show.style.opacity="1";
-    }, 1000)
+      else if(tempA < tempB){
+        return 1;
+      }
+      else{
+        return 0;
+      }
+    })
+
+    setTimeout(async () => {
+      this.loading = false;
+    }, 3000)
   }
 
   addData(){
@@ -119,7 +114,6 @@ export class AdminPage implements OnInit{
     this.muniFiles = null;
     this.WWQ = null;
     this.isPopoverOpen = true;
-    console.log("Adding data");
   }
 
   handleFileInput(event: Event, type: string) {
@@ -131,41 +125,30 @@ export class AdminPage implements OnInit{
       return;
     }
 
-    console.log(type)
-    // console.log(this.selectedFiles)
-
     if(type == "crime" && files[0]['name'].toLowerCase().includes("crime")){
       this.crimeFiles = files;
-      console.log("Crime files uploaded");
     }
     else if(type == "sanitation" && files[0]['name'].toLowerCase().includes("sanitation")){
       this.sanitationFiles = files;
-      console.log("Sanitation files uploaded");
     }
     else if(type == "waterAccess" && files[0]['name'].toLowerCase().includes("access")){
       this.waterAccessFiles = files;
-      console.log("Water Access files uploaded");
     }
     else if (type == "waterQuality" && files[0]['name'].toLowerCase().includes("quality")){
       this.waterQualityFiles = files;
-      console.log("Water Quality files uploaded");
     }
     else if (type == "waterReliability" && files[0]['name'].toLowerCase().includes("reliability")){
       this.waterReliabilityFiles = files;
-      console.log("Water Reliability files uploaded")
     }
     else if (type == "waterTariffs" && files[0]['name'].toLowerCase().includes("tariffs")){
       this.waterTariffsFiles = files;
-      console.log("Water Tariffs files uploaded")
     }
     else if (type == "muni" && files[0]['name'].toLowerCase().includes("municipality")){
       this.muniFiles = files;
       this.muniUploaded = true;
-      console.log("Municipality files uploaded")
     } 
     else if(type == "WWQ" && files[0]['name'].toLowerCase().includes("wwq")){
       this.WWQ = files;
-      console.log("WWQ files uploaded")
     }
     else{
       return;
@@ -189,14 +172,10 @@ export class AdminPage implements OnInit{
           await jsonResponse.forEach((element : any) => {
             muniData.push(element);  
           });
-
-          console.log(muniData);
           await this.adminServices.uploadMuniData(muniData);
         }
       }
     }
-
-    console.log("Processing data");
     if (this.crimeFiles && this.crimeFiles.length > 0) {
       for (let index = 0; index < this.crimeFiles.length; index++) {
         if (this.crimeFiles.item(index))
@@ -231,9 +210,7 @@ export class AdminPage implements OnInit{
             response.forEach((element : any) => {
             WWQData.push(element);
           });
-          await this.adminServices.uploadWWQStats(WWQData).then((response) => {
-            console.log(response);
-          })
+          await this.adminServices.uploadWWQStats(WWQData);
         });
       }
     }
@@ -246,7 +223,6 @@ export class AdminPage implements OnInit{
               response.forEach((element : any) => {
               waterAccessData.push(element);
             });
-            console.log(waterAccessData);
             await this.adminServices.uploadWaterAccessData(waterAccessData);
           });
       }
@@ -260,7 +236,6 @@ export class AdminPage implements OnInit{
               response.forEach((element : any) => {
               waterQualityData.push(element);
             });
-            console.log(waterQualityData);
             await this.adminServices.uploadWaterQualityData(waterQualityData);
           });
       }
@@ -274,7 +249,6 @@ export class AdminPage implements OnInit{
               response.forEach((element : any) => {
               waterReliabilityData.push(element);
             });
-            console.log(waterReliabilityData);
             await this.adminServices.uploadWaterReliabilityData(waterReliabilityData);
           });
       }
@@ -288,7 +262,6 @@ export class AdminPage implements OnInit{
               response.forEach((element : any) => {
               waterTariffData.push(element);
             });
-            console.log(waterTariffData);
             await this.adminServices.uploadWaterTariffData(waterTariffData);
           });
       }

@@ -143,3 +143,13 @@ ion-card ion-card-content {
   float: right;
   margin-right: 1%
 }
+
+#loader{
+  position: absolute;
+  // right: 45%;
+  text-align: center;
+  z-index: 1;
+  top: 40%;
+  // opacity: 0;
+  width: 100%;
+}

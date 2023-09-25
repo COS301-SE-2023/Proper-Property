@@ -78,11 +78,20 @@ export class ProfilePage implements OnInit {
       this.isMobile = window.innerWidth <= 576;
     // default value cus ngModel cries when the user is null
     this.interests = {
-      garden: 0,
-      mansion: 0,
-      accessible: 0,
-      openConcept: 0,
-      ecoWarrior: 0,
+      garden: 50,
+        party: 50,
+        mansion: 50,
+        accessible: 50,
+        foreign: 50,
+        openConcept: 50,
+        ecoWarrior: 50,
+        family: 50,
+        student: 50,
+        lovinIt: 50,
+        farm: 50,
+        gym: 50,
+        owner: 50,
+        leftUmbrella: 50
     };
 
     this.userProfile$.subscribe((profile) => {
@@ -96,10 +105,19 @@ export class ProfilePage implements OnInit {
       else {
         this.interests = {
           garden: 50,
-          mansion: 20,
-          accessible: 60,
-          openConcept: 90,
-          ecoWarrior: 75,
+          party: 50,
+          mansion: 50,
+          accessible: 50,
+          foreign: 50,
+          openConcept: 50,
+          ecoWarrior: 50,
+          family: 50,
+          student: 50,
+          lovinIt: 50,
+          farm: 50,
+          gym: 50,
+          owner: 50,
+          leftUmbrella: 50
         };
       }
     });
@@ -116,7 +134,6 @@ export class ProfilePage implements OnInit {
 
    @HostListener('window:resize', ['$event'])
    onResize(event: Event) {
-     console.log(event);
      this.isMobile = window.innerWidth <= 576;
    }
    
@@ -232,12 +249,10 @@ export class ProfilePage implements OnInit {
     const files: FileList | null = (event.currentTarget as HTMLInputElement).files;
     if (files) {
       this.saveProfile = true;
-      console.log(files);
       for (let index = 0; index < files.length; index++) {
         if (files.item(index)){
           this.profilePic = URL.createObjectURL(files.item(index) as Blob);
           document.getElementById("profilePic2")?.setAttribute("style", "margin: 10px; border-radius: 50%; border: 1px solid black; width: 100px; height: 100px; background-image: url('" + this.profilePic + "'); background-size: cover; background-position-x: center; background-position-y: center;")
-          console.log("brooo ",URL.createObjectURL(files.item(index) as Blob));
         }
       }
     }
@@ -246,10 +261,7 @@ export class ProfilePage implements OnInit {
 
   async saveProfilePic(){
     if(this.user){
-      console.log(this.profilePic)
-      console.log("saving profile pic")
       const response = await this.userProfileService.uploadProfilePic(this.user.userId, this.profilePic);
-      console.log(response);
       document.getElementById("profilePic2")?.setAttribute("style", "margin: 10px; border-radius: 50%; border: 1px solid black; width: 100px; height: 100px; background-image: url('" + this.profilePic + "'); background-size: cover; background-position-x: center; background-position-y: center;")
       this.saveProfile = false;
     }

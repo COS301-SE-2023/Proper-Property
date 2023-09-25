@@ -5,6 +5,7 @@ import { SearchModule } from '@properproperty/api/search/feature';
 import { NotificationsModule } from '@properproperty/api/notifications/feature';
 import { LocInfoModule } from '@properproperty/api/loc-info/feature';
 import { GoogleMapsModule } from '@properproperty/api/google-maps/feature';
+import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     ProfileModule, 
@@ -12,7 +13,8 @@ import { GoogleMapsModule } from '@properproperty/api/google-maps/feature';
     SearchModule, 
     NotificationsModule,
     LocInfoModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    ConfigModule.forRoot()
   ],
 })
 export class CoreModule {}

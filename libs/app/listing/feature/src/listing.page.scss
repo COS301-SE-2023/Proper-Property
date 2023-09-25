@@ -23,6 +23,12 @@
   padding: 5%;
 }
 
+.footer-gap{
+  height: 100vh;
+  float: down;
+  position:absolute;
+}
+
 .approveBut {
   width: 35%;
   margin-left:50%;
@@ -460,11 +466,11 @@ ion-item {
   text-align: center;
   z-index: 1;
   top: 40%;
-  opacity: 0;
+  // opacity: 0;
 }
 
 #show{
-  opacity: 1;
+  // opacity: 1;
 }
 
 @media (max-width: 800px){
