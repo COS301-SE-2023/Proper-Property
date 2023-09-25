@@ -7,7 +7,6 @@ export class StatusChangedHandler implements IEventHandler<StatusChangedEvent> {
   constructor(private readonly listingRepo: ListingsRepository) {}
 
   async handle(event: StatusChangedEvent) {
-    console.log(StatusChangedHandler.name);
     await this.listingRepo.changeStatus(event.listingId, event.change, event.req);
   }
 }

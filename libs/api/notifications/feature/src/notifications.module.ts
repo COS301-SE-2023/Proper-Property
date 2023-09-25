@@ -7,7 +7,8 @@ import {
   NotifyStatusChangeHandler,
   NotifyViewDropHandler,
   NotifyListingCreatedHandler,
-  NotifyListingEditedHandler
+  NotifyListingEditedHandler,
+  SendQREmailHandler
 } from './commands';
 import { 
   ApprovalChangeNotifiedHandler,
@@ -20,7 +21,8 @@ const commandHandlers = [
   NotifyStatusChangeHandler,
   NotifyViewDropHandler,
   NotifyListingCreatedHandler,
-  NotifyListingEditedHandler
+  NotifyListingEditedHandler,
+  SendQREmailHandler
 ];
 const eventHandlers = [
   ApprovalChangeNotifiedHandler,

@@ -7,7 +7,6 @@ export class ListingEditedHandler implements IEventHandler<ListingEditedEvent> {
   constructor(private readonly listingRepo: ListingsRepository) {}
 
   async handle(event: ListingEditedEvent) {
-    console.log(ListingEditedHandler.name);
     await this.listingRepo.editListing(event.listing);
   }
 }

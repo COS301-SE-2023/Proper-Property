@@ -50,9 +50,6 @@ export class GmapsService {
   
         const selectedPlace = places[0];
         input.value = selectedPlace.formatted_address;
-  
-        // Handle the selected place(s) here
-        console.log('Selected place:', places[0]);
       });
     });
   }
@@ -78,7 +75,6 @@ export class GmapsService {
   }
 
   geocodeAddress(address: string): Promise<google.maps.GeocoderResult | null> {
-    console.warn("Geocodeing address: ", address);
     return this.getGeocoder().then((geocoder) => {
       return new Promise<google.maps.GeocoderResult | null>((resolve, reject) => {
         geocoder.geocode({ address: address }, (results, status) => {
@@ -111,7 +107,6 @@ export class GmapsService {
         if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
           // Process the predictions here
           this.predictions = predictions.filter((prediction) => !prediction.types.includes('street_address'));
-          console.log('Autocomplete predictions:', this.predictions);
         } else {
           this.predictions = [];
         }
@@ -197,9 +192,6 @@ export class GmapsService {
   
         const selectedPlace = places[0];
         input.value = selectedPlace.formatted_address;
-  
-        // Handle the selected place(s) here
-        console.log('Selected place:', places[0]);
       });
     });
   }
@@ -327,27 +319,6 @@ export class GmapsService {
     });
   }
 
-  // getNearbyPlaces(latitude: number, longitude: number): Promise<google.maps.places.PlaceResult[]> {
-  //   return this.loadGoogleMaps().then((maps) => {
-  //     const service = new maps.places.PlacesService(document.createElement('div'));
-
-  //     return new Promise<google.maps.places.PlaceResult[]>((resolve, reject) => {
-  //       const request = {
-  //         location: new maps.LatLng(latitude, longitude),
-  //         radius: 5000, // Specify the radius within which to search for nearby places (in meters)
-  //       };
-
-  //       service.nearbySearch(request, (results: google.maps.places.PlaceResult[], status: google.maps.places.PlacesServiceStatus) => {
-  //         if (status === maps.places.PlacesServiceStatus.OK) {
-  //           resolve(results);
-  //         } else {
-  //           reject('Failed to retrieve nearby places');
-  //         }
-  //       });
-  //     });
-  //   });
-  // }
-
   async getNearbyPlaces2(listingId : string): Promise<StoredPlaces[]>{
     const response = (await httpsCallable<
       GetNearbyPlacesRequest,
@@ -361,15 +332,38 @@ export class GmapsService {
     return [];
   }
 
-  getNearbySchools(latitude: number, longitude: number): Promise<google.maps.places.PlaceResult[]> {
+  //////////////////////////////////// Added for Recomendation System: getNearbyPlace + an extra parameter///////////////
+  getNearbyPlaceType(latitude: number, longitude: number, placeType: string): Promise<google.maps.places.PlaceResult[]> {
     return this.loadGoogleMaps().then((maps) => {
       const service = new maps.places.PlacesService(document.createElement('div'));
 
       return new Promise<google.maps.places.PlaceResult[]>((resolve, reject) => {
         const request = {
           location: new maps.LatLng(latitude, longitude),
+          radius: 2000, // Specify the radius within which to search for nearby places (in meters) - 2000
+          type: placeType,
+        };
+
+        service.nearbySearch(request, (results: google.maps.places.PlaceResult[], status: google.maps.places.PlacesServiceStatus) => {
+          if (status === maps.places.PlacesServiceStatus.OK) {
+            resolve(results); // Places found
+          } else {
+            reject('Failed to retrieve nearby places');
+          }
+        });
+      });
+    });
+  }
+
+  getNearbySchools(latitude: number, longitude: number): Promise<google.maps.places.PlaceResult[]> { 
+  return this.loadGoogleMaps().then((maps) => {
+      const service = new maps.places.PlacesService(document.createElement('div'));
+
+      return new Promise<google.maps.places.PlaceResult[]>((resolve, reject) => {
+        const request = {
+          location: new maps.LatLng(latitude, longitude),
           radius: 20000, // Specify the radius within which to search for nearby places (in meters)
-          keyword: 'school'
+          keyword: 'school'      
         };
 
         service.nearbySearch(request, (results: google.maps.places.PlaceResult[], status: google.maps.places.PlacesServiceStatus) => {
@@ -382,7 +376,7 @@ export class GmapsService {
       });
     });
   }
-
+ 
   getNearbyPoliceStations(latitude: number, longitude: number): Promise<google.maps.places.PlaceResult[]> {
     return this.loadGoogleMaps().then((maps) => {
       const service = new maps.places.PlacesService(document.createElement('div'));
@@ -397,7 +391,6 @@ export class GmapsService {
         service.nearbySearch(request, (results: google.maps.places.PlaceResult[], status: google.maps.places.PlacesServiceStatus) => {
           if (status === maps.places.PlacesServiceStatus.OK) {
             resolve(results);
-            console.log("Police stations: ",results)
           } else {
             reject('Failed to retrieve nearby police stations');
           }

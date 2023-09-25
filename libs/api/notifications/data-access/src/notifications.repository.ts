@@ -4,12 +4,9 @@ import * as admin from 'firebase-admin';
 import { FieldValue } from 'firebase-admin/firestore';
 @Injectable()
 export class NotificationsRepository {
-  constructor() {
-    console.log('NotificationsRepository');
-  }
+  constructor() {}
 
   async getNotifications(userId: string) {
-    console.log('getNotifications');
     return (await admin
       .firestore()
       .collection('notifications')
@@ -23,7 +20,6 @@ export class NotificationsRepository {
   }
 
   async updateNotifications(notification: Notification) {
-    console.log('updateNotifications');
     await admin
       .firestore()
       .collection('notifications')

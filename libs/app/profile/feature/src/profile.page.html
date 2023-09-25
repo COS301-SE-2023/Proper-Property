@@ -3,7 +3,7 @@
 
     <ion-grid>
       <ion-row class="profilePic">
-        <ion-col size="2.5">
+        <ion-col size="3.5">
         <ion-grid>
           <ion-row class="ion-justify-content-center">
             <div (click)="fileInput.click()" style="margin: 10px; border-radius: 50%; border: 1px solid black; width: 100px; height: 100px; background-image: url({{profilePic}}); background-size: cover; background-position-x: center; background-position-y: center;" id="profilePic2"></div>
@@ -12,46 +12,79 @@
           <ion-row class="ion-justify-content-center">
             <ion-button style="float: right;" size="small" expand="full" color="primary" (click)="saveProfilePic()">Save Profile</ion-button>
           </ion-row>
-          <ion-row class="ion-justify-content-center">            
+          <!-- <ion-row class="ion-justify-content-center">            
             <h3>{{ user?.firstName }} {{ user?.lastName }}</h3>
-          </ion-row>
+          </ion-row> -->
         </ion-grid>
       </ion-col>
         <ion-col>
+          <h1>{{ user?.firstName }} {{ user?.lastName }}</h1>
+      
+            <ion-grid class="Userlabels">
+              <ion-row class="row1">
+                  <ion-item>
+                    <ion-icon class="iconic" name="flower-outline" size="small"></ion-icon>
+                    <ion-label position="stacked"></ion-label>
+                    <ion-range [(ngModel)]="interests.garden" ></ion-range>
+                  </ion-item>
+  
+                  <ion-item>
+                    <ion-icon class="iconic" name="home-outline" size="small"></ion-icon>
+                    <ion-label position="stacked"></ion-label>
+                    <ion-range [(ngModel)]="interests.mansion" ></ion-range>
+                  </ion-item>  
 
-          <ion-grid class="Userlabels">
-            <ion-row class="row1">
+                  <ion-item>
+                    <ion-icon class="iconic" name="eye-off-outline" size="small"></ion-icon>
+                    <ion-label position="stacked"></ion-label>
+                    <ion-range [(ngModel)]="interests.accessible" ></ion-range>
+                  </ion-item>
+
+                  <ion-item>
+                    <ion-icon class="iconic" name="beer-outline" size="small"></ion-icon>
+                    <ion-label position="stacked"></ion-label>
+                    <ion-range [(ngModel)]="interests.party" ></ion-range>
+                  </ion-item>
+  
+                  <ion-item>
+                    <ion-icon class="iconic" name="airplane-outline" size="small"></ion-icon>
+                    <ion-label position="stacked"></ion-label>
+                    <ion-range [(ngModel)]="interests.foreign" ></ion-range>
+                  </ion-item>  
+
+              </ion-row>
+              <ion-row class="row1">
                 <ion-item>
-                  <ion-label position="stacked">Garden Lover</ion-label>
-                  <ion-range [(ngModel)]="interests.garden" ></ion-range>
+                  <ion-icon class="iconic" name="school-outline" size="small"></ion-icon>
+                  <ion-label position="stacked"></ion-label>
+                  <ion-range [(ngModel)]="interests.student"></ion-range>
                 </ion-item>
 
                 <ion-item>
-                  <ion-label position="stacked">Mansion Passion</ion-label>
-                  <ion-range [(ngModel)]="interests.mansion" ></ion-range>
+                  <ion-icon class="iconic" class="iconic" name="fast-food-outline" size="small"></ion-icon>
+                  <ion-label position="stacked"></ion-label>
+                  <ion-range [(ngModel)]="interests.lovinIt"></ion-range>
+                </ion-item>
+
+                <ion-item>
+                  <ion-icon class="iconic" name="compass-outline" size="small" ></ion-icon>
+                  <ion-label position="stacked"></ion-label>
+                  <ion-range [(ngModel)]="interests.farm" ></ion-range>
+                </ion-item>
+
+                <ion-item>
+                  <ion-icon class="iconic" name="barbell-outline" size="small"></ion-icon>
+                  <ion-label position="stacked"></ion-label>
+                  <ion-range [(ngModel)]="interests.gym" ></ion-range>
                 </ion-item>  
 
                 <ion-item>
-                  <ion-label position="stacked">Make it Accessible</ion-label>
-                  <ion-range [(ngModel)]="interests.accessible" ></ion-range>
+                  <ion-icon class="iconic" name="car-sport-outline" size="small"></ion-icon>
+                  <ion-label position="stacked"></ion-label>
+                  <ion-range [(ngModel)]="interests.owner" ></ion-range>
                 </ion-item>
-            </ion-row>
-            <ion-row class="row1">
-              <ion-item>
-                <ion-label position="stacked">Open Concept Trend</ion-label>
-                <ion-range [(ngModel)]="interests.openConcept"></ion-range>
-              </ion-item>
-              <ion-item>
-                <ion-label position="stacked">Eco-Warrior</ion-label>
-                <ion-range [(ngModel)]="interests.ecoWarrior"></ion-range>
-              </ion-item>
-
-              <ion-item>
-                <ion-label position="stacked">Party Animal</ion-label>
-                <ion-range [(ngModel)]="interests.ecoWarrior"></ion-range>
-              </ion-item>
-            </ion-row>
-          </ion-grid>
+              </ion-row>
+            </ion-grid>
         </ion-col>
       </ion-row>
 
@@ -82,7 +115,7 @@
           <ion-row class="upGrade">
             <ion-col>
               <ion-button class="but1">
-                <ion-label>Another wow button</ion-label>
+                <ion-label>NEW FEATURE COMMING SOON</ion-label>
               </ion-button>              
             </ion-col>
           </ion-row>

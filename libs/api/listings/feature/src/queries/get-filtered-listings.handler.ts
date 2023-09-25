@@ -10,10 +10,7 @@ export class GetFilteredListingsHandler implements IQueryHandler<
   constructor(private readonly listingsRepository: ListingsRepository) {}
   
   async execute(query: GetFilteredListingsQuery) {
-    console.log(GetFilteredListingsHandler.name);
-    console.log(query);
     const repoResponse = await this.listingsRepository.getFilteredListings(query.req);
-    // console.log(repoResponse);
     return repoResponse;
   }
 }

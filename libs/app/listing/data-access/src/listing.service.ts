@@ -16,6 +16,7 @@ import { Listing,
 import { GetLocInfoDataRequest,
   GetLocInfoDataResponse } from '@properproperty/api/loc-info/util';
 import { Firestore, doc, updateDoc } from '@angular/fire/firestore';
+import { characteristics } from '@properproperty/api/listings/util';
 import { Storage, getDownloadURL, ref, uploadBytes } from "@angular/fire/storage";
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
@@ -48,23 +49,19 @@ export class ListingsService {
       CreateListingResponse
     >(this.functions, 'createListing')(request)).data;
 
-    console.warn(response);
     if (response.status) {
       this.uploadImages(response.message, list.photos);
     }
   }
 
   async saveListing(list : Listing){
-    console.log(list);
     if(list.listing_id){
-      console.log(list.listing_id + " exists, now saving");
       const request: CreateListingRequest = {listing: list};
       const response: CreateListingResponse = (await httpsCallable<
         CreateListingRequest,
         CreateListingResponse
       >(this.functions, 'saveListing')(request)).data;
 
-      console.warn(response);
       if (response.status) {
         this.updateImages(list.listing_id, list.photos);
       }
@@ -223,7 +220,6 @@ export class ListingsService {
   async updateImages(listingId : string, images : string[]){
     const photoURLs : string[] = [];
     const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId);
-    console.log(storageRef.toString());
 
     for(let i = 0; i < images.length; i++){
       const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId + "/image" + i);
@@ -238,13 +234,60 @@ export class ListingsService {
       await updateDoc(listingRef, {photos: photoURLs});
   }
 
+  // recommendationMinimum = .75;
+  recommendationMinimum = 75000;
+
+  async recommender(char: characteristics, userVector: number[])
+  {
+    try {
+      let listVector: number[] = [
+        +!!char.garden, 
+        +!!char.party, 
+        +!!char.mansion, 
+        +!!char.accessible, 
+        +!!char.foreign, 
+        +!!char.student, 
+        +!!char.lovinIt, 
+        +!!char.farm, 
+        +!!char.gym, 
+        +!!char.owner
+      ];
+      console.warn(listVector);
+      console.warn(userVector);
+      for(let x=0; x<10; x++){
+        listVector[x]= listVector[x]*userVector[x];
+      }
+      console.log(listVector)
+      //dot product
+      let dotproduct=0;
+  
+      for(let x=0; x< 10; x++){
+        dotproduct += listVector[x]*userVector[x];
+      }
+      console.warn(dotproduct);
+      // sigmoid function
+      // let e = Math.E;
+      let finalAnswer = 0;
+      // finalAnswer = 1/(1+ e**(-dotproduct));
+      finalAnswer = dotproduct;
+      // console.warn(finalAnswer);
+  
+      if(finalAnswer>=this.recommendationMinimum){
+        return true
+      }
+  
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+  
   async getSanitationScore(district : string){
     const response: GetLocInfoDataResponse = (await httpsCallable<
       GetLocInfoDataRequest,
       GetLocInfoDataResponse
     >(this.functions, 'getLocInfoData')({type: "sanitation", district: district})).data;
 
-    console.log("Listing services", response);
     return response;
   }
 
@@ -254,7 +297,6 @@ export class ListingsService {
       GetLocInfoDataResponse
     >(this.functions, 'getLocInfoData')({type: "water", district: district, listingAreaType: listingAreaType, listingType: listingType, latlong: coordinates})).data;
 
-    console.log("Listing services", response);
     return response;
   }
 
@@ -264,7 +306,6 @@ export class ListingsService {
       GetLocInfoDataResponse
     >(this.functions, 'getLocInfoData')({type: "crime", latlong: coordinates})).data;
 
-    console.log("Listing services", response);
     return response;
   }
 

@@ -48,19 +48,6 @@ export class RegisterPage implements OnInit {
       this.passwordMatch = false;
       return; // Prevent further execution
     }
-    // this.authService.register(this.email, this.password).then(async (res) => {
-    //   if(res !== null){
-    //     const user : profile = {
-    //       email: this.email,
-    //       firstName: this.name,
-    //       lastName: this.surname,
-    //       listings: []
-    //     }
-    //     await this.userService.registerNewUser(user, res.user.uid);
-    //     console.log("Register page: " + this.userService.printCurrentUser());
-    //     this.router.navigate(['/home']);
-    //   }
-    // });
 
     this.store.dispatch(new Register(this.email, this.password));
 
@@ -104,12 +91,6 @@ export class RegisterPage implements OnInit {
   }
 
   googleLogin(){
-    // this.authService.GoogleAuth()
-    //   .then((res) => {
-    //     if (res !== null)
-    //       this.router.navigate(['/home']);
-    //   })
-    //   .catch((err) => console.log(err));
     this.store.dispatch(new AuthProviderLogin());
 
     this.user$.subscribe((user) => {

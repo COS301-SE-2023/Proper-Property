@@ -7,7 +7,6 @@ export class ProfileCreatedHandler implements IEventHandler<ProfileCreatedEvent>
   constructor(private readonly profileRepository: ProfileRepository) {}
 
   async handle(event: ProfileCreatedEvent) {
-    console.log(ProfileCreatedHandler.name);
     await this.profileRepository.createProfile(event.profile);
   }
 }
