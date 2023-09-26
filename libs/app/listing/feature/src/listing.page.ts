@@ -306,10 +306,10 @@ export class ListingPage implements OnDestroy, OnInit {
         }
       }
       if ((this.list.status == StatusEnum.PENDING_APPROVAL || this.list.status == StatusEnum.EDITED) && approved) {
-        crimeScore = await this.getCrimeScore();
-        schoolScore = await this.getSchoolRating(this.list.geometry);
-        waterScore = await this.getWaterScore();
-        sanitationScore = await this.getSanitationScore();
+        crimeScore = this.list.areaScore.crimeScore ? this.list.areaScore.crimeScore: await this.getCrimeScore();
+        schoolScore = this.list.areaScore.schoolScore ? this.list.areaScore.schoolScore: await this.getSchoolRating(this.list.geometry);
+        waterScore = this.list.areaScore.waterScore ? this.list.areaScore.waterScore: await this.getWaterScore();
+        sanitationScore = this.list.areaScore.sanitationScore ? this.list.areaScore.sanitationScore: await this.getSanitationScore();
       }
 
 
@@ -338,13 +338,13 @@ export class ListingPage implements OnDestroy, OnInit {
       // this.loading = false;
       if (result.success) {
         this.router.navigate(['/admin']);
-        this.successfulChange.message = approved ? "Approval" : "Rejection" + this.successfulChange.message;
+        this.successfulChange.message = (approved? "Approval" : "Rejection") + this.successfulChange.message;
         const toast = await this.toastController.create(this.successfulChange);
         toast.present();
         return;
       }
 
-      this.successfulChange.message = approved ? "Approval" : "Rejection" + this.successfulChange.message;
+      this.successfulChange.message = (approved? "Approval" : "Rejection") + this.failedChange.message;
       const toast = await this.toastController.create(this.failedChange);
       toast.present();
       return;

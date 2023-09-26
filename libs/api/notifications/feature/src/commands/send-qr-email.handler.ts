@@ -1,8 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { SendQREmailCommand } from '@properproperty/api/notifications/util';
 import  * as nodemailer  from 'nodemailer';
-import * as fs from 'fs';
-import * as path from 'path';
 
 @CommandHandler(SendQREmailCommand)
 export class SendQREmailHandler implements ICommandHandler<SendQREmailCommand> {

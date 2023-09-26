@@ -62,7 +62,7 @@ import {
 // TODO See if better way exists to hide key
 import { API_KEY_TOKEN } from '@properproperty/app/google-maps/util';
 
-import { enableProdMode } from '@angular/core';
+import { enableProdMode, isDevMode } from '@angular/core';
 if (process.env['NX_ENVIRONMENT'] === 'production') {
   enableProdMode();
 }
@@ -70,7 +70,6 @@ if (process.env['NX_ENVIRONMENT'] === 'production') {
 import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
-import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { AuthState } from '@properproperty/app/auth/data-access'
 
 import { AuthModule } from '@properproperty/app/auth/data-access';
@@ -80,7 +79,7 @@ import { GoogleMapsModule } from '@properproperty/app/google-maps/data-access';
 import { SkynetModule, OPEN_AI_API_KEY_TOKEN } from '@properproperty/app/open-ai/data-access';
 
 const NX_ENVIRONMENT = process.env['NX_ENVIRONMENT'] || 'development';
-const USE_EMULATORS = JSON.parse(process.env['NX_USE_EMULATORS'] || 'true');
+const USE_EMULATORS = (JSON.parse(process.env['NX_USE_EMULATORS'] || 'false') as boolean) && isDevMode();
 const NX_FIREBASE_CONFIG = {
   apiKey: process.env['NX_FIREBASE_KEY'],
   authDomain: process.env['NX_FIREBASE_AUTH_DOMAIN'],

@@ -4,8 +4,6 @@ import { Timestamp } from 'firebase-admin/firestore';
 import { NotificationsDocModel } from '../models/notifications.model';
 import { NotificationsRepository } from '@properproperty/api/notifications/data-access';
 import  * as nodemailer  from 'nodemailer';
-import * as fs from 'fs';
-import * as path from 'path';
 import { ProfileRepository } from '@properproperty/api/profile/data-access';
 import { StatusEnum } from '@properproperty/api/listings/util';
 @CommandHandler(NotifyListingCreatedCommand)
