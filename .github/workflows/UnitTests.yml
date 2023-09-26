@@ -17,3 +17,5 @@ jobs:
         run: nx test app
       - name: Run Unit Tests on api
         run: nx test api
+      - name: Jest
+        run: npx jest
