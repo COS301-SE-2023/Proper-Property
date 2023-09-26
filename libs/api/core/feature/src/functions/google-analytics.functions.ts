@@ -1,7 +1,5 @@
 import { BetaAnalyticsDataClient } from '@google-analytics/data';
-import * as fs from 'fs';
 import * as functions from 'firebase-functions';
-import * as path from 'path';
 export interface GetAnalyticsDataRequest {
   listingId: string;
 }

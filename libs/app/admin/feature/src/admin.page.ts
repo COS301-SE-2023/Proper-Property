@@ -8,6 +8,8 @@ import { AdminService } from '@properproperty/app/admin/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { Unsubscribe } from 'firebase/auth';
 import { Observable } from 'rxjs';
+import { Storage, ref } from "@angular/fire/storage";
+import { getDownloadURL } from 'firebase/storage';
 
 @Component({
   selector: 'properproperty-admin-page',
@@ -43,7 +45,8 @@ export class AdminPage implements OnInit{
     private router : Router, 
     route : ActivatedRoute, 
     private profileServices : UserProfileService, 
-    private adminServices : AdminService
+    public adminServices : AdminService,
+    private readonly storage: Storage
   ){
     this.userProfile$.subscribe((profile) => {
       this.userProfile = profile;
@@ -74,12 +77,9 @@ export class AdminPage implements OnInit{
   async redirectToPage(listing : Listing) {
     this.router.navigate(['/listing', {list : listing.listing_id, admin : this.userProfile?.userId}]);
   }
-
+  sacredTomeLocation = "https://libraryofbabel.info/random.cgi";
   async ngOnInit() {
-    // const show=document.querySelector('#show') as HTMLDivElement;
-    // show.style.opacity="0";
-    // const load=document.querySelector('#loader') as HTMLElement;
-    // load.style.opacity="1";
+    this.sacredTomeLocation = await this.getAdminHelpGuide();
     this.loadingMessage = "Loading Unapproved Listings...";
     this.loading = true;
     this.nonAppListings = [];      
@@ -102,6 +102,12 @@ export class AdminPage implements OnInit{
     setTimeout(async () => {
       this.loading = false;
     }, 3000)
+  }
+  
+  async getAdminHelpGuide(){
+    console.log("I like being touched");
+    const response = await getDownloadURL(ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + "/help-guide/admin-help-guide.pdf"));
+    return response;
   }
 
   addData(){

@@ -29,7 +29,7 @@ import { Firestore, collection, doc, getDoc, setDoc } from '@angular/fire/firest
 export class AdminService {
   currentUser: UserProfile | null = null;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
-
+  crimeProgress = 0;
   constructor(
     private readonly functions: Functions,
     private readonly firestore: Firestore
@@ -148,13 +148,19 @@ export class AdminService {
         throw new Error("oh no");
       }
       districts = data['districts'];
-
-      for(let station of request.stationStats){
+      let progressCounter = 0;
+      let percentageCounter = 0;
+      for(const station of request.stationStats){
         let correctDistrict = "";
-
+        const currentPercentage = Math.floor(progressCounter/request.stationStats.length * 100);
+        if(Math.floor(currentPercentage / 10) > percentageCounter){
+          ++percentageCounter;
+          console.log(percentageCounter*10 + "%");
+        }
+        ++progressCounter;
         try{
           let levenScore = 0;
-          for(let district of districts){
+          for(const district of districts){
             const temp = this.levenshteinDistance(district.toLowerCase(), station.district.toLowerCase());
             // const temp = 1;
             
@@ -181,7 +187,7 @@ export class AdminService {
             //   .doc('DistrictData/metro municipalities').get()).data();
             const metroMunis = (await getDoc(doc(districtCol, 'metro municipalities'))).data();
               if(metroMunis){
-                for(let muni of metroMunis['municipalities']){
+                for(const muni of metroMunis['municipalities']){
                   if(muni.name.toLowerCase().includes(correctDistrict.toLowerCase())){
                     districtData = muni;
                   }
@@ -201,7 +207,7 @@ export class AdminService {
         }
         station.weightedTotal = 0;
         stations.push(station.stationName.toLowerCase());
-        for(let crime of station.crimeStats){
+        for(const crime of station.crimeStats){
           let totalPop = 1, pop = 1;
           if (districtData) {
             if (districtData['totalPopulation'])
@@ -220,7 +226,7 @@ export class AdminService {
         return 0;
       });
 
-      for(let station of request.stationStats){
+      for(const station of request.stationStats){
         // admin
         // .firestore()
         // .collection('crimeStats/')
@@ -440,16 +446,16 @@ export class AdminService {
     if(a.length == 0) return b.length; 
     if(b.length == 0) return a.length; 
 
-    var matrix = [];
+    const matrix = [];
 
     // increment along the first column of each row
-    var i;
+    let i;
     for(i = 0; i <= b.length; i++){
         matrix[i] = [i];
     }
 
     // increment each column in the first row
-    var j;
+    let j;
     for(j = 0; j <= a.length; j++){
         matrix[0][j] = j;
     }

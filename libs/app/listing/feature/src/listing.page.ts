@@ -334,13 +334,13 @@ export class ListingPage implements OnDestroy {
       // this.loading = false;
       if(result.success){
         this.router.navigate(['/admin']);
-        this.successfulChange.message = approved? "Approval" : "Rejection" + this.successfulChange.message;
+        this.successfulChange.message = (approved? "Approval" : "Rejection") + this.successfulChange.message;
         const toast = await this.toastController.create(this.successfulChange);
         toast.present();
         return;
       }
 
-      this.successfulChange.message = approved? "Approval" : "Rejection" + this.successfulChange.message;
+      this.successfulChange.message = (approved? "Approval" : "Rejection") + this.failedChange.message;
       const toast = await this.toastController.create(this.failedChange);
       toast.present();
       return;
