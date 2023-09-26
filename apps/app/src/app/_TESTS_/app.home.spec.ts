@@ -2,6 +2,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { HomePage } from '@properproperty/app/home/feature';
+import { UserProfileService } from '@properproperty/app/profile/data-access';
+import { FirebaseApp } from 'firebase/app';
 describe('HomePage', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
