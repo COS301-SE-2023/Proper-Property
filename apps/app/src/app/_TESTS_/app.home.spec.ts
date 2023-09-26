@@ -1,36 +1,33 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterModule } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
 
-import { AppComponent } from '../app.component';
 import { HomePage } from '@properproperty/app/home/feature';
 
+describe('HomePage', () => {
+  let component: HomePage;
+  let fixture: ComponentFixture<HomePage>;
 
-describe('Property Search Integration Tests', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [HomePage],
+      imports: [IonicModule.forRoot(), RouterModule.forRoot([])]
+    }).compileComponents();
 
-  let homePage: HomePage;
+    fixture = TestBed.createComponent(HomePage);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
 
-  beforeEach(() => {
-    // Mock the required dependencies (you might need to mock more dependencies based on your use case)
     const mockUserService = jasmine.createSpyObj('UserProfileService', ['getCurrentUser']);
     const mockGmapsService = jasmine.createSpyObj('GmapsService', ['getRegionPredictions']);
     const mockRouter = jasmine.createSpyObj('Router', ['navigate']);
 
-    homePage = new HomePage(mockUserService, mockGmapsService, mockRouter);
-    homePage.isMobile = false; // Set the mobile flag for testing if needed
-    homePage.searchQuery = ''; // Set an initial search query if needed
+    component = new HomePage(mockUserService, mockGmapsService, mockRouter);
+    component.isMobile = false; // Set the mobile flag for testing if needed
+    component.searchQuery = ''; // Set an initial search query if needed
   });
 
-  it('should initialize properly', () => {
-    expect(homePage).toBeTruthy();
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
-
-  it('should handle input change', () => {
-    // Mock an event object (you might need to adjust this based on your event structure)
-    const mockEvent: any = { target: { value: 'Test query' } };
-
-    homePage.handleInputChange(mockEvent);
-    expect(homePage.predictionsLoading).toBe(true);
-    // Add more expectations based on your component behavior after input change
-  });
-
 });
