@@ -79,7 +79,11 @@ export class AdminPage implements OnInit{
   }
   sacredTomeLocation = "https://libraryofbabel.info/random.cgi";
   async ngOnInit() {
-    this.sacredTomeLocation = await this.getAdminHelpGuide();
+    try {
+      this.sacredTomeLocation = await this.getAdminHelpGuide();
+    } catch (e) {
+      console.log("Figure it out");
+    }
     this.loadingMessage = "Loading Unapproved Listings...";
     this.loading = true;
     this.nonAppListings = [];      

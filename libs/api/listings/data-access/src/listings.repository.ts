@@ -130,10 +130,10 @@ export class ListingsRepository {
         statusChanges: FieldValue.arrayUnion(change),
         status: req.status,
         areaScore: {
-          crimeScore: req.crimeScore,
-          waterScore: req.waterScore,
-          sanitationScore: req.sanitationScore,
-          schoolScore: req.schoolScore
+          crimeScore: req.crimeScore ?? 0,
+          waterScore: req.waterScore ?? 0,
+          sanitationScore: req.sanitationScore ?? 0,
+          schoolScore: req.schoolScore ?? 0
         }
       });
     } catch(error) {
