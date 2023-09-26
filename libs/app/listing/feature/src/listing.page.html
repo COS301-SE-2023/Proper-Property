@@ -277,9 +277,23 @@
           <ion-row style="margin-top: 1%">
             <ion-card class="full-container">
               <ion-card-header>
-                <ion-card-title *ngIf="list.heading">
-                  {{list.heading}} 
-                </ion-card-title>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size="9">
+                      <ion-card-title style="float: left;" *ngIf="list.heading">
+                        {{list.heading}} 
+                      </ion-card-title>
+                    </ion-col>
+                      <ion-button (click)="spek()" id="ttsButton" style="background-color: white">
+                        <ion-icon name="volume-high-outline" color="dark"></ion-icon>
+                        {{listingId}}
+                      </ion-button>
+                      <p>Select a voice</p>
+                      <select id="voiceSelect"></select>
+                    <ion-col>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
               </ion-card-header>
 
               <ion-card-content style="background: var(--light-grey, #ededed)">

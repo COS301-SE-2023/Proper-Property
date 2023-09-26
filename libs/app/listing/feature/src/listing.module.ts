@@ -10,6 +10,8 @@ import { ListingPage } from './listing.page';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FooterModule } from '@properproperty/app/footer/feature';
 
+import { SpeechSynthesisModule } from '@ng-web-apis/speech'
+
 @NgModule({
   imports: [
     CommonModule,
@@ -17,7 +19,8 @@ import { FooterModule } from '@properproperty/app/footer/feature';
     IonicModule,
     ListingPageRoutingModule,
     ListingDataAccessModule,
-    FooterModule
+    FooterModule,
+    SpeechSynthesisModule
   ],
   declarations: [ListingPage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

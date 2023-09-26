@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, HostListener, OnDestroy, OnInit, Inject } from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { ChangeStatusResponse, Listing, StatusEnum } from '@properproperty/api/listings/util';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,7 +13,6 @@ import { Unsubscribe } from 'firebase/auth';
 import { IonContent, IonModal, ToastOptions } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
 import { ToastController } from '@ionic/angular';
-
 register();
 export interface GetAnalyticsDataRequest {
   listingId: string;
@@ -27,7 +26,8 @@ export class ListingPage implements OnDestroy, OnInit {
 
   @ViewChild(IonContent) content: IonContent | undefined;
   // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
-
+  sonny = window.speechSynthesis;
+  voices: SpeechSynthesisVoice[] = [];
   isMobile: boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
@@ -91,6 +91,7 @@ export class ListingPage implements OnDestroy, OnInit {
   }
 
   async ngOnInit() {
+    // this.populateVoiceList();
     this.loading = true;
     let list_id = "";
     let admin = "";
@@ -655,6 +656,82 @@ export class ListingPage implements OnDestroy, OnInit {
       a.click();
     }
   }
+
+  populateVoiceList() {
+    this.voices = this.sonny.getVoices();
+    window.speechSynthesis.cancel();
+    const wordswordswords = new SpeechSynthesisUtterance("words words words");
+    this.sonny.speak(wordswordswords);
+    // console.log(this.sonny);
+    // console.log(this.voices);
+    const voiceSelect = document.getElementById("voiceSelect") as HTMLSelectElement;
+    for (const voice of this.voices) {
+      const option = document.createElement("option");
+      option.textContent = `${voice.name} (${voice.lang})`;
+
+      if (voice.default) {
+        option.textContent += " — DEFAULT";
+      }
+
+      option.setAttribute("data-lang", voice.lang);
+      option.setAttribute("data-name", voice.name);
+      voiceSelect.appendChild(option);
+    }
+  }
+
+  spek(){
+    // window.speechSynthesis.cancel();
+    // const wordswordswords = new SpeechSynthesisUtterance("words words words");
+    // this.sonny.speak(wordswordswords);
+    // const request = this.list?.heading + " " + this.list?.desc;
+    // console.log("Hermes speak: ", request)
+    // const utterThis = new SpeechSynthesisUtterance(request);
+    // // const voiceSelect = document.getElementById("voiceSelect") as HTMLSelectElement;
+    // // const selectedOption = voiceSelect.selectedOptions[0].getAttribute('data-name');
+    // // for (const voice of this.voices) {
+    // //   if (voice.name === selectedOption) {
+    // //     utterThis.voice = voice;
+    // //   }
+    // // }
+    // utterThis.voice = this.voices[0];
+    // utterThis.pitch = 1;
+    // utterThis.rate = 1;
+    // this.sonny.speak(utterThis);
+    // console.log(this.sonny);
+
+    if (typeof speechSynthesis === "undefined") {
+      console.log("Whoops")
+    }
+    
+    const voices = speechSynthesis.getVoices();
+    
+    for (let i = 0; i < voices.length; i++) {
+    const option = document.createElement("option");
+    option.textContent = `${voices[i].name} (${voices[i].lang})`;
+    
+    if (voices[i].default) {
+      option.textContent += " — DEFAULT";
+    }
+    
+    option.setAttribute("data-lang", voices[i].lang);
+    option.setAttribute("data-name", voices[i].name);
+    document.getElementById("voiceSelect")?.appendChild(option);
+    }
+    
+    
+    const utterThis = new SpeechSynthesisUtterance("This is a mew test");
+    const voiceSelect = document.getElementById('voiceSelect') as HTMLSelectElement;
+    const selectedOption = voiceSelect?.selectedOptions[0].getAttribute('data-name');
+    for (const voice of voices) {
+      if (voice.name === selectedOption) {
+        utterThis.voice = voice;
+      }
+    }
+    utterThis.pitch = 1;
+    utterThis.rate = 1;
+    this.sonny.speak(utterThis);
+  }
+  
 }
 function isMobile(): boolean {
   return window.innerWidth <= 576;
