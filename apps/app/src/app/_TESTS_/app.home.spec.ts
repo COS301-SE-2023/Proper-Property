@@ -1,25 +1,21 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 
 import { HomePage } from '@properproperty/app/home/feature';
-
 describe('HomePage', () => {
-  let component: HomePage;
-  let fixture: ComponentFixture<HomePage>;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HomePage],
-      imports: [IonicModule.forRoot(), RouterModule.forRoot([])]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-
-    fixture = TestBed.createComponent(HomePage);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('should create', () => {
-    //expect(component).toBeTruthy();
+  it('trying HOME', () => {
+    const fixture = TestBed.createComponent(HomePage);
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
   });
+
 });
+
+
