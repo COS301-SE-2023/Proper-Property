@@ -36,11 +36,14 @@ import {
   authState
 } from "@angular/fire/auth";
 import { UserProfile } from '@properproperty/api/profile/util';
+import { ToastController, ToastOptions } from '@ionic/angular';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private readonly auth: Auth) {}
+  constructor(private readonly auth: Auth,
+    private readonly toastController : ToastController) {}
 
   getState$() {
     return authState(this.auth);
@@ -56,14 +59,26 @@ export class AuthService {
   }
 
   async emailLogin(email : string, password : string){
-    return signInWithEmailAndPassword(this.auth, email, password).then((userCredential) => {
-      return userCredential.user;
-    });
+    try{
+      return await signInWithEmailAndPassword(this.auth, email, password).then((userCredential) => {
+        return userCredential.user;
+      });
+    }
+    catch(error : any){
+      this.errorHandler(error);
+      return null;
+    }
   }
   async register(email: string, password: string) {
-    return createUserWithEmailAndPassword(this.auth, email, password).then((userCredential) => {
-      return userCredential.user;
-    });
+    try{
+      return await createUserWithEmailAndPassword(this.auth, email, password).then((userCredential) => {
+        return userCredential.user;
+      });
+    }
+    catch(error : any){
+      this.errorHandler(error);
+      return null;
+    }
   }
 
   deleteCurrentUser() {
@@ -118,7 +133,44 @@ export class AuthService {
     document.cookie = this.AUTH_COOKIE_NAME + "=; expires=Thu, 01 Jan 2025 00:00:00 UTC; path=/;";
     document.cookie = this.PROFILE_COOKIE_NAME + "=; expires=Thu, 01 Jan 2025 00:00:00 UTC; path=/;";
   }
+
+  async errorHandler(error: any) {
+    const failed = {
+      message: "",
+      duration: 3000, // Duration in milliseconds
+      color: 'danger', // Use 'danger' to display in red
+      position: 'bottom'
+    } as ToastOptions;
+    switch(error.code){
+      case "auth/invalid-email":
+        failed.message = "Email address is not valid.";
+        break;
+      case "auth/user-disabled":
+        failed.message =  "User is disabled.";
+        break;
+      case "auth/user-not-found":
+        failed.message =  "User not found.";
+        break;
+      case "auth/wrong-password":
+        failed.message = "Password is incorrect.";
+        break;
+      case "auth/email-already-in-use":
+        failed.message = "Email already in use.";
+        break;
+      case "auth/invalid-password":
+        failed.message = "Invlaid password.";
+        break;
+      case "auth/missing-password":
+        failed.message = "Invlaid password.";
+        break;
+      default:
+        failed.message = "Unknown error occurred";
+        break;
+    }
   
+    const toast = await this.toastController.create(failed);
+    toast.present();
+  }
 }
 
 function getCookie(name: string) {
