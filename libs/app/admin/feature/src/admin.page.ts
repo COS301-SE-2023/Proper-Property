@@ -8,6 +8,8 @@ import { AdminService } from '@properproperty/app/admin/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { Unsubscribe } from 'firebase/auth';
 import { Observable } from 'rxjs';
+import { Storage, ref } from "@angular/fire/storage";
+import { getDownloadURL } from 'firebase/storage';
 
 @Component({
   selector: 'properproperty-admin-page',
@@ -43,7 +45,8 @@ export class AdminPage implements OnInit{
     private router : Router, 
     route : ActivatedRoute, 
     private profileServices : UserProfileService, 
-    private adminServices : AdminService
+    public adminServices : AdminService,
+    private readonly storage: Storage
   ){
     this.userProfile$.subscribe((profile) => {
       this.userProfile = profile;
@@ -74,12 +77,13 @@ export class AdminPage implements OnInit{
   async redirectToPage(listing : Listing) {
     this.router.navigate(['/listing', {list : listing.listing_id, admin : this.userProfile?.userId}]);
   }
-
+  sacredTomeLocation = "https://libraryofbabel.info/random.cgi";
   async ngOnInit() {
-    // const show=document.querySelector('#show') as HTMLDivElement;
-    // show.style.opacity="0";
-    // const load=document.querySelector('#loader') as HTMLElement;
-    // load.style.opacity="1";
+    try {
+      this.sacredTomeLocation = await this.getAdminHelpGuide();
+    } catch (e) {
+      console.log("Figure it out");
+    }
     this.loadingMessage = "Loading Unapproved Listings...";
     this.loading = true;
     this.nonAppListings = [];      
@@ -102,6 +106,11 @@ export class AdminPage implements OnInit{
     setTimeout(async () => {
       this.loading = false;
     }, 3000)
+  }
+  
+  async getAdminHelpGuide(){
+    const response = await getDownloadURL(ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + "/help-guide/admin-help-guide.pdf"));
+    return response;
   }
 
   addData(){
@@ -163,7 +172,9 @@ export class AdminPage implements OnInit{
   }
 
   async processData(){
+    const runningLocally = window.location.hostname.includes("localhost");
     if(this.muniFiles && this.muniFiles.length > 0){
+      if (runningLocally) console.log("Adding Municipality Data");
       for (let index = 0; index < this.muniFiles.length; index++) {
         if (this.muniFiles.item(index)){
           const response = await fetch(URL.createObjectURL(this.muniFiles.item(index) as Blob));
@@ -177,6 +188,7 @@ export class AdminPage implements OnInit{
       }
     }
     if (this.crimeFiles && this.crimeFiles.length > 0) {
+      if (runningLocally) console.log("Adding Crime Data");
       for (let index = 0; index < this.crimeFiles.length; index++) {
         if (this.crimeFiles.item(index))
           fetch(URL.createObjectURL(this.crimeFiles.item(index) as Blob)).then((response) => response.json()).then(async (response) =>{
@@ -190,6 +202,7 @@ export class AdminPage implements OnInit{
     }
 
     if(this.sanitationFiles && this.sanitationFiles.length > 0){
+      if (runningLocally) console.log("Adding Sanitation Data");
       for (let index = 0; index < this.sanitationFiles.length; index++) {
         if (this.sanitationFiles.item(index))
           fetch(URL.createObjectURL(this.sanitationFiles.item(index) as Blob)).then((response) => response.json()).then(async (response) =>{
@@ -203,6 +216,7 @@ export class AdminPage implements OnInit{
     }
 
     if(this.WWQ && this.WWQ.length > 0){
+      if (runningLocally) console.log("Adding WWQ Data");
       for(let index = 0; index < this.WWQ.length; index++){
         if(this.WWQ.item(index))
           fetch(URL.createObjectURL(this.WWQ.item(index) as Blob)).then((response) => response.json()).then(async (response) =>{
@@ -216,6 +230,7 @@ export class AdminPage implements OnInit{
     }
 
     if(this.waterAccessFiles && this.waterAccessFiles.length > 0){
+      if (runningLocally) console.log("Adding Water Access Data");
       for (let index = 0; index < this.waterAccessFiles.length; index++) {
         if (this.waterAccessFiles.item(index))
           fetch(URL.createObjectURL(this.waterAccessFiles.item(index) as Blob)).then((response) => response.json()).then(async (response) =>{
@@ -229,6 +244,7 @@ export class AdminPage implements OnInit{
     }
 
     if(this.waterQualityFiles && this.waterQualityFiles.length > 0){
+      if (runningLocally) console.log("Adding Water Quality Data");
       for (let index = 0; index < this.waterQualityFiles.length; index++) {
         if (this.waterQualityFiles.item(index))
           fetch(URL.createObjectURL(this.waterQualityFiles.item(index) as Blob)).then((response) => response.json()).then(async (response) =>{
@@ -242,6 +258,7 @@ export class AdminPage implements OnInit{
     }
 
     if(this.waterReliabilityFiles && this.waterReliabilityFiles.length > 0){
+      if (runningLocally) console.log("Adding Water Reliability Data");
       for (let index = 0; index < this.waterReliabilityFiles.length; index++) {
         if (this.waterReliabilityFiles.item(index))
           fetch(URL.createObjectURL(this.waterReliabilityFiles.item(index) as Blob)).then((response) => response.json()).then(async (response) =>{
@@ -255,6 +272,7 @@ export class AdminPage implements OnInit{
     }
 
     if(this.waterTariffsFiles && this.waterTariffsFiles.length > 0){
+      if (runningLocally) console.log("Adding Water Tariff Data");
       for (let index = 0; index < this.waterTariffsFiles.length; index++) {
         if (this.waterTariffsFiles.item(index))
           fetch(URL.createObjectURL(this.waterTariffsFiles.item(index) as Blob)).then((response) => response.json()).then(async (response) =>{

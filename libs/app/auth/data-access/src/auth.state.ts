@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { Login, SubscribeToAuthState, SetAuthUser, Register, AuthProviderLogin, Logout } from '@properproperty/app/auth/util';
 import { SubscribeToUserProfile } from '@properproperty/app/profile/util';
 import { tap } from 'rxjs';
+
 export interface AuthStateModel {
   user: User | null;
 }
@@ -41,28 +42,26 @@ export class AuthState {
 
   @Action(Login)
   async login(ctx: StateContext<AuthStateModel>, { email, password }: Login) {
-    return this.authService.emailLogin(email, password).then((user: User) => {
-      // check if login was successful
-      if (user.email != null) {
-        ctx.dispatch(new SetAuthUser(user));
-        return ctx.dispatch(new Navigate(['/']));
-      }
-      // else do something
-      return null;
-    });
+    const response = await this.authService.emailLogin(email, password)
+    // check if login was successful
+    if (response && response.email != null) {
+      ctx.dispatch(new SetAuthUser(response));
+      return ctx.dispatch(new Navigate(['/']));
+    }
+    // else do something
+    return null;
   }
 
   @Action(Register)
   async register(ctx: StateContext<AuthStateModel>, { email, password }: Register) {
-    return this.authService.register(email, password).then((user: User) => {
-      // check if register was successful
-      if (user.email != null) {
-        ctx.dispatch(new SetAuthUser(user));
-        return ctx.dispatch(new Navigate(['/']));
-      }
-      // else do something
-      return null;
-    });
+    const response = await this.authService.register(email, password);
+    // check if register was successful
+    if (response && response.email != null) {
+      ctx.dispatch(new SetAuthUser(response));
+      return ctx.dispatch(new Navigate(['/']));
+    }
+    // else do something
+    return null;
   }
 
   @Action(SetAuthUser)

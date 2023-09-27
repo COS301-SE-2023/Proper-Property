@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, HostListener, OnDestroy } from '@angular/core';
+import { Component, ElementRef, ViewChild, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { ChangeStatusResponse, Listing, StatusEnum } from '@properproperty/api/listings/util';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,8 +23,8 @@ export interface GetAnalyticsDataRequest {
   templateUrl: './listing.page.html',
   styleUrls: ['./listing.page.scss'],
 })
-export class ListingPage implements OnDestroy {
-  
+export class ListingPage implements OnDestroy, OnInit {
+
   @ViewChild(IonContent) content: IonContent | undefined;
   // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
 
@@ -79,7 +79,19 @@ export class ListingPage implements OnDestroy {
     private functions: Functions,
     private profileServices: UserProfileService,
     private toastController: ToastController
-    ) {
+  ) {
+    this.isMobile = isMobile();
+    this.loanAmount = 0;
+    this.interestRate = 0;
+    this.loanTerm = 0;
+    this.monthlyPayment = 0;
+    this.totalOnceOffCosts = 0;
+    this.minGrossMonthlyIncome = 0;
+    Chart.register(...registerables);
+  }
+
+  async ngOnInit() {
+    this.loading = true;
     let list_id = "";
     let admin = "";
     let qr = false;
@@ -93,14 +105,14 @@ export class ListingPage implements OnDestroy {
 
       this.listingServices.getListing(list_id).then((list) => {
         this.list = list;
-        console.log("QR viewing: " + qr)
+        // console.log("QR viewing: " + qr)
       }).then(() => {
         if (admin) {
           this.admin = true;
           this.adminId = admin;
         }
 
-        
+
         // TODO
 
         if (!this.list?.price || !this.list?.property_size) {
@@ -108,19 +120,19 @@ export class ListingPage implements OnDestroy {
           return
         }
         this.price_per_sm = this.list?.price / this.list?.property_size;
-  
-        this.userServices.getUser("" + this.list?.user_id).then((user : UserProfile) => {
+
+        this.userServices.getUser("" + this.list?.user_id).then((user: UserProfile) => {
           this.lister = user;
           this.lister_name = user.firstName + " " + user.lastName;
 
-          // if(qr && this.list){            
-          //   console.log(window.location.href, " ", this.router.url);
-          //   this.userServices.qrListingRead({
-          //     address: this.list.address,
-          //     url: window.location.href.substring(0, window.location.href.indexOf(";qr")),
-          //     lister: this.lister,
-          //   });
-          // }
+          if (qr && this.list) {
+            // console.log(window.location.href, " ", this.router.url);
+            this.userServices.qrListingRead({
+              address: this.list.address,
+              url: window.location.href.substring(0, window.location.href.indexOf(";qr")),
+              lister: this.lister,
+            });
+          }
         });
 
         this.userProfile$.subscribe((profile) => {
@@ -137,36 +149,29 @@ export class ListingPage implements OnDestroy {
           this.userProfileListener = listener;
         });
 
-      if(this.list?.geometry && this.list?.status == StatusEnum.ON_MARKET){
-        this.getNearbyPointsOfInterest();
-        this.setCrimeScore();
-        this.setSanitationScore();
-        this.setSchoolRating();
-        this.setWaterScore();
-      }
+        if (this.list?.geometry && this.list?.status == StatusEnum.ON_MARKET) {
+          this.getNearbyPointsOfInterest();
+          this.setCrimeScore();
+          this.setSanitationScore();
+          this.setSchoolRating();
+          this.setWaterScore();
+        }
       });
     });
-
-    this.loanAmount = 0;
-    this.interestRate = 0;
-    this.loanTerm = 0;
-    this.monthlyPayment = 0;
-    this.totalOnceOffCosts = 0;
-    this.minGrossMonthlyIncome = 0;
-    Chart.register(...registerables);
 
     // Update listener whenever is changes such that it can be unsubscribed from
     // when the window is unloaded
     this.userProfileListener$.subscribe((listener) => {
       this.userProfileListener = listener;
     });
-
-    this.isMobile = isMobile();
+    setTimeout(async () => {
+      this.loading = false;
+    }, 500)
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    if (!event) console.log(event);
+    if (window.location.hostname.includes("localhost")) console.log(event);
     this.isMobile = window.innerWidth <= 576;
   }
 
@@ -178,19 +183,19 @@ export class ListingPage implements OnDestroy {
     if (typeof analyticsResponse != "string") {
       return;
     }
-    
+
     const analyticsData = JSON.parse(analyticsResponse as string);
     let totUsers = 0;
     let totEngagement = 0;
     const dates: string[] = [];
     const pageViews: number[] = [];
-    const obj : {
+    const obj: {
       date: string,
       pageView: number
     }[] = [];
 
     const rows = analyticsData.rows ?? [];
-    for(let i = 0; rows && i < rows.length; i++){
+    for (let i = 0; rows && i < rows.length; i++) {
       if (rows[i]?.dimensionValues[1] && rows[i]?.metricValues[0]) {
         const dimensionValue = rows[i].dimensionValues[1].value;
         const year = Number(dimensionValue.substring(0, 4));
@@ -216,12 +221,12 @@ export class ListingPage implements OnDestroy {
       return new Date(a.date).getTime() - new Date(b.date).getTime();
     })
 
-    for(const i of obj){
+    for (const i of obj) {
       dates.push(i.date);
       pageViews.push(i.pageView);
     }
-    
-    console.log(obj)
+
+    // console.log(obj)
 
     const data = {
       labels: dates,
@@ -260,8 +265,8 @@ export class ListingPage implements OnDestroy {
     const minutes = Math.floor(avgPerUser / 60);
     const seconds = (avgPerUser - minutes * 60).toPrecision(2);
 
-    this.avgEnagement = seconds? minutes + " min " + seconds + " sec" : "There is no data to show yet";
-    console.log(this.avgEnagement)
+    this.avgEnagement = seconds ? minutes + " min " + seconds + " sec" : "There is no data to show yet";
+    // console.log(this.avgEnagement)
     this.showData = true;
     const element = document.querySelector(".graph") as HTMLElement;
     loader.style.display = "none";
@@ -283,64 +288,134 @@ export class ListingPage implements OnDestroy {
     position: 'bottom'
   } as ToastOptions;
 
-  async changeStatus(approved : boolean){
+  async changeStatus(approved: boolean) {
     this.loading = true;
     // const show = document.querySelector('#show') as HTMLDivElement;
     // show.style.opacity = "0";
     // const load = document.querySelector('#loader') as HTMLElement;
     // load.style.opacity = "1";
-    if(this.list && this.adminId != ""){
+    const runningLocally = window.location.hostname.includes("localhost");
+    if (this.list && this.adminId != "") {
       let crimeScore;
       let schoolScore;
       let waterScore;
       let sanitationScore;
-      if (this.list.geometry.lat == 0 || this.list.geometry.lat) {
+      const scoresCalculated = {
+        crimeScore: false,
+        schoolScore: false,
+        waterScore: false,
+        sanitationScore: false
+      }
+      if (!this.list.geometry.lat|| !this.list.geometry.lng) {
         const geocodeResult = await this.gmapsService.geocodeAddress(this.list.address);
-        this.list.geometry = {
-          lat: geocodeResult?.geometry.location.lat() ?? 0,
-          lng: geocodeResult?.geometry.location.lng() ?? 0
+        if (!geocodeResult) {
+          this.loading = false;
+          this.successfulChange.message = (approved? "Approval" : "Rejection") + this.failedChange.message + ": Could not geocode address";
+          const toast = await this.toastController.create(this.failedChange);
+          toast.present();
+          return;
         }
+        this.list.geometry = {
+          lat: geocodeResult.geometry.location.lat() ?? 0,
+          lng: geocodeResult.geometry.location.lng() ?? 0
+        }
+        if (runningLocally) console.log(this.list.geometry);
       }
       if ((this.list.status == StatusEnum.PENDING_APPROVAL || this.list.status == StatusEnum.EDITED) && approved) {
-        crimeScore = await this.getCrimeScore();
-        schoolScore = await this.getSchoolRating(this.list.geometry);
-        waterScore = await this.getWaterScore();
-        sanitationScore = await this.getSanitationScore();
+        if (runningLocally) console.log("Getting scores");
+        
+        crimeScore = this.list.areaScore.crimeScore;
+        if (!crimeScore) {
+          const score = await this.getCrimeScore();
+          scoresCalculated.crimeScore = score > -1;
+          crimeScore = Math.max(this.list.areaScore.crimeScore, score);
+          if (runningLocally) console.log("crimeScore: ", score);
+        }
+        // schoolScore = this.list.areaScore.schoolScore ? this.list.areaScore.schoolScore: await this.getSchoolRating(this.list.geometry);
+        schoolScore = this.list.areaScore.schoolScore;
+        if (!schoolScore) {
+          const score = await this.getSchoolRating(this.list.geometry);
+          scoresCalculated.schoolScore = score > -1;
+          schoolScore = Math.max(this.list.areaScore.schoolScore, score);
+          if (runningLocally) console.log("schoolScore: ", score);
+        }
+        // waterScore = this.list.areaScore.waterScore ? this.list.areaScore.waterScore: await this.getWaterScore();
+        waterScore = this.list.areaScore.waterScore;
+        if (!waterScore) {
+          const score = await this.getWaterScore();
+          scoresCalculated.waterScore = score > -1;
+          waterScore = Math.max(this.list.areaScore.waterScore, score);
+          if (runningLocally) console.log("waterScore: ", score);
+        }
+        // sanitationScore = this.list.areaScore.sanitationScore ? this.list.areaScore.sanitationScore: await this.getSanitationScore();
+        sanitationScore = this.list.areaScore.sanitationScore;
+        if (!sanitationScore) {
+          const score = await this.getSanitationScore();
+          scoresCalculated.sanitationScore = score > -1;
+          sanitationScore = Math.max(this.list.areaScore.sanitationScore, score);
+          if (runningLocally) console.log("sanitationScore: ", score);
+        }
       }
 
 
-      let result : ChangeStatusResponse | null;
-      if(
+      let result: ChangeStatusResponse | null;
+      if (
         approved
         && (this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED)
-        && crimeScore != undefined 
-        && schoolScore != undefined 
-        && waterScore != undefined
-        && sanitationScore != undefined
-      ){
+        && (crimeScore || scoresCalculated.crimeScore)
+        && (schoolScore || scoresCalculated.schoolScore)
+        && (waterScore || scoresCalculated.waterScore)
+        && (sanitationScore || scoresCalculated.sanitationScore)
+      ) {
+        // return;
         result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, crimeScore, waterScore, sanitationScore, schoolScore);
-      } 
-      else if((this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED) && approved){
+      }
+      else if ((this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED) && approved) {
         result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, 0, 0, 0, 0);
       }
-      else{
-        result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.DENIED, 0, 0, 0, 0);
+      else if (!approved){
+        // return;
+        result = await this.listingServices.changeStatus(
+          "" + this.list.listing_id, 
+          this.adminId, 
+          StatusEnum.DENIED, 
+          crimeScore,
+          waterScore,
+          sanitationScore,
+          schoolScore
+        );
       }
+      else {
+        let failedScores = "";
+        for (const [key, value] of Object.entries(scoresCalculated)) {
+          if (!value) {
+            failedScores += key + ", ";
+          }
+        }
+        // remove last space and comma
+        failedScores = failedScores.substring(0, failedScores.length - 2);
+        this.successfulChange.message = (approved? "Approval" : "Rejection") + this.failedChange.message + ": Something went wrong during score calculation for " + failedScores;
+        const toast = await this.toastController.create(this.failedChange);
+        this.loading = false;
+        toast.present();
+        return;
+      }
+      if (runningLocally) console.log(result);
 
-      setTimeout( async () => {
+      setTimeout(async () => {
         this.loading = false;
       }, 2000)
 
       // this.loading = false;
-      if(result.success){
+      if (result.success) {
         this.router.navigate(['/admin']);
-        this.successfulChange.message = approved? "Approval" : "Rejection" + this.successfulChange.message;
+        this.successfulChange.message = (approved? "Approval" : "Rejection") + this.successfulChange.message;
         const toast = await this.toastController.create(this.successfulChange);
         toast.present();
         return;
       }
 
-      this.successfulChange.message = approved? "Approval" : "Rejection" + this.successfulChange.message;
+      this.successfulChange.message = (approved? "Approval" : "Rejection") + this.failedChange.message;
       const toast = await this.toastController.create(this.failedChange);
       toast.present();
       return;
@@ -353,7 +428,7 @@ export class ListingPage implements OnDestroy {
         const response = await this.gmapsService.getNearbyPlaces2(this.list.listing_id)
         response.forEach((place) => {
           let distance = -1;
-          if(this.list?.geometry.lat){
+          if (this.list?.geometry.lat) {
             distance = this.gmapsService.calculateDistanceInMeters(
               this.list?.geometry.lat,
               this.list?.geometry.lng,
@@ -361,8 +436,8 @@ export class ListingPage implements OnDestroy {
               place.geometry.lng
             );
           }
-          const naam = place.name + " ("+ (distance / 1000).toFixed(2)+"km)";
-          this.pointsOfInterest.push({photo : place.photos, name : naam})
+          const naam = place.name + " (" + (distance / 1000).toFixed(2) + "km)";
+          this.pointsOfInterest.push({ photo: place.photos, name: naam })
         })
       } catch (error) {
         console.error('Error retrieving nearby places:', error);
@@ -391,7 +466,7 @@ export class ListingPage implements OnDestroy {
       }
     }
 
-    return 0;
+    return -1;
   }
 
   setSchoolRating() {
@@ -418,7 +493,7 @@ export class ListingPage implements OnDestroy {
       return (response.percentage ? response.percentage : 0) * 100;
     }
 
-    return 0;
+    return -1;
   }
 
   setSanitationScore() {
@@ -444,11 +519,11 @@ export class ListingPage implements OnDestroy {
       const response = await this.listingServices.getWaterScore(this.list.district
         , this.list.listingAreaType
         , this.list.prop_type
-        , { lat: this.list.geometry.lat , long: this.list.geometry.lng })
+        , { lat: this.list.geometry.lat, long: this.list.geometry.lng })
       return (response.percentage ? response.percentage : 0) * 100;
     }
 
-    return 0;
+    return -1;
   }
 
   setWaterScore() {
@@ -481,7 +556,7 @@ export class ListingPage implements OnDestroy {
       }
     }
 
-    return 0;
+    return -1;
   }
 
   setCrimeScore() {
@@ -501,9 +576,9 @@ export class ListingPage implements OnDestroy {
       this.areaScore = parseInt(((this.areaScore + this.list?.areaScore.crimeScore) / 2).toFixed(2));
     }
   }
-  
+
   goNext(event: Event) {
-    if (!event) console.log(event);
+    if (window.location.hostname.includes("localhost")) console.log(event);
     if (this.swiperRef) {
       this.swiperRef.nativeElement.swiper.slideNext();
     }
@@ -515,8 +590,7 @@ export class ListingPage implements OnDestroy {
   }
 
   swiperSlideChanged(e: Event) {
-    if (!e) console.log(e);
-    // console.log('changed', e)
+    if (window.location.hostname.includes("localhost")) console.log(e);
   }
 
   loanAmount: number;
@@ -574,13 +648,12 @@ export class ListingPage implements OnDestroy {
 
         this.profileServices.updateUserProfile(this.userProfile);
 
-        if(this.list && this.list.characteristics)
-        {
+        if (this.list && this.list.characteristics) {
           this.profileServices.updateInterests(this.list.characteristics, this.userProfile.userId);
-        
+
         }
-        
-        
+
+
       }
     }
   }
@@ -621,33 +694,33 @@ export class ListingPage implements OnDestroy {
 
   qrGenerated = false;
   generateQRCode() {
-    const QRCode = require('qrcode');
-    console.log("Test")
+    const QRCode = require('qrcode')
+    // console.log("Test")
     const qrCodeCanvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
-    if(qrCodeCanvas){
-        QRCode.toCanvas(qrCodeCanvas, window.location.href + ";qr=true", function (error :any) {
-        if (error){
+    if (qrCodeCanvas) {
+      QRCode.toCanvas(qrCodeCanvas, window.location.href + ";qr=true", function (error: any) {
+        if (error) {
           console.error(error)
           return;
-        } 
+        }
 
-        console.log('success!');
+        // console.log('success!');
       })
       this.qrGenerated = true;
 
       return;
     }
-    
-    console.log("Whoopes")
+
+    // console.log("Whoopes")
   }
 
-  downloadImage(){
+  downloadImage() {
     const canvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
 
-    if(canvas){
+    if (canvas) {
       const dataURL = canvas.toDataURL("image/png");
-      console.log(dataURL);
-  
+      // console.log(dataURL);
+
       const a = document.createElement('a');
       a.href = dataURL
       a.download = this.list?.address.trim().replace(/,/g, "").replace(/ /g, "-") + '-qr-download.jpeg';

@@ -76,9 +76,14 @@ export class CoreShellComponent implements OnInit, OnDestroy {
       this.notifications = notifications?.reverse() ?? [];
     });
     this.userProfile$.subscribe((profile) => {
+      let destination = '/'
+      if (!this.loggedIn && profile && (!profile.firstName || !profile.lastName)) {
+        destination = '/profile';
+      }
       this.userProfile = profile;
       this.loggedIn = this.userProfile != null && this.userProfile != undefined;
       this.admin = (profile && profile.admin) ?? false;
+      this.router.navigate([destination]);
     });
 
     this.isMobile = window.innerWidth <= 576;

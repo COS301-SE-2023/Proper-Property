@@ -25,7 +25,10 @@ export class LoginPage implements OnInit {
 
   isMobile = false;
 
-  constructor(private readonly store: Store, public authService: AuthService, public router: Router, public userService : UserProfileService) {
+  constructor(private readonly store: Store,
+    public authService: AuthService, 
+    public router: Router,
+    public userService : UserProfileService) {
     this.email = this.password = "";
     this.isMobile = isMobile();
   }
@@ -38,26 +41,26 @@ export class LoginPage implements OnInit {
     this.store.dispatch(new Login(this.email, this.password));
   }
 
-  googleLogin(){
+  async googleLogin(){
     this.store.dispatch(new AuthProviderLogin());
 
     this.user$.subscribe((user) => {
       this.userProfile$.subscribe((profile) => {
         this.userProfile = profile;
-        if (profile) {
-          if(!profile.firstName){
-            profile.firstName = user?.displayName?.split(" ")[0];
-            profile.lastName = user?.displayName?.split(" ")[1];
-          }
-        }
+        // if (profile) {
+        //   if(!profile.firstName){
+        //     profile.firstName = user?.displayName?.split(" ")[0];
+        //     profile.lastName = user?.displayName?.split(" ")[1];
+        //   }
+        // }
       });
       
     });
-
   }
 
   ngOnInit() {
-    console.log ("Linter: Lifecycle methods should not be empty");
+    if (window.location.hostname.includes("localhost"))
+      console.log ("Linter: Lifecycle methods should not be empty");
   }
 
 }

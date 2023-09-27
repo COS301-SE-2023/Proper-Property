@@ -83,11 +83,13 @@ export class RegisterPage implements OnInit {
   }
 
   checkPassword() {
-    console.log("44:19  error  Unexpected empty method 'checkPassword'");
+    if (window.location.hostname.includes("localhost"))
+      console.log("44:19  error  Unexpected empty method 'checkPassword'");
   }
 
   ngOnInit() {
-    console.log ("Lifecycle methods should not be empty");
+    if (window.location.hostname.includes("localhost"))
+      console.log ("Lifecycle methods should not be empty");
   }
 
   googleLogin(){

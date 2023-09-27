@@ -13,7 +13,8 @@ export class NotificationsService {
     if (res == 'granted') {
       token = await getToken(this.messaging, {vapidKey: process.env['NX_FCM_VAPID_KEY']});
     }
-    console.log(userId); //log for linter
+    if (window.location.hostname.includes("localhost"))
+      console.log(userId); //log for linter
     return token;
   }
 

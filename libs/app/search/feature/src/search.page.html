@@ -22,6 +22,7 @@
     <ion-row style="width: 100%;" id="search-row">
       <ion-row id="searchBar" style="width: 100%;">
         <ion-col size="10">
+          <ion-spinner name="crescent" color="primary" *ngIf="searchLoading" style="position: absolute; top: 14px; left:14px; z-index: 100;"></ion-spinner>
           <ion-input type="text" (ionInput)="handleInputChange($event)" id="address" class="address"
             [(ngModel)]="searchQuery" placeholder="search"></ion-input>
           <ion-list *ngIf="predictionDisplay()" class="prediction-result-list">
@@ -86,6 +87,71 @@
                   </div>
                 </ion-item>
               </ion-col>
+                              <!-- Additional Filters -->
+                              <div *ngIf="showAdditionalFilters">
+
+                                <ion-item class="filter">
+                                  <ion-label class="filter-text">Bathrooms</ion-label>
+                                  <select class="dropdown" [(ngModel)]="bath" (ionChange)="filterProperties()">
+                                    <option value="1">1 Bathroom</option>
+                                    <option value="2">2 Bathrooms</option>
+                                    <option value="3">3 Bathrooms</option>
+                                    <option value="4">4 Bathrooms</option>
+                                    <option value="5">5+ Bathrooms</option>
+                                  </select>
+                                </ion-item>
+                      
+                                <ion-item class="filter">
+                                  <ion-label class="filter-text">Parking / Garage</ion-label>
+                                  <select class="dropdown" [(ngModel)]="parking" (ionChange)="filterProperties()">
+                                    <option value="1">1 Garage</option>
+                                    <option value="2">2 Garages</option>
+                                    <option value="3">3 Garages</option>
+                                    <option value="4">4 Garages</option>
+                                    <option value="5">5+ Garages</option>
+                                  </select>
+                                </ion-item>
+                      
+                                <ion-item class="filter">
+                                  <ion-label class="filter-text">Features</ion-label>
+                                  <ion-select id="amenities-select" class="dropdown" [(ngModel)]="features" (ionChange)="filterProperties()"
+                                    [multiple]="true" placeholder="Features">
+                                    <ion-select-option value="Pet Friendly">Pet Friendly</ion-select-option>
+                                    <ion-select-option value="Garden">Garden</ion-select-option>
+                                    <ion-select-option value="Pool">Pool</ion-select-option>
+                                    <ion-select-option value="Flatlet">Flatlet</ion-select-option>
+                                    <ion-select-option value="Other">Other</ion-select-option>
+                                  </ion-select>
+                                </ion-item>
+                      
+                                <ion-item class="filter">
+                                  <ion-label class="filter-text">Community Environment</ion-label>
+                                  <select class="dropdown" [(ngModel)]="env_type" (ionChange)="filterProperties()">
+                                    <option value="Standalone House">Standalone House</option>
+                                    <option value="Complex">Complex</option>
+                                    <option value="Gated Community">Gated Community</option>
+                                  </select>
+                                </ion-item>
+                      
+                                <ion-item class="filter">
+                                  <ion-label style="width: 100%" class="filter-text">Property Size</ion-label>
+                                  <div class="inputPrice">
+                                    <div class="field" style="padding-left: 1.5%">
+                                      <span>Min</span>
+                                      <input type="number" value="250000" [(ngModel)]="property_size_values.lower" style="width: 90%">
+                                    </div>
+                                    <div class="sliderDiv">
+                                      <ion-range [dualKnobs]="true" [(ngModel)]="property_size_values" (ionChange)="onPropSizeKnobMoveStart()"
+                                        id="propSizeSlider" min="0" max="99999999"></ion-range>
+                                    </div>
+                                    <div class="field">
+                                      <span>Max</span>
+                                      <input type="number" [(ngModel)]="property_size_values.upper" value="1500000" style="width: 90%">
+                                    </div>
+                                  </div>
+                                </ion-item>
+                              </div>
+
             </ion-grid>
           </div>
         </ion-col>
@@ -99,74 +165,6 @@
       </ion-row>
     </ion-row>
 
-
-    <ion-row style="width: 100%; padding-left: 4%;">
-      <ion-col size="10">
-        <!-- Additional Filters -->
-        <div *ngIf="showAdditionalFilters" id="additional-features">
-          <ion-item>
-            <ion-label class="filter-text">Bathrooms</ion-label>
-            <select class="dropdown" [(ngModel)]="bath" (ionChange)="filterProperties()">
-              <option value="1">1 Bathroom</option>
-              <option value="2">2 Bathrooms</option>
-              <option value="3">3 Bathrooms</option>
-              <option value="4">4 Bathrooms</option>
-              <option value="5">5+ Bathrooms</option>
-            </select>
-          </ion-item>
-
-          <ion-item>
-            <ion-label class="filter-text">Parking / Garage</ion-label>
-            <select class="dropdown" [(ngModel)]="parking" (ionChange)="filterProperties()">
-              <option value="1">1 Garage</option>
-              <option value="2">2 Garages</option>
-              <option value="3">3 Garages</option>
-              <option value="4">4 Garages</option>
-              <option value="5">5+ Garages</option>
-            </select>
-          </ion-item>
-
-          <ion-item>
-            <ion-label class="filter-text">Features</ion-label>
-            <ion-select id="amenities-select" class="dropdown" [(ngModel)]="features" (ionChange)="filterProperties()"
-              [multiple]="true" placeholder="Features">
-              <ion-select-option value="Pet Friendly">Pet Friendly</ion-select-option>
-              <ion-select-option value="Garden">Garden</ion-select-option>
-              <ion-select-option value="Pool">Pool</ion-select-option>
-              <ion-select-option value="Flatlet">Flatlet</ion-select-option>
-              <ion-select-option value="Other">Other</ion-select-option>
-            </ion-select>
-          </ion-item>
-
-          <ion-item class="filter">
-            <ion-label class="filter-text">Community Environment</ion-label>
-            <select class="dropdown" [(ngModel)]="env_type" (ionChange)="filterProperties()">
-              <option value="Standalone House">Standalone House</option>
-              <option value="Complex">Complex</option>
-              <option value="Gated Community">Gated Community</option>
-            </select>
-          </ion-item>
-
-          <ion-item class="filter">
-            <ion-label style="width: 100%" class="filter-text">Property Size</ion-label>
-            <div class="inputPrice">
-              <div class="field" style="padding-left: 1.5%">
-                <span>Minimum</span>
-                <input type="number" value="250000" [(ngModel)]="property_size_values.lower" style="width: 90%">
-              </div>
-              <div class="sliderDiv">
-                <ion-range [dualKnobs]="true" [(ngModel)]="property_size_values" (ionChange)="onPropSizeKnobMoveStart()"
-                  id="propSizeSlider" min="0" max="99999999"></ion-range>
-              </div>
-              <div class="field">
-                <span>Maximum</span>
-                <input type="number" [(ngModel)]="property_size_values.upper" value="1500000" style="width: 90%">
-              </div>
-            </div>
-          </ion-item>
-        </div>
-      </ion-col>
-    </ion-row>
   </div>
 
 

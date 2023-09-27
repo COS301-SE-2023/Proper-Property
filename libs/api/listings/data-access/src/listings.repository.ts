@@ -122,24 +122,38 @@ export class ListingsRepository {
 
   async changeStatus(listingId: string, change: StatusChange, req : ChangeStatusRequest): Promise<ChangeStatusResponse>{
     try {
-      await admin
-      .firestore()
-      .collection('listings')
-      .doc(listingId)
-      .update({
-        statusChanges: FieldValue.arrayUnion(change),
-        status: req.status,
-        areaScore: {
-          crimeScore: req.crimeScore,
-          waterScore: req.waterScore,
-          sanitationScore: req.sanitationScore,
-          schoolScore: req.schoolScore
-        }
-      });
-    } catch(error) {
+      if (!req.crimeScore || !req.waterScore || !req.sanitationScore || !req.schoolScore) {
+        await admin
+          .firestore()
+          .collection('listings')
+          .doc(listingId)
+          .update({
+            statusChanges: FieldValue.arrayUnion(change),
+            status: req.status
+          });
+      }
+      else {
+        await admin
+          .firestore()
+          .collection('listings')
+          .doc(listingId)
+          .update({
+            statusChanges: FieldValue.arrayUnion(change),
+            status: req.status,
+            areaScore: {
+              crimeScore: req.crimeScore ?? 0,
+              waterScore: req.waterScore ?? 0,
+              sanitationScore: req.sanitationScore ?? 0,
+              schoolScore: req.schoolScore ?? 0
+            }
+          });
+      }
+
+    } catch(error: any) {
       return {
-        success: true,
-        statusChange: change
+        success: false,
+        statusChange: undefined,
+        message: error.message
       }
     }
 

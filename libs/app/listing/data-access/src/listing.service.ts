@@ -164,6 +164,9 @@ export class ListingsService {
   }
 
   async changeStatus(listingId : string, admin : string, status: StatusEnum, crimeScore?: number, waterScore?: number, sanitationScore?: number, schoolScore?: number){
+    const runningLocally = window.location.hostname.includes('localhost');
+    if (runningLocally) console.log('changing status')
+
     let request : ChangeStatusRequest;
     if(crimeScore && waterScore && sanitationScore && schoolScore){
       request = {
@@ -184,6 +187,7 @@ export class ListingsService {
         reason: "git gud"
       }
     }
+    if (runningLocally) console.log(request);
     const response: ChangeStatusResponse = (await httpsCallable<
       ChangeStatusRequest,
       ChangeStatusResponse
@@ -191,9 +195,9 @@ export class ListingsService {
       this.functions,
       'changeStatus'
     )(
-        request
-      )).data;
-
+      request
+    )).data;
+    if (runningLocally) console.log(response);
     return response;
   }
 
@@ -252,8 +256,10 @@ export class ListingsService {
         +!!char.gym, 
         +!!char.owner
       ];
-      console.warn(listVector);
-      console.warn(userVector);
+      if (window.location.hostname.includes("localhost"))
+        console.warn(listVector);
+      if (window.location.hostname.includes("localhost"))
+        console.warn(userVector);
       for(let x=0; x<10; x++){
         listVector[x]= listVector[x]*userVector[x];
       }
@@ -264,7 +270,8 @@ export class ListingsService {
       for(let x=0; x< 10; x++){
         dotproduct += listVector[x]*userVector[x];
       }
-      console.warn(dotproduct);
+      if (window.location.hostname.includes("localhost"))
+        console.warn(dotproduct);
       // sigmoid function
       // let e = Math.E;
       let finalAnswer = 0;

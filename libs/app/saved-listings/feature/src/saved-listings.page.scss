@@ -53,6 +53,14 @@ ion-card ion-card-content {
   width: 65%;
 }
 
+#house_description{
+  // height: 10% !important;
+  width: 87%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 #saved
 {
   position: fixed;

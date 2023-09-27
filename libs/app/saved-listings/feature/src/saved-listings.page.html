@@ -30,7 +30,7 @@
     <section id="first">
       <ion-grid>
         <ion-row>
-          <ion-col class="rightBorder">
+          <ion-col class="rightBorder" size="6">
             <ion-card *ngFor="let listing of savedListingsB" >
               <ion-icon (click)="unsaveListing($event, listing.listing_id ?? '', 'buy')" name="heart" class="heart-icon"></ion-icon>
               <ion-card-header (click)="redirectToPage(listing)">
@@ -44,7 +44,7 @@
                   {{listing.bed}} bedroom/{{listing.prop_type}}
                 </p>
                 <p>For Sale!</p>
-                <p>
+                <p id="house_description">
                 {{listing.desc}}
                 </p>
                 <br>
@@ -65,7 +65,7 @@
             </ion-card>
           
           </ion-col>
-          <ion-col>
+          <ion-col size="6">
             <ion-card *ngFor="let listing of savedListingsR" >
               <ion-card-header (click)="redirectToPage(listing)">
                 <img src="{{listing.photos[0]}}" alt="house1">
@@ -78,7 +78,7 @@
                   {{listing.bed}} bedroom/{{listing.prop_type}}
                 </p>
                 <p>To Let!</p>
-                <p>
+                <p id="house_description">
                 {{listing.desc}}
                 </p>
                 <br>

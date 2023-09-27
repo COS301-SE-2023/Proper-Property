@@ -15,6 +15,17 @@
 
 -[Project Board View 1](https://github.com/orgs/COS301-SE-2023/projects/21/views/1)
 
+<strong><h3 style="font-family: Jetbrains Mono">Website:</h3></strong>
+-[Proper Property Link](https://proper-property-51963.web.app)
+
+<strong><h3 style="font-family: Jetbrains Mono">FINAL DEMO:</h3></strong>
+- [System Requirement Specifications V4](https://drive.google.com/file/d/1gNDCB_RqPpo3Ova7XqVRzJDxda2xBy9A/view?usp=sharing)
+- [Testing Policy V1](https://drive.google.com/file/d/1MIdRFCY9PuQo60ze5-LXeKud1Aqro8Ev/view?usp=sharing)
+- [Coding Standards V2](https://drive.google.com/file/d/15m9egiRO__sVOkkSOaT2x_oGlpRvkMzj/view?usp=sharing)
+- [User Manual V2](https://drive.google.com/file/d/19PEu1p3PxNLQsz4uN9ThpXuuRVSDvemG/view?usp=sharing)
+- [Technical Installation V1](https://drive.google.com/file/d/17q184yZ9bTxEl1Ha1AW9Kf7_VGGi9JGD/view?usp=sharing)
+
+
 <strong><h3 style="font-family: Jetbrains Mono">DEMO 3:</h3></strong>
 - [System Requirement Specifications V3](https://drive.google.com/file/d/1gNDCB_RqPpo3Ova7XqVRzJDxda2xBy9A/view?usp=drive_link)
 - [Testing Policy V1](https://drive.google.com/file/d/1MIdRFCY9PuQo60ze5-LXeKud1Aqro8Ev/view?usp=sharing)
