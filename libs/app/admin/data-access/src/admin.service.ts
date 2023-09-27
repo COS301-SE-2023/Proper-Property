@@ -371,10 +371,24 @@ export class AdminService {
       UploadLocInfoDataResponse
     >(this.functions, 'uploadLocInfoData')({request: request, path : 'waterAccess'})).data;
   }
+  
 
+  // for(const station of request.stationStats){
+  //   let correctDistrict = "";
+  //   
   async uploadWaterQualityData(data : any[]){
+    const runningLocally = window.location.hostname.includes("localhost");
+    if(runningLocally) console.log("uploading water quality data");
+    let progressCounter = 0;
+    let percentageCounter = 0;
     const WSAs : waterQualityWSA[] = []
     for(let i = 0; i < data.length; i++){
+      const currentPercentage = Math.floor(progressCounter/data.length * 100);
+      if(Math.floor(currentPercentage / 10) > percentageCounter && runningLocally){
+        ++percentageCounter;
+        console.log(percentageCounter*10 + "%");
+      }
+      ++progressCounter;
       WSAs.push({
         wsa: data[i]['WSA'],
         chemicalAcuteHealth: data[i]['Chemical : Acute Health'].includes("%") ? data[i]['Chemical : Acute Health'].substring(0, data[i]['Chemical : Acute Health'].length - 1)/100 : null,

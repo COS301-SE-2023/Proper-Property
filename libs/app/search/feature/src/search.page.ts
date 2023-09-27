@@ -191,6 +191,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
 
   // TODO add input latency to reduce api calls
   timeout: NodeJS.Timeout | undefined = undefined;
+  searchLoading = false;
   async handleInputChange(event: Event) {
     // return;
     // const input = event.target as HTMLInputElement;
@@ -199,6 +200,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     // if timeout is already set, reset remaining duration
     clearTimeout(this.timeout);
     // set timeout to get predictions after 1.5 seconds
+    this.searchLoading = true;
     this.timeout = setTimeout(() => {
       const input = event.target as HTMLInputElement;
  
@@ -208,6 +210,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
       else {
         this.gmapsService.getRegionPredictions(input.value).then(() => {
           this.predictions = this.gmapsService.regionPredictions;
+          this.searchLoading = false;
         });
       }
       // clear timeout after execution
