@@ -105,7 +105,7 @@ export class ListingPage implements OnDestroy, OnInit {
 
       this.listingServices.getListing(list_id).then((list) => {
         this.list = list;
-        console.log("QR viewing: " + qr)
+        // console.log("QR viewing: " + qr)
       }).then(() => {
         if (admin) {
           this.admin = true;
@@ -126,7 +126,7 @@ export class ListingPage implements OnDestroy, OnInit {
           this.lister_name = user.firstName + " " + user.lastName;
 
           if (qr && this.list) {
-            console.log(window.location.href, " ", this.router.url);
+            // console.log(window.location.href, " ", this.router.url);
             this.userServices.qrListingRead({
               address: this.list.address,
               url: window.location.href.substring(0, window.location.href.indexOf(";qr")),
@@ -226,7 +226,7 @@ export class ListingPage implements OnDestroy, OnInit {
       pageViews.push(i.pageView);
     }
 
-    console.log(obj)
+    // console.log(obj)
 
     const data = {
       labels: dates,
@@ -266,7 +266,7 @@ export class ListingPage implements OnDestroy, OnInit {
     const seconds = (avgPerUser - minutes * 60).toPrecision(2);
 
     this.avgEnagement = seconds ? minutes + " min " + seconds + " sec" : "There is no data to show yet";
-    console.log(this.avgEnagement)
+    // console.log(this.avgEnagement)
     this.showData = true;
     const element = document.querySelector(".graph") as HTMLElement;
     loader.style.display = "none";
@@ -695,7 +695,7 @@ export class ListingPage implements OnDestroy, OnInit {
   qrGenerated = false;
   generateQRCode() {
     const QRCode = require('qrcode')
-    console.log("Test")
+    // console.log("Test")
     const qrCodeCanvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
     if (qrCodeCanvas) {
       QRCode.toCanvas(qrCodeCanvas, window.location.href + ";qr=true", function (error: any) {
@@ -704,14 +704,14 @@ export class ListingPage implements OnDestroy, OnInit {
           return;
         }
 
-        console.log('success!');
+        // console.log('success!');
       })
       this.qrGenerated = true;
 
       return;
     }
 
-    console.log("Whoopes")
+    // console.log("Whoopes")
   }
 
   downloadImage() {
@@ -719,7 +719,7 @@ export class ListingPage implements OnDestroy, OnInit {
 
     if (canvas) {
       const dataURL = canvas.toDataURL("image/png");
-      console.log(dataURL);
+      // console.log(dataURL);
 
       const a = document.createElement('a');
       a.href = dataURL
