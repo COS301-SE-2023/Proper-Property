@@ -1,14 +1,45 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, PreloadAllModules, RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
+import { UserProfileState } from '@properproperty/app/profile/data-access';
+import { inject } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { Router } from '@angular/router';
+export const profileCompletionGuard = (
+  route: ActivatedRouteSnapshot, 
+  state: RouterStateSnapshot
+) => {
+  const profile = inject(Store).selectSnapshot(UserProfileState.userProfile);
+  if (window.location.hostname.includes('localhost')) {
+    console.log(route);
+    console.log(state);
+    console.log(profile);
+  }
+  if (profile && (!profile.firstName || !profile.lastName || !profile.phoneNumber || !profile.email)) {
 
+    inject(Router).navigate(['/profile']);
+    return false;
+  } 
+  // if (!profile 
+  //   && (state.url.includes('/create-listing')
+  //     || state.url.includes('/profile')
+  //     || state.url.includes('/my-listings')
+  //     || state.url.includes('/saved-listings')
+  //   )
+  // ) {
+  //   inject(Router).navigate(['/login']);
+  //   return false;
+  // }
+  return true;
+}
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'home',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'home',
+    canActivate: [profileCompletionGuard],
     loadChildren: () => import('@properproperty/app/home/feature').then( m => m.HomePageModule)
   },
   {
@@ -25,6 +56,7 @@ const routes: Routes = [
   },
   {
     path: 'search',
+    canActivate: [profileCompletionGuard],
     loadChildren: () => import('@properproperty/app/search/feature').then( m => m.SearchPageModule)
   },
   {
@@ -47,12 +79,13 @@ const routes: Routes = [
   },
   {
     path: 'create-listing',
+    canActivate: [profileCompletionGuard],
     loadChildren: () => import('@properproperty/app/create-listing/feature').then( m => m.CreateListingPageModule)
   },
-  {
-    path: 'settings',
-    loadChildren: () => import('@properproperty/app/settings/feature').then( m => m.SettingsPageModule)
-  },
+  // {
+  //   path: 'settings',
+  //   loadChildren: () => import('@properproperty/app/settings/feature').then( m => m.SettingsPageModule)
+  // },
   {
     path: 'listing',
     loadChildren: () => import('@properproperty/app/listing/feature').then( m => m.ListingPageModule)

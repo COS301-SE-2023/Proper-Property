@@ -1,7 +1,7 @@
 
-import { Component, OnInit,HostListener } from '@angular/core';
+import { Component, OnInit,HostListener, inject } from '@angular/core';
 import { UserProfileState, UserProfileService } from '@properproperty/app/profile/data-access';
-import {AuthService} from '@properproperty/app/auth/data-access';
+import { AuthService} from '@properproperty/app/auth/data-access';
 import { Logout } from '@properproperty/app/auth/util';
 import { AlertController } from '@ionic/angular';
 
@@ -31,6 +31,7 @@ export class ProfilePage implements OnInit {
   newPhoneNumber: string;
   profilePic = "";
   saveProfile = false;
+  profileComplete = false;
   // appPages = [
   //   { title: 'Saved Listings', url: '/saved-listings', icon: 'bookmark' },
   //   { title: 'My Listings', url: '/my-listings', icon: 'list' },
@@ -94,9 +95,35 @@ export class ProfilePage implements OnInit {
         leftUmbrella: 50
     };
 
+    this.isEditingEmail = false;
+    this.isEditingName = false;
+    this.isEditingPhoneNumber = false;
+    this.isEditingProfilePicture = false;
+    this.newEmail = '';
+    this.newFirstName = '';
+    this.newLastName = '';
+    this.newPhoneNumber = '';
+   }
+
+   @HostListener('window:resize', ['$event'])
+   onResize() {
+     this.isMobile = window.innerWidth <= 576;
+   }
+   
+  ngOnInit() {
     this.userProfile$.subscribe((profile) => {
       this.user = profile;
       this.profilePic = profile?.profilePicture ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2t2r3zx8jVPz6isicXtXbueLZFfWIuRMkW8X6KQ3_&s";
+      this.profileComplete = false;
+      if(profile?.firstName
+        && profile?.lastName
+        && profile?.phoneNumber
+        && profile?.email
+      ) {
+        this.profileComplete = true;
+      }
+      
+      console.log(profile);
       if(profile) {
         if(profile.interests !== undefined){
           this.interests = profile.interests;
@@ -121,24 +148,6 @@ export class ProfilePage implements OnInit {
         };
       }
     });
-
-    this.isEditingEmail = false;
-    this.isEditingName = false;
-    this.isEditingPhoneNumber = false;
-    this.isEditingProfilePicture = false;
-    this.newEmail = '';
-    this.newFirstName = '';
-    this.newLastName = '';
-    this.newPhoneNumber = '';
-   }
-
-   @HostListener('window:resize', ['$event'])
-   onResize() {
-     this.isMobile = window.innerWidth <= 576;
-   }
-   
-  ngOnInit() {
-    console.log ("Linter: Lifecycle methods should not be empty");
   }
 
   async confirmDeleteAccount() {
