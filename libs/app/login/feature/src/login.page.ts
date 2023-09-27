@@ -47,12 +47,12 @@ export class LoginPage implements OnInit {
     this.user$.subscribe((user) => {
       this.userProfile$.subscribe((profile) => {
         this.userProfile = profile;
-        if (profile) {
-          if(!profile.firstName){
-            profile.firstName = user?.displayName?.split(" ")[0];
-            profile.lastName = user?.displayName?.split(" ")[1];
-          }
-        }
+        // if (profile) {
+        //   if(!profile.firstName){
+        //     profile.firstName = user?.displayName?.split(" ")[0];
+        //     profile.lastName = user?.displayName?.split(" ")[1];
+        //   }
+        // }
       });
       
     });
