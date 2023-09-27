@@ -88,7 +88,7 @@ ion-content::part(scroll) {
     border-radius: 30px;
     border: 1px solid #000;
     background: rgba(13, 174, 79, 0.40);
-    width: 92%;
+    width: 100%;
     height: auto;
   }
   
@@ -108,7 +108,7 @@ ion-content::part(scroll) {
     position: absolute;
     top: 100%;
     margin-top: 2px;
-    left: 0;
+    left: 5px;
     border-radius: 25px;
     width: 92%;
     padding: 0;
@@ -150,17 +150,19 @@ ion-content::part(scroll) {
   }
   
   #search-row{
-    margin-left: 4%;
+    // margin-left: 4%;
     padding-left: 0;
   }
-  
+  .search-filter-col {
+    padding: 5px 10px;
+  }
   #address {
     border-radius: 30px;
     border: 1.5px solid #000;
     background: #FFF;
-    width: 92%;
+    width: 100%;
     margin-bottom: 1%;
-    padding-left: 18px;
+    // padding-left: 18px;
     height: 50px;
     font-size: 16px;
     font-style: normal;
@@ -187,14 +189,14 @@ ion-content::part(scroll) {
   .filter-button {
     width: 90%;
     height: 40%;
-    margin-right: 10%;
+    // margin-right: 10%;
     --border-radius: 30px;
-    margin-top: 5%;
+    // margin-top: 5%;
   }
   
   .search-button {
     width: 90%;
-    height: 100%;
+    height: 56px;
     margin-right: 10%;
     color: white;
     border: none;
