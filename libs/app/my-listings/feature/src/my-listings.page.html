@@ -34,10 +34,10 @@
 
   <section id="category">
     <ion-segment>
-      <ion-segment-button class="rightBorder">
+      <ion-segment-button aria-disabled="true" class="rightBorder">
         <ion-label>Buy</ion-label>
       </ion-segment-button>
-      <ion-segment-button>
+      <ion-segment-button aria-disabled="true">
         <ion-label>Rent</ion-label>
       </ion-segment-button>
     </ion-segment>
@@ -192,7 +192,7 @@
                   </ion-row>
                 </ion-grid>
                 <br>
-                <div id="house_details">
+                <div id="house_details2">
                   Address: {{listing.address}}
                 </div>
               </ion-card-content>
@@ -262,7 +262,7 @@
                   </ion-row>
                 </ion-grid>
                 <br>
-                <div id="house_details">
+                <div id="house_details2">
                   Address: {{listing.address}}
                 </div>
               </ion-card-content>

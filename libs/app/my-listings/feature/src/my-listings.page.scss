@@ -1,3 +1,9 @@
+#category{
+  color: var(--ion-color-primary);
+  background: rgba(13, 174, 79, 0.05);
+  
+}
+
 .green-tab {
   --color: green;
 }#house_details img {
@@ -208,4 +214,14 @@ ion-card ion-card-content {
   top: 40%;
   // opacity: 0;
   width: 100%;
+}
+
+.rightBorder
+{
+  border-right: 1px solid rgba(13, 174, 79, 0.20);
+}
+
+#house_details2{
+  
+  margin-top: -8%;
 }
