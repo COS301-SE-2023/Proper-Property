@@ -65,8 +65,7 @@ export class UserProfileState {
           ctx.patchState({ userProfile: userProfile });
         }
       );
-      if (window.location.hostname.includes("localhost"))
-      console.log('subscribed to user profile');
+      if (window.location.hostname.includes('localhost')) console.log('subscribed to user profile');
     }
     // Update state
     ctx.patchState({ 

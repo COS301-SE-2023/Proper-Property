@@ -44,7 +44,7 @@ export class LoginPage implements OnInit {
   async googleLogin(){
     this.store.dispatch(new AuthProviderLogin());
 
-    this.user$.subscribe((user) => {
+    // this.user$.subscribe((user) => {
       this.userProfile$.subscribe((profile) => {
         this.userProfile = profile;
         // if (profile) {
@@ -55,7 +55,7 @@ export class LoginPage implements OnInit {
         // }
       });
       
-    });
+    // });
   }
 
   ngOnInit() {

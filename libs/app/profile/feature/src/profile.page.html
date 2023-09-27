@@ -2,6 +2,15 @@
   <div class="profileCard">
 
     <ion-grid>
+      <ion-row id="profile-completion-notice" *ngIf="!profileComplete">
+        <ion-col>
+          <ion-row style="text-align: center; align-items: center; ">
+            <div style="margin: 0 auto; height: 40px; display: flex;justify-content: center; align-items: center">
+              <ion-label color="danger"><ion-icon name="alert-circle-outline" color="danger" size="small" style="padding:0; margin: 0 5px 0 0"></ion-icon>Complete your profile with your email, contact number, and full name to get the most out of your experience!</ion-label>
+            </div>
+          </ion-row>
+        </ion-col>
+      </ion-row>
       <ion-row class="profilePic">
         <ion-col size="3.5">
         <ion-grid>

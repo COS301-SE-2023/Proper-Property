@@ -19,10 +19,10 @@
 
   <div [ngSwitch]="activeTab">
 
-    <ion-row style="width: 100%;" id="search-row">
+    <ion-row id="search-row">
       <ion-row id="searchBar" style="width: 100%;">
-        <ion-col size="10">
-          <ion-spinner name="crescent" color="primary" *ngIf="searchLoading" style="position: absolute; top: 14px; left:14px; z-index: 100;"></ion-spinner>
+        <ion-col size="10" class="search-filter-col">
+          <ion-spinner name="crescent" color="primary" *ngIf="searchLoading" style="position: absolute; top: 18px; left:18px; z-index: 100;"></ion-spinner>
           <ion-input type="text" (ionInput)="handleInputChange($event)" id="address" class="address"
             [(ngModel)]="searchQuery" placeholder="search"></ion-input>
           <ion-list *ngIf="predictionDisplay()" class="prediction-result-list">
@@ -34,13 +34,13 @@
             </ion-item>
           </ion-list>
         </ion-col>
-        <ion-col>
+        <ion-col class="search-filter-col">
           <ion-button class="search-button" (click)="searchProperties()">Search</ion-button>
         </ion-col>
       </ion-row>
 
       <ion-row style="width: 100%;">
-        <ion-col size="10">
+        <ion-col size="10" class="search-filter-col">
           <div id="filter-container">
             <ion-grid>
               <ion-row>
@@ -156,7 +156,7 @@
           </div>
         </ion-col>
 
-        <ion-col>
+        <ion-col class="search-filter-col">
           <ion-button class="filter-button" (click)="toggleAdditionalFilters()">
             <ion-icon [name]="showAdditionalFilters ? 'remove' : 'add'"></ion-icon>
             {{ showAdditionalFilters ? 'Less Filters' : 'More Filters' }}
