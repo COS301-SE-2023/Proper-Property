@@ -69,7 +69,8 @@ export class UserProfileService {
       SendQREmailRequest,
       void
     >(this.functions, 'sendNotification')(request);
-    console.log(resp);
+    if (window.location.hostname.includes("localhost"))
+      console.log(resp);
   }
 
   vPotency = 0;

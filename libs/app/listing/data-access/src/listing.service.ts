@@ -256,8 +256,10 @@ export class ListingsService {
         +!!char.gym, 
         +!!char.owner
       ];
-      console.warn(listVector);
-      console.warn(userVector);
+      if (window.location.hostname.includes("localhost"))
+        console.warn(listVector);
+      if (window.location.hostname.includes("localhost"))
+        console.warn(userVector);
       for(let x=0; x<10; x++){
         listVector[x]= listVector[x]*userVector[x];
       }
@@ -268,7 +270,8 @@ export class ListingsService {
       for(let x=0; x< 10; x++){
         dotproduct += listVector[x]*userVector[x];
       }
-      console.warn(dotproduct);
+      if (window.location.hostname.includes("localhost"))
+        console.warn(dotproduct);
       // sigmoid function
       // let e = Math.E;
       let finalAnswer = 0;

@@ -521,7 +521,8 @@ async loadMap() {
 
       for(const list of response.listings)
       {
-        console.log(list.characteristics);
+        if (window.location.hostname.includes("localhost"))
+          console.log(list.characteristics);
         this.recommends.push({
           listingID: list.listing_id,
           recommended: await this.listingServices.recommender(
@@ -531,7 +532,8 @@ async loadMap() {
           })
       }
       
-      console.warn(this.recommends);
+      if (window.location.hostname.includes("localhost"))
+        console.warn(this.recommends);
 
       this.filterProperties();
       await this.loadMap();

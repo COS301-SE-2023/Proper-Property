@@ -59,7 +59,8 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    console.log ("Linter: Lifecycle methods should not be empty");
+    if (window.location.hostname.includes("localhost"))
+      console.log ("Linter: Lifecycle methods should not be empty");
   }
 
 }
