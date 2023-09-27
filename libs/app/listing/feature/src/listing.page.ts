@@ -10,7 +10,7 @@ import { Select } from '@ngxs/store';
 import { httpsCallable, Functions } from '@angular/fire/functions';
 import { Chart, registerables } from 'chart.js';
 import { Unsubscribe } from 'firebase/auth';
-import { IonContent, IonModal, ToastOptions } from '@ionic/angular';
+import { IonContent, ToastOptions } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
 import { ToastController } from '@ionic/angular';
 
@@ -171,6 +171,7 @@ export class ListingPage implements OnDestroy, OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
+    if (window.location.hostname.includes("localhost")) console.log(event);
     this.isMobile = window.innerWidth <= 576;
   }
 
@@ -186,9 +187,9 @@ export class ListingPage implements OnDestroy, OnInit {
     const analyticsData = JSON.parse(analyticsResponse as string);
     let totUsers = 0;
     let totEngagement = 0;
-    let dates: string[] = [];
-    let pageViews: number[] = [];
-    let obj: {
+    const dates: string[] = [];
+    const pageViews: number[] = [];
+    const obj: {
       date: string,
       pageView: number
     }[] = [];
@@ -220,7 +221,7 @@ export class ListingPage implements OnDestroy, OnInit {
       return new Date(a.date).getTime() - new Date(b.date).getTime();
     })
 
-    for (let i of obj) {
+    for (const i of obj) {
       dates.push(i.date);
       pageViews.push(i.pageView);
     }
@@ -577,6 +578,7 @@ export class ListingPage implements OnDestroy, OnInit {
   }
 
   goNext(event: Event) {
+    if (window.location.hostname.includes("localhost")) console.log(event);
     if (this.swiperRef) {
       this.swiperRef.nativeElement.swiper.slideNext();
     }
@@ -588,7 +590,7 @@ export class ListingPage implements OnDestroy, OnInit {
   }
 
   swiperSlideChanged(e: Event) {
-    // console.log('changed', e)
+    if (window.location.hostname.includes("localhost")) console.log(e);
   }
 
   loanAmount: number;
@@ -716,10 +718,10 @@ export class ListingPage implements OnDestroy, OnInit {
     const canvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
 
     if (canvas) {
-      var dataURL = canvas.toDataURL("image/png");
+      const dataURL = canvas.toDataURL("image/png");
       console.log(dataURL);
 
-      var a = document.createElement('a');
+      const a = document.createElement('a');
       a.href = dataURL
       a.download = this.list?.address.trim().replace(/,/g, "").replace(/ /g, "-") + '-qr-download.jpeg';
       a.click();
