@@ -150,7 +150,8 @@ ion-content::part(scroll) {
   }
   
   #search-row{
-    padding-left: 4%;
+    margin-left: 4%;
+    padding-left: 0;
   }
   
   #address {
@@ -164,7 +165,7 @@ ion-content::part(scroll) {
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
-    --padding-start: 20px;
+    --padding-start: 50px;
     --highlight-color-focused: none;
     --highlight-color-valid: none;
     --highlight-color-invalid: none;
