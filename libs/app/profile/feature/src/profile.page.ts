@@ -1,5 +1,5 @@
 
-import { Component, OnInit,HostListener, inject } from '@angular/core';
+import { Component, OnInit,HostListener } from '@angular/core';
 import { UserProfileState, UserProfileService } from '@properproperty/app/profile/data-access';
 import { AuthService} from '@properproperty/app/auth/data-access';
 import { Logout } from '@properproperty/app/auth/util';

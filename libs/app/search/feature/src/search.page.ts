@@ -199,6 +199,11 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     // this.predictions = this.gmapsService.regionPredictions;
     // if timeout is already set, reset remaining duration
     clearTimeout(this.timeout);
+    if (this.searchQuery.length == 0) {
+      this.searchLoading = false;
+      this.predictions = [];
+      return;
+    }
     // set timeout to get predictions after 1.5 seconds
     this.searchLoading = true;
     this.timeout = setTimeout(() => {
