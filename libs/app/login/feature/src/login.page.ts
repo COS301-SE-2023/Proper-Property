@@ -25,7 +25,10 @@ export class LoginPage implements OnInit {
 
   isMobile = false;
 
-  constructor(private readonly store: Store, public authService: AuthService, public router: Router, public userService : UserProfileService) {
+  constructor(private readonly store: Store,
+    public authService: AuthService, 
+    public router: Router,
+    public userService : UserProfileService) {
     this.email = this.password = "";
     this.isMobile = isMobile();
   }
@@ -38,7 +41,7 @@ export class LoginPage implements OnInit {
     this.store.dispatch(new Login(this.email, this.password));
   }
 
-  googleLogin(){
+  async googleLogin(){
     this.store.dispatch(new AuthProviderLogin());
 
     this.user$.subscribe((user) => {
@@ -53,7 +56,6 @@ export class LoginPage implements OnInit {
       });
       
     });
-
   }
 
   ngOnInit() {
