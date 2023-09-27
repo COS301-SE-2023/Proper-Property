@@ -16,7 +16,7 @@
 -[Project Board View 1](https://github.com/orgs/COS301-SE-2023/projects/21/views/1)
 
 <strong><h3 style="font-family: Jetbrains Mono">FINAL DEMO:</h3></strong>
-- [System Requirement Specifications V4](https://drive.google.com/file/d/1gNDCB_RqPpo3Ova7XqVRzJDxda2xBy9A/view?usp=drive_link)
+- [System Requirement Specifications V4](https://drive.google.com/drive/folders/1DK3xmJ1WJoMevaCp600nfZOz45jZeS3D)
 - [Testing Policy V1](https://drive.google.com/file/d/1MIdRFCY9PuQo60ze5-LXeKud1Aqro8Ev/view?usp=sharing)
 - [Coding Standards V2](https://drive.google.com/file/d/15m9egiRO__sVOkkSOaT2x_oGlpRvkMzj/view?usp=sharing)
 - [User Manual V2](https://drive.google.com/file/d/19PEu1p3PxNLQsz4uN9ThpXuuRVSDvemG/view?usp=sharing)
