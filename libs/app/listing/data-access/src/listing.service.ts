@@ -164,6 +164,9 @@ export class ListingsService {
   }
 
   async changeStatus(listingId : string, admin : string, status: StatusEnum, crimeScore?: number, waterScore?: number, sanitationScore?: number, schoolScore?: number){
+    const runningLocally = window.location.hostname.includes('localhost');
+    if (runningLocally) console.log('changing status')
+
     let request : ChangeStatusRequest;
     if(crimeScore && waterScore && sanitationScore && schoolScore){
       request = {
@@ -184,6 +187,7 @@ export class ListingsService {
         reason: "git gud"
       }
     }
+    if (runningLocally) console.log(request);
     const response: ChangeStatusResponse = (await httpsCallable<
       ChangeStatusRequest,
       ChangeStatusResponse
@@ -191,9 +195,9 @@ export class ListingsService {
       this.functions,
       'changeStatus'
     )(
-        request
-      )).data;
-
+      request
+    )).data;
+    if (runningLocally) console.log(response);
     return response;
   }
 
