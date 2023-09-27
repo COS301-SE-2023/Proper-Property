@@ -10,7 +10,7 @@ import { Select } from '@ngxs/store';
 import { httpsCallable, Functions } from '@angular/fire/functions';
 import { Chart, registerables } from 'chart.js';
 import { Unsubscribe } from 'firebase/auth';
-import { IonContent, IonModal, ToastOptions } from '@ionic/angular';
+import { IonContent, ToastOptions } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
 import { ToastController } from '@ionic/angular';
 
@@ -171,6 +171,7 @@ export class ListingPage implements OnDestroy, OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
+    if (window.location.hostname.includes("localhost")) console.log(event);
     this.isMobile = window.innerWidth <= 576;
   }
 
@@ -186,9 +187,9 @@ export class ListingPage implements OnDestroy, OnInit {
     const analyticsData = JSON.parse(analyticsResponse as string);
     let totUsers = 0;
     let totEngagement = 0;
-    let dates: string[] = [];
-    let pageViews: number[] = [];
-    let obj: {
+    const dates: string[] = [];
+    const pageViews: number[] = [];
+    const obj: {
       date: string,
       pageView: number
     }[] = [];
@@ -220,7 +221,7 @@ export class ListingPage implements OnDestroy, OnInit {
       return new Date(a.date).getTime() - new Date(b.date).getTime();
     })
 
-    for (let i of obj) {
+    for (const i of obj) {
       dates.push(i.date);
       pageViews.push(i.pageView);
     }
@@ -293,23 +294,67 @@ export class ListingPage implements OnDestroy, OnInit {
     // show.style.opacity = "0";
     // const load = document.querySelector('#loader') as HTMLElement;
     // load.style.opacity = "1";
+    const runningLocally = window.location.hostname.includes("localhost");
     if (this.list && this.adminId != "") {
       let crimeScore;
       let schoolScore;
       let waterScore;
       let sanitationScore;
-      if (this.list.geometry.lat == 0 || this.list.geometry.lat) {
+      const scoresCalculated = {
+        crimeScore: false,
+        schoolScore: false,
+        waterScore: false,
+        sanitationScore: false
+      }
+      if (!this.list.geometry.lat|| !this.list.geometry.lng) {
         const geocodeResult = await this.gmapsService.geocodeAddress(this.list.address);
-        this.list.geometry = {
-          lat: geocodeResult?.geometry.location.lat() ?? 0,
-          lng: geocodeResult?.geometry.location.lng() ?? 0
+        if (!geocodeResult) {
+          this.loading = false;
+          this.successfulChange.message = (approved? "Approval" : "Rejection") + this.failedChange.message + ": Could not geocode address";
+          const toast = await this.toastController.create(this.failedChange);
+          toast.present();
+          return;
         }
+        this.list.geometry = {
+          lat: geocodeResult.geometry.location.lat() ?? 0,
+          lng: geocodeResult.geometry.location.lng() ?? 0
+        }
+        if (runningLocally) console.log(this.list.geometry);
       }
       if ((this.list.status == StatusEnum.PENDING_APPROVAL || this.list.status == StatusEnum.EDITED) && approved) {
-        crimeScore = this.list.areaScore.crimeScore ? this.list.areaScore.crimeScore: await this.getCrimeScore();
-        schoolScore = this.list.areaScore.schoolScore ? this.list.areaScore.schoolScore: await this.getSchoolRating(this.list.geometry);
-        waterScore = this.list.areaScore.waterScore ? this.list.areaScore.waterScore: await this.getWaterScore();
-        sanitationScore = this.list.areaScore.sanitationScore ? this.list.areaScore.sanitationScore: await this.getSanitationScore();
+        if (runningLocally) console.log("Getting scores");
+        
+        crimeScore = this.list.areaScore.crimeScore;
+        if (!crimeScore) {
+          const score = await this.getCrimeScore();
+          scoresCalculated.crimeScore = score > -1;
+          crimeScore = Math.max(this.list.areaScore.crimeScore, score);
+          if (runningLocally) console.log("crimeScore: ", score);
+        }
+        // schoolScore = this.list.areaScore.schoolScore ? this.list.areaScore.schoolScore: await this.getSchoolRating(this.list.geometry);
+        schoolScore = this.list.areaScore.schoolScore;
+        if (!schoolScore) {
+          const score = await this.getSchoolRating(this.list.geometry);
+          scoresCalculated.schoolScore = score > -1;
+          schoolScore = Math.max(this.list.areaScore.schoolScore, score);
+          if (runningLocally) console.log("schoolScore: ", score);
+        }
+        // waterScore = this.list.areaScore.waterScore ? this.list.areaScore.waterScore: await this.getWaterScore();
+        waterScore = this.list.areaScore.waterScore;
+        if (!waterScore) {
+          const score = await this.getWaterScore();
+          scoresCalculated.waterScore = score > -1;
+          waterScore = Math.max(this.list.areaScore.waterScore, score);
+          if (runningLocally) console.log("waterScore: ", score);
+        }
+        // sanitationScore = this.list.areaScore.sanitationScore ? this.list.areaScore.sanitationScore: await this.getSanitationScore();
+        sanitationScore = this.list.areaScore.sanitationScore;
+        if (!sanitationScore) {
+          const score = await this.getSanitationScore();
+          scoresCalculated.sanitationScore = score > -1;
+          sanitationScore = Math.max(this.list.areaScore.sanitationScore, score);
+          if (runningLocally) console.log("sanitationScore: ", score);
+        }
       }
 
 
@@ -317,19 +362,45 @@ export class ListingPage implements OnDestroy, OnInit {
       if (
         approved
         && (this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED)
-        && crimeScore != undefined
-        && schoolScore != undefined
-        && waterScore != undefined
-        && sanitationScore != undefined
+        && (crimeScore || scoresCalculated.crimeScore)
+        && (schoolScore || scoresCalculated.schoolScore)
+        && (waterScore || scoresCalculated.waterScore)
+        && (sanitationScore || scoresCalculated.sanitationScore)
       ) {
+        // return;
         result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, crimeScore, waterScore, sanitationScore, schoolScore);
       }
       else if ((this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED) && approved) {
         result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, 0, 0, 0, 0);
       }
-      else {
-        result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.DENIED, 0, 0, 0, 0);
+      else if (!approved){
+        // return;
+        result = await this.listingServices.changeStatus(
+          "" + this.list.listing_id, 
+          this.adminId, 
+          StatusEnum.DENIED, 
+          crimeScore,
+          waterScore,
+          sanitationScore,
+          schoolScore
+        );
       }
+      else {
+        let failedScores = "";
+        for (const [key, value] of Object.entries(scoresCalculated)) {
+          if (!value) {
+            failedScores += key + ", ";
+          }
+        }
+        // remove last space and comma
+        failedScores = failedScores.substring(0, failedScores.length - 2);
+        this.successfulChange.message = (approved? "Approval" : "Rejection") + this.failedChange.message + ": Something went wrong during score calculation for " + failedScores;
+        const toast = await this.toastController.create(this.failedChange);
+        this.loading = false;
+        toast.present();
+        return;
+      }
+      if (runningLocally) console.log(result);
 
       setTimeout(async () => {
         this.loading = false;
@@ -395,7 +466,7 @@ export class ListingPage implements OnDestroy, OnInit {
       }
     }
 
-    return 0;
+    return -1;
   }
 
   setSchoolRating() {
@@ -422,7 +493,7 @@ export class ListingPage implements OnDestroy, OnInit {
       return (response.percentage ? response.percentage : 0) * 100;
     }
 
-    return 0;
+    return -1;
   }
 
   setSanitationScore() {
@@ -452,7 +523,7 @@ export class ListingPage implements OnDestroy, OnInit {
       return (response.percentage ? response.percentage : 0) * 100;
     }
 
-    return 0;
+    return -1;
   }
 
   setWaterScore() {
@@ -485,7 +556,7 @@ export class ListingPage implements OnDestroy, OnInit {
       }
     }
 
-    return 0;
+    return -1;
   }
 
   setCrimeScore() {
@@ -507,6 +578,7 @@ export class ListingPage implements OnDestroy, OnInit {
   }
 
   goNext(event: Event) {
+    if (window.location.hostname.includes("localhost")) console.log(event);
     if (this.swiperRef) {
       this.swiperRef.nativeElement.swiper.slideNext();
     }
@@ -518,7 +590,7 @@ export class ListingPage implements OnDestroy, OnInit {
   }
 
   swiperSlideChanged(e: Event) {
-    // console.log('changed', e)
+    if (window.location.hostname.includes("localhost")) console.log(e);
   }
 
   loanAmount: number;
@@ -646,10 +718,10 @@ export class ListingPage implements OnDestroy, OnInit {
     const canvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
 
     if (canvas) {
-      var dataURL = canvas.toDataURL("image/png");
+      const dataURL = canvas.toDataURL("image/png");
       console.log(dataURL);
 
-      var a = document.createElement('a');
+      const a = document.createElement('a');
       a.href = dataURL
       a.download = this.list?.address.trim().replace(/,/g, "").replace(/ /g, "-") + '-qr-download.jpeg';
       a.click();

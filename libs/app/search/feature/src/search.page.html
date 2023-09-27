@@ -22,6 +22,7 @@
     <ion-row style="width: 100%;" id="search-row">
       <ion-row id="searchBar" style="width: 100%;">
         <ion-col size="10">
+          <ion-spinner name="crescent" color="primary" *ngIf="searchLoading" style="position: absolute; top: 14px; left:14px; z-index: 100;"></ion-spinner>
           <ion-input type="text" (ionInput)="handleInputChange($event)" id="address" class="address"
             [(ngModel)]="searchQuery" placeholder="search"></ion-input>
           <ion-list *ngIf="predictionDisplay()" class="prediction-result-list">
