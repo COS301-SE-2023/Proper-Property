@@ -185,6 +185,25 @@ ion-content::part(scroll) {
     cursor: pointer;
     margin-top: 1%;
   }
+
+  .areaScoreCol{
+    margin-top: 5%;
+  }
+
+  .areaScoreInput {
+    width: 50%;
+    height: 70%;
+    margin-right: 10%;
+    background: transparent;
+    border:1px solid rgb(168, 168, 168);
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 1%;
+  }
+
+  .totalScoreCol{
+    margin-bottom: 5%;
+  }
   
   .filter-button {
     width: 90%;
