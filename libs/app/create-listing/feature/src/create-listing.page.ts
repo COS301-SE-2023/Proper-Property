@@ -97,21 +97,21 @@ export class CreateListingPage{
     this.predictions = [];
     // this.defaultBounds = new google.maps.LatLngBounds();
     if (isDevMode()) {
-      this.address = "3 Curzon Place, la Lucia, Umhlanga";
-      this.price = 1000000;
-      this.floor_size = 100;
-      this.erf_size = 100;
-      this.bathrooms = 2;
-      this.bedrooms = 3;
-      this.parking = 1;
-      this.pos_type = "Leasehold";
-      this.env_type = "Gated Community";
-      this.prop_type = "House";
-      this.furnish_type = "Furnished";
-      this.orientation = "North";
-      this.description = "This is a description";
-      this.heading = "This is a heading";
-      this.district = 'eThekwini'
+      // this.address = "3 Curzon Place, la Lucia, Umhlanga";
+      // this.price = 1000000;
+      // this.floor_size = 100;
+      // this.erf_size = 100;
+      // this.bathrooms = 2;
+      // this.bedrooms = 3;
+      // this.parking = 1;
+      // this.pos_type = "Leasehold";
+      // this.env_type = "Gated Community";
+      // this.prop_type = "House";
+      // this.furnish_type = "Furnished";
+      // this.orientation = "North";
+      // this.description = "This is a description";
+      // this.heading = "This is a heading";
+      // this.district = 'eThekwini'
     }
     this.user$.subscribe((user: User | null) => {
       this.currentUser =  user;
