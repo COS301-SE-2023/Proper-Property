@@ -62,9 +62,9 @@
               </ion-card-header>
               <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
               <ion-card-content (click)="redirectToPage(listing)">
-              
+                {{listing.address}}
                 <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-                  {{listing.bed}} bedroom/{{listing.prop_type}}
+                  {{listing.bed}} bedroom {{listing.prop_type}}
                 </p>
                 <p>For Sale!</p>
                 <p id="house_description">
@@ -96,9 +96,9 @@
               </ion-card-header>
               <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
               <ion-card-content (click)="redirectToPage(listing)">
-              
+                {{listing.address}}
                 <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-                  {{listing.bed}} bedroom/{{listing.prop_type}}
+                  {{listing.bed}} bedroom {{listing.prop_type}}
                 </p>
                 <p>To Let!</p>
                 <p id="house_description">
@@ -191,10 +191,9 @@
                     </ion-col>
                   </ion-row>
                 </ion-grid>
-                <br>
-                <div id="house_details2">
+                <!-- <div id="house_details2">
                   Address: {{listing.address}}
-                </div>
+                </div> -->
               </ion-card-content>
             </ion-card>
   

@@ -33,7 +33,7 @@ import { ToastController } from '@ionic/angular';
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
 })
-export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
+export class SearchPage implements OnDestroy, AfterViewInit {
   @ViewChild('address', { static: false }) addressInput!: ElementRef<HTMLInputElement>;
   @ViewChild('address1', { static: false }) addressInput1!: ElementRef<HTMLInputElement>;
   isMobile = true;
@@ -58,6 +58,7 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   
   public activeTab = 'all';
   public searchQuery = '';
+  public searching = false;
   public env_type : string | null = null;
   public prop_type : string | null = null;
   public let_sell : string | null = null;
@@ -76,6 +77,13 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   private profile: UserProfile | null = null;  
   public recommends: Recommend[]=[];
   userInterestVector: number[]=[];
+  public rangeSteps = 10000;
+  public propSizeRangeSteps = 200;
+  public highestPrice = 0;
+  public lowestPrice = 99999999;
+  public smallestProp = 99999999;
+  public largestProp = 0;
+
   recommendationMinimum = 100000;
 
 
@@ -165,28 +173,6 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
     
   predictionDisplay() {
     return this.predictions.length > 0;
-  }
-  async ngOnInit() {
- 
-    // await this.listingServices.getApprovedListings().then((listings) => {
-    //   this.listings = listings;
-    //   this.filterProperties();
-    // });
-    setTimeout(function () {
-      // Hide the loader
-      const load=document.querySelector('.loading-animation') as HTMLElement;
-      // load.style.display="none";
-      load.style.display="none";
-      // const footerGap=document.querySelector('.footer-gap') as HTMLElement;
-      // footerGap.style.display="none";
-
-      // Display the map listing
-      const maplisting=document.querySelector('.show') as HTMLElement;
-      // maplisting.style.display="block";
-      maplisting.style.opacity="1";
-    }, 2000);
-
-
   }
 
   // TODO add input latency to reduce api calls
@@ -467,6 +453,10 @@ async loadMap() {
   Templistings: Listing[] = [];
 
   async searchProperties() {
+    document.getElementById("searchButton")?.setAttribute("disabled", "true")
+    this.buyCount = 0
+    this.rentCount = 0;
+    this.searching = true;
     // this.listings = await this.listingServices.getApprovedListings();
 
     if(this.isMobile)this.searchQuery = (document.getElementById("address1") as HTMLInputElement).value;
@@ -507,11 +497,26 @@ async loadMap() {
         const isInArea = await this.gmapsService.checkAddressInArea(areaBounds.geometry.viewport, listing.geometry)
         if(isInArea){
           this.allListings.push(listing);
+          if(listing.let_sell == "Sell"){
+            this.buyCount++;
+          }
+          else if(listing.let_sell == "Rent"){
+            this.rentCount++;
+          }
         }
       }
     } else {
       this.allListings = response.listings;
+      for(let list of response.listings){
+        if(list.let_sell == "Sell"){
+          this.buyCount++;
+        }
+        else if(list.let_sell == "Rent"){
+          this.rentCount++;
+        }
+      }
     }
+
     if(this.allListings){
       //Recommendation algo
       if(this.userProfile)
@@ -519,8 +524,23 @@ async loadMap() {
         this.userInterestVector = this.profileServices.getInterestArray(this.userProfile);
       }
 
-      for(const list of response.listings)
+      for(const list of response.listings)  
       {
+        if(list.price > this.highestPrice){
+          this.highestPrice = list.price;
+        }
+        
+        if(list.price < this.lowestPrice){
+          this.lowestPrice = list.price;
+        }
+
+        if(list.property_size > this.largestProp){
+          this.largestProp = list.property_size;
+        }
+
+        if(list.property_size < this.smallestProp){
+          this.smallestProp = list.property_size;
+        }
         if (window.location.hostname.includes("localhost"))
           console.log(list.characteristics);
         this.recommends.push({
@@ -539,6 +559,19 @@ async loadMap() {
       await this.loadMap();
       await this.addMarkersToMap();
       await this.setCentre();
+
+      this.property_price_values.upper = this.highestPrice;
+      this.property_price_values.lower = this.lowestPrice;
+      this.rangeSteps = (this.highestPrice - this.lowestPrice)/10;
+
+      this.property_size_values.upper = this.largestProp;
+      this.property_size_values.lower = this.smallestProp;
+      this.propSizeRangeSteps = (this.largestProp - this.smallestProp)/10;
+
+      setTimeout(() => { 
+        this.searching = false;
+        document.getElementById("searchButton")?.setAttribute("disabled", "false")
+      }, 1500)
       // await this.addMarkersToMap();
     }
   }
@@ -626,8 +659,9 @@ addMMarker(listing: Listing) {
     return filteredListings;
   }
 
+  public buyCount = 0;
+  public rentCount = 0;
 filterProperties(): void {
-
   // Update the filtered properties based on the selected filters and search query
   if (this.activeTab === 'buying') {
     this.listings = this.filteredBuyingProperties;
@@ -679,6 +713,13 @@ sortListings() {
 
   toggleAdditionalFilters(): void {
     this.showAdditionalFilters = !this.showAdditionalFilters;
+
+    if(this.showAdditionalFilters){
+      document.getElementsByClassName("sliderRow").item(0)?.setAttribute("style", "border-bottom: 1px solid #92ceaa; border-width: 90%;")
+    }
+    else{
+      document.getElementsByClassName("sliderRow").item(0)?.setAttribute("style", "")
+    }
     // this.filterProperties();
   }
 
@@ -764,6 +805,14 @@ dropDown(){
       this.prop_size_min = parseInt(propSizeSlider.value.lower);
       this.prop_size_max = parseInt(propSizeSlider.value.upper);
     }
+  }
+
+  pinFormatter(value: number) {
+    return `R${value}`;
+  }
+
+  propSizepinFormatter(value : number){
+    return `${value}`;
   }
 }
 

@@ -3,6 +3,23 @@ ion-content::part(scroll) {
 }
 
 .Desktop {
+  select{
+    background-color: #9edfb8 !important;
+    border-radius: 5px;
+    width: 100%;
+    border: 1px solid rgb(146, 146, 146) !important;
+  }
+  option{
+    border-radius: 5px;
+    background-color: #9edfb8 !important;
+  }
+
+  ion-range::part(tick){
+    height: 10px;
+    width: 3px;
+    top: 16px;
+  }
+
   .header-segment { 
     margin-bottom: 40px;
   }
@@ -70,10 +87,6 @@ ion-content::part(scroll) {
     z-index: 1;
     top: 40%;
     // display: block
-  }
-
-  .show{
-    opacity:0;
   }
 
   .footer-gap{
@@ -184,6 +197,7 @@ ion-content::part(scroll) {
     --border-radius: 30px;
     cursor: pointer;
     margin-top: 1%;
+    margin-bottom: 1%;
   }
   
   .filter-button {
@@ -543,15 +557,20 @@ ion-content::part(scroll) {
   .inputPrice
   {
     display: flex;
-    margin: 30px 0 35px;
+    // margin: 30px 0 35px;
+    margin-right: 1%;
+    // width: 80%;
+    align-items: center;
+    align-content: center;
   }
   
   .inputPrice .field
   {
     height: 45px;
-    width: 100%;
+    width: 30%;
     display: flex;
     align-items: center;
+    align-content: center
   }
   
   .field input
@@ -563,7 +582,7 @@ ion-content::part(scroll) {
     text-align: center;
     margin-left: 12px;
     border-radius: 5px;
-    border: 1px solid rgb(223, 223, 223);
+    border: 1px solid rgb(146, 146, 146);
     background: transparent;
   }
   
@@ -720,10 +739,21 @@ ion-content::part(scroll) {
     transition: width 0.3s ease-in-out;
   }
   
+  .sliderHeadingCol{
+    padding-left: 1%;
+    display: flex;
+    align-content: center;
+    align-items: center;
+  }
+
   .sliderDiv{
-    width: 300px; 
+    width: 40%; 
     margin-left: 1.5%; 
     margin-right: 5%;
+    height: 75px; 
+    display: flex;
+    align-content: center;
+    align-items: center;
   }
 
   // .marker-card {
