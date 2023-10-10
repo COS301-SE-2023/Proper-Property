@@ -75,9 +75,9 @@
               <ion-grid style="padding-top: 20px; padding-left:20px;">
                 <ion-row>
                   <ion-card-title class="house-titles statusBadge {{list.status}}">{{list.status}}</ion-card-title>
-                  <ion-button class="save-button" (click)="saveListing()" [ngClass]="{'red': isRed}"
+                  <ion-button class="save-button" [ngClass]="{'red': isRed}"
                     (click)="toggleColor()" ion-tooltip="Save Listing">
-                    <ion-icon name="save" ion-tooltip="Save Listing"></ion-icon>
+                    {{isSaved(listingId)? "Listing Saved" : "Save Listing"}}&nbsp;<ion-icon name="save" ion-tooltip="Save Listing"></ion-icon>
                   </ion-button>
                 </ion-row>
                 <ion-row>
@@ -295,6 +295,7 @@
                           class="amenities"
                           *ngFor="let feature of list.features"
                         >
+                          <ion-icon name="{{feature}}"></ion-icon>
                           <ion-label>{{feature}}</ion-label>
                         </ion-item>
                       </ion-list>
@@ -305,7 +306,7 @@
                         (click)="setOpen(true)"
                         >Lister Contact Details</ion-button
                       >
-                      <ion-modal class="contactDetails" [isOpen]="isModalOpen">
+                      <ion-modal class="contactDetails" (ionModalDidPresent)="generateQRCode()" [isOpen]="isModalOpen">
                         <ng-template>
                           <ion-header>
                             <ion-toolbar>
@@ -349,15 +350,12 @@
                                 </ion-col>
                               </ion-row>
                               <ion-row *ngIf="ownerViewing$" id="qrCodeRow" class="lister-row">
-                                <ion-col id="qrCodeCol">
+                                <ion-row class="qrRows">
                                   <canvas id="qrCanvas"></canvas>
-                                  <ion-button (click)="generateQRCode()">Generate QR Code</ion-button>
-                                </ion-col>
-                                <ion-col id="shareQrCol">
-                                  <ng-container *ngIf="qrGenerated">
-                                    <ion-button (click)="downloadImage()">Download QR Code</ion-button>
-                                  </ng-container>
-                                </ion-col>
+                                </ion-row>
+                                <ion-row class="qrRows">
+                                  <ion-button (click)="downloadImage()">Download QR Code</ion-button>
+                                </ion-row>
                               </ion-row>
                             </ion-grid>
                           </ion-content>

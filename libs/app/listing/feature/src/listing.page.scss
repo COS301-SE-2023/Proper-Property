@@ -1,3 +1,9 @@
+.qrRows{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .swiper-container {
   position: relative;
   width: 65%;
@@ -514,7 +520,7 @@ ion-item {
 
 .statusBadge
 {
-  width: 85%;
+  width: 70%;
   height: 14%;
   padding-top: 1%;
   text-align: center;
