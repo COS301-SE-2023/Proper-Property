@@ -16,7 +16,13 @@ export class FooterComponent implements OnInit{
   }
 
   async getHelpGuide(){
-    const response = await getDownloadURL(ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + "/help-guide/help-guide.pdf"));
+    let response = "";
+    try{
+      response = await getDownloadURL(ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + "/help-guide/help-guide.pdf"));
+    }
+    catch(error : any){
+      console.log(error.message)
+    }
     return response;
   }
 }
