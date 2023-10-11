@@ -54,6 +54,10 @@ ion-button:hover span:nth-child(1){
   transition: 1s;
 }
 
+ion-button:hover{
+  background-color: #a3debb;
+}
+
 ion-button span:nth-child(3){
   bottom: -70%;
   right: -150%;
