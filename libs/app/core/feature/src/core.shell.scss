@@ -36,3 +36,33 @@ ion-toolbar{
   width: 300px;
   background-color: #ffffff;
 }
+
+ion-button span{
+  position: absolute;
+  display: block;
+}
+
+ion-button span:nth-child(1){
+  top: -70%;
+  left: -150%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #0DAE4F);
+}
+ion-button:hover span:nth-child(1){
+  left:150%;
+  transition: 1s;
+}
+
+ion-button span:nth-child(3){
+  bottom: -70%;
+  right: -150%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(280deg, transparent, #0DAE4F);
+}
+ion-button:hover span:nth-child(3){
+  right:150%;
+  transition: 1s;
+  transition-delay: 0.5s;
+}
