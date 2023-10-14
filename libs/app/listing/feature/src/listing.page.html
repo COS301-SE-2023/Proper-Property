@@ -53,7 +53,7 @@
             class="swiper-container"
           >
             <swiper-slide *ngFor="let picture of list.photos">
-              <img alt="img" src="{{picture}}" />
+              <img alt="img" src="{{picture}}"  onerror="this.src='assets/no-propertyfound.png'"/>
             </swiper-slide>
           </swiper-container>
           <ion-buttons slot="end" class="swiper-button2" #two>
@@ -75,7 +75,7 @@
               <ion-grid style="padding-top: 20px; padding-left:20px;">
                 <ion-row>
                   <ion-card-title class="house-titles statusBadge {{list.status}}">{{list.status}}</ion-card-title>
-                  <ion-button class="save-button" [ngClass]="{'red': isRed}"
+                  <ion-button *ngIf="userProfile" class="save-button" [ngClass]="{'red': isRed}"
                     (click)="toggleColor()" ion-tooltip="Save Listing">
                     {{isSaved(listingId)? "Listing Saved" : "Save Listing"}}&nbsp;<ion-icon name="save" ion-tooltip="Save Listing"></ion-icon>
                   </ion-button>

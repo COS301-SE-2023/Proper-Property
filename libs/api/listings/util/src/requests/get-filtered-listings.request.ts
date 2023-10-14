@@ -15,5 +15,6 @@ export interface GetFilteredListingsRequest {
   price_min?: number;
   price_max?: number;
   areaScore?: Partial<areaScore>;
+  totalAreaScore?: number;
   lastListingId?: string;
 }

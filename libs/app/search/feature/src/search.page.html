@@ -83,7 +83,7 @@
                             <input type="number" [(ngModel)]="property_price_values.lower" style="width: 90%">
                           </div>
                           <div class="sliderDiv">
-                            <ion-range [dualKnobs]="true" [(ngModel)]="property_price_values"
+                            <ion-range [dualKnobs]="true" [(ngModel)]="property_price_values.upper"
                               (ionChange)="onPriceKnobMoveStart()" aria-label="Property Price" 
                               id="priceSlider" [step]="rangeSteps" [snaps]="true" [ticks]="true" 
                               [pin]="true" [pinFormatter]="pinFormatter" [min]="lowestPrice" [max]="highestPrice"></ion-range>
@@ -142,6 +142,40 @@
                       <option value="Gated Community">Gated Community</option>
                     </select>
                   </ion-item>
+                                <ion-item class="filter">
+                                  <ion-label class="filter-text">Area Score</ion-label>
+                                  <ion-grid>
+                                    <ion-row>
+                                      <ion-col class="areaScoreCol">
+                                        <span class="filter-text">Water Score</span>
+                                        <input class="areaScoreInput" type="number" value="null" min="0" max="100" [(ngModel)]="areaScore.waterScore" style="width: 90%">
+                                      </ion-col>
+                                      <ion-col class="areaScoreCol">
+                                        <span class="filter-text">Crime Score</span>
+                                        <input type="number" class="areaScoreInput" value="null" min="0" max="100" [(ngModel)]="areaScore.crimeScore" style="width: 90%">
+                                      </ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                      <ion-col class="areaScoreCol">
+                                        <span class="filter-text">Sanitation Score</span>
+                                        <input type="number" class="areaScoreInput" value="null" min="0" max="100" [(ngModel)]="areaScore.sanitationScore" style="width: 90%">
+                                      </ion-col>
+                                      <ion-col class="areaScoreCol">
+                                        <span class="filter-text">School Score</span>
+                                        <input type="number" class="areaScoreInput" value="null" min="0" max="100" [(ngModel)]="areaScore.schoolScore" style="width: 90%">
+                                      </ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                      <ion-col></ion-col>
+                                      <ion-col class="areaScoreCol totalScoreCol">
+                                        <span class="filter-text">Total Area Score</span>
+                                        <input type="number" class="areaScoreInput" value="null" min="0" max="100" [(ngModel)]="totalAreaScore" style="width: 90%">
+                                      </ion-col>
+                                    </ion-row>
+                                  </ion-grid>
+                                  <div class="field" style="padding-left: 1.5%">
+                                  </div>
+                                </ion-item>
         
                   <ion-grid>
                     <ion-row class="sliderRow">
@@ -179,6 +213,9 @@
           class="filter-button" (click)="toggleAdditionalFilters()">
             <ion-icon [name]="showAdditionalFilters ? 'remove' : 'add'"></ion-icon>
             {{ showAdditionalFilters ? 'Less Filters' : 'More Filters' }}
+          </ion-button>
+          <ion-button class="filter-button" style="margin-top: 5%;" (click)="resetFilters()">
+            Reset Filters
           </ion-button>
         </ion-col>
       </ion-row>
@@ -218,7 +255,7 @@
                   <ion-grid style="width: 100%">
                     <ion-row>
                       <ion-col size="4" class="listing-image-col">
-                        <img src="{{listing.photos[0]}}" alt="house1">
+                        <img src="{{listing.photos[0]}}" onerror="this.src='assets/no-propertyfound.png'" alt="house1">
                           <div *ngIf="getRecommendation(listing.listing_id)" 
                           class="recommended-banner">
                             Recommended <ion-icon name="star-outline"></ion-icon></div>
@@ -295,7 +332,7 @@
                             </ion-button>
                           </ion-col>
                         </ion-row>
-                        <ion-row>
+                        <ion-row (click)="redirectToPage(listing)">
                           <ion-col>
                             <div class="white-text">Water</div>
                             <div class="slider">
@@ -336,7 +373,10 @@
                             </div>
                           </ion-col>
                         </ion-row>
-                      </ion-col>
+                        <ion-row>
+                        <span>Total Score: {{((listing.areaScore.schoolScore + listing.areaScore.crimeScore + listing.areaScore.waterScore + listing.areaScore.sanitationScore)/4).toFixed(2)}} </span>
+                      </ion-row>
+                    </ion-col>
                     </ion-row>
                   </ion-grid>
                 </ng-template>

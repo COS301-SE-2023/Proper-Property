@@ -201,6 +201,7 @@ ion-content::part(scroll) {
 
   .animation-div-class{
     overflow: hidden;
+    overflow: scroll;
     animation: extend-filter-div 1s ease 0s 1 normal forwards;
   }
 
@@ -256,6 +257,24 @@ ion-content::part(scroll) {
     cursor: pointer;
     margin-top: 1%;
     margin-bottom: 1%;
+  }
+
+  .areaScoreCol{
+    margin-top: 5%;
+  }
+
+  .areaScoreInput {
+    width: 50%;
+    height: 70%;
+    margin-right: 10%;
+    border:1px solid rgb(168, 168, 168);
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 1%;
+  }
+
+  .totalScoreCol{
+    margin-bottom: 5%;
   }
   
   .filter-button {

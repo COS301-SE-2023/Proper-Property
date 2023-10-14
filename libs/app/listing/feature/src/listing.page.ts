@@ -31,7 +31,7 @@ export class ListingPage implements OnDestroy, OnInit {
   isMobile: boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
-  private userProfile: UserProfile | null = null;
+  public userProfile: UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
   @ViewChild('swiper')
   swiperRef: ElementRef | undefined;

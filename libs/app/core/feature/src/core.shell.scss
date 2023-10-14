@@ -3,7 +3,7 @@ ion-content
   --background: rgb(255, 255, 255);
 }
 
-ion-card{
+#notifs{
   border: 2px solid black;
   background-color: rgba(13, 174, 79, 0.40);;
 }
@@ -66,4 +66,46 @@ ion-toolbar{
   to{
     height: 0px;
   }
+}
+
+ion-button span{
+  position: absolute;
+  display: block;
+}
+
+ion-button span:nth-child(1){
+  top: -70%;
+  left: -150%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #0DAE4F);
+}
+ion-button:hover span:nth-child(1){
+  left:150%;
+  transition: 1s;
+}
+
+ion-button:hover{
+  background-color: #a3debb;
+}
+
+ion-button span:nth-child(3){
+  bottom: -70%;
+  right: -150%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(280deg, transparent, #0DAE4F);
+}
+ion-button:hover span:nth-child(3){
+  right:150%;
+  transition: 1s;
+  transition-delay: 0.5s;
+}
+
+#noNotifs{
+  background: transparent;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
