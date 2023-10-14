@@ -17,7 +17,7 @@ import {
 } from '@ionic/angular';
 import { ListingsService } from '@properproperty/app/listing/data-access';
 import { Router } from '@angular/router';
-import { GetFilteredListingsRequest, Listing } from '@properproperty/api/listings/util';
+import { GetFilteredListingsRequest, Listing, areaScore } from '@properproperty/api/listings/util';
 import { Recommend } from '@properproperty/api/listings/util';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
@@ -70,7 +70,8 @@ export class SearchPage implements OnDestroy, OnInit, AfterViewInit {
   public bath : number | null = null;
   public parking : number | null = null;
   public features: string[] = [];
-  public areaScore : number | null = null;
+  public areaScore : Partial<areaScore> = {};
+  public totalAreaScore : number | null = null;
   public property_size_values: {lower: number, upper: number} = {lower: 0, upper: 99999999};
   public property_price_values: {lower: number, upper: number} = {lower: 0, upper: 99999999};
   private profile: UserProfile | null = null;  
@@ -483,7 +484,8 @@ async loadMap() {
       property_size_max : this.property_size_values.upper ? this.property_size_values.upper : null,
       price_min : this.property_price_values.lower ? this.property_price_values.lower : null,
       price_max : this.property_price_values.upper ? this.property_price_values.upper : null,
-      areaScore : this.areaScore? this.areaScore : null
+      areaScore : this.areaScore? this.areaScore : null,
+      totalAreaScore : this.totalAreaScore? this.totalAreaScore : null
     } as GetFilteredListingsRequest
     const response = (await this.listingServices.getFilteredListings(request));
     this.allListings = [];
@@ -590,17 +592,23 @@ addMMarker(listing: Listing) {
   }
 
   resetFilters() {
-    this.listingServices.getApprovedListings().then((listings) => {
-      this.listings = listings;
-    });
-    this.prop_type = '';
-    this.price_min = 0;
-    this.price_max = 0;
-    this.bed = 0;
-    this.bath = 0;
-    this.parking = 0;
+    this.prop_type = null;
+    this.env_type = null;
+    this.let_sell = null;
+    this.price_min = null;
+    this.price_max = null;
+    this.property_size_values.lower = 0;
+    this.property_size_values.upper = 999999999;
+    this.property_price_values.lower = 0;
+    this.property_price_values.upper = 99999999;
+    this.areaScore = {};
+    this.totalAreaScore = null;
+    this.bed = null;
+    this.bath = null;
+    this.parking = null;
+    this.features = [];
 
-  this.features= [];
+    this.searchProperties();
 }
 
   get filteredBuyingProperties(): Listing[] {
