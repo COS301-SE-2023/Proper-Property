@@ -18,6 +18,7 @@ ion-card{
 }
 
 ion-toolbar{
+  height: 55px;
   --background: rgb(255, 255, 255);
 }
 
@@ -30,9 +31,39 @@ ion-toolbar{
 #notification-tray {
   position: absolute;
   top: 55px;
-  right: 0;
+  right: 10px;
   z-index: 1000;
   height: 400px;
   width: 300px;
   background-color: #ffffff;
+  border-left: 3px solid #94d5ae;
+  border-right: 3px solid #94d5ae;
+  border-bottom: 3px solid #94d5ae;
+}
+
+.animation-notif-open{
+  overflow: hidden;
+  animation: open-notif-div 1s ease 0s 1 normal forwards;
+}
+
+@keyframes open-notif-div{
+  from{
+    height: 0px;
+  }
+  to{
+    height: 400px;
+  }
+}
+.animation-notif-closed{
+  overflow: hidden;
+  animation: close-notif-div 1s ease 0s 1 normal forwards;
+}
+
+@keyframes close-notif-div{
+  from{
+    height: 400px;
+  }
+  to{
+    height: 0px;
+  }
 }

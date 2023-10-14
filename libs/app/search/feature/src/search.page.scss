@@ -201,12 +201,12 @@ ion-content::part(scroll) {
 
   .animation-div-class{
     overflow: hidden;
-    animation: extend-filter-div 1.5s ease 0s 1 normal forwards;
+    animation: extend-filter-div 1s ease 0s 1 normal forwards;
   }
 
   .animation-div-closed{
     overflow: hidden;
-    animation: close-filter-div 1.5s ease 0s 1 normal forwards;
+    animation: close-filter-div 1s ease 0s 1 normal forwards;
   }
 
   @keyframes extend-filter-div{
