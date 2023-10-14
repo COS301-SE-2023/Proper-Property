@@ -4,7 +4,6 @@ import {
   Component,
   ElementRef,
   OnDestroy,
-  OnInit,
   Renderer2,
   ViewChild,
   HostListener, 
@@ -507,7 +506,7 @@ async loadMap() {
       }
     } else {
       this.allListings = response.listings;
-      for(let list of response.listings){
+      for(const list of response.listings){
         if(list.let_sell == "Sell"){
           this.buyCount++;
         }
