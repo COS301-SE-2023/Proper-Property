@@ -16,7 +16,7 @@ core.shell.html
         <h1 id="caption">Discover Your Dream Home: Where Living Extends Beyond Walls</h1>
       </div>
       <div class="search-container">
-        <ion-input lines="none" type="text" id="query" (ionInput)="handleInputChange($event)" class="query" [(ngModel)]="searchQuery" placeholder="Property Location Search"></ion-input>
+        <ion-input lines="none" type="text" id="query" (ionInput)="handleInputChange($event)" class="query" [(ngModel)]="searchQuery" placeholder="Area Search"></ion-input>
         <ion-button [disabled]="predictionsLoading" id="search-button" (click)="searchProperties()">
           <ng-container *ngIf="!predictionsLoading; then searchIcon; else spinner">
           </ng-container>
