@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, HostListener, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { ChangeStatusResponse, Listing, StatusEnum } from '@properproperty/api/listings/util';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,7 +23,7 @@ export interface GetAnalyticsDataRequest {
   templateUrl: './listing.page.html',
   styleUrls: ['./listing.page.scss'],
 })
-export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
+export class ListingPage implements OnDestroy, OnInit {
 
   @ViewChild(IonContent) content: IonContent | undefined;
   // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
@@ -95,14 +95,14 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
     let admin = "";
     let qr = false;
 
-    this.route.params.subscribe((params) => {
+    this.route.params.subscribe(async (params) => {
       list_id = params['list'];
       qr = params['qr'];
       admin = params['admin'];
       this.listingId = list_id;
 
 
-      this.listingServices.getListing(list_id).then((list) => {
+      await this.listingServices.getListing(list_id).then((list) => {
         this.list = list;
         // console.log("QR viewing: " + qr)
       }).then(() => {
@@ -168,9 +168,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
     this.userProfileListener$.subscribe((listener) => {
       this.userProfileListener = listener;
     });
-  }
 
-  ngAfterViewInit(){
     setTimeout(async () => {
       this.loading = false;
     }, 1500)
