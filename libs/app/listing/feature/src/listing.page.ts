@@ -45,7 +45,7 @@ export class ListingPage implements OnDestroy, OnInit {
   public ownerViewing$: Observable<boolean> = of(false);
   coordinates: { latitude: number, longitude: number } | null = null;
   profilePic = "";
-  loading = false;
+  loading = true;
 
   price_per_sm = "";
   lister_name = "";
@@ -91,7 +91,6 @@ export class ListingPage implements OnDestroy, OnInit {
   }
 
   async ngOnInit() {
-    this.loading = true;
     let list_id = "";
     let admin = "";
     let qr = false;
