@@ -57,7 +57,7 @@
           <ion-col class="rightBorder" size="6">
             <ion-card *ngFor="let listing of listingsB" >
               <ion-card-header (click)="redirectToPage(listing)">
-                <img src="{{listing.photos[0]}}" alt="house1">
+                <img src="{{listing.photos[0]}}"  onerror="this.src='assets/no-propertyfound.png'" alt="house1">
                 <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
               </ion-card-header>
               <div class="statusBadge {{listing.status}}">{{listing.status}}</div>

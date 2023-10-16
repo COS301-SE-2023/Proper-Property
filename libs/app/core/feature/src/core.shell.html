@@ -1,5 +1,5 @@
 <ion-app >
-  <ion-header *ngIf="!this.isMobile">
+  <ion-header class="header" *ngIf="!this.isMobile">
     <ion-toolbar>
       <ion-row class="ion-align-items-center">
         <ion-col size="0.5"><img class="logo" src="assets/Logo_v1.png" width="60%"></ion-col>
@@ -8,41 +8,67 @@
         </ion-col>
         <ion-col size="9">
           <div class="navbar" class="ion-text-end">
-            <ion-button *ngIf="!this.loggedIn" id="login-button" fill="clear" routerLink="login" routerDirection="root" routerLinkActive="active"
-            class="link">
+            <ion-button *ngIf="!this.loggedIn" id="login-button" fill="clear" routerLink="login" routerDirection="root"
+              routerLinkActive="active" class="link">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
               Log In
             </ion-button>
 
-            <ion-button *ngIf="!this.loggedIn" id="signup-button" fill="clear" routerLink="register" routerDirection="root" routerLinkActive="active"
-            class="link">
+            <ion-button *ngIf="!this.loggedIn" id="signup-button" fill="clear" routerLink="register"
+              routerDirection="root" routerLinkActive="active" class="link">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
               Sign Up
             </ion-button>
 
-            <ion-button fill="clear"  routerLink="home" routerDirection="root" routerLinkActive="active"
-              class="link">
+            <ion-button fill="clear" routerLink="home" routerDirection="root" routerLinkActive="active" class="link">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
               Home
             </ion-button>
 
-            <ion-button   *ngIf="this.loggedIn" fill="clear"  routerLink="/create-listing" routerDirection="root" routerLinkActive="active"
-              class="link">
+            <ion-button *ngIf="this.loggedIn" fill="clear" routerLink="/create-listing" routerDirection="root"
+              routerLinkActive="active" class="link">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
               Add Listing
             </ion-button>
 
-            <ion-button fill="clear" routerLink="search" routerDirection="root" routerLinkActive="active"
-              class="link">
+            <ion-button fill="clear" routerLink="search" routerDirection="root" routerLinkActive="active" class="link">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
               View Listings
             </ion-button>
-    
-            <ion-button  *ngIf="this.loggedIn" fill="clear"  routerLink="/profile" routerDirection="root" routerLinkActive="active"
-            class="link">
+
+            <ion-button *ngIf="this.loggedIn" fill="clear" routerLink="/profile" routerDirection="root"
+              routerLinkActive="active" class="link">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
               Profile
             </ion-button>
-        
-            <ion-button   *ngIf="this.admin" fill="clear"  routerLink="/admin" routerDirection="root" routerLinkActive="active"
-            class="link">
+
+            <ion-button *ngIf="this.admin" fill="clear" routerLink="/admin" routerDirection="root"
+              routerLinkActive="active" class="link">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
               Moderate
             </ion-button>
-<!-- 
+            <!-- 
             <ion-button *ngIf="dev" fill="clear" (click)="test()" class="link">
               don't click &gt;:0
             </ion-button> -->
@@ -51,7 +77,7 @@
               Notifications
               <ion-badge slot="end" style="margin-left:10px">{{ notifications.length }}</ion-badge>
             </ion-button>
-          
+
           </div>
         </ion-col>
       </ion-row>
@@ -78,29 +104,35 @@
     </ion-header>
     <ion-content class="ion-padding">
       <div>
-        <ion-button *ngIf="!this.loggedIn" id="login-button" fill="clear" routerLink="login" routerDirection="root" routerLinkActive="active" class="link" style="display: block;">
+        <ion-button *ngIf="!this.loggedIn" id="login-button" fill="clear" routerLink="login" routerDirection="root"
+          routerLinkActive="active" class="link" style="display: block;">
           Log In
         </ion-button>
-        <ion-button *ngIf="!this.loggedIn" id="signup-button" fill="clear" routerLink="register" routerDirection="root" routerLinkActive="active" class="link" style="display: block;">
+        <ion-button *ngIf="!this.loggedIn" id="signup-button" fill="clear" routerLink="register" routerDirection="root"
+          routerLinkActive="active" class="link" style="display: block;">
           Sign Up
         </ion-button>
-        <ion-button fill="clear" routerLink="home" routerDirection="root" routerLinkActive="active" class="link" style="display: block;">
+        <ion-button fill="clear" routerLink="home" routerDirection="root" routerLinkActive="active" class="link"
+          style="display: block;">
           Home
         </ion-button>
-        <ion-button *ngIf="this.loggedIn" fill="clear" routerLink="/create-listing" routerDirection="root" routerLinkActive="active" class="link" style="display: block;">
+        <ion-button *ngIf="this.loggedIn" fill="clear" routerLink="/create-listing" routerDirection="root"
+          routerLinkActive="active" class="link" style="display: block;">
           Add Listing
         </ion-button>
-        <ion-button fill="clear" routerLink="search" routerDirection="root" routerLinkActive="active" class="link" style="display: block;">
+        <ion-button fill="clear" routerLink="search" routerDirection="root" routerLinkActive="active" class="link"
+          style="display: block;">
           View Listings
         </ion-button>
-        <ion-button *ngIf="this.loggedIn" fill="clear" routerLink="/profile" routerDirection="root" routerLinkActive="active" class="link" style="display: block;">
+        <ion-button *ngIf="this.loggedIn" fill="clear" routerLink="/profile" routerDirection="root"
+          routerLinkActive="active" class="link" style="display: block;">
           Profile
         </ion-button>
-        
+
       </div>
     </ion-content>
   </ion-menu>
-  
+
 
     <div class="ion-page" id="main-content" *ngIf="this.isMobile">
       <ion-header>
@@ -114,8 +146,10 @@
       <!-- <ion-content class="ion-padding"> Tap the button in the toolbar to open the menu. </ion-content> -->
       
     </div>
-    <ion-content id="notification-tray" *ngIf="showNotifications">
-      <ion-card *ngFor="let notification of notifications">
+    <ion-content [className]="!showNotifications? 'animation-notif-closed' : 'animation-notif-open'"
+    id="notification-tray" *ngIf="showNotifications">
+    <ng-container *ngIf="notifications.length > 0; else noNotifs">
+      <ion-card id="notifs" *ngFor="let notification of notifications">
         <ion-card-header>
           <ion-card-title>{{notification.head}}</ion-card-title>
         </ion-card-header>
@@ -124,6 +158,13 @@
           <p>{{notification.date.toDate().toLocaleString()}}<p>
         </ion-card-content> 
       </ion-card>
+    </ng-container>
+    <ng-template #noNotifs>
+      <div id="noNotifs">
+        <ion-icon name="notifications-outline" style="display: inline-block;"></ion-icon>
+        <p style="display: inline-block; margin-left: 10px">No Notifications</p>
+      </div>
+    </ng-template>
     </ion-content>
     <ion-router-outlet></ion-router-outlet>
 </ion-app>

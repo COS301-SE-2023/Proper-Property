@@ -83,8 +83,10 @@
                             <input type="number" [(ngModel)]="property_price_values.lower" style="width: 90%">
                           </div>
                           <div class="sliderDiv">
-                            <ion-range [dualKnobs]="true" [(ngModel)]="property_price_values"
-                              (ionChange)="onPriceKnobMoveStart()" aria-label="Property Price" id="priceSlider" [step]="rangeSteps" [snaps]="true" [ticks]="true" [pin]="true" [pinFormatter]="pinFormatter" [min]="lowestPrice" [max]="highestPrice"></ion-range>
+                            <ion-range [dualKnobs]="true" [(ngModel)]="property_price_values.upper"
+                              (ionChange)="onPriceKnobMoveStart()" aria-label="Property Price" 
+                              id="priceSlider" [step]="rangeSteps" [snaps]="true" [ticks]="true" 
+                              [pin]="true" [pinFormatter]="pinFormatter" [min]="lowestPrice" [max]="highestPrice"></ion-range>
                           </div>
                           <!-- <div class="dash">-</div> -->
                           <div class="field">
@@ -96,86 +98,124 @@
                     </ion-row>
                   </ion-grid>
                 </ion-col>
-                              <!-- Additional Filters -->
-                              <div *ngIf="showAdditionalFilters">
-
+                <!-- Additional Filters -->
+                <div [className]="!showAdditionalFilters? 'animation-div-closed' : 'animation-div-class'">
+                  <ion-item class="filter">
+                    <ion-label class="filter-text">Bathrooms</ion-label>
+                    <select class="dropdown" [(ngModel)]="bath" (ionChange)="filterProperties()">
+                      <option value="1">1 Bathroom</option>
+                      <option value="2">2 Bathrooms</option>
+                      <option value="3">3 Bathrooms</option>
+                      <option value="4">4 Bathrooms</option>
+                      <option value="5">5+ Bathrooms</option>
+                    </select>
+                  </ion-item>
+        
+                  <ion-item class="filter">
+                    <ion-label class="filter-text">Parking / Garage</ion-label>
+                    <select class="dropdown" [(ngModel)]="parking" (ionChange)="filterProperties()">
+                      <option value="1">1 Garage</option>
+                      <option value="2">2 Garages</option>
+                      <option value="3">3 Garages</option>
+                      <option value="4">4 Garages</option>
+                      <option value="5">5+ Garages</option>
+                    </select>
+                  </ion-item>
+        
+                  <ion-item class="filter">
+                    <ion-label class="filter-text">Features</ion-label>
+                    <ion-select id="amenities-select" class="dropdown" [(ngModel)]="features" (ionChange)="filterProperties()"
+                      [multiple]="true" placeholder="Features">
+                      <ion-select-option value="Pet Friendly">Pet Friendly</ion-select-option>
+                      <ion-select-option value="Garden">Garden</ion-select-option>
+                      <ion-select-option value="Pool">Pool</ion-select-option>
+                      <ion-select-option value="Flatlet">Flatlet</ion-select-option>
+                      <ion-select-option value="Other">Other</ion-select-option>
+                    </ion-select>
+                  </ion-item>
+        
+                  <ion-item class="filter">
+                    <ion-label class="filter-text">Community Environment</ion-label>
+                    <select class="dropdown" [(ngModel)]="env_type" (ionChange)="filterProperties()">
+                      <option value="Standalone House">Standalone House</option>
+                      <option value="Complex">Complex</option>
+                      <option value="Gated Community">Gated Community</option>
+                    </select>
+                  </ion-item>
                                 <ion-item class="filter">
-                                  <ion-label class="filter-text">Bathrooms</ion-label>
-                                  <select class="dropdown" [(ngModel)]="bath" (ionChange)="filterProperties()">
-                                    <option value="1">1 Bathroom</option>
-                                    <option value="2">2 Bathrooms</option>
-                                    <option value="3">3 Bathrooms</option>
-                                    <option value="4">4 Bathrooms</option>
-                                    <option value="5">5+ Bathrooms</option>
-                                  </select>
+                                  <ion-label class="filter-text">Area Score</ion-label>
+                                  <ion-grid>
+                                    <ion-row>
+                                      <ion-col class="areaScoreCol">
+                                        <span class="filter-text">Water Score</span>
+                                        <input class="areaScoreInput" type="number" value="null" min="0" max="100" [(ngModel)]="areaScore.waterScore" style="width: 90%">
+                                      </ion-col>
+                                      <ion-col class="areaScoreCol">
+                                        <span class="filter-text">Crime Score</span>
+                                        <input type="number" class="areaScoreInput" value="null" min="0" max="100" [(ngModel)]="areaScore.crimeScore" style="width: 90%">
+                                      </ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                      <ion-col class="areaScoreCol">
+                                        <span class="filter-text">Sanitation Score</span>
+                                        <input type="number" class="areaScoreInput" value="null" min="0" max="100" [(ngModel)]="areaScore.sanitationScore" style="width: 90%">
+                                      </ion-col>
+                                      <ion-col class="areaScoreCol">
+                                        <span class="filter-text">School Score</span>
+                                        <input type="number" class="areaScoreInput" value="null" min="0" max="100" [(ngModel)]="areaScore.schoolScore" style="width: 90%">
+                                      </ion-col>
+                                    </ion-row>
+                                    <ion-row>
+                                      <ion-col></ion-col>
+                                      <ion-col class="areaScoreCol totalScoreCol">
+                                        <span class="filter-text">Total Area Score</span>
+                                        <input type="number" class="areaScoreInput" value="null" min="0" max="100" [(ngModel)]="totalAreaScore" style="width: 90%">
+                                      </ion-col>
+                                    </ion-row>
+                                  </ion-grid>
+                                  <div class="field" style="padding-left: 1.5%">
+                                  </div>
                                 </ion-item>
-                      
-                                <ion-item class="filter">
-                                  <ion-label class="filter-text">Parking / Garage</ion-label>
-                                  <select class="dropdown" [(ngModel)]="parking" (ionChange)="filterProperties()">
-                                    <option value="1">1 Garage</option>
-                                    <option value="2">2 Garages</option>
-                                    <option value="3">3 Garages</option>
-                                    <option value="4">4 Garages</option>
-                                    <option value="5">5+ Garages</option>
-                                  </select>
-                                </ion-item>
-                      
-                                <ion-item class="filter">
-                                  <ion-label class="filter-text">Features</ion-label>
-                                  <ion-select id="amenities-select" class="dropdown" [(ngModel)]="features" (ionChange)="filterProperties()"
-                                    [multiple]="true" placeholder="Features">
-                                    <ion-select-option value="Pet Friendly">Pet Friendly</ion-select-option>
-                                    <ion-select-option value="Garden">Garden</ion-select-option>
-                                    <ion-select-option value="Pool">Pool</ion-select-option>
-                                    <ion-select-option value="Flatlet">Flatlet</ion-select-option>
-                                    <ion-select-option value="Other">Other</ion-select-option>
-                                  </ion-select>
-                                </ion-item>
-                      
-                                <ion-item class="filter">
-                                  <ion-label class="filter-text">Community Environment</ion-label>
-                                  <select class="dropdown" [(ngModel)]="env_type" (ionChange)="filterProperties()">
-                                    <option value="Standalone House">Standalone House</option>
-                                    <option value="Complex">Complex</option>
-                                    <option value="Gated Community">Gated Community</option>
-                                  </select>
-                                </ion-item>
-                      
-                                <ion-grid>
-                                  <ion-row class="sliderRow">
-                                    <ion-col class="sliderHeadingCol" size="2">
-                                      <ion-label class="filter-text">Property Size (m<sup>2</sup>)</ion-label>
-                                    </ion-col>
-                                    <ion-col>
-                                      <div class="inputPrice">
-                                        <div class="field" style="padding-left: 1.5%">
-                                          <span>Minimum</span>
-                                          <input type="number" [(ngModel)]="property_size_values.lower" style="width: 90%">
-                                        </div>
-                                        <div class="sliderDiv">
-                                          <ion-range [dualKnobs]="true" [(ngModel)]="property_size_values"
-                                            (ionChange)="onPriceKnobMoveStart()" aria-label="Property Size" id="propSizeSlider" [step]="propSizeRangeSteps" [snaps]="true" [ticks]="true" [pin]="true" [pinFormatter]="propSizepinFormatter" [min]="smallestProp" [max]="largestProp"></ion-range>
-                                        </div>
-                                        <!-- <div class="dash">-</div> -->
-                                        <div class="field">
-                                          <span>Maximum</span>
-                                          <input type="number" [(ngModel)]="property_size_values.upper" style="width: 90%">
-                                        </div>
-                                      </div>
-                                    </ion-col>
-                                  </ion-row>
-                                </ion-grid>
-                              </div>
-
+        
+                  <ion-grid>
+                    <ion-row class="sliderRow">
+                      <ion-col class="sliderHeadingCol" size="2">
+                        <ion-label class="filter-text">Property Size (m<sup>2</sup>)</ion-label>
+                      </ion-col>
+                      <ion-col>
+                        <div class="inputPrice">
+                          <div class="field" style="padding-left: 1.5%">
+                            <span>Minimum</span>
+                            <input type="number" [(ngModel)]="property_size_values.lower" style="width: 90%">
+                          </div>
+                          <div class="sliderDiv">
+                            <ion-range [dualKnobs]="true" [(ngModel)]="property_size_values"
+                              (ionChange)="onPriceKnobMoveStart()" aria-label="Property Size" id="propSizeSlider" [step]="propSizeRangeSteps" 
+                              [snaps]="true" [ticks]="true" [pin]="true" [pinFormatter]="propSizepinFormatter" [min]="smallestProp" 
+                              [max]="largestProp"></ion-range>
+                          </div>
+                          <!-- <div class="dash">-</div> -->
+                          <div class="field">
+                            <span>Maximum</span>
+                            <input type="number" [(ngModel)]="property_size_values.upper" style="width: 90%">
+                          </div>
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                </div>
             </ion-grid>
           </div>
         </ion-col>
 
         <ion-col class="search-filter-col">
-          <ion-button class="filter-button" (click)="toggleAdditionalFilters()">
+          <ion-button
+          class="filter-button" (click)="toggleAdditionalFilters()">
             <ion-icon [name]="showAdditionalFilters ? 'remove' : 'add'"></ion-icon>
             {{ showAdditionalFilters ? 'Less Filters' : 'More Filters' }}
+          </ion-button>
+          <ion-button class="filter-button" style="margin-top: 5%;" (click)="resetFilters()">
+            Reset Filters
           </ion-button>
         </ion-col>
       </ion-row>
@@ -210,14 +250,14 @@
           </ng-container>
           <ng-template #listingsLoaded>
             <div class="lists" id="lists">
-              <ion-card *ngFor="let listing of listings">
+              <ion-card class="listing-card" *ngFor="let listing of listings">
                 <ng-container *ngIf="!status; else scoreView">
                   <ion-grid style="width: 100%">
                     <ion-row>
                       <ion-col size="4" class="listing-image-col">
-                        <img src="{{listing.photos[0]}}" alt="house1">
+                        <img src="{{listing.photos[0]}}" onerror="this.src='assets/no-propertyfound.png'" alt="house1">
                           <div *ngIf="getRecommendation(listing.listing_id)" 
-                          style="background-color: green; color: white; width: 100%; height: 20px; position: absolute; transform: rotate(315deg); top: 20%; left: -33%; text-align: center">
+                          class="recommended-banner">
                             Recommended <ion-icon name="star-outline"></ion-icon></div>
                       </ion-col>
                       <ion-col size="8" class="listing-details-col">
@@ -292,7 +332,7 @@
                             </ion-button>
                           </ion-col>
                         </ion-row>
-                        <ion-row>
+                        <ion-row (click)="redirectToPage(listing)">
                           <ion-col>
                             <div class="white-text">Water</div>
                             <div class="slider">
@@ -333,7 +373,10 @@
                             </div>
                           </ion-col>
                         </ion-row>
-                      </ion-col>
+                        <ion-row>
+                        <span>Total Score: {{((listing.areaScore.schoolScore + listing.areaScore.crimeScore + listing.areaScore.waterScore + listing.areaScore.sanitationScore)/4).toFixed(2)}} </span>
+                      </ion-row>
+                    </ion-col>
                     </ion-row>
                   </ion-grid>
                 </ng-template>
@@ -341,7 +384,7 @@
             </div>
           </ng-template>
         </ion-col>
-        <ion-col>
+        <ion-col style="border-left: 5px solid #94d5ae">
           <div>
             <div slot="fixed" class="map" id="map" #map></div>
           </div>
