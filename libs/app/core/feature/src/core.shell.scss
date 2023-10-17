@@ -3,7 +3,7 @@ ion-content
   --background: rgb(255, 255, 255);
 }
 
-ion-card{
+#notifs{
   border: 2px solid black;
   background-color: rgba(13, 174, 79, 0.40);;
 }
@@ -18,6 +18,7 @@ ion-card{
 }
 
 ion-toolbar{
+  height: 55px;
   --background: rgb(255, 255, 255);
 }
 
@@ -30,9 +31,82 @@ ion-toolbar{
 #notification-tray {
   position: absolute;
   top: 55px;
-  right: 0;
+  right: 10px;
   z-index: 1000;
   height: 400px;
   width: 300px;
   background-color: #ffffff;
+  border-left: 3px solid #94d5ae;
+  border-right: 3px solid #94d5ae;
+  border-bottom: 3px solid #94d5ae;
+}
+
+.animation-notif-open{
+  overflow: hidden;
+  animation: open-notif-div 1s ease 0s 1 normal forwards;
+}
+
+@keyframes open-notif-div{
+  from{
+    height: 0px;
+  }
+  to{
+    height: 400px;
+  }
+}
+.animation-notif-closed{
+  overflow: hidden;
+  animation: close-notif-div 1s ease 0s 1 normal forwards;
+}
+
+@keyframes close-notif-div{
+  from{
+    height: 400px;
+  }
+  to{
+    height: 0px;
+  }
+}
+
+ion-button span{
+  position: absolute;
+  display: block;
+}
+
+ion-button span:nth-child(1){
+  top: -70%;
+  left: -150%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #0DAE4F);
+}
+ion-button:hover span:nth-child(1){
+  left:150%;
+  transition: 1s;
+}
+
+ion-button:hover{
+  background-color: #a3debb;
+  animation-delay: 1s;
+}
+
+ion-button span:nth-child(3){
+  bottom: -70%;
+  right: -150%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(280deg, transparent, #0DAE4F);
+}
+ion-button:hover span:nth-child(3){
+  right:150%;
+  transition: 1s;
+  transition-delay: 0.5s;
+}
+
+#noNotifs{
+  background: transparent;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

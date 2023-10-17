@@ -266,6 +266,17 @@ export class ListingsRepository {
               (!req.property_size_min || (req.property_size_min && data.property_size >= req.property_size_min ) )
               && (!req.property_size_max || (req.property_size_max && data.property_size <= req.property_size_max ))
             ))
+            && (
+              (!req.areaScore?.crimeScore || (req.areaScore.crimeScore && data.areaScore.crimeScore >= req.areaScore.crimeScore))
+              &&
+              (!req.areaScore?.waterScore || (req.areaScore.waterScore && data.areaScore.waterScore >= req.areaScore.waterScore))
+              &&
+              (!req.areaScore?.schoolScore || (req.areaScore.schoolScore && data.areaScore.schoolScore >= req.areaScore.schoolScore))
+              &&
+              (!req.areaScore?.sanitationScore || (req.areaScore.sanitationScore && data.areaScore.sanitationScore >= req.areaScore.sanitationScore))
+              &&
+              (!req.totalAreaScore || (req.totalAreaScore && (data.areaScore.waterScore + data.areaScore.schoolScore + data.areaScore.crimeScore + data.areaScore.sanitationScore)/4 >= req.totalAreaScore))
+            )
           ){
             // for (const listing of response.listings) {
             //   if (listing.listing_id == data.listing_id) {

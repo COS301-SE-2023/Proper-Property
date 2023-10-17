@@ -28,7 +28,7 @@
             <ion-col id="notApprovedBodyCol">
               <ion-card *ngFor="let listing of nonAppListings" (click)="redirectToPage(listing)">
                 <ion-card-header>
-                  <img src="{{listing.photos[0]}}" class="headerImg" alt="house1">
+                  <img src="{{listing.photos[0]}}"  onerror="this.src='assets/no-propertyfound.png'" class="headerImg" alt="house1">
                   <ion-card-title>House</ion-card-title>
                   <ion-card-subtitle style="color: #94d2ae;">R {{listing.price}}</ion-card-subtitle>
                 </ion-card-header>

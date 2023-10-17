@@ -31,7 +31,7 @@ export class ListingPage implements OnDestroy, OnInit {
   isMobile: boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
-  private userProfile: UserProfile | null = null;
+  public userProfile: UserProfile | null = null;
   private userProfileListener: Unsubscribe | null = null;
   @ViewChild('swiper')
   swiperRef: ElementRef | undefined;
@@ -45,9 +45,9 @@ export class ListingPage implements OnDestroy, OnInit {
   public ownerViewing$: Observable<boolean> = of(false);
   coordinates: { latitude: number, longitude: number } | null = null;
   profilePic = "";
-  loading = false;
+  loading = true;
 
-  price_per_sm = 0;
+  price_per_sm = "";
   lister_name = "";
   avgEnagement = "";
   includes = false;
@@ -91,19 +91,18 @@ export class ListingPage implements OnDestroy, OnInit {
   }
 
   async ngOnInit() {
-    this.loading = true;
     let list_id = "";
     let admin = "";
     let qr = false;
 
-    this.route.params.subscribe((params) => {
+    this.route.params.subscribe(async (params) => {
       list_id = params['list'];
       qr = params['qr'];
       admin = params['admin'];
       this.listingId = list_id;
 
 
-      this.listingServices.getListing(list_id).then((list) => {
+      await this.listingServices.getListing(list_id).then((list) => {
         this.list = list;
         // console.log("QR viewing: " + qr)
       }).then(() => {
@@ -119,7 +118,12 @@ export class ListingPage implements OnDestroy, OnInit {
           console.error("Both Property Size and Price need to be specified");
           return
         }
-        this.price_per_sm = this.list?.price / this.list?.property_size;
+        this.price_per_sm = (this.list?.price / this.list?.property_size).toFixed(2);
+        this.loanAmount = this.list?.price ?? 0;
+        this.loanTerm = 20;
+        this.interestRate = 11.75;
+
+        this.calculateMortgage();
 
         this.userServices.getUser("" + this.list?.user_id).then((user: UserProfile) => {
           this.lister = user;
@@ -164,9 +168,10 @@ export class ListingPage implements OnDestroy, OnInit {
     this.userProfileListener$.subscribe((listener) => {
       this.userProfileListener = listener;
     });
+
     setTimeout(async () => {
       this.loading = false;
-    }, 500)
+    }, 1500)
   }
 
   @HostListener('window:resize', ['$event'])
@@ -650,7 +655,6 @@ export class ListingPage implements OnDestroy, OnInit {
 
         if (this.list && this.list.characteristics) {
           this.profileServices.updateInterests(this.list.characteristics, this.userProfile.userId);
-
         }
 
 
@@ -695,7 +699,7 @@ export class ListingPage implements OnDestroy, OnInit {
   qrGenerated = false;
   generateQRCode() {
     const QRCode = require('qrcode')
-    // console.log("Test")
+    console.log("Testing ti")
     const qrCodeCanvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
     if (qrCodeCanvas) {
       QRCode.toCanvas(qrCodeCanvas, window.location.href + ";qr=true", function (error: any) {
@@ -703,15 +707,11 @@ export class ListingPage implements OnDestroy, OnInit {
           console.error(error)
           return;
         }
-
-        // console.log('success!');
       })
       this.qrGenerated = true;
 
       return;
     }
-
-    // console.log("Whoopes")
   }
 
   downloadImage() {
