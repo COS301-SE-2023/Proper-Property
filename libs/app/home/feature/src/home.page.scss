@@ -72,7 +72,7 @@
     height: 50px;
     display: flex;
     align-items: center;
-    border-radius: 30px;
+    // border-radius: 30px;
     border: 0;
     background: white;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -83,7 +83,7 @@
     border: 0;
     width: 68%;
     height: 100%;
-    border-radius: 30px !important;
+    // border-radius: 30px !important;
     padding-left: 10px;
     --padding-start: 20px;
     --highlight-color-focused: none;
@@ -100,7 +100,7 @@
   // }
   #search-button {
     height: 100%;
-    --border-radius: 30px;
+    // --border-radius: 30px;
     --padding-start: 0;
     --padding-end: 0;
     width: 32%;
@@ -347,14 +347,14 @@ ion-footer ion-col {
       #query1 {
         width: 70%;
         padding: 8px;
-        border-radius: 20px;
+        // border-radius: 20px;
         margin-right: 10px;
       }
 
 
       #search-button {
         width: 30%;
-        --border-radius: 20px;
+        // --border-radius: 20px;
         height: 40px;
         display: flex;
         align-items: center;
