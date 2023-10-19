@@ -27,7 +27,6 @@ ion-content
   background: linear-gradient(-45deg, #00330d,var(--ion-color-primary));
   transition: 0.3s;
   box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.3);
-  border-radius: 30px;
 }
 
 // .loggingIn:hover
@@ -52,8 +51,6 @@ ion-content
   background-position: bottom;
   background-repeat: no-repeat;
   background-size: contain;
-  border-top-left-radius: 30px;
-  border-bottom-left-radius: 30px;
 }
 
 .login
@@ -87,7 +84,7 @@ ion-list
 
 ion-item
 {
-  border-radius: 50px !important;
+  border-radius: 5px !important;
   border: 2px solid var(--ion-color-primary) !important;
   --background: white;
   width: 90%;
@@ -119,20 +116,18 @@ ion-input
   --background: var(--ion-color-primary) !important;
   font-weight: 600;
   margin-bottom: 10%;
+  --border-radius: 0;
 }
 
 .button-centerer2 {
-  width: 90%;
-  // height: 50%;
-  border: 2px solid var(--ion-color-primary);
-  border-radius: 80px !important;
-  --background: rgba(255, 255, 255, 0) !important;
-  // --color: var(--ion-color-primary--contrast);
-  font-weight: 600;
-  // --text-transform: lowercase;
-  --background-hover: var(--ion-color-primary);
-  // margin-right: 5%;
-  margin-left: 5%;
+      /* width: 90%; */
+      border: 2px solid var(--ion-color-primary);
+      /* border-radius: 80px !important; */
+      --background: rgba(255, 255, 255, 0) !important;
+      font-weight: 600;
+      --background-hover: var(--ion-color-primary);
+      /* margin-left: 5%; */
+      --border-radius: 0;
 }
 
 .Member
@@ -196,7 +191,6 @@ p
   width: 80px;
   height: 40px;
   background: rgb(0, 0, 0);
-  border-radius: 50px;
   margin-left: 40%;
   margin-right: 40%;
 }

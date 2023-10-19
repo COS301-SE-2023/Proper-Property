@@ -26,7 +26,7 @@ ion-content
   // box-shadow: 0 4px 20px 0 rgba(0,0,0,0.3), 0 px 20px 0 rgba(0,0,0,0.3) ;
   background: linear-gradient(-45deg, #00330d,var(--ion-color-primary));
   box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.3);
-  border-radius: 30px;
+
 }
 
 .container
@@ -44,13 +44,11 @@ ion-content
   background-position: bottom;
   background-repeat: no-repeat;
   background-size: contain;
-  border-top-left-radius: 30px;
-  border-bottom-left-radius: 30px;
 }
 
 .reg
 {
-  top: 0%;
+  margin-top: 10%;
   justify-content: center;
   align-items: center;
   display: flex;
@@ -77,7 +75,7 @@ ion-list
 
 ion-item
 {
-  border-radius: 50px !important;
+  border-radius: 5px !important;
   border: 2px solid var(--ion-color-primary) !important;
   --background: white;
   width: 90%;
@@ -123,6 +121,7 @@ ion-input
   --background: var(--ion-color-primary) !important;
   font-weight: 600;
   margin-top: 5%;
+  --border-radius: 0;
 }
 
 .button-centerer2 {
@@ -179,7 +178,6 @@ p
   width: 80px;
   height: 40px;
   background: rgb(0, 0, 0);
-  border-radius: 50px;
   margin-left: 40%;
   margin-right: 40%;
 }
