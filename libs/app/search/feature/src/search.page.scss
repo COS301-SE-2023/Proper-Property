@@ -5,12 +5,12 @@ ion-content::part(scroll) {
 .Desktop {
   select{
     background-color: white !important;
-    border-radius: 5px;
+    // border-radius: 5px;
     width: 100%;
     border: 1px solid rgb(146, 146, 146) !important;
   }
   option{
-    border-radius: 5px;
+    // border-radius: 5px;
     background-color: white !important;
   }
 
@@ -40,7 +40,7 @@ ion-content::part(scroll) {
     position: -webkit-sticky;
     top: 56px;
     // padding: 0 10px;
-    border-radius: 8px;
+    // border-radius: 8px;
     margin: 5px;
     overflow: hidden;
     background-color: #ededed;
@@ -90,7 +90,7 @@ ion-content::part(scroll) {
   }
 
   .filter {
-    border-radius: 10px;
+    // border-radius: 10px;
     width: 100%;
     //make it smaller so that 4 can fit in 1 line
     margin: 0 5px;
@@ -126,7 +126,7 @@ ion-content::part(scroll) {
   }
 
   #filter-container {
-    border-radius: 30px;
+    // border-radius: 30px;
     border: 1px solid #000;
     background: rgba(13, 174, 79, 0.40);
     width: 100%;
@@ -151,7 +151,7 @@ ion-content::part(scroll) {
     top: 100%;
     margin-top: 2px;
     left: 5px;
-    border-radius: 25px;
+    // border-radius: 25px;
     width: 92%;
     padding: 0;
     background: rgba(0,0,0,0);
@@ -161,7 +161,7 @@ ion-content::part(scroll) {
       cursor: pointer;
       padding: 0 0;
       border: 2px solid grey;
-      border-radius: 24px;
+      // border-radius: 24px;
       // height: 20px;
       font-size: 14px;
       --inner-padding-top: 0;
@@ -175,7 +175,7 @@ ion-content::part(scroll) {
     width: 88%;
     margin-left: 2%;
     height: auto;
-    border-radius: 0px 0px 30px 30px;
+    // border-radius: 0px 0px 30px 30px;
     border-right: 2px solid #0DAE4F;
     border-bottom: 2px solid #0DAE4F;
     border-left: 2px solid #0DAE4F;
@@ -229,7 +229,7 @@ ion-content::part(scroll) {
   }
 
   #address {
-    border-radius: 30px;
+    // border-radius: 30px;
     border: 1.5px solid #000;
     background: #FFF;
     width: 100%;
@@ -253,7 +253,7 @@ ion-content::part(scroll) {
     background: transparent;
     // color: rgba(48, 207, 114, 0.4);
     border: none;
-    --border-radius: 30px;
+    // --border-radius: 30px;
     cursor: pointer;
     margin-top: 1%;
     margin-bottom: 1%;
@@ -268,7 +268,7 @@ ion-content::part(scroll) {
     height: 70%;
     margin-right: 10%;
     border:1px solid rgb(168, 168, 168);
-    border-radius: 5px;
+    // border-radius: 5px;
     cursor: pointer;
     margin-top: 1%;
   }
@@ -281,7 +281,7 @@ ion-content::part(scroll) {
     width: 90%;
     height: 40%;
     // margin-right: 10%;
-    --border-radius: 30px;
+    // --border-radius: 30px;
     // margin-top: 5%;
   }
   
@@ -291,7 +291,7 @@ ion-content::part(scroll) {
     margin-right: 10%;
     color: white;
     border: none;
-    --border-radius: 30px;
+    // --border-radius: 30px;
     cursor: pointer;
   }
   
@@ -313,7 +313,7 @@ ion-content::part(scroll) {
     width: 200px;
     height: 100%;
     //rounded edges
-    border-radius: 10px;
+    // border-radius: 10px;
     object-fit: cover;
   }
   
@@ -337,7 +337,7 @@ ion-content::part(scroll) {
     // width: 45%;
     margin-left: 2%;
     margin-top: 10px;
-    border-radius: 10px;
+    // border-radius: 10px;
   }
   
   #house_description{
@@ -400,7 +400,7 @@ ion-content::part(scroll) {
     margin-left: 2%;
     margin-right: 3%;
     height: 40vh;
-    border-radius: 10px;
+    // border-radius: 10px;
     background-color: transparent;
     opacity: 0;
     transition: opacity 150ms ease-in;
@@ -414,7 +414,7 @@ ion-content::part(scroll) {
     // width: 50%;
     margin-left: 2%;
     margin-top: 10px;
-    border-radius: 10px;
+    // border-radius: 10px;
   }
   
   // #login-button{
@@ -474,7 +474,7 @@ ion-content::part(scroll) {
   .container .searchInput {
     background: #fff;
     width: 100%;
-    border-radius: 5px;
+    // border-radius: 5px;
     position: relative;
     box-shadow: 0px 1px 5px 3px rgba(0, 0, 0, 0.12);
   }
@@ -504,7 +504,7 @@ ion-content::part(scroll) {
     display: none;
     width: 100%;
     cursor: default;
-    border-radius: 3px;
+    // border-radius: 3px;
   }
   
   .searchInput.active .resultBox li {
@@ -658,7 +658,7 @@ ion-content::part(scroll) {
     font-size: 19px;
     text-align: center;
     margin-left: 12px;
-    border-radius: 5px;
+    // border-radius: 5px;
     border: 1px solid rgb(146, 146, 146);
     // background: transparent;
     background-color: white;
@@ -708,7 +708,7 @@ ion-content::part(scroll) {
     top: 20%;
     overflow: hidden;
     height: 40vw;
-    border-radius: 10px;
+    // border-radius: 10px;
     background-color: transparent;
     opacity: 0;
     transition: opacity 150ms ease-in;
@@ -724,7 +724,7 @@ ion-content::part(scroll) {
     margin-left: 2%;
     margin-top: 15px;
     margin-bottom: 10px;
-    border-radius: 10px;
+    // border-radius: 10px;
   }
 
   .pin-button {
