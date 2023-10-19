@@ -33,15 +33,17 @@
             <ion-input type="password" [(ngModel)]="password" placeholder="Enter Password"></ion-input>
           </ion-item>
 
+          
+        <div *ngIf="!passwordMatch" class="invalid-feedback">
+          Passwords do not match!.
+          </div>
+          
           <ion-item [class.invalid]="!passwordMatch">
             <ion-input type="password" [(ngModel)]="confirm_password" placeholder="Confirm Password"></ion-input>
           </ion-item>
 
         </ion-list>
 
-        <div *ngIf="!passwordMatch" class="invalid-feedback">
-        Passwords do not match!.
-        </div>
 
       </div>
       <div class="button-centerer">
