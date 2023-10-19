@@ -4,10 +4,10 @@ ion-content::part(scroll) {
 
 .Desktop {
   select{
-    background-color: white !important;
+    background-color: #94d5ae !important;
     // border-radius: 5px;
     width: 100%;
-    border: 1px solid rgb(146, 146, 146) !important;
+    border: 1px solid white !important;
   }
   option{
     // border-radius: 5px;
@@ -127,15 +127,15 @@ ion-content::part(scroll) {
 
   #filter-container {
     // border-radius: 30px;
-    border: 1px solid #000;
+    border: 1px solid #fefefe;
     background: rgba(13, 174, 79, 0.40);
     width: 100%;
     height: auto;
-    background-color: #ededed;
+    background-color: #94d5ae;
   }
   
   .filter-text {
-    color: rgb(68, 68, 68);
+    color: rgb(0, 0, 0);
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -230,7 +230,7 @@ ion-content::part(scroll) {
 
   #address {
     // border-radius: 30px;
-    border: 1.5px solid #000;
+    border: 1.5px solid #eeeeee;
     background: #FFF;
     width: 100%;
     margin-bottom: 1%;
