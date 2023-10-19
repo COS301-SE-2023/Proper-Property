@@ -11,6 +11,7 @@ import { User } from 'firebase/auth';
 import { Select } from '@ngxs/store';
 import { UserProfileState } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
+import { ToastController, ToastOptions } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +32,10 @@ export class LoginPage implements OnInit {
   constructor(private readonly store: Store,
     public authService: AuthService, 
     public router: Router,
-    public userService : UserProfileService) {
+    public userService : UserProfileService,
+    private readonly toastController: ToastController,
+    
+  ) {
     this.email = this.password = "";
     this.isMobile = isMobile();
   }
@@ -78,14 +82,24 @@ export class LoginPage implements OnInit {
       console.log("Forgot password button click");
       console.log(this.resetEmail);
       console.log(forgotPasswordInput);
-      console.log(email);
+      console.log(this.email);
     }
-    if(email){
-      try{
-        const response = await this.store.dispatch(new ForgotPassword(email));
-      } catch(e) {
-        if(window.location.hostname.includes("localhost")) console.log(e);
-      }
+    if(!this.email){
+      const failed = {
+        message: "Please enter an email address.",
+        duration: 3000, // Duration in milliseconds
+        color: 'danger', // Use 'danger' to display in red
+        position: 'bottom'
+      } as ToastOptions;
+
+      const toast = await this.toastController.create(failed);
+      toast.present();
+      return;
+    }
+    try{
+      this.store.dispatch(new ForgotPassword(email));
+    } catch(e) {
+      if(window.location.hostname.includes("localhost")) console.log(e);
     }
   }
 

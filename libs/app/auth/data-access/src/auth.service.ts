@@ -86,9 +86,27 @@ export class AuthService {
   }
 
   async forgotPassword(email: string) {
-    return sendPasswordResetEmail(this.auth, email);
+    try {
+      const response = await sendPasswordResetEmail(this.auth, email);
+
+      if(window.location.hostname.includes("localhost")) console.warn(response);
+      
+      const success = {
+        message: "Password reset email sent.",
+        duration: 3000, // Duration in milliseconds
+        color: 'success', // Use 'danger' to display in red
+        position: 'bottom'
+      } as ToastOptions;
+      const toast = await this.toastController.create(success);
+      toast.present();
+
+      return response
+    } catch (error) {
+      this.errorHandler(error);
+      return null;
+    }
   }
-  
+
   deleteCurrentUser() {
     const user = this.auth.currentUser;
     if (user) {
@@ -173,6 +191,7 @@ export class AuthService {
         break;
       default:
         failed.message = "Unknown error occurred";
+        if (window.location.hostname.includes("localhost")) console.log(error);
         break;
     }
   
