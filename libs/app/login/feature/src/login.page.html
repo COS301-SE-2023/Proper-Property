@@ -4,15 +4,38 @@
       <div class="login">
         <ion-list>
           <h2>Log In</h2>
-          <ion-item>
+          <ion-item class="loginInput">
             <ion-icon name="mail-outline"></ion-icon>
             <ion-input type="email" [(ngModel)]="email" placeholder="  Email" required="true"></ion-input> 
           </ion-item>
-          <ion-item>
+          <ion-item class="loginInput">
             <ion-icon name="lock-closed-outline"></ion-icon>
             <ion-input type="password" [(ngModel)]="password" placeholder="  Password"></ion-input>
           </ion-item>
-          <p class="forgot"><span class="forgot1"></span></p>
+          <ion-item id="forgotItem">
+            <a href="javascript:;" class="forgot">Forgot your password?</a>
+          </ion-item>
+          <ion-modal class="forgot-modal" trigger="forgotItem">
+            <ng-template>
+              <h2>
+                Please enter your email:
+              </h2>
+              <ion-content>
+                <div id="forgot-password-content">
+                  <p>
+                    Please enter your email address and click 'Reset Password'. 
+                    A link will be sent to this email address to reset your password.
+                  </p>
+                  <ion-item class="loginInput">
+                    <ion-icon name="mail-outline"></ion-icon>
+                    <ion-input id="forgotPasswordInput" type="email" [(ngModel)]="email" placeholder="  Email" required="true"></ion-input> 
+                  </ion-item>
+                  <!-- <ion-input placeholder="Enter an email" type="email" [ngModel]="resetEmail" style="border: 1px solid black; width: 60%;"></ion-input> -->
+                  <ion-button (click)="forgotPassword()">Reset Password</ion-button>
+                </div>
+              </ion-content>
+            </ng-template>
+          </ion-modal>
         </ion-list>
 
       </div>

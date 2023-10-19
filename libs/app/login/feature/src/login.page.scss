@@ -82,7 +82,7 @@ ion-list
   
 }
 
-ion-item
+.loginInput
 {
   border-radius: 5px !important;
   border: 2px solid var(--ion-color-primary) !important;
@@ -91,6 +91,10 @@ ion-item
   margin: auto;
   margin-bottom: 3%;
   display: flex;
+}
+
+.forgot{
+
 }
 
 ion-icon
@@ -150,21 +154,15 @@ ion-input
 
 .forgot
 {
-  margin-right: 5%;
+  margin-left: auto;
   text-align: right;
   font-size: 15px;
   text-decoration: underline;
   color: var(--ion-color-primary);
 }
 
-.forgot1:after
-{
-  content: 'Forgot Password?';
-}
-
-.forgot1:hover:after
-{
-  content: 'Too Bad, Buddy';
+#forgotItem{
+  display: flex;
 }
 
 h3
