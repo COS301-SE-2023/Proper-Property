@@ -239,13 +239,34 @@
   }
   
   
+  .prediction-result-list {
+
+
+  left: 0;
+  border-radius: 5px;
+  width: 92%;
+  padding: 0;
+  background: rgba(0,0,0,0);
+  .prediction-result {
+    cursor: pointer;
+    padding: 0 0;
+    border: 2px solid grey;
+    border-radius: 24px;}
+  }
+
+  
   .search-container {
     width: 100%;
     max-width: 500px;
     margin: auto;
   }
   
-  //end of scss
+  #addressAutocompletions
+  {
+    height: 40px;
+    width: 92%;
+    margin-bottom: 1%;
+  }
   * {
     margin: 0;
     padding: 0;

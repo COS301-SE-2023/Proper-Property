@@ -75,11 +75,11 @@
                   *ngIf="!address">*</span></label>
               <ion-input (ionInput)="handleInputChange($event)" type="text" class="house-text" id="address"
               [(ngModel)]="address" placeholder="Enter an address" ></ion-input>
-              <ion-list [hidden]="predictions.length <= 0">
+              <ion-list [hidden]="predictions.length <= 0" class="prediction-result-list">
        
                <ion-item (click)="replaceInputText($event,prediction.description)" *ngFor="let prediction of predictions">
                 <!-- <a href="#" class="prediction-button"> -->
-                  {{ prediction.description }}
+                  <ion-icon name="search-outline"></ion-icon>{{ prediction.description }}
                 <!-- </a> -->
                </ion-item>
               </ion-list>
