@@ -4,7 +4,7 @@ import { AuthProviderLogin } from '@properproperty/app/auth/util';
 import { Router } from '@angular/router'
 import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { Store } from '@ngxs/store';
-import { Login } from '@properproperty/app/auth/util';
+import { Login, ForgotPassword } from '@properproperty/app/auth/util';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { Observable } from 'rxjs';
 import { User } from 'firebase/auth';
@@ -24,6 +24,9 @@ export class LoginPage implements OnInit {
   userProfile: UserProfile | null = null;
 
   isMobile = false;
+  resetEmail = "";
+  emailEntered = this.resetEmail? true : false;
+
 
   constructor(private readonly store: Store,
     public authService: AuthService, 
@@ -61,6 +64,29 @@ export class LoginPage implements OnInit {
   ngOnInit() {
     if (window.location.hostname.includes("localhost"))
       console.log ("Linter: Lifecycle methods should not be empty");
+  }
+
+  async forgotPassword(){
+    // get element with selector #forgotPasswordInput input
+    const forgotPasswordInput : HTMLInputElement = document.querySelector('#forgotPasswordInput input')!;
+    if (!forgotPasswordInput) {
+      // TODO Error Handling
+      return;
+    }
+    const email = forgotPasswordInput.value;
+    if(window.location.hostname.includes("localhost")) {
+      console.log("Forgot password button click");
+      console.log(this.resetEmail);
+      console.log(forgotPasswordInput);
+      console.log(email);
+    }
+    if(email){
+      try{
+        const response = await this.store.dispatch(new ForgotPassword(email));
+      } catch(e) {
+        if(window.location.hostname.includes("localhost")) console.log(e);
+      }
+    }
   }
 
 }

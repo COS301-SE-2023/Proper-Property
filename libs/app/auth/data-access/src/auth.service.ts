@@ -33,7 +33,8 @@ import {
   createUserWithEmailAndPassword,
   deleteUser,
   updateEmail,
-  authState
+  authState,
+  sendPasswordResetEmail
 } from "@angular/fire/auth";
 import { UserProfile } from '@properproperty/api/profile/util';
 import { ToastController, ToastOptions } from '@ionic/angular';
@@ -80,7 +81,14 @@ export class AuthService {
       return null;
     }
   }
+  async logout() {
+    return this.auth.signOut();
+  }
 
+  async forgotPassword(email: string) {
+    return sendPasswordResetEmail(this.auth, email);
+  }
+  
   deleteCurrentUser() {
     const user = this.auth.currentUser;
     if (user) {

@@ -175,7 +175,6 @@ export class SearchPage implements OnDestroy, AfterViewInit {
     return this.predictions.length > 0;
   }
 
-  // TODO add input latency to reduce api calls
   timeout: NodeJS.Timeout | undefined = undefined;
   searchLoading = false;
   async handleInputChange(event: Event) {
@@ -480,7 +479,6 @@ async loadMap() {
     this.allListings = [];
 
 
-    // TODO filter
     if(!response.listings.length){
       const toast = await this.toastController.create({
         message: 'No listings returned',
@@ -639,6 +637,7 @@ addMMarker(listing: Listing) {
     this.bath = null;
     this.parking = null;
     this.features = [];
+    this.searchQuery = "";
 
     this.searchProperties();
 }
