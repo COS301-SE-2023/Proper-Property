@@ -4,6 +4,11 @@
       <div class="login">
         <ion-list>
           <h2>Log In</h2>
+
+          <div *ngIf="!validEmail" class="invalid-feedback">
+            Invalid email entered
+            </div>
+            
           <ion-item>
             <ion-icon name="mail-outline"></ion-icon>
             <ion-input type="email" [(ngModel)]="email" placeholder="  Email" required="true"></ion-input> 
@@ -61,6 +66,9 @@
             </ion-button>
           </div>
           <p class="or-text">or</p>
+
+
+
           <ion-item>
             <ion-icon name="mail-outline"></ion-icon>
             <ion-input type="email" [(ngModel)]="email" placeholder="  Email" required="true"></ion-input> 
