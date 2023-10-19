@@ -42,8 +42,15 @@ export class RegisterPage implements OnInit {
   email:string;
   confirm_password:string;
   passwordMatch = true;
+  validEmail=true;
 
   async register() {
+    
+    if(!validateEmail(this.email)) {
+      this.validEmail = false;
+      return;
+    }
+
     if (this.password !== this.confirm_password) {
       this.passwordMatch = false;
       return; // Prevent further execution
@@ -111,4 +118,9 @@ export class RegisterPage implements OnInit {
 
 function isMobile(): boolean {
   return window.innerWidth <= 576;
+}
+
+function validateEmail(email: string): boolean {
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  return emailRegex.test(email);
 }
