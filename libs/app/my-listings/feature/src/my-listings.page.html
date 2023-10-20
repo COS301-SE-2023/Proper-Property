@@ -99,6 +99,12 @@
                   </ion-row>
                 </ion-grid>
             </ion-card>
+            <ng-container *ngIf="!listingsB.length">
+              <div style="width: 100%; display: flex; justify-content: center;">
+                <ion-icon name="home-outline"></ion-icon>
+                <div>No saved listings to show</div>
+              </div>
+            </ng-container>
           </ion-col>
           <ion-col size="6">
             <ion-card class="listingCard" *ngFor="let listing of listingsR" >
@@ -143,6 +149,12 @@
                 </ion-row>
               </ion-grid>
           </ion-card>
+          <ng-container *ngIf="!listingsR.length">
+            <div style="width: 100%; display: flex; justify-content: center;">
+              <ion-icon name="home-outline"></ion-icon>
+              <div>No saved listings to show</div>
+            </div>
+          </ng-container>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -227,7 +239,12 @@
                 </ion-row>
               </ion-grid> 
             </ion-card>
-  
+            <ng-container *ngIf="!listingsB.length">
+              <div style="width: 100%; display: flex; justify-content: center;">
+                <ion-icon name="home-outline"></ion-icon>
+                <div>No saved listings to show</div>
+              </div>
+            </ng-container>
           </ion-col>
           <ion-col>
             <ion-card class="listingCard" *ngFor="let listing of listingsR">
@@ -305,6 +322,12 @@
                 </ion-row>
               </ion-grid> 
             </ion-card>
+            <ng-container *ngIf="!listingsR.length">
+              <div style="width: 100%; display: flex; justify-content: center;">
+                <ion-icon name="home-outline"></ion-icon>
+                <div>No saved listings to show</div>
+              </div>
+            </ng-container>
           </ion-col>
         </ion-row>
       </ion-grid>
