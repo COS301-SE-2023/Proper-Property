@@ -1,21 +1,26 @@
 #category{
   color: var(--ion-color-primary);
   background: rgba(13, 174, 79, 0.05);
-  
 }
 
-.rightBorder
-{
-  border-right: 1px solid rgba(13, 174, 79, 0.20);
+ion-card{
+  border-radius: 0px;
 }
 
-ion-card {
-  width: 85%;
-  height: 180px;
-  margin-left: 10%;
-  margin-top: 15px;
-  margin-bottom: 10px;
-  border-radius: 10px;
+.listingCard:hover{
+  box-shadow: 3px 3px 5px rgba(13, 174, 80, 0.7);
+}
+
+.imageCol{
+  height: 100%;
+  width: 25%;
+}
+
+.green-tab {
+  --color: green;
+}#house_details img {
+  width: 10px; /* Adjust the size as desired */
+  height: 10px; /* Adjust the size as desired */
 }
 
 ion-card-header{
@@ -24,15 +29,22 @@ ion-card-header{
 
 }
 
+#house_description{
+  // height: 10% !important;
+  width: 90%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
 //make the img in ion-card-header smaller
-ion-card-header img {
-  width: 50%;
+.imageCol img {
+  width: 300px;
   height: 200px;
   position: relative;
-  top: -20px;
-  left: -20px;
-  //rounded edges
-  border-radius: 10px;
+  object-fit: cover;
+  overflow: hidden;
 }
 
 //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
@@ -48,17 +60,9 @@ ion-card-header ion-card-subtitle {
 }
 
 ion-card ion-card-content {
-  margin-left: 39%;
+  margin-left: 2%;
   margin-right: 5%;
   width: 65%;
-}
-
-#house_description{
-  // height: 10% !important;
-  width: 87%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
 }
 
 #saved
@@ -130,26 +134,85 @@ ion-card ion-card-content {
   transition: width 0.3s ease-in-out;
 }
 
-.house_details{
-  margin-top: 3.25%;
-}
-
-.house_details2{
-  margin-top: -5.25%;
-}
-
-.house_details img {
+#house_details img {
   //set image size
   width: 15px;
   height: 15px;
 }
 
-.heart-icon {
-  color: red;
-  font-size: 24px;
-  background-color: white;
-  float: right;
-  margin-right: 1%
+.statusBadge
+{
+  position: absolute;
+  right: 3%;
+  top: 3%;
+  padding-top: 1%;
+  text-align: center;
+  border-radius: 5px;
+  width: 100%;
+  height: 100%;
+}
+
+.ON
+{
+  color: rgba(13, 174, 80, 0.7);
+  background: rgba(13, 174, 79, 0.192);
+  border-left: 2px solid rgba(13, 174, 79, 0.5);
+}
+
+.SOLD
+{
+  color: rgba(13, 174, 80, 0.7);
+  background: rgba(13, 174, 79, 0.192);
+  border-left: 2px solid rgba(13, 174, 79, 0.5);
+}
+
+.RENTED
+{
+  color: rgba(13, 174, 80, 0.7);
+  background: rgba(13, 174, 79, 0.192);
+  border-left: 2px solid rgba(13, 174, 79, 0.5);
+}
+
+.SAVED
+{
+  color: rgba(126, 126, 126, 0.9);
+  background: rgba(126, 126, 126, 0.192);
+  border-left: 2px solid rgba(126, 126, 126, 0.5);
+}
+
+.OFF
+{
+  color: rgba(126, 126, 126, 0.9);
+  background: rgba(126, 126, 126, 0.192);
+  border-left: 2px solid rgba(126, 126, 126, 0.5);
+}
+
+.PENDING
+{
+  color: rgba(255, 164, 0, 0.7);
+  background: rgba(255, 164, 0, 0.192);
+  border-left: 2px solid rgba(255, 164, 0, 0.5);
+}
+
+.EDITED
+{
+  color: rgba(101, 101, 5, 0.7);
+  background: rgba(230, 230, 15, 0.192);
+  border-left: 2px solid rgba(230, 230, 15, 0.5);
+}
+
+.DELETED
+{
+  color: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.377);
+  border-left: 2px solid rgba(0, 0, 0, 0.6);
+}
+
+.DENIED
+{
+  color: rgba(255, 0, 0, 0.7);
+  background: rgba(255, 0, 0, 0.192);
+  border-left: 2px solid rgba(255, 0, 0, 0.5);
 }
 
 #loader{
@@ -157,7 +220,25 @@ ion-card ion-card-content {
   // right: 45%;
   text-align: center;
   z-index: 1;
-  top: 40%;
+  // top: 40%;
   // opacity: 0;
+  height: 100vh;
+  background-color: white;
   width: 100%;
+  display: flex;
+  // space-around
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+}
+
+.rightBorder
+{
+  border-right: 1px solid rgba(13, 174, 79, 0.20);
+}
+
+#house_details2{
+  
+  margin-top: -8%;
 }

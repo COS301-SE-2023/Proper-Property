@@ -4,12 +4,24 @@
   
 }
 
+ion-card{
+  border-radius: 0px;
+}
+
+.listingCard:hover{
+  box-shadow: 3px 3px 5px rgba(13, 174, 80, 0.7);
+}
+
+.imageCol{
+  height: 100%;
+  width: 25%;
+}
+
 .green-tab {
   --color: green;
 }#house_details img {
   width: 10px; /* Adjust the size as desired */
   height: 10px; /* Adjust the size as desired */
-  border-radius: 10px;
 }
 
 ion-card-header{
@@ -20,7 +32,7 @@ ion-card-header{
 
 #house_description{
   // height: 10% !important;
-  width: 87%;
+  width: 90%;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -28,14 +40,12 @@ ion-card-header{
 
 
 //make the img in ion-card-header smaller
-ion-card-header img {
-  width: 50%;
+.imageCol img {
+  width: 300px;
   height: 200px;
   position: relative;
-  top: -20px;
-  left: -20px;
-  //rounded edges
-  border-radius: 10px;
+  object-fit: cover;
+  overflow: hidden;
 }
 
 //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
@@ -51,7 +61,7 @@ ion-card-header ion-card-subtitle {
 }
 
 ion-card ion-card-content {
-  margin-left: 39%;
+  margin-left: 2%;
   margin-right: 5%;
   width: 65%;
 }
@@ -136,11 +146,11 @@ ion-card ion-card-content {
   position: absolute;
   right: 3%;
   top: 3%;
-  width: 30%;
-  height: 14%;
   padding-top: 1%;
   text-align: center;
   border-radius: 5px;
+  width: 100%;
+  height: 100%;
 }
 
 .ON
@@ -187,7 +197,7 @@ ion-card ion-card-content {
 
 .EDITED
 {
-  color: rgba(230, 230, 15, 0.7);
+  color: rgba(101, 101, 5, 0.7);
   background: rgba(230, 230, 15, 0.192);
   border-left: 2px solid rgba(230, 230, 15, 0.5);
 }
@@ -211,9 +221,14 @@ ion-card ion-card-content {
   // right: 45%;
   text-align: center;
   z-index: 1;
-  top: 40%;
+  height: 100vh;
   // opacity: 0;
+  background-color: white;
+  display: flex;
   width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .rightBorder

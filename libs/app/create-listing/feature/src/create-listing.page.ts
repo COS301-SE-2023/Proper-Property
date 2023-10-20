@@ -123,6 +123,57 @@ export class CreateListingPage {
 
   myControl = new FormControl();
   options: string[] = ['Angular', 'React', 'Vue', 'Ionic', 'TypeScript'];
+  municipalities:string[] = [
+    'Umzinyathi District municipality(DC24)',
+  'eThekwini Metropolitan Municipality(ETH)',
+  'The Msunduzi Local Municipality(KZN225)',
+  'Ugu District municipality(DC21)',
+  'Amajuba District municipality(DC25)',
+  'UMgungundlovu District municipality(DC22)',
+  'Newcastle Local Municipality(KZN252)', 
+  'Zululand District municipality(DC26)', 
+  'King Cetshwayo DM(DC28)',
+   'Harry Gwala District municipality(DC43)', 'Uthukela District municipality(DC23)', 'uMhlathuze Local Municipality(KZN282)', 'Umkhanyakude District municipality(DC27)', 'iLembe District municipality(DC29)', 'Theewaterskloof Local Municipality(WC031)', 'Cederberg Local Municipality(WC012)', 'Letsemeng Local Municipality(FS161)', 'Setsoto Local Municipality(FS191)', 'Kopanong Local Municipality(FS162)', 'Mohokare Local Municipality(FS163)', 'Masilonyana Local Municipality(FS181)', 'Dihlabeng Local Municipality(FS192)', 'Matjhabeng Local Municipality(FS184)', 'Phumelela Local Municipality(FS195)', 'Tswelopele Local Municipality(FS183)', 'Nketoana Local Municipality(FS193)', 'Maluti a Phofung Local Municipality(FS194)', 'Moqhaka Local Municipality(FS201)', 'Nala Local Municipality(FS185)', 'Mangaung(MAN)', 'Mantsopa Local Municipality(FS196)', 'Ngwathe Local Municipality(FS203)', 'Metsimaholo Local Municipality(FS204)', 'Mafube Local Municipality(FS205)', 'Matzikama Local Municipality(WC011)', 'Drakenstein Local Municipality(WC023)', 'Hessequa Local Municipality(WC042)', 'Bergrivier Local Municipality(WC013)', 'Cape Agulhas Local Municipality(WC033)', 'Langeberg Municipality(WC026)', 'Mossel Bay Local Municipality(WC043)', 'Saldanha Bay Local Municipality(WC014)', 'Oudtshoorn Local Municipality(WC045)', 'Overstrand Local Municipality(WC032)', 'Beaufort West Local Municipality(WC053)', 'Swartland Local Municipality(WC015)', 'Knysna Local Municipality(WC048)', 'Swellendam Local Municipality(WC034)', 'City of Cape Town Metropolitan Municipality(CPT)', 'Witzenberg Local Municipality(WC022)', 'George Local Municipality(WC044)', 'Stellenbosch Local Municipality(WC024)', 'Bitou Local Municipality(WC047)', 'Breede Valley Local Municipality(WC025)', 'Laingsburg Local Municipality(WC051)', 'Kannaland Local Municipality(WC041)', 'Prince Albert Local Municipality(WC052)', 'Emfuleni Local Municipality(GT421)', 'City of Tshwane Metropolitan Municipality(TSH)', 'Rand West City(GT485)', 'Mogale City Local Municipality(GT481)', 'Midvaal Local Municipality(GT422)', 'Merafong City Local Municipality(GT484)', 'Lesedi Local Municipality(GT423)', 'City of Ekurhuleni(EKU)', 'City of Johannesburg Metropolitan Municipality(JHB)', 'Vhembe District municipality(DC34)', 'Mopani District municipality(DC33)', 'Modimolle/Mookgophong(LIM368)', 'Polokwane Local Municipality(LIM354)', 'Capricorn District municipality(DC35)', 'Greater Sekhukhune District Municipality(DC47)', 'Thabazimbi Local Municipality(LIM361)', 'Mogalakwena Local Municipality(LIM367)', 'Lephalale Local Municipality(LIM362)', 'Bela-Bela Local Municipality(LIM366)', 'Richtersveld Local Municipality(NC061)', 'Kamiesberg Local Municipality(NC064)', 'Nama Khoi Local Municipality(NC062)', 'Khai-Ma Local Municipality(NC067)', 'Hantam Local Municipality(NC065)', 'Karoo Hoogland Local Municipality(NC066)', 'Emthanjeni Local Municipality(NC073)', 'Ubuntu Local Municipality(NC071)', 'Thembelihle Local Municipality(NC076)', 'Umsobomvu Local Municipality(NC072)', 'Kareeberg Local Municipality(NC074)', 'Dawid Kruiper(NC087)', 'Siyancuma Local Municipality(NC078)', 'Siyathemba Local Municipality(NC077)', 'Renosterberg Local Municipality(NC075)', 'Phokwane Local Municipality(NC094)', 'Dikgatlong Local Municipality(NC092)', 'Kgatelopele Local Municipality(NC086)', '!Kai! Garib Local Municipality(NC082)', 'Ga-Segonyana Local Municipality(NC452)', 'Joe Morolong Local Municipality(NC451)', 'Magareng Local Municipality(NC093)', '!Kheis Local Municipality(NC084)', 'Gamagara Local Municipality(NC453)', 'Sol Plaatjie Local Municipality(NC091)', 'Blue Crane Route Local Municipality(EC102)', 'Makana Local Municipality(EC104)', 'Dr Beyers Naude(EC101)', 'Sunday`s River Valley Local Municipality(EC106)', 'Amatole District municipality(DC12)', 'Kouga Local Municipality(EC108)', 'Ndlambe Local Municipality(EC105)', 'Kou-Kamma Local Municipality(EC109)', 'Chris Hani District municipality(DC13)', 'Buffalo City Local Municipality(BUF)', 'Joe Gqabi District municipality(DC14)', 'Nelson Mandela Metropolitan Municipality(NMA)', 'O.R.Tambo District municipality(DC15)', 'Alfred Nzo District municipality(DC44)', 'Albert Luthuli Local Municipality(MP301)', 'Steve Tshwete Local Municipality(MP313)', 'Mkhondo Local Municipality(MP303)', 'Msukaligwa Local Municipality(MP302)', 'Lekwa Local Municipality(MP305)', 'Emakhazeni Local Municipality(MP314)', 'Pixley Ka Seme Local Municipality(MP304)', 'Dipaleseng Local Municipality(MP306)', 'Emalahleni Local Municipality(MP312)',
+  'Victor Khanye Local Municipality(MP311)',
+  'Govan Mbeki Local Municipality(MP307)',
+  'Dr JS Moroka Local Municipality(MP316)',
+  'Thembisile Local Municipality(MP315)',
+  'Bushbuckridge Local Municipality(MP325)',
+  'Thaba Chweu Local Municipality(MP321)',
+  'Mbombela/Umjindi(MP326)',
+  'Nkomazi Local Municipality(MP324)',
+  'Maquassi Hills Local Municipality(NW404)',
+  'Local Municipality of Madibeng(NW372)',
+  'Moretele Local Municipality(NW371)',
+  'Rustenburg Local Municipality(NW373)',
+  'JB Marks Local Municipality(NW405)',
+  'Kgetlengrivier Local Municipality(NW374)',
+  'Ngaka Modiri Molema District Municipality(DC38)',
+  'Moses Kotane Local Municipality(NW375)',
+  'Dr. Ruth S Mompati District Municipality(DC39)',
+  'Matlosana Local Municipality(NW403)'];
+
+  filteredMunicipalities: string[] = [];
+
+  handleMunicipalityInputChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const inputValue = input.value.toLowerCase();
+
+    if (inputValue.length <= 0) {
+      this.filteredMunicipalities = [];
+      return;
+    }
+
+    this.filteredMunicipalities = this.municipalities.filter((municipality) =>
+    municipality.toLowerCase().includes(inputValue)
+    );
+  }
+
+  selectMunicipality(municipality: string): void {
+    this.district = municipality;
+    this.filteredMunicipalities = [];
+  }
+
   filteredOptions: Observable<string[]>;
 
   items: any[] = [];
@@ -419,18 +470,7 @@ export class CreateListingPage {
     if (this.address && this.price && this.pos_type && this.env_type && this.prop_type
       && this.furnish_type && this.orientation && this.floor_size && this.erf_size
       && this.bathrooms && this.bedrooms && this.parking) {
-      const info = "Address: " + this.address + "\n"
-        + "Price: " + this.price + "\n"
-        + "Possession type: " + this.pos_type + "\n"
-        + "Environment type: " + this.env_type + "\n"
-        + "Property type: " + this.prop_type + "\n"
-        + "Furnishing state: " + this.furnish_type + "\n"
-        + "Orientation of the house: " + this.orientation + "\n"
-        + "Floor size: " + this.floor_size + "\n"
-        + "Property size: " + this.erf_size + "\n"
-        + "Number of bathrooms: " + this.bathrooms + "\n"
-        + "Number of bedrooms" + this.bedrooms + "\n"
-        + "Number of parking spots: " + this.parking + "\n";
+      const info = "Address: " + this.address + "\n "      + "Price: " + this.price + "\n "      + "Possession type: " + this.pos_type + "\n "      + "Environment type: " + this.env_type + "\n "      + "Property type: " + this.prop_type + "\n "      + "Furnishing state: " + this.furnish_type + "\n "      + "Orientation of the house: " + this.orientation + "\n "      + "Floor size: " + this.floor_size + "\n "      + "Property size: " + this.erf_size + "\n "      + "Number of bathrooms: " + this.bathrooms + "\n "      + "Number of bedrooms" + this.bedrooms + "\n "      + "Number of parking spots: " + this.parking + "\n";
       + "Features: " + feats + "\n";
 
       const response = await this.openAIService.getHeadingAndDesc("Give me a description of a property with the following information: \n" + info
