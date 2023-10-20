@@ -17,21 +17,21 @@
           </ion-item>
           <ion-modal class="forgot-modal" trigger="forgotItem">
             <ng-template>
-              <h2>
-                Please enter your email:
-              </h2>
               <ion-content>
                 <div id="forgot-password-content">
+                  <h2>
+                    Please enter your email:
+                  </h2>
                   <p>
                     Please enter your email address and click 'Reset Password'. 
                     A link will be sent to this email address to reset your password.
                   </p>
-                  <ion-item class="loginInput">
+                  <ion-item class="loginInput" style="background: #FFF">
                     <ion-icon name="mail-outline"></ion-icon>
                     <ion-input id="forgotPasswordInput" type="email" [(ngModel)]="email" placeholder="  Email" required="true"></ion-input> 
                   </ion-item>
                   <!-- <ion-input placeholder="Enter an email" type="email" [ngModel]="resetEmail" style="border: 1px solid black; width: 60%;"></ion-input> -->
-                  <ion-button (click)="forgotPassword()">Reset Password</ion-button>
+                  <ion-button (click)="forgotPassword()" style="margin-bottom: 20px">Reset Password</ion-button>
                 </div>
               </ion-content>
             </ng-template>

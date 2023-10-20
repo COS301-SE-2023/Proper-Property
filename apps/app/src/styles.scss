@@ -27,12 +27,13 @@
 
 .forgot-modal {
   // --background: #0DAE4F;
-    // background-image: url('./assets/create-listing-background.png');
+  --height: 400px;
   #forgot-password-content {
+    background-image: url('./assets/create-listing-background.png');
     background-position: center;
     background-repeat: no-repeat;
     width: 100%;
-    // height: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -40,7 +41,7 @@
     // align-content: space-around;
     p {
       width: 80%; 
-      margin: auto; 
+      margin: 20px auto; 
       text-align: center;
       margin-bottom: 20px;
     }
@@ -48,17 +49,15 @@
   h2 {
     font-size: 200%;
     color: var(--ion-color-primary);
-    margin-bottom: 3%;
+    margin: 20px auto;
     text-align: center;
-    margin-top: 3%;
   }
   .loginInput {
-    border-radius: 50px !important;
+    border-radius: 5px !important;
     border: 2px solid var(--ion-color-primary) !important;
     // --background: white;
     width: 90%;
-    margin: auto;
-    margin-bottom: 3%;
+    margin: 20px auto;
     display: flex;
   }
 }
