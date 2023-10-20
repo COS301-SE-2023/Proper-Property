@@ -81,7 +81,7 @@
 
   #query {
     border: 0;
-    width: 68%;
+    width: 80%;
     height: 100%;
     // border-radius: 5px !important;
     padding-left: 10px;
@@ -102,10 +102,9 @@
     --border-radius: 5px;
     --padding-start: 0;
     --padding-end: 0;
-    width: 32%;
-    margin-right: 0;
+    width: 20%;
     margin-inline: 0px;
-    --margin: 0;
+    margin:0;
     .search-icon{
       padding: 10%;
     }
@@ -182,7 +181,7 @@
     // flex: 1 1 10rem;
     background: white;
     padding: 15px 10px;
-    border-radius: 2rem;
+    border-radius: 5px;
     text-align: center;
     border: 5px solid #0DAE4F;
     transition: .5s ease;
@@ -265,7 +264,7 @@
     position: relative;
     width: 80%;
     height: auto;
-    border-radius: 30px;
+    border-radius: 7px;
     overflow: hidden;
     display: flex;
     margin-top: 17%;
