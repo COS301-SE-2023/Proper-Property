@@ -33,7 +33,8 @@ import {
   createUserWithEmailAndPassword,
   deleteUser,
   updateEmail,
-  authState
+  authState,
+  sendPasswordResetEmail
 } from "@angular/fire/auth";
 import { UserProfile } from '@properproperty/api/profile/util';
 import { ToastController, ToastOptions } from '@ionic/angular';
@@ -76,6 +77,31 @@ export class AuthService {
       });
     }
     catch(error : any){
+      this.errorHandler(error);
+      return null;
+    }
+  }
+  async logout() {
+    return this.auth.signOut();
+  }
+
+  async forgotPassword(email: string) {
+    try {
+      const response = await sendPasswordResetEmail(this.auth, email);
+
+      if(window.location.hostname.includes("localhost")) console.warn(response);
+      
+      const success = {
+        message: "Password reset email sent.",
+        duration: 3000, // Duration in milliseconds
+        color: 'success', // Use 'danger' to display in red
+        position: 'bottom'
+      } as ToastOptions;
+      const toast = await this.toastController.create(success);
+      toast.present();
+
+      return response
+    } catch (error) {
       this.errorHandler(error);
       return null;
     }
@@ -170,7 +196,7 @@ export class AuthService {
       
       default:
         failed.message = "Unknown error occurred";
-        console.error(error);
+        if (window.location.hostname.includes("localhost")) console.log(error);
         break;
     }
   

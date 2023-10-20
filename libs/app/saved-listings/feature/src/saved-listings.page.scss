@@ -220,9 +220,17 @@ ion-card ion-card-content {
   // right: 45%;
   text-align: center;
   z-index: 1;
-  top: 40%;
+  // top: 40%;
   // opacity: 0;
+  height: 100vh;
+  background-color: white;
   width: 100%;
+  display: flex;
+  // space-around
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
 }
 
 .rightBorder

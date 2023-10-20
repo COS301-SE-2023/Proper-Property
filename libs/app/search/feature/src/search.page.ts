@@ -175,7 +175,6 @@ export class SearchPage implements OnDestroy, AfterViewInit {
     return this.predictions.length > 0;
   }
 
-  // TODO add input latency to reduce api calls
   timeout: NodeJS.Timeout | undefined = undefined;
   searchLoading = false;
   async handleInputChange(event: Event) {
@@ -480,7 +479,6 @@ async loadMap() {
     this.allListings = [];
 
 
-    // TODO filter
     if(!response.listings.length){
       const toast = await this.toastController.create({
         message: 'No listings returned',
@@ -643,6 +641,7 @@ addMMarker(listing: Listing) {
     this.bath = null;
     this.parking = null;
     this.features = [];
+    this.searchQuery = "";
 
     this.searchProperties();
 }
@@ -726,10 +725,12 @@ sortListings() {
     this.showAdditionalFilters = !this.showAdditionalFilters;
 
     if(this.showAdditionalFilters){
-      document.getElementsByClassName("sliderRow").item(0)?.setAttribute("style", "border-bottom: 1px solid #92ceaa; border-width: 90%;")
+      document.getElementsByClassName("reset-button").item(0)?.setAttribute("style", "display: block; margin-top: 5%; height: 45%");
+      document.getElementsByClassName("filter-button").item(0)?.setAttribute("style", "height: 45%");
     }
     else{
-      document.getElementsByClassName("sliderRow").item(0)?.setAttribute("style", "")
+      document.getElementsByClassName("reset-button").item(0)?.setAttribute("style", "display: none;")
+      document.getElementsByClassName("filter-button").item(0)?.setAttribute("style", "height: 90%");
     }
     // this.filterProperties();
   }
