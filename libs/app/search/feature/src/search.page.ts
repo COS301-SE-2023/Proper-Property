@@ -83,6 +83,7 @@ export class SearchPage implements OnDestroy, AfterViewInit {
   public lowestPrice = 99999999;
   public smallestProp = 99999999;
   public largestProp = 0;
+  cardView = new Map();
 
   recommendationMinimum = 100000;
 
@@ -554,6 +555,14 @@ async loadMap() {
             )
           })
       }
+
+      for(let listing of this.allListings){
+        if(listing.listing_id){
+           this.cardView.set(listing.listing_id, false)
+        }
+      }
+
+      console.warn(this.cardView);
       
       if (window.location.hostname.includes("localhost"))
         console.warn(this.recommends);
@@ -575,7 +584,6 @@ async loadMap() {
         this.searching = false;
         document.getElementById("searchButton")?.setAttribute("disabled", "false")
       }, 1500)
-      // await this.addMarkersToMap();
     }
   }
 
@@ -829,6 +837,12 @@ dropDown(){
 
   formatNumber(num: number): string {
     return num.toString().split('').reverse().join('').replace(/(\d{3})(?=\d)/g, '\$1 ').split('').reverse().join('');
+  }
+
+  changeView(listingId : string){
+    if(listingId){
+      this.cardView.set(listingId, !this.cardView.get(listingId));
+    }
   }
   
 }

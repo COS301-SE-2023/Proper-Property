@@ -320,19 +320,15 @@
 
   <section id="listings-and-map" class="upper">
     <ion-grid class="listing-map-grid">
-      <ion-row class="search-result-grid-header">
+      <!-- <ion-row class="search-result-grid-header">
         <ion-col size="4">
           <div class="area-score-toggle-container">
-            <ion-toggle [(ngModel)]="status" labelPlacement="end"><ion-text class="area-score-toggle-label">Area
-                Ratings</ion-text></ion-toggle>
+            <ion-toggle [(ngModel)]="status" labelPlacement="end"><ion-text class="area-score-toggle-label">Area Ratings</ion-text></ion-toggle>
           </div>
         </ion-col>
-        <ion-col class="search-result-header-col" size="4">
-          <ion-text class="search-result-header">Search Results</ion-text>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col style="overflow-y: scoll" size="6">
+      </ion-row> -->
+      <ion-row [class.listsSearching]="searching" style="display: flex; justify-content: center;">
+        <ion-col size="6">
           <ng-container *ngIf="searching; else listingsLoaded">
             <div class="loading-animation">
               <img src="assets/500.gif">
@@ -341,7 +337,7 @@
           <ng-template #listingsLoaded>
             <div class="lists" id="lists">
               <ion-card class="listing-card" *ngFor="let listing of listings">
-                <ng-container *ngIf="!status; else scoreView">
+                <ng-container *ngIf="cardView.get(listing.listing_id); else scoreView">
                   <ion-grid style="width: 100%">
                     <ion-row>
                       <ion-col size="4" class="listing-image-col">
@@ -359,9 +355,12 @@
                             </ion-card-header>
                           </ion-col>
                           <ion-col size="2">
-                            <ion-button class="pin-button" (click)="centerMap(listing)">
+                            <!-- <ion-button class="pin-button" (click)="centerMap(listing)">
                               <ion-icon class="pin-icon" name="location-outline" color="primary"></ion-icon>
-                            </ion-button>
+                            </ion-button> -->
+                            <div class="area-score-toggle-container">
+                              <ion-toggle (click)="changeView(listing.listing_id ?? '')" labelPlacement="end"></ion-toggle>
+                            </div>
                           </ion-col>
                         </ion-row>
                         <ion-row>
@@ -410,20 +409,24 @@
                   <ion-grid>
                     <ion-row>
                       <ion-col size="4" class="listing-image-col">
-                        <img src="{{listing.photos[0]}}" alt="house1">
+                        <img src="{{listing.photos[0]}}" onerror="this.src='assets/no-propertyfound.png'" alt="house1">
                       </ion-col>
                       <ion-col size="8" class="listing-details-col">
                         <ion-row class="listing-header-row">
                           <ion-col size="10">
                             <ion-card-header (click)="redirectToPage(listing)">
-                              <ion-card-title class="listing-card-title" style="color: #0DAE4F;">Area
-                                Ratings</ion-card-title>
+                              <ion-card-title class="listing-card-title" style="color: #0DAE4F;">
+                                Area Ratings
+                              </ion-card-title>
                             </ion-card-header>
                           </ion-col>
                           <ion-col size="2">
-                            <ion-button class="pin-button" (click)="centerMap(listing)">
+                            <!-- <ion-button class="pin-button" (click)="centerMap(listing)">
                               <ion-icon class="pin-icon" name="location-outline" color="primary"></ion-icon>
-                            </ion-button>
+                            </ion-button> -->
+                            <div class="area-score-toggle-container">
+                              <ion-toggle (click)="changeView(listing.listing_id ?? '')" labelPlacement="end"> </ion-toggle>
+                            </div>
                           </ion-col>
                         </ion-row>
                         <ion-row (click)="redirectToPage(listing)">
@@ -478,11 +481,11 @@
             </div>
           </ng-template>
         </ion-col>
-        <ion-col style="border-left: 5px solid #94d5ae">
+        <!-- <ion-col style="border-left: 5px solid #94d5ae">
           <div>
             <div slot="fixed" class="map" id="map" #map></div>
           </div>
-        </ion-col>
+        </ion-col> -->
       </ion-row>
     </ion-grid>
   </section>

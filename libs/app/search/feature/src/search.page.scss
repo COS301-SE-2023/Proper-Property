@@ -47,8 +47,8 @@ ion-content::part(scroll) {
     // border-radius: 8px;
     margin: 5px;
     overflow: hidden;
-    background-color: #ededed;
-    border: 5px solid #94d5ae;
+    background-color: white;
+    // border: 5px solid #94d5ae;
   }
 
   .listing-card:hover{
@@ -60,7 +60,7 @@ ion-content::part(scroll) {
   .search-result-grid-header {
     padding: 5px;
     height: 48px;
-    background-color: rgba(13, 174, 79, 0.4);
+    // background-color: rgba(13, 174, 79, 0.4);
   }
 
   .listing-image-col {
@@ -694,10 +694,11 @@ ion-content::part(scroll) {
   
   .lists
   {
-    // position: absolute;
     overflow: auto;
-    // top: 13%;
-    height: 40vw;
+  }
+
+  .listsSearching{
+    height: 200px;
   }
   
   .lists2
