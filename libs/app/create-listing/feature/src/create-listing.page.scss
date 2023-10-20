@@ -1,7 +1,6 @@
 .Desktop {
   select{
     background-color: #eeeeee !important;
-    border-radius: 5px;
     width: 100%;
     border: 1px solid rgb(183, 183, 183) !important;
   }
@@ -56,7 +55,6 @@
   }
   
   #add-photos {
-    border-radius: 25px;
     opacity: 0.6499999761581421;
     background: var(--green, #0DAE4F);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -128,7 +126,6 @@
   }
   
   #house-details {
-    border-radius: 25px;
     opacity: 0.9300000071525574;
     background: var(--light-grey, #EDEDED);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -313,13 +310,14 @@
   }
   
   #address {
-    border-radius: 10px;
     border: 1.5px solid #000;
     background: #FFF;
     height: 40px;
     width: 92%;
     // margin-left: 3%;
     margin-bottom: 1%;
+    --padding-start: 10px;
+    margin-top: 1%;
   }
   
   #feat-in {

@@ -208,7 +208,7 @@
             <ion-label position="floating" class="house-text">Bathroom Count<span class="required-indicator"
                 *ngIf="!bathrooms">*</span></ion-label>
 
-            <ion-input type="number" id="bath" [(ngModel)]="bathrooms" required></ion-input>
+            <ion-input type="number" id="bath" [(ngModel)]="bathrooms" (ionInput)="onInput($event)" #ionInputEl required></ion-input>
 
           </ion-item>
         </ion-col>
