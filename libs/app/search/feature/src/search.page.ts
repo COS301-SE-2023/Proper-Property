@@ -36,6 +36,7 @@ export class SearchPage implements OnDestroy, AfterViewInit {
   @ViewChild('address', { static: false }) addressInput!: ElementRef<HTMLInputElement>;
   @ViewChild('address1', { static: false }) addressInput1!: ElementRef<HTMLInputElement>;
   isMobile = true;
+  currentPage = 0;
   MapView = true ;
   autocomplete: any;
   // defaultBounds: google.maps.LatLngBounds;
@@ -55,7 +56,7 @@ export class SearchPage implements OnDestroy, AfterViewInit {
   public listings: Listing[] = [];
   public allListings: Listing[] = [];
   
-  public activeTab = 'all';
+  public activeTab = 'Any';
   public searchQuery = '';
   public searching = false;
   public env_type : string | null = null;
@@ -452,7 +453,42 @@ async loadMap() {
 
   Templistings: Listing[] = [];
 
-  async searchProperties() {
+  // nextPage(){
+  //   console.log("Next page loading...")
+  // }
+  async searchProperties(nextPage?: boolean, previousPage?: boolean) {
+    console.log(this.listings);
+    this.listings = [];
+    if (!nextPage && !previousPage) {
+      this.currentPage = 0;
+      this.allListings = [];
+    }
+    const before = this.currentPage;
+
+    if (previousPage) {
+      console.log("Previous page");
+      console.log(this.currentPage);
+      if (this.currentPage > 0) {
+        this.currentPage--;
+        console.log(this.currentPage * 5, " - ", this.allListings.length);
+        this.listings = this.allListings.slice(this.currentPage * 5, this.currentPage * 5 + 5);
+        console.log(this.listings);
+      }
+      return;
+    }
+    if (nextPage) {
+      if (this.currentPage * 5 + 5 < this.allListings.length) {
+        this.currentPage++;
+        console.log(this.currentPage * 5, " - ", this.allListings.length);
+        this.listings = this.allListings.slice(this.currentPage * 5, this.currentPage * 5 + 5);
+        console.log(this.listings);
+        return;
+      }
+      console.log("Next page");
+    }
+
+    // document.getElementById("nextPage")?.setAttribute("disabled", "true")
+    // document.getElementById("prevPage")?.setAttribute("disabled", "true")
     document.getElementById("searchButton")?.setAttribute("disabled", "true")
     this.buyCount = 0
     this.rentCount = 0;
@@ -474,12 +510,15 @@ async loadMap() {
       price_min : this.property_price_values.lower ? this.property_price_values.lower : null,
       price_max : this.property_price_values.upper ? this.property_price_values.upper : null,
       areaScore : this.areaScore? this.areaScore : null,
-      totalAreaScore : this.totalAreaScore? this.totalAreaScore : null
-    } as GetFilteredListingsRequest
+      totalAreaScore : this.totalAreaScore? this.totalAreaScore : null,
+      let_sell : this.activeTab ? this.activeTab : null
+    } as GetFilteredListingsRequest;
+    if(nextPage && this.allListings.length > 0) {
+      request.lastListingId = this.allListings[this.allListings.length - 1].listing_id;
+    }
+    console.log(request);
     const response = (await this.listingServices.getFilteredListings(request));
-    this.allListings = [];
-
-
+    console.log(response);
     if(!response.listings.length){
       const toast = await this.toastController.create({
         message: 'No listings returned',
@@ -491,9 +530,19 @@ async loadMap() {
       setTimeout(() => { 
         this.searching = false;
         document.getElementById("searchButton")?.setAttribute("disabled", "false")
+        // document.getElementById("nextPage")?.setAttribute("disabled", "false")
+        // // if(this.currentPage > 0)
+        //   document.getElementById("prevPage")?.setAttribute("disabled", "false")
       }, 1500)
       return;
     }
+    // this.allListings = [];
+    console.log(this.allListings);
+    this.allListings = this.allListings.concat(response.listings);
+    console.log(this.allListings);
+    if (nextPage) this.currentPage++;
+    console.log(this.currentPage * 5, " - ", this.allListings.length);
+    this.listings = this.allListings.slice(this.currentPage * 5, this.currentPage * 5 + 5);
       
     const areaBounds = this.searchQuery?  await this.gmapsService.geocodeAddress(this.searchQuery) : null;
     if (areaBounds) {
@@ -510,7 +559,7 @@ async loadMap() {
         }
       }
     } else {
-      this.allListings = response.listings;
+      // this.allListings = response.listings;
       for(const list of response.listings){
         if(list.let_sell == "Sell"){
           this.buyCount++;
@@ -565,7 +614,7 @@ async loadMap() {
           }
       }
 
-      this.allListings = temp;
+      // this.allListings = temp;
 
       for(let listing of this.allListings){
         if(listing.listing_id){
@@ -578,10 +627,10 @@ async loadMap() {
       if (window.location.hostname.includes("localhost"))
         console.warn(this.recommends);
 
-      this.filterProperties();
-      await this.loadMap();
-      await this.addMarkersToMap();
-      await this.setCentre();
+      // this.filterProperties();
+      // await this.loadMap();
+      // await this.addMarkersToMap();
+      // await this.setCentre();
 
       this.property_price_values.upper = this.highestPrice;
       this.property_price_values.lower = this.lowestPrice;

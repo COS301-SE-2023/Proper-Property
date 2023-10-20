@@ -3,6 +3,24 @@ ion-content::part(scroll) {
 }
 
 .Desktop {
+  .pageButton{
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    --background: white !important;
+    color: rgba(18, 100, 52, 0.7);
+    width: 168px;
+  }
+  #prevButton{
+    display: flex; 
+    justify-content: center; 
+    border-right: 1px solid rgba(13, 174, 80, 0.7);
+  }
+  .pageButtonCol{
+    display: flex; 
+    justify-content: center;
+  }
+
   .houseText{
     font-size: 15px;
   }
@@ -163,7 +181,6 @@ ion-content::part(scroll) {
   
   .loading-animation{
     position: absolute;
-    right: 50%;
     text-align: center;
     z-index: 1;
     top: 40%;

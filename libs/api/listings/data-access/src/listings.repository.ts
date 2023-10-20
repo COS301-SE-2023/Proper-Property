@@ -13,7 +13,8 @@ import { GetListingsRequest,
   GetUnapprovedListingsResponse,
   StatusEnum,
   GetFilteredListingsRequest,
-  GetFilteredListingsResponse
+  GetFilteredListingsResponse,
+  RentSell
 } from '@properproperty/api/listings/util';
 @Injectable()
 export class ListingsRepository {
@@ -208,27 +209,22 @@ export class ListingsRepository {
 
   async getFilteredListings(req: GetFilteredListingsRequest): Promise<GetFilteredListingsResponse>{
     try{
-      let query = admin
-        .firestore()
-        .collection('listings')
+      const listingsCollection = admin.firestore().collection('listings');
+      let query = listingsCollection
         .withConverter<Listing>({
           fromFirestore: (snapshot) => snapshot.data() as Listing,
           toFirestore: (listing: Listing) => listing
         })
         .where('status', '==', StatusEnum.ON_MARKET)
         .orderBy('quality_rating')
-        query.limit(12);
 
-      
+      let lastListingDoc: DocumentSnapshot | undefined = undefined;
       if (req.lastListingId) {
-        const lastListingDoc = (await admin
-          .firestore()
-          .collection('listings')
+        lastListingDoc = (await listingsCollection
           .doc(req.lastListingId)
           .get());
-        if (lastListingDoc.exists) {
-          query = query.startAfter(lastListingDoc);
-        }
+
+        console.log(lastListingDoc.data);
       }
 
       if(req.prop_type){
@@ -238,17 +234,22 @@ export class ListingsRepository {
       if(req.features){
         query = query.where("features", "array-contains-any", req.features);
       }
-
+      if (req.let_sell && req.let_sell != RentSell.ANY) {
+        query = query.where("let_sell", "==", req.let_sell);
+      }
       const response: GetFilteredListingsResponse = {
         status: true,
         listings: []
       }
-
+      
+      if (lastListingDoc?.exists) {
+        query = query.startAfter(lastListingDoc).limit(5);
+      }
       let loopLimit = 0;
       // let lastListing: Listing | undefined = undefined;
       // let lastQualityRating = 0;
       let lastSnapshot: DocumentSnapshot | undefined = undefined 
-      while (response.listings.length < 12 && loopLimit < 25) {
+      while (response.listings.length < 5 && loopLimit < 25) {
         const queryData = await query.get();
         ++loopLimit;
         // queryData.forEach((docSnapshot) => {
@@ -277,6 +278,10 @@ export class ListingsRepository {
               &&
               (!req.totalAreaScore || (req.totalAreaScore && (data.areaScore.waterScore + data.areaScore.schoolScore + data.areaScore.crimeScore + data.areaScore.sanitationScore)/4 >= req.totalAreaScore))
             )
+            &&
+            (
+              (!req.let_sell || req.let_sell == RentSell.ANY || (req.let_sell && (req.let_sell == data.let_sell)))
+            )
           ){
             // for (const listing of response.listings) {
             //   if (listing.listing_id == data.listing_id) {
@@ -284,14 +289,17 @@ export class ListingsRepository {
             //   }
             // }
             response.listings.push(data);
+            if(response.listings.length >= 5){
+              return response;
+            }
           }
 
           lastSnapshot = docSnapshot;
         }
         if (lastSnapshot)
-          query = query.startAfter(lastSnapshot);
+          query = query.startAfter(lastSnapshot).limit(5 - response.listings.length);
       }
-    
+      console.log(response);
       return response;
     }
     catch(e: any){
