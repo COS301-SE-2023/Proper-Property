@@ -24,3 +24,9 @@
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+
+
+body{
+  width: 100vw;        /* Suppose you want minimum width of 1000px */
+  min-width: 970px;
+}

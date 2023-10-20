@@ -92,11 +92,12 @@ export class AuthService {
     return Promise.reject('No user is currently authenticated.'); // Return a rejected promise if no user is found
   }
 
-  editEmail(newEmail: string) {
+  async editEmail(newEmail: string) {
     const user = this.auth.currentUser;
     if (user) {
-      return updateEmail(user, newEmail)
+      return await updateEmail(user, newEmail)
       .catch((error) => {
+        this.errorHandler(error);
         console.log(error);
       });
     }
@@ -160,11 +161,16 @@ export class AuthService {
       case "auth/invalid-password":
         failed.message = "Invlaid password.";
         break;
+      case "auth/too-many-requests":
+        failed.message = "Too many failed attempts. Try again later or reset your password.";
+        break;
       case "auth/missing-password":
         failed.message = "Invlaid password.";
         break;
+      
       default:
         failed.message = "Unknown error occurred";
+        console.error(error);
         break;
     }
   

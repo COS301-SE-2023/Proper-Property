@@ -489,6 +489,10 @@ async loadMap() {
         position: 'bottom' // Position of the toast: 'top', 'middle', 'bottom'
       });
       toast.present();
+      setTimeout(() => { 
+        this.searching = false;
+        document.getElementById("searchButton")?.setAttribute("disabled", "false")
+      }, 1500)
       return;
     }
       
