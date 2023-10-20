@@ -93,9 +93,9 @@ export class UserProfileService {
   }
 
   
-  async updateInterests(characteristic : characteristics, userID: string)
+  async updateInterests(characteristic : characteristics, profile: UserProfile)
   {
-    const profile = this.getUser(userID);
+    // const profile = this.getUser(userID);
     // console.log("old interests", profile);
     this.calculatePotency(characteristic);
 
