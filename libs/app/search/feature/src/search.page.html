@@ -1,17 +1,6 @@
 <!-- TODO: Move inline styling to stylesheet -->
 <ion-content *ngIf="!this.isMobile" class="Desktop">
   <div class="header-padding" style="height: 56px; opacity: 0; width: 100%"></div>
-  <ion-segment [(ngModel)]="activeTab" (ionChange)="changeTab()" class="header-segment">
-    <ion-segment-button value="buying">
-      <ion-label>Buy ({{buyCount}})</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="all">
-      <ion-label>All ({{buyCount + rentCount}})</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="renting">
-      <ion-label>Rent ({{rentCount}})</ion-label>
-    </ion-segment-button>
-  </ion-segment>
 
   <div [ngSwitch]="activeTab">
 
@@ -111,7 +100,7 @@
                     <ion-col>
                       <ion-item lines="none" class="filter">
                       <ion-label class="filter-text">Bathrooms</ion-label>
-                      <select class="dropdown" style="width: 50%"  [(ngModel)]="bath" (ionChange)="filterProperties()">
+                      <select class="dropdown" style="width: 30%"  [(ngModel)]="bath" (ionChange)="filterProperties()">
                         <option value="1">1 Bathroom</option>
                         <option value="2">2 Bathrooms</option>
                         <option value="3">3 Bathrooms</option>
@@ -289,6 +278,18 @@
                           <option value="400">400</option>
                           <option value="450">450</option>
                           <option value="500">500</option>
+                        </select>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col size="3">
+                      <ion-item lines="none" class="filter">
+                        <ion-label class="filter-text">Sell/Let</ion-label>
+                        <select class="dropdown" style="width: 40%"  [(ngModel)]="activeTab" (ionChange)="changeTab()">
+                          <option value="all">All ({{buyCount + rentCount}})</option>
+                          <option value="buying">Buy ({{buyCount}})</option>
+                          <option value="renting">Rent ({{rentCount}})</option>
                         </select>
                       </ion-item>
                     </ion-col>

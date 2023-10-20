@@ -7,7 +7,7 @@ ion-content::part(scroll) {
     background-color: white !important;
     // border-radius: 5px;
     width: 100%;
-    border: 1px solid white !important;
+    border: 1px solid #e4e4e4 !important;
   }
   option{
     // border-radius: 5px;
@@ -219,13 +219,13 @@ ion-content::part(scroll) {
       height: 0px;
     }
     to{
-      height: 185px;
+      height: 220px;
     }
   }
 
   @keyframes close-filter-div{
     from{
-      height: 185px;
+      height: 220px;
     }
     to{
       height: 0px;
