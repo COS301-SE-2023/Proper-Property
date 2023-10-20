@@ -79,7 +79,7 @@ core.shell.html
       <ion-row style="width:100%;">
         <ion-col size="4">
           <ion-row style="height:50%;">
-            <div class="case-box">
+            <div class="case-box" (mouseover)="image1()">
               <ion-grid>
                 <ion-row>
                   <h4>View all Property Types</h4>
@@ -95,7 +95,7 @@ core.shell.html
           </ion-row>
 
           <ion-row style="height:50%;">
-            <div class="case-box">
+            <div class="case-box" (mouseover)="image2()">
               <ion-grid>
                 <ion-row>
                   <h4>Swift Location Browsing</h4>
@@ -121,7 +121,7 @@ core.shell.html
 
             <!-- Use the image element with xlink:href attribute to fill the SVG with the image -->
             <!-- Replace 'path/to/your/image.jpg' with the path to your image file -->
-            <image xlink:href="../../assets/house5.jpg" width="100%" height="100%" preserveAspectRatio="xMinYMin slice"
+            <image id="myImage" xlink:href="../../assets/house5.jpg" width="100%" height="100%" preserveAspectRatio="xMinYMin slice"
               clip-path="url(#house-clip-path)" />
           </svg>
 
@@ -133,7 +133,7 @@ core.shell.html
 
         <ion-col size="4">
           <ion-row style="height:50%;">
-            <div class="case-box">
+            <div class="case-box" (mouseover)="image3()">
               <ion-grid>
                 <ion-row>
                   <h4>User-Friendly Filters</h4>
@@ -148,7 +148,7 @@ core.shell.html
           </ion-row>
 
           <ion-row style="height:50%">
-            <div class="case-box">
+            <div class="case-box" (mouseover)="image4()">
               <ion-grid>
                 <ion-row>
                   <h4>Even Rentals and Sharing</h4>

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit,ViewChild,ElementRef, HostListener} from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserProfileService } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
@@ -20,7 +20,7 @@ export class HomePage implements OnInit {
   @ViewChild('query', { static: false }) queryInput!: ElementRef<HTMLInputElement>;
   @ViewChild('query1', { static: false }) queryInput1!: ElementRef<HTMLInputElement>;
 
-  isMobile:boolean;
+  isMobile: boolean;
   // public autocomplete: any;
 
   public predictions: google.maps.places.AutocompletePrediction[] = [];
@@ -33,31 +33,93 @@ export class HomePage implements OnInit {
   predictionDisplay() {
     return this.predictions.length > 0;
   }
-  
+
+  image1() {
+    // Get a reference to the image element by its id
+    const imageElement = document.getElementById('myImage') as HTMLImageElement;
+
+    if (imageElement) {
+      // New href value
+      const newHref = '../assets/house1.png';
+
+      // Update the xlink:href attribute
+      imageElement.setAttribute('xlink:href', newHref);
+    } else {
+      console.error('Image element not found');
+    }
+  }
+
+  image2() {
+    // Get a reference to the image element by its id
+    const imageElement = document.getElementById('myImage') as HTMLImageElement;
+
+    if (imageElement) {
+      // New href value
+      const newHref = '../assets/Cottage.jpg';
+
+      // Update the xlink:href attribute
+      imageElement.setAttribute('xlink:href', newHref);
+    } else {
+      console.error('Image element not found');
+    }
+  }
+
+  image3() {
+    // Get a reference to the image element by its id
+    const imageElement = document.getElementById('myImage') as HTMLImageElement;
+
+    if (imageElement) {
+      // New href value
+      const newHref = '../assets/house5.jpg';
+
+      // Update the xlink:href attribute
+      imageElement.setAttribute('xlink:href', newHref);
+    } else {
+      console.error('Image element not found');
+    }
+  }
+
+  image4() {
+    // Get a reference to the image element by its id
+    const imageElement = document.getElementById('myImage') as HTMLImageElement;
+
+    if (imageElement) {
+      // New href value
+      const newHref = '../assets/Fancy House.jpg';
+
+      // Update the xlink:href attribute
+      setTimeout(() => {
+        imageElement.setAttribute('xlink:href', newHref);
+      })
+    } else {
+      console.error('Image element not found');
+    }
+  }
+
   public home!: string;
   private activatedRoute = inject(ActivatedRoute);
   currentUser: UserProfile | null = null;
-  constructor(public userService : UserProfileService, public gmapsService: GmapsService,private router: Router) {
+  constructor(public userService: UserProfileService, public gmapsService: GmapsService, private router: Router) {
     this.currentUser = this.userService.getCurrentUser();
     this.isMobile = isMobile();
   }
-   ngOnInit() {
+  ngOnInit() {
     this.currentUser = this.userService.getCurrentUser();
     this.home = this.activatedRoute.snapshot.paramMap.get('id') as string;
     const loginBut = document.getElementById('login-button');
     const signupBut = document.getElementById('signup-button');
 
-    if(loginBut && signupBut){
-      if(this.currentUser === null){
+    if (loginBut && signupBut) {
+      if (this.currentUser === null) {
         loginBut.style.visibility = 'visible';
         signupBut.style.visibility = 'visible';
       }
-      else{
+      else {
         loginBut.style.visibility = 'hidden';
         signupBut.style.visibility = 'hidden';
       }
     }
-  
+
     // let inputElementId = '';
 
     // if(!this.isMobile) {
@@ -74,12 +136,12 @@ export class HomePage implements OnInit {
     if (!event) console.log(event);
     this.isMobile = window.innerWidth <= 576;
   }
-  
+
   searchQuery = '';
   //to be implemented
   searchProperties() {
     // Get the search query from the input field
-    if(!this.isMobile){
+    if (!this.isMobile) {
       this.searchQuery = (document.getElementById("query") as HTMLInputElement).value;
     }
     else {
@@ -107,15 +169,15 @@ export class HomePage implements OnInit {
     }
     this.timeout = setTimeout(() => {
       const input = event.target as HTMLInputElement;
- 
-      if(input.value.length <=0){
+
+      if (input.value.length <= 0) {
         this.predictions = [];
         this.predictionsLoading = false;
       }
       else {
         this.gmapsService.getRegionPredictions(input.value).then(() => {
           this.predictions = this.gmapsService.regionPredictions;
-        this.predictionsLoading = false;
+          this.predictionsLoading = false;
         });
       }
       // clear timeout after execution
@@ -144,6 +206,6 @@ export class HomePage implements OnInit {
   //   this.swiper?.slidePrev();
   // }
 }
- function isMobile(): boolean {
+function isMobile(): boolean {
   return window.innerWidth <= 576;
 }
