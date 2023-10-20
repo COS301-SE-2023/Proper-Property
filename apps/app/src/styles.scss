@@ -24,3 +24,40 @@
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+
+.forgot-modal {
+  // --background: #0DAE4F;
+  --height: 400px;
+  #forgot-password-content {
+    background-image: url('./assets/create-listing-background.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    // align-content: space-around;
+    p {
+      width: 80%; 
+      margin: 20px auto; 
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  }
+  h2 {
+    font-size: 200%;
+    color: var(--ion-color-primary);
+    margin: 20px auto;
+    text-align: center;
+  }
+  .loginInput {
+    border-radius: 5px !important;
+    border: 2px solid var(--ion-color-primary) !important;
+    // --background: white;
+    width: 90%;
+    margin: 20px auto;
+    display: flex;
+  }
+}

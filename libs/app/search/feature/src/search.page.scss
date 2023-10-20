@@ -110,7 +110,7 @@ ion-content::part(scroll) {
     text-align: center;
     z-index: 1;
     top: 40%;
-    border-radius: 5px;
+    // border-radius: 5px;
     overflow: hidden;
     height: 100px;
     width: 100px;
@@ -178,7 +178,7 @@ ion-content::part(scroll) {
   #additional-features {
     width: 88%;
     margin-left: 2%;
-    height:auto;
+    height: auto;
     // border-radius: 0px 0px 30px 30px;
     border-right: 2px solid #0DAE4F;
     border-bottom: 2px solid #0DAE4F;
@@ -568,7 +568,7 @@ ion-content::part(scroll) {
     margin-left: 2%;
     color: white;
     border: none;
-    --border-radius: 32px;
+    // --border-radius: 32px;
     cursor: pointer;
     // margin-top: 1%;
   
@@ -583,7 +583,7 @@ ion-content::part(scroll) {
     --handle-max-height: auto;
     --handle-spacing: 3px;
   
-    --handle-border-radius: 50%;
+    // --handle-border-radius: 50%;
   }
   
   ion-toggle::part(track) {
@@ -606,7 +606,7 @@ ion-content::part(scroll) {
     margin-right: 10%;
     color: white;
     border: none;
-    --border-radius: 30px;
+    // --border-radius: 30px;
     cursor: pointer;
     margin-top: 1%;
   }
@@ -803,7 +803,7 @@ ion-content::part(scroll) {
     left: 0;
     height: 100%;
     background-color: green;
-    border-radius: 5px;
+    // border-radius: 5px;
     transition: width 0.3s ease-in-out;
   }
 
@@ -813,7 +813,7 @@ ion-content::part(scroll) {
     left: 0;
     height: 100%;
     background-color: red;
-    border-radius: 5px;
+    // border-radius: 5px;
     transition: width 0.3s ease-in-out;
   }
 
@@ -823,7 +823,7 @@ ion-content::part(scroll) {
     left: 0;
     height: 100%;
     background-color: #ffcc00;
-    border-radius: 5px;
+    // border-radius: 5px;
     transition: width 0.3s ease-in-out;
   }
   
