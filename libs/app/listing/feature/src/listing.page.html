@@ -76,7 +76,7 @@
                 <ion-row>
                   <ion-card-title class="house-titles statusBadge {{list.status}}">{{list.status}}</ion-card-title>
                   <ion-button *ngIf="userProfile" class="save-button" [ngClass]="{'red': saved}"
-                    (click)="toggleColor()" ion-tooltip="Save Listing">
+                    (click)="toggleColor()" [disabled]="changingSaved" ion-tooltip="Save Listing">
                     {{saved? "Listing Saved" : "Save Listing"}}&nbsp;<ion-icon name="save" ion-tooltip="Save Listing"></ion-icon>
                   </ion-button>
                 </ion-row>

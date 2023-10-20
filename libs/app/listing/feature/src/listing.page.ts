@@ -65,6 +65,7 @@ export class ListingPage implements OnDestroy, OnInit {
     "November",
     "December"
   ];
+  changingSaved = false;
 
   isRed = false;
   showData = false;
@@ -610,12 +611,14 @@ export class ListingPage implements OnDestroy, OnInit {
     this.minGrossMonthlyIncome = this.monthlyPayment * 3; // Assuming minimum income requirement is 3 times the monthly payment
   }
 
-  toggleColor() {
+  async toggleColor() {
+    this.changingSaved = true;
     if (this.saved)
-      this.unsaveListing();
+      await this.unsaveListing();
     else
-      this.saveListing();
+      await this.saveListing();
 
+    this.changingSaved = false;
 
     // this.isRed = !this.isRed;
   }
@@ -632,7 +635,7 @@ export class ListingPage implements OnDestroy, OnInit {
     return false;
   }
 
-  saveListing() {
+  async saveListing() {
     if (window.location.hostname.includes("localhost")) {
       console.log("SaveListing- is saved?: ", this.saved);
       console.log(this.userProfile);
@@ -645,10 +648,10 @@ export class ListingPage implements OnDestroy, OnInit {
 
 
         if (this.list && this.list.characteristics) {
-          this.profileServices.updateInterests(this.list.characteristics, this.userProfile);
+          await this.profileServices.updateInterests(this.list.characteristics, this.userProfile);
         }
         else {
-          this.profileServices.updateUserProfile(this.userProfile);
+          await this.profileServices.updateUserProfile(this.userProfile);
         }
 
 
@@ -656,13 +659,13 @@ export class ListingPage implements OnDestroy, OnInit {
     }
   }
 
-  unsaveListing() {
+  async unsaveListing() {
     if (this.saved) {
       if (this.userProfile) {
         if (this.userProfile.savedListings) {
           this.userProfile.savedListings.splice(this.userProfile.savedListings.indexOf(this.listingId), 1);
         }
-        this.profileServices.updateUserProfile(this.userProfile);
+        await this.profileServices.updateUserProfile(this.userProfile);
       }
     }
   }
