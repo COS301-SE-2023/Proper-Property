@@ -28,12 +28,12 @@
 
             <ion-grid class="Userlabels">
               <ion-row class="row1">
-                  <ion-item id="hover-trigger" lines="none">
+                  <ion-item id="hover-trigger1" lines="none">
                     <ion-icon class="iconic" name="flower-outline" size="small"></ion-icon>
                     <ion-label position="stacked"></ion-label>
                     <ion-range [(ngModel)]="interests.garden" ></ion-range>
                   </ion-item>
-                  <ion-popover trigger="hover-trigger" triggerAction="hover">
+                  <ion-popover trigger="hover-trigger1" triggerAction="hover">
                     <ng-template>
                       <ion-content class="ion-padding">
                         <ion-row>
@@ -41,7 +41,7 @@
                            <ion-icon class="iconic" name="flower-outline" color="primary" size="large"></ion-icon> 
                           </ion-col>
                           <ion-col>
-                            <ion-label color="primary">Garden Lover</ion-label>
+                            <ion-label color="primary" style="position: absolute; top: 20%;">Garden Lover</ion-label>
                           </ion-col>
                         </ion-row>
                         <ion-row>
@@ -52,11 +52,29 @@
                     </ng-template>
                   </ion-popover>
   
-                  <ion-item>
+                  <ion-item lines="none" id="hover-trigger2">
                     <ion-icon class="iconic" name="home-outline" size="small"></ion-icon>
                     <ion-label position="stacked"></ion-label>
                     <ion-range [(ngModel)]="interests.mansion" ></ion-range>
-                  </ion-item>  
+                  </ion-item>
+                  <ion-popover trigger="hover-trigger2" triggerAction="hover">
+                    <ng-template>
+                      <ion-content class="ion-padding">
+                        <ion-row>
+                          <ion-col size="2">
+                           <ion-icon class="iconic" name="home-outline" color="primary" size="large"></ion-icon> 
+                          </ion-col>
+                          <ion-col>
+                            <ion-label color="primary" style="position: absolute; top: 20%;">Mansion Passion</ion-label>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row>
+                          <ion-col size="2"></ion-col>
+                          <ion-col size="10">"Passionate for Mansionates"</ion-col>
+                        </ion-row>
+                        </ion-content>
+                    </ng-template>
+                  </ion-popover>
 
                   <ion-item>
                     <ion-icon class="iconic" name="eye-off-outline" size="small"></ion-icon>
