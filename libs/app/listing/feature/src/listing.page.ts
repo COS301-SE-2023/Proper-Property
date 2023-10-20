@@ -27,7 +27,7 @@ export class ListingPage implements OnDestroy, OnInit {
 
   @ViewChild(IonContent) content: IonContent | undefined;
   // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
-
+  MapView = false ;
   isMobile: boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
@@ -108,7 +108,9 @@ export class ListingPage implements OnDestroy, OnInit {
     let list_id = "";
     let admin = "";
     let qr = false;
-
+    
+    await this.loadMap();
+    
     this.route.params.subscribe(async (params) => {
       list_id = params['list'];
       qr = params['qr'];
@@ -118,7 +120,6 @@ export class ListingPage implements OnDestroy, OnInit {
 
       await this.listingServices.getListing(list_id).then((list) => {
         this.list = list;
-        // console.log("QR viewing: " + qr)
       }).then(() => {
         if (admin) {
           this.admin = true;
@@ -144,7 +145,6 @@ export class ListingPage implements OnDestroy, OnInit {
           this.lister_name = user.firstName + " " + user.lastName;
 
           if (qr && this.list) {
-            // console.log(window.location.href, " ", this.router.url);
             this.userServices.qrListingRead({
               address: this.list.address,
               url: window.location.href.substring(0, window.location.href.indexOf(";qr")),
@@ -190,9 +190,7 @@ export class ListingPage implements OnDestroy, OnInit {
 
 
   async loadMap() {
-    try {
-      //const addressInput = document.getElementById("address") as HTMLInputElement;
-     
+    try {     
       const mapElementRef1 = document.getElementById("map1") as HTMLElement;
     
       const googleMaps: any = await this.gmaps.loadGoogleMaps();
@@ -200,26 +198,15 @@ export class ListingPage implements OnDestroy, OnInit {
       
       let mapEl = null;
       mapEl = mapElementRef1;
-        const location = new googleMaps.LatLng(this.center.lat ?? -25.7477, this.center.lng ?? 28.2433);
+        const location = new googleMaps.LatLng(this.center.lat ?? this.list?.geometry.lat, this.center.lng ?? this.list?.geometry.lat);
         this.map = new googleMaps.Map(mapEl, {
           center: location,
           zoom: 15,
-          maxZoom: 18, // Set the maximum allowed zoom level
+          maxZoom: 18, 
           minZoom: 5,
         });
-        //this.map.fitBounds(this.gmaps.getBoundsFromLatLng(this.center.lat,this.center.lng));
-  
-        //const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
-  
-        this.renderer.addClass(mapEl, 'visible');
-  
-        // Generate info window content for each listing
-        // this.listings.map((listing) =>
-        //   this.createListingCard(listing)
-        // );
-  
     
-         
+        this.renderer.addClass(mapEl, 'visible');        
       
         if (this.list) {
           this.createListingCard(this.list);
@@ -232,6 +219,20 @@ export class ListingPage implements OnDestroy, OnInit {
         }
       } catch (e) {
         console.log(e);
+      }
+    }
+
+
+    async mapView(){
+
+      
+
+      this.MapView = !this.MapView;
+      if(!this.MapView) {
+        const map1Element = document.getElementById("map1");
+        if (map1Element) {
+          map1Element.innerHTML = ''; // Clear the contents of the map1 div
+        }
       }
     }
   
@@ -256,7 +257,6 @@ export class ListingPage implements OnDestroy, OnInit {
       // Add a click event listener to the marker
       googleMaps.event.addListener(marker, 'click', () => {
         infoWindow.open(this.map, marker);
-        // this.navigateToPropertyListingPage(marker.listing);
       });
   
       // Add a click event listener to the info window
@@ -266,7 +266,6 @@ export class ListingPage implements OnDestroy, OnInit {
         if (dumbButton) {
           dumbButton.addEventListener('click', (event: Event) => {
             event.stopPropagation();
-            // infoWindow.close();
           });
           return;
         }
@@ -286,6 +285,7 @@ export class ListingPage implements OnDestroy, OnInit {
         this.router.navigate(['/listing', { list: listingId }]);
       }
     }
+    
     createListingCard(listing: Listing): any {
       return `
       <ion-card data-id="${listing.listing_id}"class="marker-card" style="max-width: 250px; max-height: 300px;" (click)="mapMarkerClicked($event, ${listing.listing_id})">

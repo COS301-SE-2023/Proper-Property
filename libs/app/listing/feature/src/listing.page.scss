@@ -224,10 +224,31 @@ swiper-slide img {
   --background: transparent;
 }
 
+.map1 {
+  // margin-left: 50%;
+  // width: 40%;
+  // margin-left: 55%;
+  margin-top: -10px;
+  width: 95%;
+  margin-left: 2%;
+  margin-right: 3%;
+  height: 600px;
+  border-radius: 10px;
+  background-color: transparent;
+  opacity: 0;
+  transition: opacity 150ms ease-in;
+}
 
+.map1.visible {
+  opacity: 1;
+}
 
-
-
+#map1 {
+  width: 100%;
+  margin-left: 2%;
+  margin-top: 10px;
+  border-radius: 10px;
+}
 .red {
   color: green;
 }
