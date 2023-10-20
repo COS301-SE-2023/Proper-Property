@@ -489,6 +489,10 @@
               <ion-label position="floating" class="house-text">Listing Price &#40; ZAR &#41;<span
                   class="required-indicator" *ngIf="!price">*</span></ion-label>
 
+              
+            <!-- <ion-input type="text" id="price" [(ngModel)]="price" required></ion-input> -->
+           
+        
 
               <ion-input type="text" id="price" [(ngModel)]="price" (input)="formatPrice()" required></ion-input>
 

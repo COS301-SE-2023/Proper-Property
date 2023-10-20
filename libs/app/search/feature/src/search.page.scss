@@ -4,10 +4,10 @@ ion-content::part(scroll) {
 
 .Desktop {
   select{
-    background-color: white !important;
+    background-color: #94d5ae !important;
     // border-radius: 5px;
     width: 100%;
-    border: 1px solid rgb(146, 146, 146) !important;
+    border: 1px solid white !important;
   }
   option{
     // border-radius: 5px;
@@ -131,15 +131,15 @@ ion-content::part(scroll) {
 
   #filter-container {
     // border-radius: 30px;
-    border: 1px solid #000;
+    border: 1px solid #fefefe;
     background: rgba(13, 174, 79, 0.40);
     width: 100%;
-    height: auto;
-    background-color: #ededed;
+    height:auto;
+    background-color: #94d5ae;
   }
   
   .filter-text {
-    color: rgb(68, 68, 68);
+    color: rgb(0, 0, 0);
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -205,7 +205,7 @@ ion-content::part(scroll) {
 
   .animation-div-class{
     overflow: hidden;
-    overflow: scroll;
+    // overflow: scroll;
     animation: extend-filter-div 1s ease 0s 1 normal forwards;
   }
 
@@ -219,13 +219,13 @@ ion-content::part(scroll) {
       height: 0px;
     }
     to{
-      height: 350px;
+      height: 175px;
     }
   }
 
   @keyframes close-filter-div{
     from{
-      height: 350px;
+      height: 175px;
     }
     to{
       height: 0px;
@@ -234,7 +234,7 @@ ion-content::part(scroll) {
 
   #address {
     // border-radius: 30px;
-    border: 1.5px solid #000;
+    border: 1.5px solid #e4e4e4;
     background: #FFF;
     width: 100%;
     margin-bottom: 1%;
@@ -283,10 +283,15 @@ ion-content::part(scroll) {
   
   .filter-button {
     width: 90%;
-    height: 40%;
+    height: 90%;
     // margin-right: 10%;
     // --border-radius: 30px;
     // margin-top: 5%;
+  }
+
+  .reset-button
+  {
+    display: none;
   }
   
   .search-button {
@@ -779,18 +784,18 @@ ion-content::part(scroll) {
   
   ::selection {
     color: #fff;
-    background: #664AFF;
+    background: var(--ion-color-primary);
   }
   
-  .slider {
-    position: relative;
-    width: 80%;
-    height: 13px;
-    background-color: rgb(150, 150, 150);
-    // border-radius: 5px;
-    margin: 5px;
-    padding-right: 50px;
-  }
+  // .slider {
+  //   position: relative;
+  //   width: 80%;
+  //   height: 13px;
+  //   background-color: rgb(150, 150, 150);
+  //   border-radius: 5px;
+  //   margin: 5px;
+  //   padding-right: 50px;
+  // }
   
   .progress {
     position: absolute;
