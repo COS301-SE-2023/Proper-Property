@@ -824,9 +824,15 @@ dropDown(){
   propSizepinFormatter(value : number){
     return `${value}`;
   }
+
+  formatNumber(num: number): string {
+    return num.toString().split('').reverse().join('').replace(/(\d{3})(?=\d)/g, '\$1 ').split('').reverse().join('');
+  }
+  
 }
 
 
 function isMobile(): boolean {
   return window.innerWidth <= 576;
 }
+

@@ -14,6 +14,10 @@ ion-content::part(scroll) {
     background-color: white !important;
   }
 
+  .bold-text {
+    font-weight: bold;
+  }
+  
   .recommended-banner{
     background-color: green;
     color: white;

@@ -14,6 +14,12 @@
   }
 }
 
+.invisible-button {
+  --background: transparent;
+  --border-color: transparent;
+  --box-shadow: none;
+}
+
 .formButtons {
   display: flex;
   width: 250px;
@@ -23,13 +29,17 @@
   align-items: center;
   flex-shrink: 0;
   border-radius: 5px;
-  background: #FFF;
+
 
   @media only screen and (max-width: 600px) {
     width: 90%;
     position: static;
     margin: 0 auto 10px;
   }
+}
+
+.hover-text:hover {
+  --color: white;
 }
 
 .guideColumn{
