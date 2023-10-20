@@ -4,7 +4,7 @@ ion-content::part(scroll) {
 
 .Desktop {
   select{
-    background-color: #94d5ae !important;
+    background-color: white !important;
     // border-radius: 5px;
     width: 100%;
     border: 1px solid white !important;
@@ -131,11 +131,11 @@ ion-content::part(scroll) {
 
   #filter-container {
     // border-radius: 30px;
-    border: 1px solid #fefefe;
+    border: 1px solid #e4e4e4;
     background: rgba(13, 174, 79, 0.40);
     width: 100%;
     height:auto;
-    background-color: #94d5ae;
+    background-color: white;
   }
   
   .filter-text {
@@ -219,13 +219,13 @@ ion-content::part(scroll) {
       height: 0px;
     }
     to{
-      height: 175px;
+      height: 185px;
     }
   }
 
   @keyframes close-filter-div{
     from{
-      height: 175px;
+      height: 185px;
     }
     to{
       height: 0px;
@@ -284,6 +284,7 @@ ion-content::part(scroll) {
   .filter-button {
     width: 90%;
     height: 90%;
+    color: white;
     // margin-right: 10%;
     // --border-radius: 30px;
     // margin-top: 5%;
@@ -981,6 +982,7 @@ ion-content::part(scroll) {
     margin-right: 10%;
     --border-radius: 30px;
     margin-top: 1%;
+    color: white;
   }
   
   .search-button {
