@@ -283,7 +283,7 @@
               <ion-button (click)="addFeature()" class="addButt">Add</ion-button>
             </ion-col>
           </ion-row>
-          <ion-list [hidden]="filteredAmenities.length === 0">
+          <ion-list [hidden]="filteredAmenities.length === 0"  class="ammenities-result-list">
             <ion-item (click)="selectAmenity(amenity)" *ngFor="let amenity of filteredAmenities">
               {{ amenity }}
             </ion-item>
