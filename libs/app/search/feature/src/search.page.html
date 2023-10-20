@@ -78,11 +78,11 @@
                     <ion-label class="filter-text">Minimum Price</ion-label>
                     <select class="dropdown" style="width: 30%" [(ngModel)]="property_price_values.lower">
                       <option value="0">R0</option>
-                      <option value="1000">R1 000</option>
-                      <option value="10000">R10 000</option>
-                      <option value="100000">R100 000</option>
-                      <option value="1000000">R1 000 000</option>
-                      <option value="10000000">R10 000 000</option>
+                      <option value="1000">R1k</option>
+                      <option value="10000">R10k</option>
+                      <option value="100000">R100k</option>
+                      <option value="1000000">R1m</option>
+                      <option value="10000000">R10m</option>
                     </select>
                   </ion-item>
                 </ion-col>
@@ -111,7 +111,7 @@
                     <ion-col>
                       <ion-item lines="none" class="filter">
                       <ion-label class="filter-text">Bathrooms</ion-label>
-                      <select class="dropdown" style="width: 30%"  [(ngModel)]="bath" (ionChange)="filterProperties()">
+                      <select class="dropdown" style="width: 50%"  [(ngModel)]="bath" (ionChange)="filterProperties()">
                         <option value="1">1 Bathroom</option>
                         <option value="2">2 Bathrooms</option>
                         <option value="3">3 Bathrooms</option>
