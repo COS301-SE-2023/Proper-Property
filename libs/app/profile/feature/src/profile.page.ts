@@ -253,7 +253,7 @@ export class ProfilePage implements OnInit {
   }
 
   async savePhoneNumber() {
-    const regex = /^\((\+27\)[1-9][0-9]{8})|(0[1-9][0-9]{8})$/;
+    const regex = /^((\(\+27\)[1-9]([0-9]{8}))|(0[1-9]([0-9]{8})))$/;
 
     if (regex.test(this.newPhoneNumber)) {
       this.isEditingPhoneNumber = false;
