@@ -67,7 +67,7 @@
                     <ion-grid>
                       <ion-row>
                         <ion-col>
-                          <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
+                          <ion-card-title style="color: #0DAE4F;">R {{formatNumber(listing.price)}}</ion-card-title>
                         </ion-col>
                         <ion-col>
                           <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
@@ -76,7 +76,7 @@
                     </ion-grid>
                     <p><b>{{listing.address}}</b></p>
                     <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-                      {{listing.bed}} Bedroom {{listing.prop_type == "Commercial"? listing.prop_type + " Property" : listing.prop_type}}
+                      {{listing.bed}} Bedroom {{listing.prop_type === "Commercial"? listing.prop_type + " Property" : listing.prop_type}}
                     </p>
                     <p>For Sale!</p>
                     <p id="house_description">
@@ -126,7 +126,7 @@
                       </ion-grid>
                       <p><b>{{listing.address}}</b></p>
                       <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-                        {{listing.bed}} Bedroom {{listing.prop_type == "Commercial"? listing.prop_type + " Property" : listing.prop_type}}
+                        {{listing.bed}} Bedroom {{listing.prop_type === "Commercial"? listing.prop_type + " Property" : listing.prop_type}}
                       </p>
                       <p>For Sale!</p>
                       <p id="house_description">
@@ -334,7 +334,7 @@
   </section>
   
     <ion-button id="saved" routerLink="/my-listings" routerDirection="root">
-      <ion-icon name="heart-outline" size="large" color="primary"></ion-icon>
+      <ion-icon name="home-outline" size="large" color="primary"></ion-icon>
       <ion-label>My Listings</ion-label>
       <ion-icon name="chevron-forward-outline" size="large" color="primary"></ion-icon>
     </ion-button>
