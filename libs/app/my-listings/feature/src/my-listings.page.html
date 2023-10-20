@@ -63,7 +63,7 @@
                     <ion-col size="4" class="imageCol">
                       <img src="{{listing.photos[0]}}" onerror="this.src='assets/no-propertyfound.png'" alt="house1">
                     </ion-col>
-                    <ion-col (click)="redirectToPage(listing)">
+                    <ion-col size="8" (click)="redirectToPage(listing)">
                       <ion-grid>
                         <ion-row>
                           <ion-col>
@@ -107,7 +107,7 @@
                   <ion-col size="4" class="imageCol">
                     <img src="{{listing.photos[0]}}" onerror="this.src='assets/no-propertyfound.png'" alt="house1">
                   </ion-col>
-                  <ion-col (click)="redirectToPage(listing)">
+                  <ion-col size="8" (click)="redirectToPage(listing)">
                     <ion-grid>
                       <ion-row>
                         <ion-col>
@@ -152,143 +152,159 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-card *ngFor="let listing of listingsB">
-              <ion-card-header (click)="redirectToPage(listing)">
-    
-              <img src="{{listing.photos[0]}}" alt="house1">
-                
-                <ion-card-title style="color: #0DAE4F;">Area Ratings</ion-card-title>
-              </ion-card-header>
-              <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
-              <ion-card-content (click)="redirectToPage(listing)">
-              
-                <ion-grid style="z-index:1;">
-                  <ion-row>
-                    <ion-col>
-                      <div class="white-text">Water</div>
+            <ion-card class="listingCard" *ngFor="let listing of listingsB">
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="4" class="imageCol">
+                    <img src="{{listing.photos[0]}}" onerror="this.src='assets/no-propertyfound.png'" alt="house1">
+                  </ion-col>
+                  <ion-col size="8">
+                    <ion-grid style="z-index:1;"  (click)="redirectToPage(listing)">
+                      <ion-row>
+                        <ion-grid>
+                          <ion-row>
+                            <ion-col>
+                              <ion-card-title style="color: #0DAE4F;">Area Ratings</ion-card-title>
+                            </ion-col>
+                            <ion-col>
+                              <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
+                            </ion-col>
+                          </ion-row>
+                        </ion-grid>
+                      </ion-row>
+                      <ion-row>
+                        <ion-col>
+                          <div class="white-text">Water</div>
+                            <div class="slider">
+                              <div 
+                                [class.progress]="listing.areaScore.waterScore >= 60" 
+                                [class.errorProgressBar]="listing.areaScore.waterScore < 25" 
+                                [class.warningProgressBar]="listing.areaScore.waterScore < 60 && listing.areaScore.waterScore >= 25" 
+                                [style.width]="listing.areaScore.waterScore+'%'"
+                              ></div>
+                            </div>
+                        </ion-col>
+                        <ion-col>
+                        <div class="white-text">Sanitation</div>
                         <div class="slider">
                           <div 
-                            [class.progress]="listing.areaScore.waterScore >= 60" 
-                            [class.errorProgressBar]="listing.areaScore.waterScore < 25" 
-                            [class.warningProgressBar]="listing.areaScore.waterScore < 60 && listing.areaScore.waterScore >= 25" 
-                            [style.width]="listing.areaScore.waterScore+'%'"
+                            [class.progress]="listing.areaScore.sanitationScore >= 60" 
+                            [class.errorProgressBar]="listing.areaScore.sanitationScore < 25" 
+                            [class.warningProgressBar]="listing.areaScore.sanitationScore < 60 && listing.areaScore.sanitationScore >= 25" 
+                            [style.width]="listing.areaScore.sanitationScore+'%'"
                           ></div>
                         </div>
-                    </ion-col>
-                    <ion-col>
-                    <div class="white-text">Sanitation</div>
-                    <div class="slider">
-                      <div 
-                        [class.progress]="listing.areaScore.sanitationScore >= 60" 
-                        [class.errorProgressBar]="listing.areaScore.sanitationScore < 25" 
-                        [class.warningProgressBar]="listing.areaScore.sanitationScore < 60 && listing.areaScore.sanitationScore >= 25" 
-                        [style.width]="listing.areaScore.sanitationScore+'%'"
-                      ></div>
-                    </div>
-                    </ion-col>
-                  </ion-row>
-    
-                  <ion-row>
-                    <ion-col>
-                    <div class="white-text">Crime</div>
-                    <div class="slider">
-                      <div 
-                        [class.progress]="listing.areaScore.crimeScore >= 60" 
-                        [class.errorProgressBar]="listing.areaScore.crimeScore < 25" 
-                        [class.warningProgressBar]="listing.areaScore.crimeScore < 60 && listing.areaScore.crimeScore >= 25" 
-                        [style.width]="listing.areaScore.crimeScore+'%'"
-                      ></div>
-                    </div>
-                    </ion-col>
-                    <ion-col>
-                    <div class="white-text">School Quality</div>
-                    <div class="slider">
-                      <div 
-                        [class.progress]="listing.areaScore.schoolScore >= 60"  
-                        [class.errorProgressBar]="listing.areaScore.schoolScore < 25"  
-                        [class.warningProgressBar]="listing.areaScore.schoolScore < 60 && listing.areaScore.schoolScore >= 25" 
-                        [style.width]="listing.areaScore.schoolScore+'%'"
-                      ></div>
-                    </div>                  
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-                <!-- <div id="house_details2">
-                  Address: {{listing.address}}
-                </div> -->
-              </ion-card-content>
+                        </ion-col>
+                      </ion-row>
+        
+                      <ion-row style="margin-top: 2px;">
+                        <ion-col>
+                        <div class="white-text">Crime</div>
+                        <div class="slider">
+                          <div 
+                            [class.progress]="listing.areaScore.crimeScore >= 60" 
+                            [class.errorProgressBar]="listing.areaScore.crimeScore < 25" 
+                            [class.warningProgressBar]="listing.areaScore.crimeScore < 60 && listing.areaScore.crimeScore >= 25" 
+                            [style.width]="listing.areaScore.crimeScore+'%'"
+                          ></div>
+                        </div>
+                        </ion-col>
+                        <ion-col>
+                        <div class="white-text">School Quality</div>
+                        <div class="slider">
+                          <div 
+                            [class.progress]="listing.areaScore.schoolScore >= 60"  
+                            [class.errorProgressBar]="listing.areaScore.schoolScore < 25"  
+                            [class.warningProgressBar]="listing.areaScore.schoolScore < 60 && listing.areaScore.schoolScore >= 25" 
+                            [style.width]="listing.areaScore.schoolScore+'%'"
+                          ></div>
+                        </div>    
+                        </ion-col>
+                      </ion-row>
+                      <span style="float: right;"><u>Total Score:</u> {{((listing.areaScore.schoolScore + listing.areaScore.crimeScore + listing.areaScore.waterScore + listing.areaScore.sanitationScore)/4).toFixed(2)}} </span>              
+                    </ion-grid>
+                  </ion-col>
+                </ion-row>
+              </ion-grid> 
             </ion-card>
   
           </ion-col>
           <ion-col>
-            <ion-card *ngFor="let listing of listingsR">
-              <ion-card-header (click)="redirectToPage(listing)">
-    
-              <img src="{{listing.photos[0]}}" alt="house1">
-                
-                <ion-card-title style="color: #0DAE4F;">Area Ratings</ion-card-title>
-              </ion-card-header>
-              <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
-              <ion-card-content (click)="redirectToPage(listing)">
-              
-                <ion-grid style="z-index:1;">
-                  <ion-row>
-                    <ion-col>
-                      <div class="white-text">Water</div>
+            <ion-card class="listingCard" *ngFor="let listing of listingsR">
+              <ion-grid>
+                <ion-row>
+                  <ion-col  size="4" class="imageCol">
+                    <img src="{{listing.photos[0]}}" onerror="this.src='assets/no-propertyfound.png'" alt="house1">
+                  </ion-col>
+                  <ion-col size="8">
+                    <ion-grid style="z-index:1;"  (click)="redirectToPage(listing)">
+                      <ion-row>
+                        <ion-grid>
+                          <ion-row>
+                            <ion-col>
+                              <ion-card-title style="color: #0DAE4F;">Area Ratings</ion-card-title>
+                            </ion-col>
+                            <ion-col>
+                              <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
+                            </ion-col>
+                          </ion-row>
+                        </ion-grid>
+                      </ion-row>
+                      <ion-row>
+                        <ion-col>
+                          <div class="white-text">Water</div>
+                            <div class="slider">
+                              <div 
+                                [class.progress]="listing.areaScore.waterScore >= 60" 
+                                [class.errorProgressBar]="listing.areaScore.waterScore < 25" 
+                                [class.warningProgressBar]="listing.areaScore.waterScore < 60 && listing.areaScore.waterScore >= 25" 
+                                [style.width]="listing.areaScore.waterScore+'%'"
+                              ></div>
+                            </div>
+                        </ion-col>
+                        <ion-col>
+                        <div class="white-text">Sanitation</div>
                         <div class="slider">
                           <div 
-                            [class.progress]="listing.areaScore.waterScore >= 60" 
-                            [class.errorProgressBar]="listing.areaScore.waterScore < 25" 
-                            [class.warningProgressBar]="listing.areaScore.waterScore < 60 && listing.areaScore.waterScore >= 25" 
-                            [style.width]="listing.areaScore.waterScore+'%'"
+                            [class.progress]="listing.areaScore.sanitationScore >= 60" 
+                            [class.errorProgressBar]="listing.areaScore.sanitationScore < 25" 
+                            [class.warningProgressBar]="listing.areaScore.sanitationScore < 60 && listing.areaScore.sanitationScore >= 25" 
+                            [style.width]="listing.areaScore.sanitationScore+'%'"
                           ></div>
                         </div>
-                    </ion-col>
-                    <ion-col>
-                    <div class="white-text">Sanitation</div>
-                    <div class="slider">
-                      <div 
-                        [class.progress]="listing.areaScore.sanitationScore >= 60" 
-                        [class.errorProgressBar]="listing.areaScore.sanitationScore < 25" 
-                        [class.warningProgressBar]="listing.areaScore.sanitationScore < 60 && listing.areaScore.sanitationScore >= 25" 
-                        [style.width]="listing.areaScore.sanitationScore+'%'"
-                      ></div>
-                    </div>
-                    </ion-col>
-                  </ion-row>
-    
-                  <ion-row>
-                    <ion-col>
-                    <div class="white-text">Crime</div>
-                    <div class="slider">
-                      <div 
-                        [class.progress]="listing.areaScore.crimeScore >= 60" 
-                        [class.errorProgressBar]="listing.areaScore.crimeScore < 25" 
-                        [class.warningProgressBar]="listing.areaScore.crimeScore < 60 && listing.areaScore.crimeScore >= 25" 
-                        [style.width]="listing.areaScore.crimeScore+'%'"
-                      ></div>
-                    </div>
-                    </ion-col>
-                    <ion-col>
-                    <div class="white-text">School Quality</div>
-                    <div class="slider">
-                      <div 
-                        [class.progress]="listing.areaScore.schoolScore >= 60"  
-                        [class.errorProgressBar]="listing.areaScore.schoolScore < 25"  
-                        [class.warningProgressBar]="listing.areaScore.schoolScore < 60 && listing.areaScore.schoolScore >= 25" 
-                        [style.width]="listing.areaScore.schoolScore+'%'"
-                      ></div>
-                    </div>                  
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-                <br>
-                <div id="house_details2">
-                  Address: {{listing.address}}
-                </div>
-              </ion-card-content>
+                        </ion-col>
+                      </ion-row>
+        
+                      <ion-row style="margin-top: 2px;">
+                        <ion-col>
+                        <div class="white-text">Crime</div>
+                        <div class="slider">
+                          <div 
+                            [class.progress]="listing.areaScore.crimeScore >= 60" 
+                            [class.errorProgressBar]="listing.areaScore.crimeScore < 25" 
+                            [class.warningProgressBar]="listing.areaScore.crimeScore < 60 && listing.areaScore.crimeScore >= 25" 
+                            [style.width]="listing.areaScore.crimeScore+'%'"
+                          ></div>
+                        </div>
+                        </ion-col>
+                        <ion-col>
+                        <div class="white-text">School Quality</div>
+                        <div class="slider">
+                          <div 
+                            [class.progress]="listing.areaScore.schoolScore >= 60"  
+                            [class.errorProgressBar]="listing.areaScore.schoolScore < 25"  
+                            [class.warningProgressBar]="listing.areaScore.schoolScore < 60 && listing.areaScore.schoolScore >= 25" 
+                            [style.width]="listing.areaScore.schoolScore+'%'"
+                          ></div>
+                        </div>    
+                        </ion-col>
+                      </ion-row>
+                      <span style="float: right;"><u>Total Score:</u> {{((listing.areaScore.schoolScore + listing.areaScore.crimeScore + listing.areaScore.waterScore + listing.areaScore.sanitationScore)/4).toFixed(2)}} </span>              
+                    </ion-grid>
+                  </ion-col>
+                </ion-row>
+              </ion-grid> 
             </ion-card>
-  
           </ion-col>
         </ion-row>
       </ion-grid>
