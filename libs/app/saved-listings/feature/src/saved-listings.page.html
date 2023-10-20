@@ -31,7 +31,11 @@
 </ion-header>
 
 <ion-content>
-
+  <div id="loader" *ngIf="loading">
+    <h2>{{loadingMessage}}</h2>
+    <br>
+    <img src="assets/500.gif">
+  </div>
   <section id="category">
     <ion-grid>
       <ion-row>
@@ -45,14 +49,9 @@
     </ion-grid>
   </section>
 
-  <ng-container *ngIf="loading; else loaded">
-    <div id="loader">
-      <h2>{{loadingMessage}}</h2>
-      <br>
-      <img src="assets/500.gif">
-    </div>
-  </ng-container>
-  <ng-template #loaded>
+  <!-- <ng-container *ngIf="loading; else loaded"> -->
+  <!-- </ng-container> -->
+  <!-- <ng-template #loaded> -->
     <section id="first">
       <ion-grid>
         <ion-row>
@@ -342,5 +341,5 @@
     <ion-button id="swap" (click)="Change()">
       <ion-icon name="swap-horizontal-outline"></ion-icon>
     </ion-button>
-  </ng-template>
+  <!-- </ng-template> -->
 </ion-content>

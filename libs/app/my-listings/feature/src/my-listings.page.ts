@@ -34,7 +34,7 @@ export class MyListingsPage  implements OnInit, OnDestroy  {
   listings: Listing[] = []
   listingsB: Listing[]=[];
   listingsR: Listing[]=[]
-  loading = false;
+  loading = true;
   loadingMessage = ";"
 
   constructor(
@@ -50,12 +50,12 @@ export class MyListingsPage  implements OnInit, OnDestroy  {
 
   async ngOnInit() {
     this.loadingMessage = "Loading your listings...";
+    // this.loading = true;
     this.user$.subscribe(async (user: User | null) => {
       this.currentUser =  user;
       this.listingsB = [];
       this.listingsR = [];
       this.listings = [];
-      this.loading = true;
       if (!this.currentUser) return;
       this.listings = await this.listingServices.getListings(this.currentUser.uid);
       const user_listings: Listing[] = [];
@@ -81,7 +81,7 @@ export class MyListingsPage  implements OnInit, OnDestroy  {
       this.listingsR = tempR;
       setTimeout(() => {
         this.loading = false;
-      }, 1500);
+      }, 3000);
     });
   }
 
