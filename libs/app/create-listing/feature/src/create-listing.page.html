@@ -119,16 +119,16 @@
             <ion-label position="floating" class="house-text" style="margin-top: 1px;">Listing Price<span
                 class="required-indicator" *ngIf="!price">*</span></ion-label>
 
-            <ion-input type="text" id="price" [(ngModel)]="price" (input)="formatPrice()" required></ion-input>
+            <ion-input type="text" id="price" [(ngModel)]="price" (input)="formatPrice()" (ionInput)="onInputPrice($event)" required></ion-input>
             <ion-note slot="end">ZAR</ion-note>
           </ion-item>
         </ion-col>
         <ion-col>
           <ion-row class="dropdown">
-            <ion-col size="5">
+            <ion-col size="6">
               <label position="floating" class="house-text">Possession Type:</label>
             </ion-col>
-            <ion-col class="dropdownCol">
+            <ion-col class="">
               <select [(ngModel)]="pos_type" class="house-dropdown" aria-label="pos-type">
                 <option value="Leasehold">Leasehold</option>
                 <option value="Freehold">Freehold</option>
@@ -142,7 +142,7 @@
       <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F; min-height: 56px;">
         <ion-col>
           <ion-row class="dropdown">
-            <ion-col size="5">
+            <ion-col size="6">
               <label position="floating" class="house-text" style="margin-left: 3%">Property Type:</label>
             </ion-col>
             <ion-col class="dropdownCol">
@@ -156,10 +156,10 @@
         </ion-col>
         <ion-col>
           <ion-row class="dropdown">
-            <ion-col size="5">
+            <ion-col size="6">
               <label position="floating" class="house-text">Community Environment:</label>
             </ion-col>
-            <ion-col class="dropdownCol">
+            <ion-col class="">
               <select [(ngModel)]="env_type" class="house-dropdown" aria-label="env-type">
                 <option value="Gated Community">Gated Community</option>
                 <option value="Complex">Complex</option>
@@ -173,7 +173,7 @@
       <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F; min-height: 56px;">
         <ion-col>
           <ion-row class="dropdown">
-            <ion-col size="5">
+            <ion-col size="6">
               <label position="floating" class="house-text" style="margin-left: 3%">Furnishing:</label>
             </ion-col>
             <ion-col class="dropdownCol">
@@ -187,10 +187,10 @@
         </ion-col>
         <ion-col>
           <ion-row class="dropdown">
-            <ion-col size="5">
+            <ion-col size="6">
               <label position="floating" class="house-text">Orientation:</label>
             </ion-col>
-            <ion-col class="dropdownCol">
+            <ion-col class="">
               <select [(ngModel)]="orientation" class="house-dropdown" aria-label="orientation">
                 <option value="North">North</option>
                 <option value="East">East</option>
@@ -208,7 +208,7 @@
             <ion-label position="floating" class="house-text">Bathroom Count<span class="required-indicator"
                 *ngIf="!bathrooms">*</span></ion-label>
 
-            <ion-input type="number" id="bath" [(ngModel)]="bathrooms" (ionInput)="onInput($event)" #ionInputEl required></ion-input>
+            <ion-input type="number" id="bath" [(ngModel)]="bathrooms" (ionInput)="onInputBathroom($event)" required></ion-input>
 
           </ion-item>
         </ion-col>
@@ -217,7 +217,7 @@
             <ion-label position="floating" class="house-text">Bedroom Count<span class="required-indicator"
                 *ngIf="!bedrooms">*</span></ion-label>
 
-            <ion-input type="number" id="bed" [(ngModel)]="bedrooms" required></ion-input>
+            <ion-input type="number" id="bed" [(ngModel)]="bedrooms" (ionInput)="onInputBedroom($event)" required></ion-input>
 
           </ion-item>
         </ion-col>
@@ -226,7 +226,7 @@
             <ion-label position="floating" class="house-text">Floor Size &#40; m<sup>2</sup>&#41;<span
                 class="required-indicator" *ngIf="!floor_size">*</span></ion-label>
 
-            <ion-input type="number" id="floor-size" [(ngModel)]="floor_size" required></ion-input>
+            <ion-input type="number" id="floor-size" [(ngModel)]="floor_size" (ionInput)="onInputFloor($event)" required></ion-input>
 
           </ion-item>
         </ion-col>
@@ -238,7 +238,7 @@
             <ion-label position="floating" class="house-text">Erf size &#40; m<sup>2</sup>&#41;<span
                 class="required-indicator" *ngIf="!erf_size">*</span></ion-label>
 
-            <ion-input type="number" id="property-size" [(ngModel)]="erf_size" required></ion-input>
+            <ion-input type="number" id="property-size" [(ngModel)]="erf_size" (ionInput)="onInputErf($event)" required></ion-input>
 
           </ion-item>
         </ion-col>
@@ -247,7 +247,7 @@
             <ion-label position="floating" class="house-text">Parking<span class="required-indicator"
                 *ngIf="!parking">*</span></ion-label>
 
-            <ion-input type="number" id="parking" [(ngModel)]="parking" required></ion-input>
+            <ion-input type="number" id="parking" [(ngModel)]="parking" (ionInput)="onInputParking($event)" required></ion-input>
 
           </ion-item>
         </ion-col>
