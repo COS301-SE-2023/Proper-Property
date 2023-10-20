@@ -226,10 +226,11 @@ export class ListingsService {
     // const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId);
 
     for(let i = 0; i < images.length; i++){
-      const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + listingId + "/image" + i);
+      const storageRef = ref(this.storage, process.env['NX_FIREBASE_STORAGE_BUCKET'] + "/" + listingId + "/image" + i);
       await fetch("" + images[i]).then(res => res.blob())
       .then(async (blob : Blob) => {
         photoURLs.push(await getDownloadURL((await uploadBytes(storageRef, blob)).ref));
+        console.log(photoURLs[photoURLs.length - 1]);
       })
     }
 
