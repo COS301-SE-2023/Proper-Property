@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators'
-
+import type { IonInput } from '@ionic/angular';
 
 @Component({
   selector: 'app-create-listing',
@@ -26,6 +26,33 @@ export class CreateListingPage{
 
 
   @ViewChild('inputElement', { static: false }) inputElement!: ElementRef;
+
+  inputModel = '';
+
+  @ViewChild('ionInputEl', { static: true }) ionInputEl!: IonInput;
+
+  onInput(ev: { target: any; }) {
+    console.log(ev.target.value);
+    let value = ev.target!.value;
+
+    // Removes non alphanumeric characters
+    // const filteredValue = value.replace(/^\d[1-9]\d$/, '');
+
+
+if(!value){return;}
+if(!(/^\d+$/.test(value)) || value<0){
+  value=0;
+}
+if(value.length>2){
+ value=99;
+}
+
+    /**
+     * Update both the state variable and
+     * the component to keep them in sync.
+     */
+    ev.target.value = this.bathrooms = value;
+  }
 
   myControl = new FormControl();
   options: string[] = ['Angular', 'React', 'Vue', 'Ionic', 'TypeScript'];
