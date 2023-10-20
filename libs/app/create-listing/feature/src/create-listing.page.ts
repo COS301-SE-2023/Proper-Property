@@ -38,7 +38,7 @@ export class CreateListingPage {
       value = 999999999;
     }
 
-    ev.target.value = this.parking = value;
+    ev.target.value = this.price = value;
   }
 
   onInputBathroom(ev: { target: any; }) {
