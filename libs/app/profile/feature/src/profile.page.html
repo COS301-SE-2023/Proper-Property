@@ -76,11 +76,29 @@
                     </ng-template>
                   </ion-popover>
 
-                  <ion-item>
+                  <ion-item lines="none" id="hover-trigger3">
                     <ion-icon class="iconic" name="eye-off-outline" size="small"></ion-icon>
                     <ion-label position="stacked"></ion-label>
                     <ion-range [(ngModel)]="interests.accessible" ></ion-range>
                   </ion-item>
+                  <ion-popover trigger="hover-trigger3" triggerAction="hover">
+                    <ng-template>
+                      <ion-content class="ion-padding">
+                        <ion-row>
+                          <ion-col size="2">
+                           <ion-icon class="iconic" name="eye-off-outline" color="primary" size="large"></ion-icon> 
+                          </ion-col>
+                          <ion-col>
+                            <ion-label color="primary" style="position: absolute; top: 20%;">Accessible</ion-label>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row>
+                          <ion-col size="2"></ion-col>
+                          <ion-col size="10">"You prioritize an accessible castle."</ion-col>
+                        </ion-row>
+                        </ion-content>
+                    </ng-template>
+                  </ion-popover>
 
                   <ion-item>
                     <ion-icon class="iconic" name="beer-outline" size="small"></ion-icon>
