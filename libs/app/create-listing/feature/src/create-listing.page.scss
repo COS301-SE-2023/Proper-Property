@@ -9,16 +9,8 @@
     background-color: #eeeeee !important;
   }
 
-  .dropdownCol{
-    padding-right: 10px !important;
-  }
-
   .toggleCol{
-    text-align: center; 
-    display: flex;
-    align-content: center;
-    align-items: center;
-    flex-direction: row;
+    align-self: center;
   }
 
   .toggleLabel{
@@ -33,7 +25,7 @@
     position: absolute;
     right: 40%;
     text-align: center;
-    z-index: 1;
+    z-index: 0;
     top: 40%;
     opacity: 0;
     width: 20%;
@@ -307,7 +299,7 @@
   .ion-container {
     --ion-background-color: transparent;
     width: 100%;
-    --padding-start:2%;
+    --padding-start:0;
   }
   
   #address {
@@ -775,4 +767,10 @@
   // ::ng-deep ion-footer{
   //   margin-top: -80px;   // }
 
+}
+
+.digit-input{
+  border: 1px solid rgb(183, 183, 183) !important;
+  --padding-bottom: 5px;
+  --padding-top:5px;
 }

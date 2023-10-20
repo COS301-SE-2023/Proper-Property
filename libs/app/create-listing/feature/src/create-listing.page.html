@@ -70,7 +70,7 @@
         <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
           <ion-col>
             <div class="container">
-              <div class="searchInput">
+              <div class="searchInput" style="margin-top:1.5px">
                 <label position="floating" class="house-text">Property Residential Address <ion-spinner name="crescent"
                     color="black" *ngIf="loadingAddress"></ion-spinner><span class="required-indicator"
                     *ngIf="!address">*</span></label>
@@ -103,7 +103,7 @@
                             hello there, general kenobi
                           </ion-content>
                         </ng-template>
-                      </ion-popover> -->
+                        </ion-popover> -->
                         <span class="tooltiptext">Use the map to determine your WSA district</span>
                       </div>
                     </ion-icon>
@@ -127,7 +127,7 @@
                   </ion-col>
                   <ion-col size="6" style="align-self: center;">
 
-                    <ion-input type="text" id="price" [(ngModel)]="price" (input)="formatPrice()"
+                    <ion-input class="digit-input" type="text" id="price" [(ngModel)]="price" (input)="formatPrice()"
                       (ionInput)="onInputPrice($event)" required></ion-input>
                     <ion-note slot="end">ZAR</ion-note>
                   </ion-col>
@@ -151,20 +151,23 @@
           </ion-col>
         </ion-row>
 
-        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F; min-height: 56px;">
-          <ion-col>
-            <ion-row class="dropdown">
-              <ion-col size="6">
-                <label position="floating" class="house-text" style="margin-left: 3%">Property Type:</label>
-              </ion-col>
-              <ion-col class="dropdownCol">
-                <select [(ngModel)]="prop_type" class="house-dropdown" aria-label="prop-type" id="prop-type">
-                  <option value="House">House</option>
-                  <option value="Apartment">Apartment</option>
-                  <option value="Commercial">Commercial Property</option>
-                </select>
-              </ion-col>
-            </ion-row>
+        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
+          <ion-col size="6">
+            <ion-item class="ion-container">
+              <ion-grid>
+                <ion-row style="height:100%;">
+                  <ion-col size="6" style="align-self: center;">
+                    <ion-label class="house-text">Bedroom Count<span class="required-indicator"
+                        *ngIf="!bedrooms">*</span></ion-label>
+                  </ion-col>
+                  <ion-col size="6" style="align-self: center;">
+                    <ion-input class="digit-input" type="number" id="bed" [(ngModel)]="bedrooms" (ionInput)="onInputBedroom($event)"
+                      required></ion-input>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+
+            </ion-item>
           </ion-col>
           <ion-col>
             <ion-row class="dropdown">
@@ -182,20 +185,22 @@
           </ion-col>
         </ion-row>
 
-        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F; min-height: 56px;">
-          <ion-col>
-            <ion-row class="dropdown">
-              <ion-col size="6">
-                <label position="floating" class="house-text" style="margin-left: 3%">Furnishing:</label>
-              </ion-col>
-              <ion-col class="dropdownCol">
-                <select [(ngModel)]="furnish_type" class="house-dropdown" aria-label="furnishing">
-                  <option value="Furnished">Furnished</option>
-                  <option value="Partly Furnished">Partly Furnished</option>
-                  <option value="Not Furnished">Not Furnished</option>
-                </select>
-              </ion-col>
-            </ion-row>
+        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
+          <ion-col size="6">
+            <ion-item class="ion-container">
+              <ion-grid>
+                <ion-row style="height:100%;">
+                  <ion-col size="6" style="align-self: center;">
+                    <ion-label class="house-text">Bathroom Count<span class="required-indicator"
+                        *ngIf="!bathrooms">*</span></ion-label>
+                  </ion-col>
+                  <ion-col size="6" style="align-self: center;">
+                    <ion-input class="digit-input" type="number" id="bath" [(ngModel)]="bathrooms" (ionInput)="onInputBathroom($event)"
+                      required></ion-input>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
           </ion-col>
           <ion-col>
             <ion-row class="dropdown">
@@ -215,71 +220,17 @@
         </ion-row>
 
         <ion-row style="width:100%; border-bottom: 2px solid #0DAE4F;">
-          <ion-col size="4">
+          <ion-col size="6">
             <ion-item class="ion-container">
               <ion-grid>
                 <ion-row style="height:100%;">
-                  <ion-col size="8" style="align-self: center;">
-                    <ion-label class="house-text">Bathroom Count<span class="required-indicator"
-                        *ngIf="!bathrooms">*</span></ion-label>
-                  </ion-col>
-                  <ion-col size="4" style="align-self: center;">
-                    <ion-input type="number" id="bath" [(ngModel)]="bathrooms" (ionInput)="onInputBathroom($event)"
-                      required></ion-input>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-            </ion-item>
-          </ion-col>
-          <ion-col size="4">
-            <ion-item class="ion-container">
-              <ion-grid>
-                <ion-row style="height:100%;">
-                  <ion-col size="8" style="align-self: center;">
-                    <ion-label class="house-text">Bedroom Count<span class="required-indicator"
-                        *ngIf="!bedrooms">*</span></ion-label>
-                  </ion-col>
-                  <ion-col size="4" style="align-self: center;">
-                    <ion-input type="number" id="bed" [(ngModel)]="bedrooms" (ionInput)="onInputBedroom($event)"
-                      required></ion-input>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-
-            </ion-item>
-          </ion-col>
-          <ion-col size="4">
-            <ion-item class="ion-container">
-              <ion-grid>
-                <ion-row style="height:100%;">
-                  <ion-col size="8" style="align-self: center;">
-                    <ion-label class="house-text">Floor Size &#40; m<sup>2</sup>&#41;<span class="required-indicator"
-                        *ngIf="!floor_size">*</span></ion-label>
-                  </ion-col>
-
-                  <ion-col size="4" style="align-self: center">
-                    <ion-input type="number" id="floor-size" [(ngModel)]="floor_size" (ionInput)="onInputFloor($event)"
-                      required></ion-input>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-
-            </ion-item>
-          </ion-col>
-        </ion-row>
-        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
-
-          <ion-col>
-            <ion-item class="ion-container">
-              <ion-grid>
-                <ion-row style="height:100%;">
-                  <ion-col size="8" style="align-self: center;">
+                  <ion-col size="6" style="align-self: center;">
                     <ion-label class="house-text">Erf size &#40; m<sup>2</sup>&#41;<span class="required-indicator"
                         *ngIf="!erf_size">*</span></ion-label>
                   </ion-col>
 
-                  <ion-col size="4" style="align-self:center">
-                    <ion-input type="number" id="property-size" [(ngModel)]="erf_size" (ionInput)="onInputErf($event)"
+                  <ion-col size="6" style="align-self:center">
+                    <ion-input class="digit-input" type="number" id="property-size" [(ngModel)]="erf_size" (ionInput)="onInputErf($event)"
                       required></ion-input>
                   </ion-col>
                 </ion-row>
@@ -287,16 +238,68 @@
             </ion-item>
           </ion-col>
           <ion-col>
+            <ion-row class="dropdown">
+              <ion-col size="6">
+                <label position="floating" class="house-text">Property Type:</label>
+              </ion-col>
+              <ion-col class="dropdownCol">
+                <select [(ngModel)]="prop_type" class="house-dropdown" aria-label="prop-type" id="prop-type">
+                  <option value="House">House</option>
+                  <option value="Apartment">Apartment</option>
+                  <option value="Commercial">Commercial Property</option>
+                </select>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+        <ion-row style="width:100%; border-bottom: 2px solid #0DAE4F;">
+          <ion-col size="6">
             <ion-item class="ion-container">
               <ion-grid>
                 <ion-row style="height:100%;">
-                  <ion-col size="8" style="align-self: center;">
+                  <ion-col size="6" style="align-self: center;">
+                    <ion-label class="house-text">Floor Size &#40; m<sup>2</sup>&#41;<span class="required-indicator"
+                        *ngIf="!floor_size">*</span></ion-label>
+                  </ion-col>
+
+                  <ion-col size="6" style="align-self: center">
+                    <ion-input class="digit-input" type="number" id="floor-size" [(ngModel)]="floor_size" (ionInput)="onInputFloor($event)"
+                      required></ion-input>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-row class="dropdown">
+              <ion-col size="6">
+                <label position="floating" class="house-text">Furnishing:</label>
+              </ion-col>
+              <ion-col class="dropdownCol">
+                <select [(ngModel)]="furnish_type" class="house-dropdown" aria-label="furnishing">
+                  <option value="Furnished">Furnished</option>
+                  <option value="Partly Furnished">Partly Furnished</option>
+                  <option value="Not Furnished">Not Furnished</option>
+                </select>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
+          <ion-col size="6">
+            <ion-item class="ion-container">
+              <ion-grid>
+                <ion-row style="height:100%;">
+                  <ion-col size="6" style="align-self: center;">
                     <ion-label class="house-text">Parking<span class="required-indicator"
                         *ngIf="!parking">*</span></ion-label>
                   </ion-col>
 
-                  <ion-col size="4" style="align-self: center">
-                    <ion-input type="number" id="parking" [(ngModel)]="parking" (ionInput)="onInputParking($event)"
+                  <ion-col size="6" style="align-self: center">
+                    <ion-input class="digit-input" type="number" id="parking" [(ngModel)]="parking" (ionInput)="onInputParking($event)"
                       required></ion-input>
                   </ion-col>
                 </ion-row>
@@ -440,7 +443,7 @@
 
 
       <ion-row id="house-details">
-        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F; min-height: 56px;">
+        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
           <ion-item class="ion-container">
             <div class="container">
               <div class="searchInput">
@@ -463,7 +466,7 @@
           </ion-item>
         </ion-row>
 
-        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F; min-height: 56px;">
+        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
           <!-- <ion-col>
           <ion-item class="ion-container">
             <ion-label position="floating" class="house-text">Floor Size &#40; m<sup>2</sup>&#41;<span
@@ -503,7 +506,7 @@
           </ion-col>
         </ion-row>
 
-        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F; min-height: 56px;">
+        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
           <ion-col>
             <ion-row class="dropdown">
               <ion-col>
@@ -534,7 +537,7 @@
           </ion-col>
         </ion-row>
 
-        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F; min-height: 56px;">
+        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
           <ion-col>
             <ion-row class="dropdown">
               <ion-col>
