@@ -321,7 +321,6 @@
   }
   
   #feat-in {
-    border-radius: 10px;
     border: 1.5px solid #000;
     background: #FFF;
     height: 40px;
@@ -368,13 +367,14 @@
   }
   
   #desc {
-    border-radius: 10px;
     border: 1.5px solid #000;
     background: #FFF;
     width: 100%;
     margin-top: 2%;
     margin-bottom: 2%;
     padding: 2%;
+    max-width: 100%;
+    min-width: 100%;
   }
   
   .addButt {
@@ -717,7 +717,6 @@
   }
   
   #feat-in {
-    border-radius: 10px;
     border: 1.5px solid #000;
     background: #FFF;
     height: 40px;
@@ -741,13 +740,14 @@
   
   
   #desc {
-    border-radius: 10px;
     border: 1.5px solid #000;
     background: #FFF;
     width: 100%;
     margin-top: 2%;
     margin-bottom: 2%;
     padding: 2%;
+    max-width:100%;
+    min-width: 100%;
   }
   
   .addButt {
