@@ -130,7 +130,7 @@ ion-content::part(scroll) {
     border: 1px solid #fefefe;
     background: rgba(13, 174, 79, 0.40);
     width: 100%;
-    height: auto;
+    height:auto;
     background-color: #94d5ae;
   }
   
@@ -174,7 +174,7 @@ ion-content::part(scroll) {
   #additional-features {
     width: 88%;
     margin-left: 2%;
-    height: auto;
+    height:auto;
     // border-radius: 0px 0px 30px 30px;
     border-right: 2px solid #0DAE4F;
     border-bottom: 2px solid #0DAE4F;
@@ -201,7 +201,7 @@ ion-content::part(scroll) {
 
   .animation-div-class{
     overflow: hidden;
-    overflow: scroll;
+    // overflow: scroll;
     animation: extend-filter-div 1s ease 0s 1 normal forwards;
   }
 
@@ -215,13 +215,13 @@ ion-content::part(scroll) {
       height: 0px;
     }
     to{
-      height: 350px;
+      height: 180px;
     }
   }
 
   @keyframes close-filter-div{
     from{
-      height: 350px;
+      height: 180px;
     }
     to{
       height: 0px;
@@ -230,7 +230,7 @@ ion-content::part(scroll) {
 
   #address {
     // border-radius: 30px;
-    border: 1.5px solid #eeeeee;
+    border: 1.5px solid #fafafa;
     background: #FFF;
     width: 100%;
     margin-bottom: 1%;
@@ -775,18 +775,18 @@ ion-content::part(scroll) {
   
   ::selection {
     color: #fff;
-    background: #664AFF;
+    background: var(--ion-color-primary);
   }
   
-  .slider {
-    position: relative;
-    width: 80%;
-    height: 13px;
-    background-color: rgb(150, 150, 150);
-    border-radius: 5px;
-    margin: 5px;
-    padding-right: 50px;
-  }
+  // .slider {
+  //   position: relative;
+  //   width: 80%;
+  //   height: 13px;
+  //   background-color: rgb(150, 150, 150);
+  //   border-radius: 5px;
+  //   margin: 5px;
+  //   padding-right: 50px;
+  // }
   
   .progress {
     position: absolute;

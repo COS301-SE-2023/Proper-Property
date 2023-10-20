@@ -725,12 +725,12 @@ sortListings() {
   toggleAdditionalFilters(): void {
     this.showAdditionalFilters = !this.showAdditionalFilters;
 
-    if(this.showAdditionalFilters){
-      document.getElementsByClassName("sliderRow").item(0)?.setAttribute("style", "border-bottom: 1px solid #92ceaa; border-width: 90%;")
-    }
-    else{
-      document.getElementsByClassName("sliderRow").item(0)?.setAttribute("style", "")
-    }
+    // if(this.showAdditionalFilters){
+    //   document.getElementsByClassName("sliderRow").item(0)?.setAttribute("style", "border-bottom: 1px solid #92ceaa; border-width: 90%;")
+    // }
+    // else{
+    //   document.getElementsByClassName("sliderRow").item(0)?.setAttribute("style", "")
+    // }
     // this.filterProperties();
   }
 
