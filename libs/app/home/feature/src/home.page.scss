@@ -273,6 +273,7 @@
     // border-radius: 30px;
     transition: background-color 0.5s ease;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    background: white;
   }
 
   .case-container .case-box:hover {
@@ -304,6 +305,10 @@ ion-footer ion-col {
 .sec3 ion-row {
   text-align: center;
   justify-content: center;
+}
+
+#myImage{
+  transition: transform 1.5s ease-in-out, opacity 1.5s ease-in-out;
 }
 }
 
@@ -434,6 +439,7 @@ ion-footer ion-col {
       border-radius: 10px;
       text-align: center;
       transition: background-color 0.5s ease;
+      background: white;
 
       h4 {
         font-size: 18px;
