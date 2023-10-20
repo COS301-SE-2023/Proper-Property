@@ -79,8 +79,8 @@ export class SearchPage implements OnDestroy, AfterViewInit {
   userInterestVector: number[]=[];
   public rangeSteps = 10000;
   public propSizeRangeSteps = 200;
-  public highestPrice = 0;
-  public lowestPrice = 99999999;
+  public highestPrice = 99999999;
+  public lowestPrice = 0;
   public smallestProp = 99999999;
   public largestProp = 0;
 
