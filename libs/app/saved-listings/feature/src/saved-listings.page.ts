@@ -44,8 +44,8 @@ export class SavedListingsPage implements OnInit {
       if(this.userProfile){
         //Todo - Change this to send an array of IDs
         if(this.userProfile && this.userProfile.savedListings){
-          this.savedListingsB = [];
-          this.savedListingsR = [];
+          const tempB: Listing [] = [];
+          const tempR: Listing [] = [];
           for(const listing of this.userProfile.savedListings){
             await this.listingServices.getListing(listing).then((listing) => {
               if(listing){
@@ -53,15 +53,17 @@ export class SavedListingsPage implements OnInit {
   
                 if(listing.let_sell=="Sell")
                 {
-                  this.savedListingsB.push(listing);
+                  tempB.push(listing);
                 }
                 else
                 {
-                  this.savedListingsR.push(listing);
+                  tempR.push(listing);
                 }
               }
             });
           }
+          this.savedListingsB = tempB;
+          this.savedListingsR = tempR;
           if (window.location.hostname.includes("localhost")) {
             console.log(this.userProfile.savedListings);
             console.log(this.savedListingsB);
