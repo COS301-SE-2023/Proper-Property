@@ -336,7 +336,138 @@
           </ng-container>
           <ng-template #listingsLoaded>
             <div class="lists" id="lists">
-              <ion-card class="listing-card" *ngFor="let listing of listings">
+              <ion-card class="listingCard" *ngFor="let listing of listings" >
+                <ng-container *ngIf="cardView.get(listing.listing_id); else scoreView">
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size="4" class="imageCol">
+                      <img src="{{listing.photos[0]}}" onerror="this.src='assets/no-propertyfound.png'" alt="house1">
+                        <div *ngIf="getRecommendation(listing.listing_id)" 
+                        class="recommended-banner">
+                          Recommended <ion-icon name="star-outline"></ion-icon></div>
+                    </ion-col>
+                    <ion-col size="8" (click)="redirectToPage(listing)">
+                      <ion-grid>
+                        <ion-row>
+                          <ion-col>
+                            <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
+                          </ion-col>
+                          <ion-col size="2">
+                            <div class="area-score-toggle-container">
+                              <ion-toggle [ngModel]="cardView.get(listing.listing_id ?? '')" (click)="changeView(listing.listing_id ?? '')" labelPlacement="end"></ion-toggle>
+                            </div>
+                          </ion-col>
+                        </ion-row>
+                      </ion-grid>
+                      <p><b>{{listing.address}}</b></p>
+                      <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+                        {{listing.bed}} Bedroom {{listing.prop_type == "Commercial"? listing.prop_type + " Property" : listing.prop_type}}
+                      </p>
+                      <p>For Sale!</p>
+                      <p id="house_description">
+                      {{listing.desc}}
+                      </p>
+                      <div id="house_details">
+                        <img src="assets/icon/bedrooms.png">
+                        {{listing.bed}}
+                        &nbsp; &nbsp;&nbsp;
+                        <img src="assets/icon/bathrooms.png">
+                        {{listing.bath}}
+                        &nbsp; &nbsp;&nbsp;
+                        <img src="assets/icon/floorplan.png">
+                        {{listing.floor_size}} m<sup>2</sup>
+                        &nbsp; &nbsp;&nbsp;
+                        <img src="assets/icon/erf.png">
+                        {{listing.property_size}} m<sup>2</sup>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ng-container>
+              <ng-template #scoreView>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size="4" class="imageCol">
+                      <img src="{{listing.photos[0]}}" onerror="this.src='assets/no-propertyfound.png'" alt="house1">
+                        <div *ngIf="getRecommendation(listing.listing_id)" 
+                        class="recommended-banner">
+                          Recommended <ion-icon name="star-outline"></ion-icon></div>
+                    </ion-col>
+                    <ion-col size="8">
+                      <ion-grid style="z-index:1;"  (click)="redirectToPage(listing)">
+                        <ion-row>
+                          <ion-grid>
+                            <ion-row>
+                              <ion-col>
+                                <ion-card-title style="color: #0DAE4F;">Area Ratings</ion-card-title>
+                              </ion-col>
+                              <ion-col size="2">
+                                <div class="area-score-toggle-container">
+                                  <ion-toggle [ngModel]="cardView.get(listing.listing_id ?? '')" (click)="changeView(listing.listing_id ?? '')" labelPlacement="end"></ion-toggle>
+                                </div>
+                              </ion-col>
+                            </ion-row>
+                          </ion-grid>
+                        </ion-row>
+                        <ion-row>
+                          <ion-col>
+                            <div class="white-text">Water</div>
+                              <div class="slider">
+                                <div 
+                                  [class.progress]="listing.areaScore.waterScore >= 60" 
+                                  [class.errorProgressBar]="listing.areaScore.waterScore < 25" 
+                                  [class.warningProgressBar]="listing.areaScore.waterScore < 60 && listing.areaScore.waterScore >= 25" 
+                                  [style.width]="listing.areaScore.waterScore+'%'"
+                                ></div>
+                              </div>
+                          </ion-col>
+                          <ion-col>
+                          <div class="white-text">Sanitation</div>
+                          <div class="slider">
+                            <div 
+                              [class.progress]="listing.areaScore.sanitationScore >= 60" 
+                              [class.errorProgressBar]="listing.areaScore.sanitationScore < 25" 
+                              [class.warningProgressBar]="listing.areaScore.sanitationScore < 60 && listing.areaScore.sanitationScore >= 25" 
+                              [style.width]="listing.areaScore.sanitationScore+'%'"
+                            ></div>
+                          </div>
+                          </ion-col>
+                        </ion-row>
+          
+                        <ion-row style="margin-top: 2px;">
+                          <ion-col>
+                          <div class="white-text">Crime</div>
+                          <div class="slider">
+                            <div 
+                              [class.progress]="listing.areaScore.crimeScore >= 60" 
+                              [class.errorProgressBar]="listing.areaScore.crimeScore < 25" 
+                              [class.warningProgressBar]="listing.areaScore.crimeScore < 60 && listing.areaScore.crimeScore >= 25" 
+                              [style.width]="listing.areaScore.crimeScore+'%'"
+                            ></div>
+                          </div>
+                          </ion-col>
+                          <ion-col>
+                          <div class="white-text">School Quality</div>
+                          <div class="slider">
+                            <div 
+                              [class.progress]="listing.areaScore.schoolScore >= 60"  
+                              [class.errorProgressBar]="listing.areaScore.schoolScore < 25"  
+                              [class.warningProgressBar]="listing.areaScore.schoolScore < 60 && listing.areaScore.schoolScore >= 25" 
+                              [style.width]="listing.areaScore.schoolScore+'%'"
+                            ></div>
+                          </div>    
+                          </ion-col>
+                        </ion-row>
+                        <span style="float: right;"><u>Total Score:</u> {{((listing.areaScore.schoolScore + listing.areaScore.crimeScore + listing.areaScore.waterScore + listing.areaScore.sanitationScore)/4).toFixed(2)}} </span>              
+                      </ion-grid>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ng-template>
+            </ion-card>
+            <!-- ------------ -->
+              <!-- <ion-card class="listing-card" *ngFor="let listing of listings">
+                
                 <ng-container *ngIf="cardView.get(listing.listing_id); else scoreView">
                   <ion-grid style="width: 100%">
                     <ion-row>
@@ -355,9 +486,6 @@
                             </ion-card-header>
                           </ion-col>
                           <ion-col size="2">
-                            <!-- <ion-button class="pin-button" (click)="centerMap(listing)">
-                              <ion-icon class="pin-icon" name="location-outline" color="primary"></ion-icon>
-                            </ion-button> -->
                             <div class="area-score-toggle-container">
                               <ion-toggle (click)="changeView(listing.listing_id ?? '')" labelPlacement="end"></ion-toggle>
                             </div>
@@ -373,9 +501,7 @@
                               <div class="bold-text">
                                 {{listing.address}}
                               </div>
-                                
-                                <!-- <p>Recommended: {{getRecommendation(listing.listing_id)}}</p> -->
-                              <ng-template [ngIf]="listing.let_sell === 'Sell'">
+                                <ng-template [ngIf]="listing.let_sell === 'Sell'">
                                 <p>For Sale!</p>
                               </ng-template>
                               <ng-template [ngIf]="listing.let_sell === 'Rent'">
@@ -421,9 +547,6 @@
                             </ion-card-header>
                           </ion-col>
                           <ion-col size="2">
-                            <!-- <ion-button class="pin-button" (click)="centerMap(listing)">
-                              <ion-icon class="pin-icon" name="location-outline" color="primary"></ion-icon>
-                            </ion-button> -->
                             <div class="area-score-toggle-container">
                               <ion-toggle (click)="changeView(listing.listing_id ?? '')" labelPlacement="end"> </ion-toggle>
                             </div>
@@ -477,7 +600,7 @@
                     </ion-row>
                   </ion-grid>
                 </ng-template>
-              </ion-card>
+              </ion-card> -->
             </div>
           </ng-template>
         </ion-col>

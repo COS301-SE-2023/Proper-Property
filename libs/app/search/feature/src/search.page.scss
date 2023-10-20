@@ -3,6 +3,43 @@ ion-content::part(scroll) {
 }
 
 .Desktop {
+  .listingCard:hover{
+    box-shadow: 3px 3px 5px rgba(13, 174, 80, 0.7);
+  }
+  
+  .lists ion-card-header ion-card-title {
+    margin-left: 55%;
+    padding-top: 5px;
+    //move ths up
+    margin-top: -210px;
+  }
+  
+  .lists ion-card-header ion-card-subtitle {
+    margin-left: 220px;
+  }
+  
+  .lists ion-card ion-card-content {
+    margin-left: 2%;
+    margin-right: 5%;
+    width: 65%;
+  }
+  
+  .imageCol{
+    height: 100%;
+    width: 25%;
+  }
+  
+  .slider {
+    position: relative;
+    width: 80%;
+    height: 13px;
+    background-color: rgb(150, 150, 150);
+    border-radius: 5px;
+    margin-bottom: 5px;
+    margin-right: 5%;
+    padding-right: 50px;
+  }
+  
   select{
     background-color: #94d5ae !important;
     // border-radius: 5px;
@@ -51,11 +88,11 @@ ion-content::part(scroll) {
     // border: 5px solid #94d5ae;
   }
 
-  .listing-card:hover{
-    border: 1px solid green;
-    width: 96%;
-    height: 185px;
-  }
+  // .listing-card:hover{
+  //   border: 1px solid green;
+  //   width: 96%;
+  //   height: 185px;
+  // }
 
   .search-result-grid-header {
     padding: 5px;
@@ -63,9 +100,9 @@ ion-content::part(scroll) {
     // background-color: rgba(13, 174, 79, 0.4);
   }
 
-  .listing-image-col {
-    height: 100%;
-  }
+  // .listing-image-col {
+  //   height: 100%;
+  // }
 
   .listing-details-col {
     height: 100%;
