@@ -12,7 +12,20 @@ export class FooterComponent implements OnInit{
     private readonly storage: Storage
   ){}
   async ngOnInit(){
-    document.getElementById('helpGuide')?.setAttribute('href', await this.getHelpGuide())
+    // document.getElementById('helpGuide')?.setAttribute('href', await this.getHelpGuide());
+
+    const helpGuideButton = document.getElementById('helpGuide');
+
+    if(helpGuideButton){
+      // Define the click event handler
+helpGuideButton.addEventListener('click', async () => {
+  const helpGuideUrl = await this.getHelpGuide();
+
+  // Execute the functionality you want when the button is clicked
+  // For example, you can redirect to the help guide URL
+  window.location.href = helpGuideUrl;
+});
+    }
   }
 
   async getHelpGuide(){
