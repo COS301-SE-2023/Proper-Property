@@ -206,7 +206,7 @@ export class UserProfileService {
     (await profile).interests.party = this.temp.party;
     (await profile).interests.student = this.temp.student;
     // console.log("new interest1", profile);
-    this.updateUserProfile(await profile);
+    await this.updateUserProfile(await profile);
     // console.log("new interest2", profile);
   }
 

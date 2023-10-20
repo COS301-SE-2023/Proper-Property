@@ -641,22 +641,21 @@ export class ListingPage implements OnDestroy, OnInit {
       console.log(this.userProfile);
       console.log(this.userProfile?.savedListings);
     }
-    if (!this.saved) {
-      if (this.userProfile) {
-        this.userProfile.savedListings = this.userProfile.savedListings ?? [];
-        this.userProfile.savedListings.push(this.listingId);
-
-
-        if (this.list && this.list.characteristics) {
-          await this.profileServices.updateInterests(this.list.characteristics, this.userProfile);
-        }
-        else {
-          await this.profileServices.updateUserProfile(this.userProfile);
-        }
-
-
+    
+    if (this.userProfile && !this.userProfile.savedListings?.includes(this.listingId)) {
+      this.userProfile.savedListings = this.userProfile.savedListings ?? [];
+      this.userProfile.savedListings.push(this.listingId);
+      
+      if (this.list && this.list.characteristics) {
+        await this.profileServices.updateInterests(this.list.characteristics, this.userProfile);
       }
+      else {
+        await this.profileServices.updateUserProfile(this.userProfile);
+      }
+
+
     }
+    
   }
 
   async unsaveListing() {
