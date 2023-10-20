@@ -87,6 +87,9 @@
       "@properproperty/app/terms-of-use/feature": [
         "libs/app/terms-of-use/feature/src/index.ts"
       ],
+      "@properproperty/app/privacy-policy/feature": [
+        "libs/app/privacy-policy/feature/src/index.ts"
+      ],
       "@properproperty/app/core/feature": [
         "libs/app/core/feature/src/index.ts"
       ],
