@@ -36,8 +36,15 @@ export class LoginPage implements OnInit {
   
   email: string;
   password: string;
+  validEmail=true;
 
   async login() {
+
+    if(!validateEmail(this.email)) {
+      this.validEmail = false;
+      return;
+    }
+
     this.store.dispatch(new Login(this.email, this.password));
   }
 
@@ -67,4 +74,9 @@ export class LoginPage implements OnInit {
 
 function isMobile(): boolean {
   return window.innerWidth <= 576;
+}
+
+function validateEmail(email: string): boolean {
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  return emailRegex.test(email);
 }

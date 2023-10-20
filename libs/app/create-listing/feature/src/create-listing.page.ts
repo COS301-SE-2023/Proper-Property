@@ -12,7 +12,7 @@ import { AuthState } from '@properproperty/app/auth/data-access';
 import { User } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators'
 
 
@@ -274,18 +274,39 @@ onResize(event: Event) {
     }
   }
 
-  formatPrice() {
-    this.address = (document.getElementById("address") as HTMLInputElement).value;
-    // console.log("eyy cousinn...",this.address);
-    // Remove existing commas from the price
-    // this.price = this.price.replace(/,/g, '');
+  numericOnly(event: KeyboardEvent): boolean {
+    const pattern = /^[1-9][0-9]?$/;
+    const input = event.target as HTMLInputElement;
+    const result = pattern.test(input.value + event.key);
+    
+    if (!result) {
+      event.preventDefault();
+    }
   
-    // Format the price with commas
-    // this.price = this.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return result;
   }
-
+  
+  propSizeValidation(event: KeyboardEvent): boolean {
+    // Update the pattern to match numbers between 1 and 99,000
+    const pattern = /^([1-9][0-9]{0,3}|100000)$/;
+    const input = event.target as HTMLInputElement;
+    const result = pattern.test(input.value + event.key);
+    
+    if (!result) {
+      event.preventDefault();
+    }
+  
+    return result;
+  }
+  
   descriptionLoading = false;
   async generateDesc(){
+
+    if (!this.address||!this.price||!this.bedrooms||!this.bathrooms||!this.floor_size||!this.erf_size||!this.parking) {
+      alert("Missing required fields");
+      return ;
+    }
+
     this.descriptionLoading = true;
     let feats = "";
     for(let i = 0; i < this.features.length; i++){
