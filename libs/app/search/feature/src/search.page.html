@@ -277,11 +277,15 @@
                         <ion-row>
                           <ion-col size="12">
                             <ion-card-content (click)="redirectToPage(listing)">
-                                {{listing.address}}
-                                <!-- <p>Recommended: {{getRecommendation(listing.listing_id)}}</p> -->
                               <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
                                 {{listing.bed}} bedroom {{listing.prop_type}}
                               </p>
+                              
+                              <div class="bold-text">
+                                {{listing.address}}
+                              </div>
+                                
+                                <!-- <p>Recommended: {{getRecommendation(listing.listing_id)}}</p> -->
                               <ng-template [ngIf]="listing.let_sell === 'Sell'">
                                 <p>For Sale!</p>
                               </ng-template>
