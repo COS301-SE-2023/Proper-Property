@@ -57,7 +57,7 @@ export class ProfilePage implements OnInit {
   }
 
   async saveEmail() {
-    var regex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9]*\.[a-z]{2,6}$/;
+    const regex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9]*\.[a-z]{2,6}$/;
 
     if (regex.test(this.newEmail)) {
       this.isEditingEmail = false;
@@ -253,7 +253,7 @@ export class ProfilePage implements OnInit {
   }
 
   async savePhoneNumber() {
-    var regex = /^\(\+27\)[0-9]{9}|[0-9]{9}$/;
+    const regex = /^\(\+27\)[0-9]{9}|[0-9]{9}$/;
 
     if (regex.test(this.newPhoneNumber)) {
       this.isEditingPhoneNumber = false;
