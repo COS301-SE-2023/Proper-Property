@@ -24,14 +24,23 @@
           <ion-item>
             <ion-input type="name" [(ngModel)]="surname" placeholder="Enter Surname"></ion-input>
           </ion-item> -->
+
+          <div *ngIf="!validEmail" class="invalid-feedback">
+            Invalid email entered
+            </div>
           
           <ion-item>
             <ion-input type="email" [(ngModel)]="email" placeholder="Enter Email"></ion-input>
           </ion-item>
-
+          
           <ion-item>
-            <ion-input type="password" [(ngModel)]="password" placeholder="Enter Password"></ion-input>
+            <ion-input type="password" [(ngModel)]="password" placeholder="Enter Password" placeholder="Enter Password"></ion-input>
           </ion-item>
+
+          
+        <div *ngIf="!passwordMatch" class="invalid-feedback">
+          Passwords do not match!.
+          </div>
 
           <ion-item [class.invalid]="!passwordMatch">
             <ion-input type="password" [(ngModel)]="confirm_password" placeholder="Confirm Password"></ion-input>
@@ -39,9 +48,6 @@
 
         </ion-list>
 
-        <div *ngIf="!passwordMatch" class="invalid-feedback">
-        Passwords do not match!.
-        </div>
 
       </div>
       <div class="button-centerer">
