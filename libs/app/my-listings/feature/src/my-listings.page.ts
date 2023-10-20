@@ -123,6 +123,10 @@ export class MyListingsPage  implements OnInit, OnDestroy  {
     }
 
   }
+
+  formatNumber(num: number): string {
+    return num.toString().split('').reverse().join('').replace(/(\d{3})(?=\d)/g, '\$1 ').split('').reverse().join('');
+  }
 }
   
 

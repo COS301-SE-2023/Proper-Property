@@ -19,7 +19,6 @@ export class SavedListingsPage implements OnInit {
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
   private userProfile : UserProfile | null = null;
-  private userProfileListener: Unsubscribe | null = null;
 
   isMobile = false;
 
@@ -35,42 +34,43 @@ export class SavedListingsPage implements OnInit {
     private router : Router
     ) {
       this.savedListings = [];
-    this.userProfile$.subscribe((profile) => {
-      this.userProfile = profile;
-    });
-    // Update listener whenever is changes such that it can be unsubscribed from
-    // when the window is unloaded
-    this.userProfileListener$.subscribe((listener) => {
-      this.userProfileListener = listener;
-    });
   }
 
   async ngOnInit() {
     this.isMobile = isMobile();
     this.loading = true;
-    if(this.userProfile){
-      //Todo - Change this to send an array of IDs
-      if(this.userProfile && this.userProfile.savedListings){
-        for(const listing of this.userProfile.savedListings){
-          await this.listingServices.getListing(listing).then((listing) => {
-            if(listing){
-              // this.savedListings.push(listing);
-              this.savedListingsB = [];
-              this.savedListingsR = [];
-
-              if(listing.let_sell=="Sell")
-              {
-                this.savedListingsB.push(listing);
+    this.userProfile$.subscribe(async (profile) => {
+      this.userProfile = profile;
+      if(this.userProfile){
+        //Todo - Change this to send an array of IDs
+        if(this.userProfile && this.userProfile.savedListings){
+          this.savedListingsB = [];
+          this.savedListingsR = [];
+          for(const listing of this.userProfile.savedListings){
+            await this.listingServices.getListing(listing).then((listing) => {
+              if(listing){
+                // this.savedListings.push(listing);
+  
+                if(listing.let_sell=="Sell")
+                {
+                  this.savedListingsB.push(listing);
+                }
+                else
+                {
+                  this.savedListingsR.push(listing);
+                }
               }
-              else
-              {
-                this.savedListingsR.push(listing);
-              }
-            }
-          });
+            });
+          }
+          if (window.location.hostname.includes("localhost")) {
+            console.log(this.userProfile.savedListings);
+            console.log(this.savedListingsB);
+            console.log(this.savedListingsR);
+          }
+            
         }
       }
-    }
+    });
 
     setTimeout(() => {
       this.loading = false;
@@ -150,6 +150,10 @@ export class SavedListingsPage implements OnInit {
       tog2.style.display = 'none';
     }
 
+  }
+
+  formatNumber(num: number): string {
+    return num.toString().split('').reverse().join('').replace(/(\d{3})(?=\d)/g, '\$1 ').split('').reverse().join('');
   }
 }
 function isMobile(): boolean {

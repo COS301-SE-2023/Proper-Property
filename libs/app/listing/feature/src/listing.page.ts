@@ -46,7 +46,7 @@ export class ListingPage implements OnDestroy, OnInit {
   coordinates: { latitude: number, longitude: number } | null = null;
   profilePic = "";
   loading = true;
-
+  saved = false;
   price_per_sm = "";
   lister_name = "";
   avgEnagement = "";
@@ -65,6 +65,7 @@ export class ListingPage implements OnDestroy, OnInit {
     "November",
     "December"
   ];
+  changingSaved = false;
 
   isRed = false;
   showData = false;
@@ -141,16 +142,13 @@ export class ListingPage implements OnDestroy, OnInit {
 
         this.userProfile$.subscribe((profile) => {
           this.userProfile = profile;
-          this.isRed = this.isSaved(this.listingId);
+          this.saved = this.userProfile?.savedListings?.includes(this.listingId) ?? false;
+          // this.isRed = this.saved;
+          if (window.location.hostname.includes("localhost")) console.log("userProfile Subscriber: ", this.saved);
           if (profile && this.list && this.userProfile?.userId == this.list?.user_id) {
             this.ownerViewing$ = of(true);
             this.profilePic = this.userProfile?.profilePicture ?? "";
           }
-        });
-
-        // when the window is unloaded
-        this.userProfileListener$.subscribe((listener) => {
-          this.userProfileListener = listener;
         });
 
         if (this.list?.geometry && this.list?.status == StatusEnum.ON_MARKET) {
@@ -161,12 +159,6 @@ export class ListingPage implements OnDestroy, OnInit {
           this.setWaterScore();
         }
       });
-    });
-
-    // Update listener whenever is changes such that it can be unsubscribed from
-    // when the window is unloaded
-    this.userProfileListener$.subscribe((listener) => {
-      this.userProfileListener = listener;
     });
 
     setTimeout(async () => {
@@ -619,14 +611,16 @@ export class ListingPage implements OnDestroy, OnInit {
     this.minGrossMonthlyIncome = this.monthlyPayment * 3; // Assuming minimum income requirement is 3 times the monthly payment
   }
 
-  toggleColor() {
-    if (this.isRed)
-      this.unsaveListing();
+  async toggleColor() {
+    this.changingSaved = true;
+    if (this.saved)
+      await this.unsaveListing();
     else
-      this.saveListing();
+      await this.saveListing();
 
+    this.changingSaved = false;
 
-    this.isRed = !this.isRed;
+    // this.isRed = !this.isRed;
   }
 
   isSaved(listing_id: string) {
@@ -641,34 +635,36 @@ export class ListingPage implements OnDestroy, OnInit {
     return false;
   }
 
-  saveListing() {
-    if (!this.isSaved(this.listingId)) {
-      if (this.userProfile) {
-        if (this.userProfile.savedListings) {
-          this.userProfile.savedListings.push(this.listingId);
-        }
-        else {
-          this.userProfile.savedListings = [this.listingId];
-        }
-
-        this.profileServices.updateUserProfile(this.userProfile);
-
-        if (this.list && this.list.characteristics) {
-          this.profileServices.updateInterests(this.list.characteristics, this.userProfile.userId);
-        }
-
-
-      }
+  async saveListing() {
+    if (window.location.hostname.includes("localhost")) {
+      console.log("SaveListing- is saved?: ", this.saved);
+      console.log(this.userProfile);
+      console.log(this.userProfile?.savedListings);
     }
+    
+    if (this.userProfile && !this.userProfile.savedListings?.includes(this.listingId)) {
+      this.userProfile.savedListings = this.userProfile.savedListings ?? [];
+      this.userProfile.savedListings.push(this.listingId);
+      
+      if (this.list && this.list.characteristics) {
+        await this.profileServices.updateInterests(this.list.characteristics, this.userProfile);
+      }
+      else {
+        await this.profileServices.updateUserProfile(this.userProfile);
+      }
+
+
+    }
+    
   }
 
-  unsaveListing() {
-    if (this.isSaved(this.listingId)) {
+  async unsaveListing() {
+    if (this.saved) {
       if (this.userProfile) {
         if (this.userProfile.savedListings) {
           this.userProfile.savedListings.splice(this.userProfile.savedListings.indexOf(this.listingId), 1);
         }
-        this.profileServices.updateUserProfile(this.userProfile);
+        await this.profileServices.updateUserProfile(this.userProfile);
       }
     }
   }
