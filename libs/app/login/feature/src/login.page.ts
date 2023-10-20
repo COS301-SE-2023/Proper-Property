@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '@properproperty/app/auth/data-access';
 import { AuthProviderLogin } from '@properproperty/app/auth/util';
 import { Router } from '@angular/router'
@@ -12,7 +12,7 @@ import { Select } from '@ngxs/store';
 import { UserProfileState } from '@properproperty/app/profile/data-access';
 import { UserProfile } from '@properproperty/api/profile/util';
 import { ToastController, ToastOptions } from '@ionic/angular';
-
+import { IonModal } from '@ionic/angular';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -28,6 +28,7 @@ export class LoginPage implements OnInit {
   resetEmail = "";
   emailEntered = this.resetEmail? true : false;
 
+  @ViewChild(IonModal) modal!: IonModal;
 
   constructor(private readonly store: Store,
     public authService: AuthService, 
@@ -102,7 +103,9 @@ export class LoginPage implements OnInit {
       if(window.location.hostname.includes("localhost")) console.log(e);
     }
   }
-
+  async closePasswordModal(){
+    this.modal.dismiss();
+  }
 }
 
 function isMobile(): boolean {
