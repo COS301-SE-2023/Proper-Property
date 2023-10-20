@@ -42,10 +42,24 @@ export class RegisterPage implements OnInit {
   email:string;
   confirm_password:string;
   passwordMatch = true;
+  validEmail=true;
 
   async register() {
+    
+    if(!checkFields(this.email, this.password, this.confirm_password)){
+      return;
+    }
+
+    if(!validateEmail(this.email)) {
+      this.validEmail = false;
+      return;
+    }
+
     if (this.password !== this.confirm_password) {
       this.passwordMatch = false;
+      this.password='';
+      this.confirm_password='';
+
       return; // Prevent further execution
     }
 
@@ -111,4 +125,17 @@ export class RegisterPage implements OnInit {
 
 function isMobile(): boolean {
   return window.innerWidth <= 576;
+}
+
+function validateEmail(email: string): boolean {
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  return emailRegex.test(email);
+}
+
+function checkFields(email: string, password: string, confirmPassword: string): boolean {
+  if (!email || !password || !confirmPassword) {
+    alert("Please enter all fields");
+    return false;
+  }
+  return true;
 }
