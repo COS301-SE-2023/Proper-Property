@@ -15,19 +15,16 @@
         <ion-col size="3.5">
         <ion-grid>
           <ion-row class="ion-justify-content-center">
-            <div (click)="fileInput.click()" style="margin: 10px; border-radius: 50%; border: 1px solid black; width: 100px; height: 100px; background-image: url({{profilePic}}); background-size: cover; background-position-x: center; background-position-y: center;" id="profilePic2"></div>
+            <div (click)="fileInput.click()" style="background-image: url({{profilePic}});" id="profilePic2"></div>
             <input type="file" accept="image/*" (change)="handleFileInput($event)" hidden #fileInput>
           </ion-row>
           <ion-row class="ion-justify-content-center">
-            <ion-button style="float: right;" size="small" expand="full" color="primary" (click)="saveProfilePic()">Save Profile</ion-button>
+            <ion-button [disabled]="!saveProfile" style="float: right;" size="small" expand="full" color="primary" (click)="saveProfilePic()">Save Profile</ion-button>
           </ion-row>
-          <!-- <ion-row class="ion-justify-content-center">            
-            <h3>{{ user?.firstName }} {{ user?.lastName }}</h3>
-          </ion-row> -->
         </ion-grid>
       </ion-col>
         <ion-col>
-          <h1>{{ user?.firstName }} {{ user?.lastName }}</h1>
+          <h1>User Interests:</h1>
       
             <ion-grid class="Userlabels">
               <ion-row class="row1">
@@ -117,14 +114,7 @@
           <ion-row class="upGrade">
             <ion-col>
               <ion-button class="but1">
-                <ion-label>Upgrade Preferences</ion-label>
-              </ion-button>              
-            </ion-col>
-          </ion-row>
-          <ion-row class="upGrade">
-            <ion-col>
-              <ion-button class="but1">
-                <ion-label>NEW FEATURE COMMING SOON</ion-label>
+                <ion-label>Change Password</ion-label>
               </ion-button>              
             </ion-col>
           </ion-row>
@@ -134,7 +124,12 @@
                 <ion-label>Log Out</ion-label>
               </ion-button>
             </ion-col>
-          </ion-row>            
+          </ion-row>
+          <ion-row class="delete">
+            <ion-button class="delete-account-button" expand="full" (click)="confirmDeleteAccount()">
+              Delete Account
+            </ion-button>
+          </ion-row>          
         </ion-col>
 
         <ion-col class="settings">
@@ -147,7 +142,7 @@
             </ion-col>
             <ion-col>
               <ion-button  (click)="editName()" class="but2">
-                <ion-icon name="create-outline" class="edit-icon" size="large"></ion-icon>
+                <ion-icon name="create-outline" class="edit-icon" size="small"></ion-icon>
               </ion-button>           
             </ion-col>
 
@@ -162,17 +157,22 @@
           <ion-row>
 
             <ion-col size="8">
-              <h3>Edit Email {{ user?.email }}</h3>
+              <h3>Email: {{ user?.email }}</h3>
             </ion-col>
             <ion-col>
               <ion-button class="but2" (click)="editEmail()">
-                <ion-icon name="create-outline" class="edit-icon" size="large"></ion-icon>
+                <ion-icon name="create-outline" class="edit-icon" size="small"></ion-icon>
               </ion-button>
             </ion-col>
 
 
             <div class="edits" *ngIf="isEditingEmail">
-              <ion-input type="text" [(ngModel)]="newEmail" placeholder="Enter a new email" clearInput></ion-input>
+              <ion-item style="width: 100%">
+                <p *ngIf="googleLogged" style="color: red">
+                  * Please note you are logged in via Google and this email change will only affect where notifications are sent to.
+                </p>
+              </ion-item>
+              <ion-input type="email" [(ngModel)]="newEmail" placeholder="Enter a new email" id="email" clearInput></ion-input>
               <ion-button expand="full" color="primary" (click)="saveEmail()">Save</ion-button>
               <ion-button expand="full" color="danger" (click)="discardEmail()">Cancel</ion-button>
             </div>
@@ -182,27 +182,21 @@
           <ion-row>
 
             <ion-col size="8">
-              <h3>Edit Phone Number {{ user?.phoneNumber }}</h3>
+              <h3>Phone Number: {{ user?.phoneNumber }}</h3>
             </ion-col>
 
             <ion-col>
               <ion-button class="but2" (click)="editPhoneNumber()">
-                <ion-icon name="create-outline" class="edit-icon" size="large"></ion-icon>
+                <ion-icon name="create-outline" class="edit-icon" size="small"></ion-icon>
               </ion-button>
             </ion-col>
 
             <div class="edits" *ngIf="isEditingPhoneNumber">
-              <ion-input type="text" [(ngModel)]="newPhoneNumber" placeholder="Enter a new phone number" clearInput></ion-input>
+              <ion-input type="text" [(ngModel)]="newPhoneNumber" id="phoneNumber" placeholder="Enter a new phone number" clearInput></ion-input>
               <ion-button expand="full" color="primary" (click)="savePhoneNumber()">Save</ion-button>
               <ion-button expand="full" color="danger" (click)="discardPhoneNumber()">Cancel</ion-button>
             </div>
 
-          </ion-row>
-          <br>
-          <ion-row>
-              <ion-button class="delete-account-button" expand="full" color="danger" (click)="confirmDeleteAccount()">
-                Delete Account
-              </ion-button>
           </ion-row>
         </ion-col>
       </ion-row>
@@ -306,7 +300,7 @@
 
 
             <div class="edits" *ngIf="isEditingEmail">
-              <ion-input type="text" [(ngModel)]="newEmail" placeholder="Enter a new email" clearInput></ion-input>
+              <ion-input [(ngModel)]="newEmail" placeholder="Enter a new email" clearInput></ion-input>
               <ion-button expand="full" color="primary" (click)="saveEmail()">Save</ion-button>
               <ion-button expand="full" color="danger" (click)="discardEmail()">Cancel</ion-button>
             </div>

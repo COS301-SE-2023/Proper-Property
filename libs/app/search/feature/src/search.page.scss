@@ -62,10 +62,10 @@ ion-content::part(scroll) {
   }
   
   select{
-    background-color: #94d5ae !important;
+    background-color: white !important;
     // border-radius: 5px;
     width: 100%;
-    border: 1px solid white !important;
+    border: 1px solid #e4e4e4 !important;
   }
   option{
     // border-radius: 5px;
@@ -105,7 +105,6 @@ ion-content::part(scroll) {
     // border-radius: 8px;
     margin: 5px;
     overflow: hidden;
-    background-color: white;
     // border: 5px solid #94d5ae;
   }
 
@@ -189,11 +188,11 @@ ion-content::part(scroll) {
 
   #filter-container {
     // border-radius: 30px;
-    border: 1px solid #fefefe;
+    border: 1px solid #e4e4e4;
     background: rgba(13, 174, 79, 0.40);
     width: 100%;
     height:auto;
-    background-color: #94d5ae;
+    background-color: white;
   }
   
   .filter-text {
@@ -211,10 +210,10 @@ ion-content::part(scroll) {
   .prediction-result-list {
     position: absolute;
     top: 100%;
-    margin-top: 2px;
+    margin-top: 1px;
     left: 5px;
     // border-radius: 25px;
-    width: 92%;
+    width: 98%;
     padding: 0;
     background: rgba(0,0,0,0);
     z-index: 10;
@@ -222,7 +221,7 @@ ion-content::part(scroll) {
       z-index: 10;
       cursor: pointer;
       padding: 0 0;
-      border: 2px solid grey;
+      border: 1px solid #e4e4e4;
       // border-radius: 24px;
       // height: 20px;
       font-size: 14px;
@@ -256,6 +255,7 @@ ion-content::part(scroll) {
   #search-row{
     // margin-left: 4%;
     padding-left: 0;
+    padding-top: 10px;
   }
   .search-filter-col {
     padding: 5px 10px;
@@ -277,13 +277,13 @@ ion-content::part(scroll) {
       height: 0px;
     }
     to{
-      height: 175px;
+      height: 260px;
     }
   }
 
   @keyframes close-filter-div{
     from{
-      height: 175px;
+      height: 260px;
     }
     to{
       height: 0px;
@@ -753,13 +753,12 @@ ion-content::part(scroll) {
    
   }
   
-  
   /* Listings Section */
   
-  .lists
-  {
-    overflow: auto;
-  }
+  // .lists
+  // {
+
+  // }
 
   .listsSearching{
     height: 200px;
@@ -795,7 +794,7 @@ ion-content::part(scroll) {
   ion-card {
     width: 95%;
     // height: 180px;
-    margin-left: 2%;
+    // margin-left: 2%;
     margin-top: 15px;
     margin-bottom: 10px;
     // border-radius: 10px;
@@ -1035,6 +1034,7 @@ ion-content::part(scroll) {
     margin-right: 10%;
     --border-radius: 30px;
     margin-top: 1%;
+    color: white;
   }
   
   .search-button {
