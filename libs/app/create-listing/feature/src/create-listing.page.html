@@ -119,7 +119,7 @@
             <ion-label position="floating" class="house-text" style="margin-top: 1px;">Listing Price<span
                 class="required-indicator" *ngIf="!price">*</span></ion-label>
 
-            <ion-input type="text" id="price" [(ngModel)]="price" (input)="formatPrice()" required></ion-input>
+            <ion-input type="text" id="price" [(ngModel)]="price" required></ion-input>
             <ion-note slot="end">ZAR</ion-note>
           </ion-item>
         </ion-col>
@@ -208,7 +208,7 @@
             <ion-label position="floating" class="house-text">Bathroom Count<span class="required-indicator"
                 *ngIf="!bathrooms">*</span></ion-label>
 
-            <ion-input type="number" id="bath" [(ngModel)]="bathrooms" required></ion-input>
+            <ion-input type="number" id="bath" [(ngModel)]="bathrooms" inputmode="numeric" (keypress)="numericOnly($event)" required></ion-input>
 
           </ion-item>
         </ion-col>
@@ -217,7 +217,7 @@
             <ion-label position="floating" class="house-text">Bedroom Count<span class="required-indicator"
                 *ngIf="!bedrooms">*</span></ion-label>
 
-            <ion-input type="number" id="bed" [(ngModel)]="bedrooms" required></ion-input>
+            <ion-input type="number" id="bed" [(ngModel)]="bedrooms" inputmode="numeric" (keypress)="numericOnly($event)" required></ion-input>
 
           </ion-item>
         </ion-col>
@@ -226,7 +226,7 @@
             <ion-label position="floating" class="house-text">Floor Size &#40; m<sup>2</sup>&#41;<span
                 class="required-indicator" *ngIf="!floor_size">*</span></ion-label>
 
-            <ion-input type="number" id="floor-size" [(ngModel)]="floor_size" required></ion-input>
+            <ion-input type="number" id="floor-size" [(ngModel)]="floor_size" (keypress)="propSizeValidation($event)" required></ion-input>
 
           </ion-item>
         </ion-col>
@@ -236,9 +236,9 @@
         <ion-col>
           <ion-item class="ion-container">
             <ion-label position="floating" class="house-text">Erf size &#40; m<sup>2</sup>&#41;<span
-                class="required-indicator" *ngIf="!erf_size">*</span></ion-label>
+                class="required-indicator" *ngIf="!erf_size" >*</span></ion-label>
 
-            <ion-input type="number" id="property-size" [(ngModel)]="erf_size" required></ion-input>
+            <ion-input type="number" id="property-size" [(ngModel)]="erf_size" (keypress)="propSizeValidation($event)" required></ion-input>
 
           </ion-item>
         </ion-col>
@@ -247,7 +247,7 @@
             <ion-label position="floating" class="house-text">Parking<span class="required-indicator"
                 *ngIf="!parking">*</span></ion-label>
 
-            <ion-input type="number" id="parking" [(ngModel)]="parking" required></ion-input>
+            <ion-input type="number" id="parking" [(ngModel)]="parking" (keypress)="numericOnly($event)" required></ion-input>
 
           </ion-item>
         </ion-col>
@@ -425,7 +425,7 @@
                   class="required-indicator" *ngIf="!price">*</span></ion-label>
 
               
-            <ion-input type="text" id="price" [(ngModel)]="price" (input)="formatPrice()" required></ion-input>
+            <ion-input type="text" id="price" [(ngModel)]="price" required></ion-input>
            
         
 
