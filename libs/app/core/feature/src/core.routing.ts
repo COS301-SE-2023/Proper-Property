@@ -72,6 +72,10 @@ const routes: Routes = [
     path: 'terms-of-use',
     loadChildren: () => import('@properproperty/app/terms-of-use/feature').then( m => m.TermsOfUsePageModule)
   },
+  {
+    path: 'privacy-policy',
+    loadChildren: () => import('@properproperty/app/privacy-policy/feature').then( m => m.PrivacyPolicyPageModule)
+  },
 
   {
     path: 'version',
