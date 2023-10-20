@@ -28,6 +28,18 @@ ion-content::part(scroll) {
     height: 100%;
     width: 25%;
   }
+
+  .imageCol img {
+    width: 300px;
+    height: 200px;
+    position: relative;
+    object-fit: cover;
+    overflow: hidden;
+  }
+
+  .houseInfoCol{
+    padding-left: 5px;
+  }
   
   .slider {
     position: relative;
@@ -355,36 +367,36 @@ ion-content::part(scroll) {
   
   
   //make the img in ion-card-header smaller
-  .lists ion-card-header img {
-    width: 200px;
-    height: 100%;
-    //rounded edges
-    // border-radius: 10px;
-    object-fit: cover;
-  }
+  // .lists ion-card-header img {
+  //   width: 200px;
+  //   height: 100%;
+  //   //rounded edges
+  //   // border-radius: 10px;
+  //   object-fit: cover;
+  // }
   
   //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
-  .lists ion-card-header ion-card-title{
-    // margin-left: 220px;
-    //move ths up
-    // margin-top: -130px;
-  }
+  // .lists ion-card-header ion-card-title{
+  //   // margin-left: 220px;
+  //   //move ths up
+  //   // margin-top: -130px;
+  // }
   
-  .lists ion-card-header ion-card-subtitle {
-    // margin-left: 220px;
-  }
+  // .lists ion-card-header ion-card-subtitle {
+  //   // margin-left: 220px;
+  // }
   
-  .lists ion-card ion-card-content  {
-    // margin-left: 220px;
-  }
+  // .lists ion-card ion-card-content  {
+  //   // margin-left: 220px;
+  // }
   
-  //make the ion-card take only half of the page
-  .lists ion-card {
-    // width: 45%;
-    margin-left: 2%;
-    margin-top: 10px;
-    // border-radius: 10px;
-  }
+  // //make the ion-card take only half of the page
+  // .lists ion-card {
+  //   // width: 45%;
+  //   margin-left: 2%;
+  //   margin-top: 10px;
+  //   // border-radius: 10px;
+  // }
   
   #house_description{
     height: 10% !important;
@@ -392,6 +404,10 @@ ion-content::part(scroll) {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+  }
+
+  .houseInfoGrid ion-row{
+    padding: 5px;
   }
 
   .house_details{
@@ -404,9 +420,8 @@ ion-content::part(scroll) {
 
   //styling for div with id="house_details"
   .house_details img {
-    //set image size
-    width: 15px;
-    height: 15px;
+    width: 15px !important;
+    height: 15px !important;
   }
   
   .heart-button {
@@ -497,7 +512,7 @@ ion-content::part(scroll) {
   //end of scss
   * {
     margin: 0;
-    padding: 0;
+    // padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
   }
@@ -767,7 +782,7 @@ ion-content::part(scroll) {
   
   ion-card {
     width: 95%;
-    height: 180px;
+    // height: 180px;
     margin-left: 2%;
     margin-top: 15px;
     margin-bottom: 10px;
@@ -795,17 +810,6 @@ ion-content::part(scroll) {
     height: 100%;
     width: 100%;
   }
-  // ion-icon {
-  //   font-size: 64px;
-  // }
-  //styling for div with id="house_details"
-  .house_details img {
-    //set image size
-    width: 15px;
-    height: 15px;
-  }
-  
-  
   
   #back-arrow {
     color: #0DAE4F;
