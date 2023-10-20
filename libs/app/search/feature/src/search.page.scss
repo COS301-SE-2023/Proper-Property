@@ -48,8 +48,9 @@ ion-content::part(scroll) {
     background-color: rgb(150, 150, 150);
     border-radius: 5px;
     margin-bottom: 5px;
-    margin-right: 5%;
-    padding-right: 50px;
+    padding-left: 50px;
+    // margin-right: 5%;
+    // padding-right: 50px;
   }
   
   select{
@@ -845,7 +846,7 @@ ion-content::part(scroll) {
     left: 0;
     height: 100%;
     background-color: green;
-    // border-radius: 5px;
+    border-radius: 5px;
     transition: width 0.3s ease-in-out;
   }
 
@@ -855,7 +856,7 @@ ion-content::part(scroll) {
     left: 0;
     height: 100%;
     background-color: red;
-    // border-radius: 5px;
+    border-radius: 5px;
     transition: width 0.3s ease-in-out;
   }
 
@@ -865,7 +866,7 @@ ion-content::part(scroll) {
     left: 0;
     height: 100%;
     background-color: #ffcc00;
-    // border-radius: 5px;
+    border-radius: 5px;
     transition: width 0.3s ease-in-out;
   }
   
