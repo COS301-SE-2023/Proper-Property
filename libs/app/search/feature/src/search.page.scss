@@ -92,7 +92,7 @@ ion-content::part(scroll) {
   .listing-map-grid {
     position: sticky;
     position: -webkit-sticky;
-    top: 56px;
+    // top: 56px;
     // padding: 0 10px;
     // border-radius: 8px;
     margin: 5px;
@@ -490,7 +490,7 @@ ion-content::part(scroll) {
   
   #listings-and-map {
     transition: transform 0.3s ease-in-out;
-    margin-top:3%;
+    // margin-top:3%;
     // margin-bottom: 25%;
     // display: none;
   }

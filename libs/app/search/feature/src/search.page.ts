@@ -520,6 +520,7 @@ async loadMap() {
         }
       }
     }
+    const temp = [];
 
     if(this.allListings){
       //Recommendation algo
@@ -547,18 +548,28 @@ async loadMap() {
         }
         if (window.location.hostname.includes("localhost"))
           console.log(list.characteristics);
-        this.recommends.push({
-          listingID: list.listing_id,
-          recommended: await this.listingServices.recommender(
+          if(await this.listingServices.recommender(
             list.characteristics, 
             this.userInterestVector
-            )
-          })
+          )){
+            this.recommends.push({
+              listingID: list.listing_id,
+              recommended: true})
+            temp.unshift(list);
+          }
+          else{
+            this.recommends.push({
+              listingID: list.listing_id,
+              recommended: false})
+            temp.push(list);
+          }
       }
+
+      this.allListings = temp;
 
       for(let listing of this.allListings){
         if(listing.listing_id){
-           this.cardView.set(listing.listing_id, false)
+          this.cardView.set(listing.listing_id, false)
         }
       }
 
