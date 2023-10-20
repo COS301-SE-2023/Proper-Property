@@ -76,7 +76,11 @@ export class CoreShellComponent implements OnInit, OnDestroy {
       this.notifications = notifications?.reverse() ?? [];
     });
     this.userProfile$.subscribe((profile) => {
-      let destination = '/'
+      let destination = this.router.url;
+      if(this.router.url == "/login" || this.router.url == "/register"){
+        destination = '/'
+      }
+      
       if (!this.loggedIn && profile && (!profile.firstName || !profile.lastName)) {
         destination = '/profile';
       }
