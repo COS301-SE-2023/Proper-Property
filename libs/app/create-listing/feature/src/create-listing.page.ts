@@ -12,7 +12,7 @@ import { AuthState } from '@properproperty/app/auth/data-access';
 import { User } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators'
 
 @Component({
