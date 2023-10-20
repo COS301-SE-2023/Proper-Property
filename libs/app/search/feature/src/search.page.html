@@ -298,7 +298,7 @@
           </div>
         </ion-col>
 
-        <ion-col class="search-filter-col">
+        <ion-col size="2" class="search-filter-col">
           <ion-button
           class="filter-button" (click)="toggleAdditionalFilters()">
             <ion-icon [name]="showAdditionalFilters ? 'remove' : 'add'"></ion-icon>
@@ -328,7 +328,7 @@
         </ion-col>
       </ion-row> -->
       <ion-row [class.listsSearching]="searching" style="display: flex; justify-content: center;">
-        <ion-col size="6">
+        <ion-col style="display: flex; justify-content: center;" size="12">
           <ng-container *ngIf="searching; else listingsLoaded">
             <div class="loading-animation">
               <img src="assets/500.gif">
@@ -359,7 +359,7 @@
                           </ion-col>
                         </ion-row>
                         <ion-row>
-                          <p><b>{{listing.address}}</b></p>
+                          <p class="houseText"><b>{{listing.address}}</b></p>
                         </ion-row>
                         <ion-row>
                           <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
@@ -367,7 +367,7 @@
                           </p>
                         </ion-row>
                         <ion-row>
-                          <p>For Sale!</p>
+                          <p class="houseText">For Sale!</p>
                         </ion-row>
                         <ion-row>
                           <p id="house_description">
@@ -409,7 +409,14 @@
                           <ion-grid>
                             <ion-row>
                               <ion-col>
-                                <ion-card-title style="color: #0DAE4F;">Area Ratings</ion-card-title>
+                                <ion-card-title style="color: #0DAE4F;">
+                                    Area Rating Average: 
+                                    {{((listing.areaScore.schoolScore + 
+                                      listing.areaScore.crimeScore + 
+                                      listing.areaScore.waterScore + 
+                                      listing.areaScore.sanitationScore)/4)
+                                      .toFixed(2)}}
+                                  </ion-card-title>
                               </ion-col>
                               <ion-col size="2">
                                 <div class="area-score-toggle-container">
@@ -466,7 +473,6 @@
                               [style.width]="listing.areaScore.schoolScore+'%'"
                             ></div>
                           </div>
-                          <h4 style="float: left;"><u>Total Score:</u> {{((listing.areaScore.schoolScore + listing.areaScore.crimeScore + listing.areaScore.waterScore + listing.areaScore.sanitationScore)/4).toFixed(2)}} </h4>              
                           </ion-col>
                         </ion-row>
                       </ion-grid>

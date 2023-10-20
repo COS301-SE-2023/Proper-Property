@@ -3,6 +3,14 @@ ion-content::part(scroll) {
 }
 
 .Desktop {
+  .houseText{
+    font-size: 15px;
+  }
+
+  .listingCard{
+    width: 750px;
+  }
+
   .listingCard:hover{
     box-shadow: 3px 3px 5px rgba(13, 174, 80, 0.7);
   }
@@ -74,9 +82,9 @@ ion-content::part(scroll) {
     width: 100%;
     height: 20px;
     position: absolute;
-    transform: rotate(315deg);
-    top: 20%;
-    left: -33%;
+    transform: rotate(316deg);
+    top: 30px;
+    left: -80px;
     text-align: center;
   }
 
@@ -190,7 +198,7 @@ ion-content::part(scroll) {
   
   .filter-text {
     color: rgb(0, 0, 0);
-    font-size: 16px;
+    font-size: 15px;
     font-style: normal;
     font-weight: 400;
   }
@@ -332,8 +340,10 @@ ion-content::part(scroll) {
   }
   
   .filter-button {
-    width: 90%;
-    height: 90%;
+    width: 210px;
+    height: 56px;
+    color: white;
+    // position: absolute;
     // margin-right: 10%;
     // --border-radius: 30px;
     // margin-top: 5%;
@@ -345,7 +355,8 @@ ion-content::part(scroll) {
   }
   
   .search-button {
-    width: 90%;
+    position: absolute;
+    width: 210px;
     height: 56px;
     margin-right: 10%;
     color: white;
@@ -978,7 +989,7 @@ ion-content::part(scroll) {
   
   .filter-text {
     color: rgb(68, 68, 68);
-    font-size: 16px;
+    font-size: 15px;
     font-style: normal;
     font-weight: 400;
   }
