@@ -196,7 +196,7 @@
                     color: black;
                     flex-grow:1;"Ï>Points of Interest
                     </div>
-                    <ion-button class="mapButton" (click)="mapView()" (click)="setMapOpen(true)">View Map<ion-icon style="margin-left:5%;" name="map-outline"></ion-icon></ion-button>
+                    <ion-button class="mapButton" (click)="mapView()">View Map<ion-icon style="margin-left:5%;" name="map-outline"></ion-icon></ion-button>
                     </div>
                     <ion-card-content>
                       <ion-grid style="z-index: 1">
@@ -311,7 +311,6 @@
                         </ion-item>
                       </ion-list>
                     </ion-col>
-
                     <ion-col>
                       <ion-button
                         style="color-scheme: #0dae4f"
@@ -374,31 +373,6 @@
                         </ng-template>
                       </ion-modal>
                     </ion-col>
-
-                    <ion-modal [isOpen]="isMapModalOpen">
-                      <ng-template>
-                        <ion-header>
-                          <ion-toolbar>
-                            <ion-title>Map View</ion-title>
-                            <ion-buttons slot="end">
-                              <ion-button (click)="setMapOpen(false)"
-                                >Close</ion-button
-                              >
-                            </ion-buttons>
-                          </ion-toolbar>
-                        </ion-header>
-                        <ion-content class="ion-padding">
-                          <ion-grid>
-                            <ion-col>
-                              
-                                <div class="map" id="map" #map></div>
-                              
-                            </ion-col>          
-                          </ion-grid>
-                        </ion-content>
-                      </ng-template>
-                    </ion-modal>
-
                   </ion-row>
                 </ion-grid>
               </ion-card-content>
@@ -463,17 +437,34 @@
               <ion-input disabled="true" type="string" [(ngModel)]="avgEnagement" id="engagement-label"></ion-input>
             </div>
           </ion-row>
-          <!-- <ion-col style="border-left: 5px solid #94d5ae">
-            <div>
-              <div slot="fixed" class="map" id="map" #map></div>
-            </div>
-          </ion-col>  -->
-
         </ion-grid>
-
-
       </div>
-    </ng-template> 
+    </ng-template>
+
+    <ion-col>
+
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Map View</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="setOpen(false)"
+                  >Close</ion-button
+                >
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+            <ion-grid>
+              <ion-col>
+                
+                  <div class="map" id="map" #map></div>
+                
+              </ion-col>          
+            </ion-grid>
+          </ion-content>
+        </ng-template>
+    </ion-col>
 
 
   </ion-content>

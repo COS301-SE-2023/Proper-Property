@@ -28,7 +28,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
   @ViewChild(IonContent) content: IonContent | undefined;
   // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
 
-  @ViewChild('map', { static: false }) mapElementRef!: ElementRef;
+  @ViewChild('map', { static: false }) mapElementRef1!: ElementRef;
   MapView = false ;
   isMobile: boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
@@ -208,9 +208,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
       let mapEl = null;
       mapEl = mapElementRef;
 
-      console.log("locked and loaded ",mapEl);
-
-        const location = new googleMaps.LatLng(this.list?.geometry.lat, this.list?.geometry.lng);
+        const location = new googleMaps.LatLng(this.center.lat ?? this.list?.geometry.lat, this.center.lng ?? this.list?.geometry.lat);
         this.map = new googleMaps.Map(mapEl, {
           center: location,
           zoom: 15,
@@ -220,7 +218,9 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
   
   
         this.renderer.addClass(mapEl, 'visible');        
-        
+      
+       
+
         if (this.list) {
           this.createListingCard(this.list);
           if (this.list.geometry.lat && this.list.geometry.lng ) {
@@ -240,9 +240,10 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
 
       this.MapView = !this.MapView;
       if(!this.MapView) {
-
-          this.mapElementRef.nativeElement.innerHTML = ''; // Clear the contents of the map div
-  
+        const mapElement = document.getElementById("map");
+        if (mapElement) {
+          mapElement.innerHTML = ''; // Clear the contents of the map div
+        }
       }
       else{
         await this.loadMap();
@@ -867,16 +868,6 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
 
   setOpen(isOpen: boolean) {
     this.isModalOpen = isOpen;
-  }
-
-  isMapModalOpen = false;
-
-  setMapOpen(isOpen: boolean) {
-    if(!this.MapView){
-      this.mapView();
-    }
-    this.isMapModalOpen = isOpen;
-   
   }
 
   scrollToBottom() {
