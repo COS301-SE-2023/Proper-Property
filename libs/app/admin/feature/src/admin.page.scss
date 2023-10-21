@@ -4,32 +4,39 @@
 
 #notApprovedHeadCol {
   // outline: 2px solid black;
-  border-right: 1px solid black;
+  border-right: 1px solid rgba(214, 214, 214, 0.4);
 }
 
 #notApprovedHead {
   width: 35%;
   height: auto;
   text-align: center;
-  border: 1px solid #000;
+  // border: 1px solid #000;
+  
   margin: auto;
   margin-top: 0.5%;
   align-items:center;
   padding: 1%;
 }
 
+.headings
+{
+  border-bottom: 1px solid rgba(214, 214, 214, 0.4);
+  background: rgba(245, 245, 245, 0.4);
+}
+
 #notApprovedBodyCol {
   width: 50%;
-  border-right: 1px solid black;
+  border-right: 1px solid rgba(214, 214, 214, 0.4);
   // background: rgba(222, 19, 19, 0.10);
   min-height: 84vh;
 }
 
 #approvedHead {
-  width: 35%;
-  height: auto;
+  // width: 35%;
+  // height: auto;
   text-align: center;
-  border: 1px solid #000;
+  // border: 1px solid #000;
   margin: auto;
   margin-top: 0.5%;
   align-items:center;
