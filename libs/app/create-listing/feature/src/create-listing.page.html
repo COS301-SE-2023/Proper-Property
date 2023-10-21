@@ -406,7 +406,7 @@
           </ion-col>
         </ion-row>
 
-        <ion-row style="width:100%">
+        <ion-row style="width:100%; position: relative; top: -35px;">
           <ng-container *ngIf="!ownerViewing; else ownerView">
             <ion-button (click)="addListing('create')"
               [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking||!district">SUBMIT
