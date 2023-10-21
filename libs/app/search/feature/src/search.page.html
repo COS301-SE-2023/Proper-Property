@@ -8,7 +8,7 @@
       <ion-row id="searchBar" style="width: 100%;">
         <ion-col size="10" class="search-filter-col">
           <ion-input type="text" (ionInput)="handleInputChange($event)" id="address" class="address"
-            [(ngModel)]="searchQuery" placeholder="South Africa"></ion-input>
+            [(ngModel)]="searchQuery" placeholder="Search in an area"></ion-input>
             <!-- <span slot="error">Location is required</span> -->
             <ion-spinner name="crescent" color="primary" *ngIf="searchLoading" style="position: absolute; top: 18px; left:18px; z-index: 100;"></ion-spinner>
           <ion-list *ngIf="predictionDisplay()" class="prediction-result-list">

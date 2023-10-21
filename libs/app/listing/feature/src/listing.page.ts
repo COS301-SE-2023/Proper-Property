@@ -365,7 +365,10 @@ export class ListingPage implements OnDestroy, OnInit {
         && (sanitationScore || scoresCalculated.sanitationScore)
       ) {
         // return;
-        result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, crimeScore, waterScore, sanitationScore, schoolScore);
+        result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, 
+        StatusEnum.ON_MARKET, 
+        crimeScore, waterScore, 
+        sanitationScore, schoolScore);
       }
       else if ((this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED) && approved) {
         result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, 0, 0, 0, 0);

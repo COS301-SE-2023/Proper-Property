@@ -463,7 +463,6 @@ async loadMap() {
       this.currentPage = 0;
       this.allListings = [];
     }
-    const before = this.currentPage;
 
     if (previousPage) {
       console.log("Previous page");
@@ -497,6 +496,23 @@ async loadMap() {
 
     if(this.isMobile)this.searchQuery = (document.getElementById("address1") as HTMLInputElement).value;
     else this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
+    if(!this.searchQuery){
+      const toast = await this.toastController.create({
+        message: 'Please enter an area for us to search in',
+        duration: 3000, // Duration in milliseconds
+        color: 'danger', // Use 'danger' to display in red
+        position: 'top' // Position of the toast: 'top', 'middle', 'bottom'
+      });
+      toast.present();
+      setTimeout(() => { 
+        this.searching = false;
+        document.getElementById("searchButton")?.setAttribute("disabled", "false")
+        // document.getElementById("nextPage")?.setAttribute("disabled", "false")
+        // // if(this.currentPage > 0)
+        //   document.getElementById("prevPage")?.setAttribute("disabled", "false")
+      }, 1500)
+      return;
+    }
 
     const request = {
       env_type : this.env_type ? this.env_type : null,

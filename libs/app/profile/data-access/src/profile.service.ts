@@ -96,7 +96,7 @@ export class UserProfileService {
   async updateInterests(characteristic : characteristics, profile: UserProfile)
   {
     // const profile = this.getUser(userID);
-    // console.log("old interests", profile);
+    console.log("old interests", profile);
     this.calculatePotency(characteristic);
 
     this.temp.gym=(await profile).interests.gym;
@@ -217,7 +217,7 @@ export class UserProfileService {
     {
       updates=100;
     }
-    // console.log("after ", updates);
+    console.log("after ", updates);
     return updates;
   }
 
