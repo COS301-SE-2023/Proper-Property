@@ -252,6 +252,10 @@
     margin: auto;
   }
 
+  .align
+  {
+    margin: auto;
+  }
   #addressAutocompletions {
     height: 40px;
     width: 92%;
@@ -343,10 +347,11 @@
     margin-top: 2%;
     margin-bottom: 1%;
     padding: 3px;
+    --padding-start: 10px;
   }
 
   .container {
-    width: 100%;
+    width: 101%;
   }
 
   .house-text {
@@ -407,10 +412,14 @@
   }
 
   .dropdown {
-    bottom: 0;
-    position: absolute;
+
     width: 100%;
-    padding-bottom: 1%;
+    margin-top: 2%;
+  }
+
+  .align
+  {
+
   }
 
   .house-dropdown {

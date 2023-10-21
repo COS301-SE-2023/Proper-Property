@@ -144,7 +144,7 @@
           <ion-col>
             <ion-item lines="none" class="ion-container">
               <ion-grid>
-                <ion-row style="height:100%;">
+                <ion-row class="dropdown">
                   <ion-col size="6" style="align-self: center;">
                     <ion-label class="house-text" style="margin-top: 1px;">Listing Price<span class="required-indicator"
                         *ngIf="!price">*</span></ion-label>
@@ -152,7 +152,7 @@
                   <ion-col size="6" style="align-self: center;">
  
 
-                    <ion-input class="digit-input box-size" type="text" id="price" [(ngModel)]="price" (input)="formatPrice()"
+                    <ion-input class="digit-input box-size" style="height: 30px;" type="text" id="price" [(ngModel)]="price" (input)="formatPrice()"
                     (keypress)="numericOnly($event)" (ionInput)="onInputPrice($event)" required></ion-input>
                     <ion-note slot="end">ZAR</ion-note>
                   </ion-col>
@@ -166,7 +166,7 @@
                 <label position="floating" class="house-text">Possession Type:</label>
               </ion-col>
               <ion-col class="">
-                <select [(ngModel)]="pos_type" class="house-dropdown" aria-label="pos-type">
+                <select [(ngModel)]="pos_type" style="height: 30px;" class="house-dropdown" aria-label="pos-type">
                   <option value="Leasehold">Leasehold</option>
                   <option value="Freehold">Freehold</option>
                   <option value="Condominium">Condominium</option>
@@ -180,13 +180,13 @@
           <ion-col size="6">
             <ion-item lines="none" class="ion-container">
               <ion-grid>
-                <ion-row style="height:100%;">
+                <ion-row style="height:100%;" >
                   <ion-col size="6" style="align-self: center;">
                     <ion-label class="house-text">Bedroom Count<span class="required-indicator"
                         *ngIf="!bedrooms">*</span></ion-label>
                   </ion-col>
                   <ion-col size="6" style="align-self: center;">
-                    <ion-input class="digit-input box-size" type="number" id="bed" [(ngModel)]="bedrooms" (keypress)="numericOnly($event)" (ionInput)="onInputBedroom($event)"
+                    <ion-input class="digit-input box-size" style="height: 30px;" type="number" id="bed" [(ngModel)]="bedrooms" (keypress)="numericOnly($event)" (ionInput)="onInputBedroom($event)"
                       required></ion-input>
                   </ion-col>
                 </ion-row>
@@ -200,7 +200,7 @@
                 <label position="floating" class="house-text">Community Environment:</label>
               </ion-col>
               <ion-col class="">
-                <select [(ngModel)]="env_type" class="house-dropdown" aria-label="env-type">
+                <select [(ngModel)]="env_type" style="height: 30px;" class="house-dropdown" aria-label="env-type">
                   <option value="Gated Community">Gated Community</option>
                   <option value="Complex">Complex</option>
                   <option value="Standalone House">Standalone House</option>
@@ -220,7 +220,7 @@
                         *ngIf="!bathrooms">*</span></ion-label>
                   </ion-col>
                   <ion-col size="6" style="align-self: center;">
-                    <ion-input class="digit-input box-size" type="number" id="bath" [(ngModel)]="bathrooms" (keypress)="numericOnly($event)" (ionInput)="onInputBathroom($event)"
+                    <ion-input class="digit-input box-size" style="height: 30px;" type="number" id="bath" [(ngModel)]="bathrooms" (keypress)="numericOnly($event)" (ionInput)="onInputBathroom($event)"
                       required></ion-input>
                   </ion-col>
                 </ion-row>
@@ -233,7 +233,7 @@
                 <label position="floating" class="house-text">Orientation:</label>
               </ion-col>
               <ion-col class="">
-                <select [(ngModel)]="orientation" class="house-dropdown" aria-label="orientation">
+                <select [(ngModel)]="orientation" style="height: 30px;" class="house-dropdown" aria-label="orientation">
                   <option value="North">North</option>
                   <option value="East">East</option>
                   <option value="West">West</option>
@@ -255,7 +255,7 @@
                   </ion-col>
 
                   <ion-col size="6" style="align-self:center">
-                    <ion-input class="digit-input box-size" type="number" id="property-size" [(ngModel)]="erf_size" (keypress)="numericOnly($event)" (ionInput)="onInputErf($event)"
+                    <ion-input class="digit-input box-size" style="height: 30px;" type="number" id="property-size" [(ngModel)]="erf_size" (keypress)="numericOnly($event)" (ionInput)="onInputErf($event)"
                       required></ion-input>
                   </ion-col>
                 </ion-row>
@@ -268,7 +268,7 @@
                 <label position="floating" class="house-text">Property Type:</label>
               </ion-col>
               <ion-col class="dropdownCol">
-                <select [(ngModel)]="prop_type" class="house-dropdown" aria-label="prop-type" id="prop-type">
+                <select [(ngModel)]="prop_type" style="height: 30px;" class="house-dropdown" aria-label="prop-type" id="prop-type">
                   <option value="House">House</option>
                   <option value="Apartment">Apartment</option>
                   <option value="Commercial">Commercial Property</option>
@@ -289,7 +289,7 @@
                   </ion-col>
 
                   <ion-col size="6" style="align-self: center">
-                    <ion-input class="digit-input box-size" type="number" id="floor-size" [(ngModel)]="floor_size" (keypress)="numericOnly($event)" (ionInput)="onInputFloor($event)"
+                    <ion-input class="digit-input box-size" style="height: 30px;" type="number" id="floor-size" [(ngModel)]="floor_size" (keypress)="numericOnly($event)" (ionInput)="onInputFloor($event)"
                       required></ion-input>
                   </ion-col>
                 </ion-row>
@@ -303,7 +303,7 @@
                 <label position="floating" class="house-text">Furnishing:</label>
               </ion-col>
               <ion-col class="dropdownCol">
-                <select [(ngModel)]="furnish_type" class="house-dropdown" aria-label="furnishing">
+                <select [(ngModel)]="furnish_type" style="height: 30px;" class="house-dropdown" aria-label="furnishing">
                   <option value="Furnished">Furnished</option>
                   <option value="Partly Furnished">Partly Furnished</option>
                   <option value="Not Furnished">Not Furnished</option>
@@ -324,7 +324,7 @@
                   </ion-col>
 
                   <ion-col size="6" style="align-self: center">
-                    <ion-input class="digit-input box-size" type="number" id="parking" [(ngModel)]="parking" (keypress)="numericOnly($event)" (ionInput)="onInputParking($event)"
+                    <ion-input class="digit-input box-size" style="height: 30px;" type="number" id="parking" [(ngModel)]="parking" (keypress)="numericOnly($event)" (ionInput)="onInputParking($event)"
                       required></ion-input>
                   </ion-col>
                 </ion-row>
@@ -702,7 +702,7 @@
           </ion-col>
         </ion-row>
 
-        <ion-row style="width:100%">
+        <ion-row style="width:100%; top: 30%; position: absolute;">
           <ng-container *ngIf="!ownerViewing; else ownerView">
             <ion-button (click)="addListing('create')"
               [disabled]="photos.length === 0 ||!address||!price||!bedrooms||!bathrooms||!floor_size||!erf_size||!parking">SUBMIT
