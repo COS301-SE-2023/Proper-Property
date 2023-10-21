@@ -555,7 +555,7 @@ async loadMap() {
         this.searching = false;
         document.getElementById("searchButton")?.setAttribute("disabled", "false")
       }, 1500)
-      return;8
+      return;
     }
     // this.allListings = [];
     this.allListings = this.allListings.concat(response.listings);
