@@ -196,9 +196,14 @@
   }
 
   .addButt {
-    height: 30px;
+
     /* Adjust the height value as needed */
     vertical-align: middle;
+  }
+
+  ion-button
+  {
+    color: white;
   }
 
   .prediction-button {
@@ -333,7 +338,7 @@
     border: 1.5px solid rgb(183, 183, 183);
     background: #fff;
     height: 40px;
-    width: 95%;
+    width: 100%;
     margin-top: 2%;
     margin-bottom: 1%;
     padding: 3px;
@@ -386,17 +391,18 @@
   #desc {
     border: 1.5px solid #000;
     background: #fff;
-    width: 100%;
+    width: 90%;
     margin-top: 2%;
     margin-bottom: 2%;
     padding: 2%;
-    max-width: 100%;
-    min-width: 100%;
+    max-width: 90%;
+    min-width: 90%;
   }
 
   .addButt {
-    height: 35px;
+    width: 60%;
     margin-top: 5%;
+    margin-left: 10%;
   }
 
   .dropdown {
