@@ -476,8 +476,9 @@ export class CreateListingPage {
       const response = await this.openAIService.getHeadingAndDesc("Give me a description of a property with the following information: \n" + info
         + "Be as descriptive as possible such that I would want to buy the house after reading the description")
 
-      this.description = response.description;
-      this.heading = response.head;
+      this.description = response.description.slice(1).trim();
+      this.heading = response.head.trim();
+
     }
 
     this.descriptionLoading = false;
@@ -493,6 +494,19 @@ export class CreateListingPage {
       }
     }
   }
+
+  addFeatureNow(amenity: string) {
+
+    if (amenity != "") {
+      this.features.push(amenity);
+    }
+
+    const feat_in = document.getElementById('feat-in') as HTMLInputElement;
+     this.selectedAmenity = "";
+    feat_in.value = "";
+  }
+
+
   //removeFeature
   removeFeature(index: number) {
     this.features.splice(index, 1);
@@ -1037,6 +1051,7 @@ export class CreateListingPage {
 
   selectAmenity(amenity: string): void {
     this.selectedAmenity = amenity;
+    this.addFeatureNow(amenity);
     this.filteredAmenities = [];
   }
 
