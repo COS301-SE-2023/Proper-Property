@@ -56,7 +56,7 @@
               </ion-card>
             </ion-col>
             <ion-col>
-              <ion-grid>
+              <ion-grid style="padding: 0 2%;">
                 <ion-row class="file-upload">
                   <div id="popoverHeading"><h3>Import Municipal Data</h3></div><br>
                   <ng-container *ngIf="!muniUploaded; else showMuniFiles">
@@ -73,8 +73,8 @@
                   <ion-row class="file-upload">
                     <div id="popoverHeading"><h3>Import Crime Data</h3></div><br>
                     <ng-container *ngIf="!muniUploaded; else sanitationDiv">
-                      <div>
-                        <h3>Please Upload municipality data first</h3>
+                      <div class="text-container">
+                        <h5>Please Upload municipality data first</h5>
                       </div>
                     </ng-container>
                     <ng-template #sanitationDiv>
@@ -89,8 +89,8 @@
                     <ion-row class="file-upload">
                       <div id="popoverHeading"><h3>Import Sanitation Data</h3></div><br>
                       <ng-container *ngIf="!muniUploaded; else saniDiv">
-                        <div>
-                          <h3>Please Upload municipality data first</h3>
+                        <div class="text-container">
+                          <h5>Please Upload municipality data first</h5>
                         </div>
                       </ng-container>
                       <ng-template #saniDiv>
@@ -110,8 +110,8 @@
                   <ion-row class="file-upload">
                     <div id="popoverHeading"><h3>Import Water Access Data</h3></div><br>
                     <ng-container *ngIf="!muniUploaded; else waterDiv">
-                      <div>
-                        <h3>Please Upload municipality data first</h3>
+                      <div class="text-container">
+                        <h5>Please Upload municipality data first</h5>
                       </div>
                     </ng-container>
                     <ng-template #waterDiv>
@@ -149,7 +149,7 @@
                       </ion-item>
                     </ion-list>
                   </ion-row>
-                  <ion-button style="width: 100%" (click)="processData()">Process Data</ion-button>
+                  <ion-button style="width: 40%;margin: 4% 30%;" (click)="processData()">Process Data</ion-button>
               </ion-grid>
             </ion-col>
           </ion-row>
