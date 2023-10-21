@@ -71,7 +71,6 @@ export class HomePage implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    if (!event) console.log(event);
     this.isMobile = window.innerWidth <= 576;
   }
   
@@ -93,7 +92,6 @@ export class HomePage implements OnInit {
   timeout: NodeJS.Timeout | undefined = undefined;
   async handleInputChange(event: Event) {
     this.predictionsLoading = true;
-    // console.log(event.target as HTMLInputElement);
     // return;
     // const input = event.target as HTMLInputElement;
     // this.gmapsService.handleRegionInput(input, this.defaultBounds);

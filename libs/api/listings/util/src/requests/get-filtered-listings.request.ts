@@ -1,9 +1,23 @@
 
 import { areaScore } from '@properproperty/api/listings/util';
 // import { StatusEnum } from '../enums/status.enum';
-
+export enum RentSell {
+  LET = 'Rent',
+  SELL = 'Sell',
+  ANY = 'Any',
+}
 export interface GetFilteredListingsRequest {
   address?: string;
+  addressViewport?: {
+    ne: {
+      lat: number;
+      lng: number;
+    };
+    sw: {
+      lat: number;
+      lng: number;
+    };
+  };
   env_type?: string;
   prop_type?: string;
   bath?: number;
@@ -17,4 +31,5 @@ export interface GetFilteredListingsRequest {
   areaScore?: Partial<areaScore>;
   totalAreaScore?: number;
   lastListingId?: string;
+  let_sell: RentSell;
 }

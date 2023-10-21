@@ -165,7 +165,6 @@ export class ListingsService {
 
   async changeStatus(listingId : string, admin : string, status: StatusEnum, crimeScore?: number, waterScore?: number, sanitationScore?: number, schoolScore?: number){
     const runningLocally = window.location.hostname.includes('localhost');
-    if (runningLocally) console.log('changing status')
 
     let request : ChangeStatusRequest;
     if(crimeScore && waterScore && sanitationScore && schoolScore){
@@ -187,7 +186,6 @@ export class ListingsService {
         reason: "git gud"
       }
     }
-    if (runningLocally) console.log(request);
     const response: ChangeStatusResponse = (await httpsCallable<
       ChangeStatusRequest,
       ChangeStatusResponse
@@ -197,7 +195,6 @@ export class ListingsService {
     )(
       request
     )).data;
-    if (runningLocally) console.log(response);
     return response;
   }
 
@@ -230,7 +227,6 @@ export class ListingsService {
       await fetch("" + images[i]).then(res => res.blob())
       .then(async (blob : Blob) => {
         photoURLs.push(await getDownloadURL((await uploadBytes(storageRef, blob)).ref));
-        console.log(photoURLs[photoURLs.length - 1]);
       })
     }
 
@@ -257,28 +253,20 @@ export class ListingsService {
         +!!char.gym, 
         +!!char.owner
       ];
-      if (window.location.hostname.includes("localhost"))
-        console.warn(listVector);
-      if (window.location.hostname.includes("localhost"))
-        console.warn(userVector);
       for(let x=0; x<10; x++){
         listVector[x]= listVector[x]*userVector[x];
       }
-      console.log(listVector)
       //dot product
       let dotproduct=0;
   
       for(let x=0; x< 10; x++){
         dotproduct += listVector[x]*userVector[x];
       }
-      if (window.location.hostname.includes("localhost"))
-        console.warn(dotproduct);
       // sigmoid function
       // let e = Math.E;
       let finalAnswer = 0;
       // finalAnswer = 1/(1+ e**(-dotproduct));
       finalAnswer = dotproduct;
-      // console.warn(finalAnswer);
   
       if(finalAnswer>=this.recommendationMinimum){
         return true

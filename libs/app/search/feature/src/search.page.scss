@@ -3,6 +3,82 @@ ion-content::part(scroll) {
 }
 
 .Desktop {
+  .pageButton{
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    --background: white !important;
+    color: rgba(18, 100, 52, 0.7);
+    width: 168px;
+  }
+  #prevButton{
+    display: flex; 
+    justify-content: center; 
+    border-right: 1px solid rgba(13, 174, 80, 0.7);
+  }
+  .pageButtonCol{
+    display: flex; 
+    justify-content: center;
+  }
+
+  .houseText{
+    font-size: 15px;
+  }
+
+  .listingCard{
+    width: 750px;
+  }
+
+  .listingCard:hover{
+    box-shadow: 3px 3px 5px rgba(13, 174, 80, 0.7);
+  }
+  
+  .lists ion-card-header ion-card-title {
+    margin-left: 55%;
+    padding-top: 5px;
+    //move ths up
+    margin-top: -210px;
+  }
+  
+  .lists ion-card-header ion-card-subtitle {
+    margin-left: 220px;
+  }
+  
+  .lists ion-card ion-card-content {
+    margin-left: 2%;
+    margin-right: 5%;
+    width: 65%;
+  }
+  
+  .imageCol{
+    height: 100%;
+    width: 25%;
+  }
+
+  .imageCol img {
+    width: 300px;
+    height: 200px;
+    position: relative;
+    object-fit: cover;
+    overflow: hidden;
+  }
+
+  .houseInfoCol{
+    padding-left: 5px;
+  }
+  
+  .slider {
+    position: relative;
+    width: 80%;
+    height: 13px;
+    background-color: rgb(150, 150, 150);
+    border-radius: 5px;
+    margin-bottom: 5px;
+    padding-left: 50px;
+    // margin-right: 5%;
+    // padding-right: 50px;
+  }
+  
   select{
     background-color: white !important;
     // border-radius: 5px;
@@ -24,9 +100,9 @@ ion-content::part(scroll) {
     width: 100%;
     height: 20px;
     position: absolute;
-    transform: rotate(315deg);
-    top: 20%;
-    left: -33%;
+    transform: rotate(316deg);
+    top: 30px;
+    left: -80px;
     text-align: center;
   }
 
@@ -42,30 +118,29 @@ ion-content::part(scroll) {
   .listing-map-grid {
     position: sticky;
     position: -webkit-sticky;
-    top: 56px;
+    // top: 56px;
     // padding: 0 10px;
     // border-radius: 8px;
     margin: 5px;
     overflow: hidden;
-    background-color: #ededed;
-    border: 5px solid #94d5ae;
+    // border: 5px solid #94d5ae;
   }
 
-  .listing-card:hover{
-    border: 1px solid green;
-    width: 96%;
-    height: 185px;
-  }
+  // .listing-card:hover{
+  //   border: 1px solid green;
+  //   width: 96%;
+  //   height: 185px;
+  // }
 
   .search-result-grid-header {
     padding: 5px;
     height: 48px;
-    background-color: rgba(13, 174, 79, 0.4);
+    // background-color: rgba(13, 174, 79, 0.4);
   }
 
-  .listing-image-col {
-    height: 100%;
-  }
+  // .listing-image-col {
+  //   height: 100%;
+  // }
 
   .listing-details-col {
     height: 100%;
@@ -106,7 +181,6 @@ ion-content::part(scroll) {
   
   .loading-animation{
     position: absolute;
-    right: 50%;
     text-align: center;
     z-index: 1;
     top: 40%;
@@ -140,7 +214,7 @@ ion-content::part(scroll) {
   
   .filter-text {
     color: rgb(0, 0, 0);
-    font-size: 16px;
+    font-size: 15px;
     font-style: normal;
     font-weight: 400;
   }
@@ -198,6 +272,7 @@ ion-content::part(scroll) {
   #search-row{
     // margin-left: 4%;
     padding-left: 0;
+    padding-top: 10px;
   }
   .search-filter-col {
     padding: 5px 10px;
@@ -231,7 +306,19 @@ ion-content::part(scroll) {
       height: 0px;
     }
   }
-
+  #address-search-icon {
+    position: absolute; 
+    top: 16px; 
+    left: 13px; 
+    z-index: 10; 
+    font-size: 24px
+  }
+  #search-spinner {
+    position: absolute; 
+    top: 14px; 
+    left: 11px; 
+    z-index: 100;
+  }
   #address {
     // border-radius: 30px;
     border: 1.5px solid #e4e4e4;
@@ -248,7 +335,9 @@ ion-content::part(scroll) {
     --highlight-color-valid: none;
     --highlight-color-invalid: none;
   }
-  
+  #address:focus-within {
+    border: 1px solid black;
+  }
   .dropdown {
     width: 50%;
     height: 70%;
@@ -282,9 +371,10 @@ ion-content::part(scroll) {
   }
   
   .filter-button {
-    width: 90%;
-    height: 90%;
+    width: 210px;
+    height: 56px;
     color: white;
+    // position: absolute;
     // margin-right: 10%;
     // --border-radius: 30px;
     // margin-top: 5%;
@@ -296,7 +386,8 @@ ion-content::part(scroll) {
   }
   
   .search-button {
-    width: 90%;
+    position: absolute;
+    width: 210px;
     height: 56px;
     margin-right: 10%;
     color: white;
@@ -319,36 +410,36 @@ ion-content::part(scroll) {
   
   
   //make the img in ion-card-header smaller
-  .lists ion-card-header img {
-    width: 200px;
-    height: 100%;
-    //rounded edges
-    // border-radius: 10px;
-    object-fit: cover;
-  }
+  // .lists ion-card-header img {
+  //   width: 200px;
+  //   height: 100%;
+  //   //rounded edges
+  //   // border-radius: 10px;
+  //   object-fit: cover;
+  // }
   
   //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
-  .lists ion-card-header ion-card-title{
-    // margin-left: 220px;
-    //move ths up
-    // margin-top: -130px;
-  }
+  // .lists ion-card-header ion-card-title{
+  //   // margin-left: 220px;
+  //   //move ths up
+  //   // margin-top: -130px;
+  // }
   
-  .lists ion-card-header ion-card-subtitle {
-    // margin-left: 220px;
-  }
+  // .lists ion-card-header ion-card-subtitle {
+  //   // margin-left: 220px;
+  // }
   
-  .lists ion-card ion-card-content  {
-    // margin-left: 220px;
-  }
+  // .lists ion-card ion-card-content  {
+  //   // margin-left: 220px;
+  // }
   
-  //make the ion-card take only half of the page
-  .lists ion-card {
-    // width: 45%;
-    margin-left: 2%;
-    margin-top: 10px;
-    // border-radius: 10px;
-  }
+  // //make the ion-card take only half of the page
+  // .lists ion-card {
+  //   // width: 45%;
+  //   margin-left: 2%;
+  //   margin-top: 10px;
+  //   // border-radius: 10px;
+  // }
   
   #house_description{
     height: 10% !important;
@@ -356,6 +447,10 @@ ion-content::part(scroll) {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+  }
+
+  .houseInfoGrid ion-row{
+    padding: 5px;
   }
 
   .house_details{
@@ -368,9 +463,8 @@ ion-content::part(scroll) {
 
   //styling for div with id="house_details"
   .house_details img {
-    //set image size
-    width: 15px;
-    height: 15px;
+    width: 15px !important;
+    height: 15px !important;
   }
   
   .heart-button {
@@ -438,7 +532,7 @@ ion-content::part(scroll) {
   
   #listings-and-map {
     transition: transform 0.3s ease-in-out;
-    margin-top:3%;
+    // margin-top:3%;
     // margin-bottom: 25%;
     // display: none;
   }
@@ -461,7 +555,7 @@ ion-content::part(scroll) {
   //end of scss
   * {
     margin: 0;
-    padding: 0;
+    // padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
   }
@@ -690,15 +784,15 @@ ion-content::part(scroll) {
    
   }
   
-  
   /* Listings Section */
   
-  .lists
-  {
-    // position: absolute;
-    overflow: auto;
-    // top: 13%;
-    height: 40vw;
+  // .lists
+  // {
+
+  // }
+
+  .listsSearching{
+    height: 200px;
   }
   
   .lists2
@@ -730,8 +824,8 @@ ion-content::part(scroll) {
   
   ion-card {
     width: 95%;
-    height: 180px;
-    margin-left: 2%;
+    // height: 180px;
+    // margin-left: 2%;
     margin-top: 15px;
     margin-bottom: 10px;
     // border-radius: 10px;
@@ -758,17 +852,6 @@ ion-content::part(scroll) {
     height: 100%;
     width: 100%;
   }
-  // ion-icon {
-  //   font-size: 64px;
-  // }
-  //styling for div with id="house_details"
-  .house_details img {
-    //set image size
-    width: 15px;
-    height: 15px;
-  }
-  
-  
   
   #back-arrow {
     color: #0DAE4F;
@@ -804,7 +887,7 @@ ion-content::part(scroll) {
     left: 0;
     height: 100%;
     background-color: green;
-    // border-radius: 5px;
+    border-radius: 5px;
     transition: width 0.3s ease-in-out;
   }
 
@@ -814,7 +897,7 @@ ion-content::part(scroll) {
     left: 0;
     height: 100%;
     background-color: red;
-    // border-radius: 5px;
+    border-radius: 5px;
     transition: width 0.3s ease-in-out;
   }
 
@@ -824,7 +907,7 @@ ion-content::part(scroll) {
     left: 0;
     height: 100%;
     background-color: #ffcc00;
-    // border-radius: 5px;
+    border-radius: 5px;
     transition: width 0.3s ease-in-out;
   }
   
@@ -936,7 +1019,7 @@ ion-content::part(scroll) {
   
   .filter-text {
     color: rgb(68, 68, 68);
-    font-size: 16px;
+    font-size: 15px;
     font-style: normal;
     font-weight: 400;
   }

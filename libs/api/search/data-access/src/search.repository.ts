@@ -5,7 +5,6 @@ import {
   FindPlaceFromTextResponseData,
 } from '@googlemaps/google-maps-services-js/dist/places/findplacefromtext';
 import { PlaceDetailsResponseData, PlaceDetailsRequest } from '@googlemaps/google-maps-services-js/dist/places/details';
-
 import { Client } from '@googlemaps/google-maps-services-js';
 import { PlaceInputType } from '@googlemaps/google-maps-services-js/dist/common';
 import { Listing } from '@properproperty/api/listings/util';

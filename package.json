@@ -12,6 +12,7 @@
     "start:app:prod": "npx env-cmd -f .env.prod nx run app:serve --configuration=production",
     "start:emulators": "firebase emulators:start",
     "start:emulatored": "firebase emulators:start --import=./emulators/emulator",
+    "start:emulatored2": "firebase emulators:start --import=./emulators/emulatored2",
     "lint": "nx run-many --target=lint --all --skip-nx-cache --parallel=5"
   },
   "private": true,
