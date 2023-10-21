@@ -1,14 +1,17 @@
+*{
+  font-family: 'Poppins', sans-serif;
+}
+
 #notApprovedHeadCol {
   // outline: 2px solid black;
-  border-right: 3px solid black;
+  border-right: 1px solid black;
 }
 
 #notApprovedHead {
   width: 35%;
   height: auto;
   text-align: center;
-  border: 3px solid #000;
-  background: #DE1313;
+  border: 1px solid #000;
   margin: auto;
   margin-top: 0.5%;
   align-items:center;
@@ -17,7 +20,7 @@
 
 #notApprovedBodyCol {
   width: 50%;
-  border-right: 3px solid black;
+  border-right: 1px solid black;
   // background: rgba(222, 19, 19, 0.10);
   min-height: 84vh;
 }
@@ -26,8 +29,7 @@
   width: 35%;
   height: auto;
   text-align: center;
-  border: 3px solid #000;
-  background: #0DAE4F;
+  border: 1px solid #000;
   margin: auto;
   margin-top: 0.5%;
   align-items:center;
@@ -36,7 +38,7 @@
 
 #approvedBodyCol {
   width: 49.8%;
-  outline: 3px solid #0DAE4F;
+
   margin-left: 0.2%;
   background: rgba(13, 174, 79, 0.10);
 }
