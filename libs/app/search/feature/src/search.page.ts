@@ -457,6 +457,15 @@ async loadMap() {
   //   console.log("Next page loading...")
   // }
   async searchProperties(nextPage?: boolean, previousPage?: boolean) {
+    const areaBounds = this.searchQuery?  await this.gmapsService.geocodeAddress(this.searchQuery) : null;
+    if (!areaBounds) {
+      // TODO Error message
+      return;
+    }
+
+    console.log(areaBounds);
+    console.log(areaBounds.geometry.viewport.toJSON());
+    console.log(areaBounds.geometry.viewport.toSpan());
     console.log(this.listings);
     this.listings = [];
     if (!nextPage && !previousPage) {
@@ -527,14 +536,24 @@ async loadMap() {
       price_max : this.property_price_values.upper ? this.property_price_values.upper : null,
       areaScore : this.areaScore? this.areaScore : null,
       totalAreaScore : this.totalAreaScore? this.totalAreaScore : null,
-      let_sell : this.activeTab ? this.activeTab : null
+      let_sell : this.activeTab ? this.activeTab : null,
+      addressViewport: {
+        ne: {
+          lat: areaBounds.geometry.viewport.getNorthEast().lat(),
+          lng: areaBounds.geometry.viewport.getNorthEast().lng(),
+        },
+        sw: {
+          lat: areaBounds.geometry.viewport.getSouthWest().lat(),
+          lng: areaBounds.geometry.viewport.getSouthWest().lng(),
+        },
+      }
     } as GetFilteredListingsRequest;
     if(nextPage && this.allListings.length > 0) {
       request.lastListingId = this.allListings[this.allListings.length - 1].listing_id;
     }
     console.log(request);
     const response = (await this.listingServices.getFilteredListings(request));
-    console.log(response);
+    console.log("Response:", response);
     if(!response.listings.length){
       const toast = await this.toastController.create({
         message: 'No listings returned',
@@ -559,32 +578,36 @@ async loadMap() {
     if (nextPage) this.currentPage++;
     console.log(this.currentPage * 5, " - ", this.allListings.length);
     this.listings = this.allListings.slice(this.currentPage * 5, this.currentPage * 5 + 5);
-      
-    const areaBounds = this.searchQuery?  await this.gmapsService.geocodeAddress(this.searchQuery) : null;
-    if (areaBounds) {
-      for(const listing of response.listings){
-        const isInArea = await this.gmapsService.checkAddressInArea(areaBounds.geometry.viewport, listing.geometry)
-        if(isInArea){
-          this.allListings.push(listing);
-          if(listing.let_sell == "Sell"){
-            this.buyCount++;
-          }
-          else if(listing.let_sell == "Rent"){
-            this.rentCount++;
-          }
-        }
-      }
-    } else {
-      // this.allListings = response.listings;
-      for(const list of response.listings){
-        if(list.let_sell == "Sell"){
-          this.buyCount++;
-        }
-        else if(list.let_sell == "Rent"){
-          this.rentCount++;
-        }
-      }
-    }
+    console.log("Listings: ", this.listings)
+    // if (areaBounds) {
+    //   for(const listing of response.listings){
+    //     const isInArea = await this.gmapsService.checkAddressInArea(areaBounds.geometry.viewport, listing.geometry);
+    //     const knockOffResult = await this.gmapsService.knockoffCheckInArea(areaBounds.geometry.viewport, listing.geometry);
+    //     if (window.location.hostname.includes("localhost")) {
+    //       console.log(isInArea);
+    //       console.log(knockOffResult);
+    //     }
+    //     if(isInArea){
+    //       this.allListings.push(listing);
+    //       if(listing.let_sell == "Sell"){
+    //         this.buyCount++;
+    //       }
+    //       else if(listing.let_sell == "Rent"){
+    //         this.rentCount++;
+    //       }
+    //     }
+    //   }
+    // } else {
+    //   // this.allListings = response.listings;
+    //   for(const list of response.listings){
+    //     if(list.let_sell == "Sell"){
+    //       this.buyCount++;
+    //     }
+    //     else if(list.let_sell == "Rent"){
+    //       this.rentCount++;
+    //     }
+    //   }
+    // }
     const temp = [];
 
     if(this.allListings){
@@ -638,10 +661,10 @@ async loadMap() {
         }
       }
 
-      console.warn(this.cardView);
-      
-      if (window.location.hostname.includes("localhost"))
+      if (window.location.hostname.includes("localhost")) {
         console.warn(this.recommends);
+        console.warn(this.cardView);
+      }
 
       // this.filterProperties();
       // await this.loadMap();

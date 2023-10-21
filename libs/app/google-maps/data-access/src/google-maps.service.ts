@@ -73,7 +73,20 @@ export class GmapsService {
       }
     return false;
   }
-
+  async knockoffCheckInArea(areaBounds: google.maps.LatLngBounds, listingGeometry: google.maps.LatLngLiteral): Promise<boolean> {
+    const area1 = areaBounds;
+    const point2 = listingGeometry;
+    if (area1 && point2) {
+      const areaLatBounds = [ area1.getNorthEast().lat(), area1.getSouthWest().lat() ];
+      const areaLngBounds = [ area1.getNorthEast().lng(), area1.getSouthWest().lng() ];
+      console.log('areaLatBounds: ', areaLatBounds);
+      console.log('areaLngBounds: ', areaLngBounds);
+      const latInBounds = area1.getSouthWest().lat() <= point2.lat && point2.lat <= area1.getNorthEast().lat();
+      const lngInBounds = area1.getSouthWest().lng() <= point2.lng && point2.lng <= area1.getNorthEast().lng();
+      return latInBounds && lngInBounds;
+    }
+    return false;
+  }
   geocodeAddress(address: string): Promise<google.maps.GeocoderResult | null> {
     return this.getGeocoder().then((geocoder) => {
       return new Promise<google.maps.GeocoderResult | null>((resolve, reject) => {
@@ -81,6 +94,8 @@ export class GmapsService {
           if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
             resolve(results[0]);
           } else {
+            console.error('geocodeAddress results: ', results);
+            console.error('geocodeAddress Status: ', status)
             reject('Failed to geocode the address');
           }
         });

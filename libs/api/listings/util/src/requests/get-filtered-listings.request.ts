@@ -8,6 +8,16 @@ export enum RentSell {
 }
 export interface GetFilteredListingsRequest {
   address?: string;
+  addressViewport?: {
+    ne: {
+      lat: number;
+      lng: number;
+    };
+    sw: {
+      lat: number;
+      lng: number;
+    };
+  };
   env_type?: string;
   prop_type?: string;
   bath?: number;
