@@ -196,7 +196,7 @@
                     color: black;
                     flex-grow:1;"Ï>Points of Interest
                     </div>
-                    <ion-button class="mapButton" (click)="setMapOpen(true)">View Map<ion-icon style="margin-left:5%;" name="map-outline"></ion-icon></ion-button>
+                    <ion-button class="mapButton" (click)="mapView()" (click)="setMapOpen(true)">View Map<ion-icon style="margin-left:5%;" name="map-outline"></ion-icon></ion-button>
                     </div>
                     <ion-card-content>
                       <ion-grid style="z-index: 1">
@@ -375,7 +375,7 @@
                       </ion-modal>
                     </ion-col>
 
-                    <ion-modal  (ionModalDidPresent)="mapView(true)" [isOpen]="isMapModalOpen">
+                    <ion-modal [isOpen]="isMapModalOpen">
                       <ng-template>
                         <ion-header>
                           <ion-toolbar>
@@ -388,8 +388,13 @@
                           </ion-toolbar>
                         </ion-header>
                         <ion-content class="ion-padding">
+                          <ion-grid>
+                            <ion-col>
+                              
                                 <div class="map" id="map" #map></div>
-                                  
+                              
+                            </ion-col>          
+                          </ion-grid>
                         </ion-content>
                       </ng-template>
                     </ion-modal>
