@@ -15,6 +15,22 @@ ion-content
   --background: rgb(97, 97, 97);
 }
 
+.pwordStrength{
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  height: 15px;
+}
+
+.strengthBar{
+  padding-top: 2px;
+  border: solid 1px black;
+  // background-color: black;
+  width: 95%;
+  height: 5px;
+}
+
+
 .registering
 {
   top: 12%;

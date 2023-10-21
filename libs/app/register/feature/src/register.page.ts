@@ -121,6 +121,73 @@ export class RegisterPage implements OnInit {
     });
   }
 
+  strengthScore = 0;
+  checkStrength(){
+    this.strengthScore = 0;
+    const upperCase = /[A-Z]{1,}/;
+    const lowerCase = /[a-z]{1,}/;
+    const numbers = /[0-9]{1}/;
+    const specialChars = /[\[\].!#$%&'*+\/=?^_`{|}~-]{1,}/;
+    const length =  this.password.length;
+
+    if(upperCase.test(this.password)){
+      console.log("uppcase");
+      this.strengthScore += 2;
+    }
+    
+    if(lowerCase.test(this.password)){
+      console.log("lowercase");
+      this.strengthScore += 2;
+    }
+    
+    if(numbers.test(this.password)){
+      console.log("numbers");
+      this.strengthScore += 2;
+    }
+    
+    if(specialChars.test(this.password)){
+      console.log("specialChars");
+      this.strengthScore += 2;
+    }
+
+    if(length <= 5){
+      this.strengthScore = 0;
+    }
+    else if(length >= 5 && length < 8){
+      this.strengthScore += 6
+    }
+    else if(length >= 8){
+      console.log("long boi")
+      this.strengthScore += 10;
+    }
+
+    if(this.strengthScore <= 3){
+      document.getElementById("sec1")?.setAttribute("style", "width: 50%; background-color: red");
+    }
+    else if(this.strengthScore > 3 && this.strengthScore <= 6){
+      document.getElementById("sec1")?.setAttribute("style", "width: 100%; background-color: red");
+    }
+    else if(this.strengthScore > 6 && this.strengthScore <= 9){
+      document.getElementById("sec1")?.setAttribute("style", "width: 100%; background-color: red");
+      document.getElementById("sec2")?.setAttribute("style", "width: 50%; background-color: red");
+    }
+    else if(this.strengthScore > 9 && this.strengthScore <= 12){
+      document.getElementById("sec1")?.setAttribute("style", "width: 100%; background-color: orange");
+      document.getElementById("sec2")?.setAttribute("style", "width: 100%; background-color: orange");
+    }
+    else if(this.strengthScore > 12 && this.strengthScore <= 15){
+      document.getElementById("sec1")?.setAttribute("style", "width: 100%; background-color: orange");
+      document.getElementById("sec2")?.setAttribute("style", "width: 100%; background-color: orange");
+      document.getElementById("sec3")?.setAttribute("style", "width: 50%; background-color: orange");
+    }
+    else if(this.strengthScore > 15 && this.strengthScore <= 18){
+      document.getElementById("sec1")?.setAttribute("style", "width: 100%; background-color: green");
+      document.getElementById("sec2")?.setAttribute("style", "width: 100%; background-color: green");
+      document.getElementById("sec3")?.setAttribute("style", "width: 100%; background-color: green");
+    }
+
+    console.log(this.strengthScore);
+  }
 }
 
 function isMobile(): boolean {

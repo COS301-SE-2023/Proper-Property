@@ -34,7 +34,7 @@
           </ion-item>
           
           <ion-item>
-            <ion-input type="password" [(ngModel)]="password" placeholder="Enter Password" placeholder="Enter Password"></ion-input>
+            <ion-input type="password" [(ngModel)]="password" (input)="checkStrength()" placeholder="Enter Password" placeholder="Enter Password"></ion-input>
           </ion-item>
 
           
@@ -46,9 +46,26 @@
             <ion-input type="password" [(ngModel)]="confirm_password" placeholder="Confirm Password"></ion-input>
           </ion-item>
 
+          <ion-grid>
+            <ion-row>
+              <ion-col class="pwordStrength" id="block1">
+                <div class="strengthBar">
+                  <div id="sec1"></div>
+                </div>
+              </ion-col>
+              <ion-col class="pwordStrength" id="block1">
+                <div class="strengthBar">
+                  <div id="sec2"></div>
+                </div>
+              </ion-col>
+              <ion-col class="pwordStrength" id="block1">
+                <div class="strengthBar">
+                  <div id="sec3"></div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-list>
-
-
       </div>
       <div class="button-centerer">
 
