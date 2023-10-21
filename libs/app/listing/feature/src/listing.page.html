@@ -132,7 +132,7 @@
                   <ion-row style="margin-top: 10px">
                     <ion-col>
                       <div>
-                        <button style="color: #0dae4f">Calculate</button> your
+                        Calculate your
                         monthly payments below!
                       </div>
                     </ion-col>
@@ -196,7 +196,7 @@
                     color: black;
                     flex-grow:1;"Ï>Points of Interest
                     </div>
-                    <ion-button class="mapButton" (click)="mapView()">View Map<ion-icon style="margin-left:5%;" name="map-outline"></ion-icon></ion-button>
+                    <ion-button class="mapButton" (click)="mapView()" (click)="setMapOpen(true)">View Map<ion-icon style="margin-left:5%;" name="map-outline"></ion-icon></ion-button>
                     </div>
                     <ion-card-content>
                       <ion-grid style="z-index: 1">
@@ -372,6 +372,30 @@
                           </ion-content>
                         </ng-template>
                       </ion-modal>
+
+                      <ion-modal class="contactDetails" (ionModalDidPresent)="setMapOpen(true)" [isOpen]="isMapModalOpen" backdropDismiss="false">
+                        <ng-template>
+                          <ion-header>
+                            <ion-toolbar>
+                              <ion-title>Map View</ion-title>
+                              <ion-buttons slot="end">
+                                <ion-button (click)="setMapOpen(false)"
+                                  >Close</ion-button
+                                >
+                              </ion-buttons>
+                            </ion-toolbar>
+                          </ion-header>
+                          <ion-content class="ion-padding">
+                            <ion-col>
+                
+                              <div class="map1" id="map1" #map1  style="position: relative; overflow: visible;"></div>
+                              
+                          </ion-col>
+
+                          </ion-content>
+                        </ng-template>
+                      </ion-modal>
+
                     </ion-col>
                   </ion-row>
                 </ion-grid>
@@ -456,11 +480,11 @@
           </ion-header>
           <ion-content class="ion-padding">
             <ion-grid> -->
-              <ion-col>
+              <!-- <ion-col>
                 
                   <div class="map" id="map" #map></div>
                 
-              </ion-col>          
+              </ion-col>           -->
             <!-- </ion-grid>
           </ion-content>
         </ng-template> -->
@@ -615,7 +639,7 @@
                 <ion-row style="margin-top: 10px">
                   <ion-col>
                     <div style="margin-bottom: 10px">
-                      <button style="color: #0dae4f">Calculate</button> your
+                      Calculate your
                       monthly payments below!
                     </div>
                   </ion-col>

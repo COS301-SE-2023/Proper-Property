@@ -29,6 +29,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
   // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
 
   @ViewChild('map', { static: false }) mapElementRef1!: ElementRef;
+  @ViewChild('map1', { static: false }) mapElementRef2!: ElementRef;
   MapView = false ;
   isMobile: boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
@@ -208,7 +209,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
       let mapEl = null;
       mapEl = this.mapElementRef1.nativeElement;
 
-        const location = new googleMaps.LatLng(this.center.lat ?? this.list?.geometry.lat, this.center.lng ?? this.list?.geometry.lat);
+        const location = new googleMaps.LatLng(this.list?.geometry.lat, this.list?.geometry.lat);
         this.map = new googleMaps.Map(mapEl, {
           center: location,
           zoom: 15,
@@ -219,7 +220,6 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
   
         this.renderer.addClass(mapEl, 'visible');        
       
-       
 
         if (this.list) {
           this.createListingCard(this.list);
@@ -870,6 +870,53 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
     this.isModalOpen = isOpen;
   }
 
+  isMapModalOpen = false;
+
+  async setMapOpen(isOpen: boolean) {
+    this.isMapModalOpen = isOpen;
+
+    if(this.isMapModalOpen){
+      try {     
+        // const mapElementRef1 = document.getElementById("map") as HTMLElement;
+    
+       
+        const mapElementRef = document.getElementById("map1") as HTMLElement;
+  
+        const googleMaps: any = await this.gmaps.loadGoogleMaps();
+        this.googleMaps = googleMaps;
+        
+        let mapEl = null;
+        mapEl = this.mapElementRef2.nativeElement;
+       
+
+        
+          const location = new googleMaps.LatLng(this.list?.geometry.lat, this.list?.geometry.lat);
+          this.map = new googleMaps.Map(mapEl, {
+            center: location,
+            zoom: 15,
+            maxZoom: 18, 
+            minZoom: 5,
+          });
+    
+          this.renderer.addClass(this.mapElementRef2.nativeElement, 'visible'); 
+              
+        
+  
+          if (this.list) {
+            this.createListingCard(this.list);
+            if (this.list.geometry.lat && this.list.geometry.lng ) {
+              const position = this.list.geometry;
+              
+                this.addMarker(position, this.list);
+              
+            }
+          }
+        } catch (e) {
+          console.log(e);
+        }
+    }
+  }
+
   scrollToBottom() {
     if (this.content && document.getElementById('calculator')) {
       const calculatorRow = document.getElementById('calculator')?.getBoundingClientRect().top;
@@ -892,6 +939,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
     const QRCode = require('qrcode')
     console.log("Testing ti")
     const qrCodeCanvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
+    console.log("for example ", qrCodeCanvas);
     if (qrCodeCanvas) {
       QRCode.toCanvas(qrCodeCanvas, window.location.href + ";qr=true", function (error: any) {
         if (error) {
