@@ -38,9 +38,7 @@
   </div>
   <div class="add-property">
     <ion-grid [fixed]="false" id="full-grid">
-      <ion-label class="imageText" id="photoHeading">Add Photos of your Property</ion-label>
-      <span class="required-indicator" *ngIf="!photos.length">*</span>
-
+      
       <ion-row id="add-photos">
         <ion-col id="current-images" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
           <!-- Display uploaded images here -->
@@ -50,7 +48,8 @@
           </div>
           <div class="drag-drop-area" (click)="fileInput.click()">
             <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
-            <ion-label class="imageText">Click here or drag and drop an image</ion-label>
+            <ion-label class="house-text">Click here or drag and drop images of your property<span class="required-indicator" *ngIf="!photos.length">*</span></ion-label>
+            
           </div>
         </ion-col>
       </ion-row>
@@ -67,7 +66,7 @@
 
 
     <ion-row id="house-details">
-      <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
+      <ion-row style="width: 100%;">
         <ion-col>
           <div class="container">
             <div class="searchInput">
@@ -77,7 +76,7 @@
               [(ngModel)]="address" placeholder="Enter an address" ></ion-input>
               <ion-list [hidden]="predictions.length <= 0" class="prediction-result-list">
        
-               <ion-item (click)="replaceInputText($event,prediction.description)" *ngFor="let prediction of predictions">
+               <ion-item lines="none" (click)="replaceInputText($event,prediction.description)" *ngFor="let prediction of predictions">
                 <!-- <a href="#" class="prediction-button"> -->
                   <ion-icon name="search-outline"></ion-icon>{{ prediction.description }}
                 <!-- </a> -->
@@ -131,7 +130,7 @@
                     </ion-col>
                   </ion-row>
                   <ion-list [hidden]="filteredMunicipalities.length === 0" class="prediction-result-list">
-                    <ion-item (click)="selectMunicipality(municipality)" *ngFor="let municipality of filteredMunicipalities">
+                    <ion-item lines="none" (click)="selectMunicipality(municipality)" *ngFor="let municipality of filteredMunicipalities">
                       {{ municipality }}
                     </ion-item>
                   </ion-list>
@@ -141,9 +140,9 @@
           </ion-col>
         </ion-row>
 
-        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
+        <ion-row style="width: 100%;">
           <ion-col>
-            <ion-item class="ion-container">
+            <ion-item lines="none" class="ion-container">
               <ion-grid>
                 <ion-row style="height:100%;">
                   <ion-col size="6" style="align-self: center;">
@@ -152,7 +151,7 @@
                   </ion-col>
                   <ion-col size="6" style="align-self: center;">
 
-                    <ion-input class="digit-input" type="text" id="price" [(ngModel)]="price" (input)="formatPrice()"
+                    <ion-input class="digit-input box-size" type="text" id="price" [(ngModel)]="price" (input)="formatPrice()"
                     (keypress)="numericOnly($event)" (ionInput)="onInputPrice($event)" required></ion-input>
                     <ion-note slot="end">ZAR</ion-note>
                   </ion-col>
@@ -176,9 +175,9 @@
           </ion-col>
         </ion-row>
 
-        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
+        <ion-row style="width: 100%;">
           <ion-col size="6">
-            <ion-item class="ion-container">
+            <ion-item lines="none" class="ion-container">
               <ion-grid>
                 <ion-row style="height:100%;">
                   <ion-col size="6" style="align-self: center;">
@@ -186,7 +185,7 @@
                         *ngIf="!bedrooms">*</span></ion-label>
                   </ion-col>
                   <ion-col size="6" style="align-self: center;">
-                    <ion-input class="digit-input" type="number" id="bed" [(ngModel)]="bedrooms" (keypress)="numericOnly($event)" (ionInput)="onInputBedroom($event)"
+                    <ion-input class="digit-input box-size" type="number" id="bed" [(ngModel)]="bedrooms" (keypress)="numericOnly($event)" (ionInput)="onInputBedroom($event)"
                       required></ion-input>
                   </ion-col>
                 </ion-row>
@@ -210,9 +209,9 @@
           </ion-col>
         </ion-row>
 
-        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
+        <ion-row style="width: 100%;">
           <ion-col size="6">
-            <ion-item class="ion-container">
+            <ion-item lines="none" class="ion-container">
               <ion-grid>
                 <ion-row style="height:100%;">
                   <ion-col size="6" style="align-self: center;">
@@ -220,7 +219,7 @@
                         *ngIf="!bathrooms">*</span></ion-label>
                   </ion-col>
                   <ion-col size="6" style="align-self: center;">
-                    <ion-input class="digit-input" type="number" id="bath" [(ngModel)]="bathrooms" (keypress)="numericOnly($event)" (ionInput)="onInputBathroom($event)"
+                    <ion-input class="digit-input box-size" type="number" id="bath" [(ngModel)]="bathrooms" (keypress)="numericOnly($event)" (ionInput)="onInputBathroom($event)"
                       required></ion-input>
                   </ion-col>
                 </ion-row>
@@ -244,9 +243,9 @@
           </ion-col>
         </ion-row>
 
-        <ion-row style="width:100%; border-bottom: 2px solid #0DAE4F;">
+        <ion-row style="width:100%;">
           <ion-col size="6">
-            <ion-item class="ion-container">
+            <ion-item lines="none" class="ion-container">
               <ion-grid>
                 <ion-row style="height:100%;">
                   <ion-col size="6" style="align-self: center;">
@@ -255,7 +254,7 @@
                   </ion-col>
 
                   <ion-col size="6" style="align-self:center">
-                    <ion-input class="digit-input" type="number" id="property-size" [(ngModel)]="erf_size" (keypress)="numericOnly($event)" (ionInput)="onInputErf($event)"
+                    <ion-input class="digit-input box-size" type="number" id="property-size" [(ngModel)]="erf_size" (keypress)="numericOnly($event)" (ionInput)="onInputErf($event)"
                       required></ion-input>
                   </ion-col>
                 </ion-row>
@@ -278,9 +277,9 @@
           </ion-col>
         </ion-row>
 
-        <ion-row style="width:100%; border-bottom: 2px solid #0DAE4F;">
+        <ion-row style="width:100%;">
           <ion-col size="6">
-            <ion-item class="ion-container">
+            <ion-item lines="none" class="ion-container">
               <ion-grid>
                 <ion-row style="height:100%;">
                   <ion-col size="6" style="align-self: center;">
@@ -289,7 +288,7 @@
                   </ion-col>
 
                   <ion-col size="6" style="align-self: center">
-                    <ion-input class="digit-input" type="number" id="floor-size" [(ngModel)]="floor_size" (keypress)="numericOnly($event)" (ionInput)="onInputFloor($event)"
+                    <ion-input class="digit-input box-size" type="number" id="floor-size" [(ngModel)]="floor_size" (keypress)="numericOnly($event)" (ionInput)="onInputFloor($event)"
                       required></ion-input>
                   </ion-col>
                 </ion-row>
@@ -313,9 +312,9 @@
           </ion-col>
         </ion-row>
 
-        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
+        <ion-row style="width: 100%;">
           <ion-col size="6">
-            <ion-item class="ion-container">
+            <ion-item lines="none" class="ion-container">
               <ion-grid>
                 <ion-row style="height:100%;">
                   <ion-col size="6" style="align-self: center;">
@@ -324,7 +323,7 @@
                   </ion-col>
 
                   <ion-col size="6" style="align-self: center">
-                    <ion-input class="digit-input" type="number" id="parking" [(ngModel)]="parking" (keypress)="numericOnly($event)" (ionInput)="onInputParking($event)"
+                    <ion-input class="digit-input box-size" type="number" id="parking" [(ngModel)]="parking" (keypress)="numericOnly($event)" (ionInput)="onInputParking($event)"
                       required></ion-input>
                   </ion-col>
                 </ion-row>
@@ -365,13 +364,13 @@
               </ion-col>
             </ion-row>
             <ion-list [hidden]="filteredAmenities.length === 0">
-              <ion-item (click)="selectAmenity(amenity)" *ngFor="let amenity of filteredAmenities">
+              <ion-item lines="none" (click)="selectAmenity(amenity)" *ngFor="let amenity of filteredAmenities">
                 {{ amenity }}
               </ion-item>
             </ion-list>
-            <ion-item class="ion-container" *ngFor="let feat of features,; let i = index">
+            <ion-item lines="none" class="ion-container" *ngFor="let feat of features,; let i = index">
               <ion-label>
-                <ion-chip>
+                <ion-chip color="black">
                   &nbsp;
                   {{feat}}
                   &nbsp;
@@ -386,13 +385,13 @@
               <ion-row>
                 <ion-col>
                   <ion-label class="house-text">Property Heading</ion-label>
-                  <textarea [(ngModel)]="heading" id="desc" rows="3" cols="50">{{heading}}</textarea><br>
+                  <textarea [(ngModel)]="heading" id="desc" rows="3" cols="50" style="border: 1px solid rgb(183, 183, 183);">{{heading}}</textarea><br>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col>
                   <ion-label class="house-text">Property Description</ion-label>
-                  <textarea [(ngModel)]="description" id="desc" rows="10" cols="50">{{description}}</textarea><br>
+                  <textarea [(ngModel)]="description" id="desc" rows="10" cols="50" style="border: 1px solid rgb(183, 183, 183);">{{description}}</textarea><br>
                   <ng-container *ngIf="descriptionLoading; else generateButton">
                     <ion-button><ion-spinner name="crescent" color="black"
                         class="search-icon"></ion-spinner></ion-button>
@@ -468,8 +467,8 @@
 
 
       <ion-row id="house-details">
-        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
-          <ion-item class="ion-container">
+        <ion-row style="width: 100%;">
+          <ion-item lines="none" class="ion-container">
             <div class="container">
               <div class="searchInput">
                 <label position="floating" class="house-text">Property Residential Address<span
@@ -478,7 +477,7 @@
                   [(ngModel)]="address" placeholder="Enter an address"></ion-input>
                 <ion-list [hidden]="predictions.length <= 0">
 
-                  <ion-item (click)="replaceInputText($event,prediction.description)"
+                  <ion-item lines="none" (click)="replaceInputText($event,prediction.description)"
                     *ngFor="let prediction of predictions">
                     <!-- <a href="#" class="prediction-button"> -->
                     {{ prediction.description }}
@@ -491,7 +490,7 @@
           </ion-item>
         </ion-row>
 
-        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
+        <ion-row style="width: 100%;">
           <!-- <ion-col>
           <ion-item class="ion-container">
             <ion-label position="floating" class="house-text">Floor Size &#40; m<sup>2</sup>&#41;<span
@@ -503,7 +502,7 @@
         </ion-col> -->
 
           <ion-col>
-            <ion-item class="ion-container">
+            <ion-item lines="none" class="ion-container">
 
               <ion-label position="floating" class="house-text">Listing Price &#40; ZAR &#41;<span
                   class="required-indicator" *ngIf="!price">*</span></ion-label>
@@ -535,7 +534,7 @@
           </ion-col>
         </ion-row>
 
-        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
+        <ion-row style="width: 100%;">
           <ion-col>
             <ion-row class="dropdown">
               <ion-col>
@@ -566,7 +565,7 @@
           </ion-col>
         </ion-row>
 
-        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
+        <ion-row style="width: 100%;">
           <ion-col>
             <ion-row class="dropdown">
               <ion-col>
@@ -598,7 +597,7 @@
           </ion-col>
         </ion-row>
 
-        <ion-row style="width:100%; border-bottom: 2px solid #0DAE4F;">
+        <ion-row style="width:100%;">
           <ion-col>
             <ion-item class="ion-container">
               <ion-label position="floating" class="house-text">Bathrooms<span class="required-indicator"
@@ -627,7 +626,7 @@
             </ion-item>
           </ion-col>
         </ion-row>
-        <ion-row style="width: 100%; border-bottom: 2px solid #0DAE4F;">
+        <ion-row style="width: 100%;">
 
           <ion-col>
             <ion-item class="ion-container">
