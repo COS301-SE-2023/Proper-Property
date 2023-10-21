@@ -258,10 +258,11 @@ export class ListingsRepository {
         // queryData.forEach((docSnapshot) => {
         for(const docSnapshot of queryData.docs){
           const data = docSnapshot.data();
-          if (!data.geometry || (req.addressViewport
-            && (data.geometry.lat > req.addressViewport.ne.lat || data.geometry.lat < req.addressViewport.sw.lat )
-            && (data.geometry.lng > req.addressViewport.ne.lng || data.geometry.lng < req.addressViewport.sw.lng))
-          ) {
+          if (!data.geometry || !req.addressViewport) {
+            continue;
+          }
+          if(data.geometry.lat > req.addressViewport.ne.lat || data.geometry.lat < req.addressViewport.sw.lat
+          || data.geometry.lng > req.addressViewport.ne.lng || data.geometry.lng < req.addressViewport.sw.lng) {
             continue;
           }
           if (req.bath && data.bath < req.bath) {
@@ -300,7 +301,18 @@ export class ListingsRepository {
           if ((req.totalAreaScore && (data.areaScore.waterScore + data.areaScore.schoolScore + data.areaScore.crimeScore + data.areaScore.sanitationScore)/4 < req.totalAreaScore)) {
             continue;
           }
-          
+          console.log({
+            lat: {
+              min: req.addressViewport?.sw.lat,
+              data: data.geometry.lat,
+              max: req.addressViewport?.ne.lat
+            },
+            lng: {
+              min: req.addressViewport?.sw.lng,
+              data: data.geometry.lng,
+              max: req.addressViewport?.ne.lng
+            }
+          });
           // for (const listing of response.listings) {
           //   if (listing.listing_id == data.listing_id) {
           //     console.log("what");
