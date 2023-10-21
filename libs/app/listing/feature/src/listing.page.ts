@@ -253,7 +253,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
     addMarker(position: any, listing: Listing) {
       const googleMaps: any = this.googleMaps;
       const icon = {
-        url: 'assets/icon/locationpin.png',
+        url: 'assets/icon/icons8-location-pin-96.png',
         scaledSize: new googleMaps.Size(40, 40), // Adjust the size of the marker icon as desired
       };
       const marker = new googleMaps.Marker({
