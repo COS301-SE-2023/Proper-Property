@@ -238,8 +238,7 @@ export class SearchPage implements OnDestroy, AfterViewInit {
 
     }
 
-  ngAfterViewInit() {
-    
+  async ngAfterViewInit() {    
     if(!this.isMobile ||this.MapView) {
       this.setCentre();
       this.loadMap();
@@ -457,6 +456,7 @@ async loadMap() {
   //   console.log("Next page loading...")
   // }
   async searchProperties(nextPage?: boolean, previousPage?: boolean) {
+    console.log(this.parking);
     if(!this.searchQuery){
       const toast = await this.toastController.create({
         message: 'Please enter an area for us to search in',
@@ -474,6 +474,8 @@ async loadMap() {
       }, 1500)
       return;
     }
+    const tempSearchQuery = this.searchQuery.replace(", South Africa", '');
+    console.log(tempSearchQuery);
     const areaBounds = this.searchQuery?  await this.gmapsService.geocodeAddress(this.searchQuery) : null;
     if (!areaBounds) {
       // TODO Error message
@@ -523,7 +525,7 @@ async loadMap() {
     if(this.isMobile)this.searchQuery = (document.getElementById("address1") as HTMLInputElement).value;
 
     else this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
-
+    
     const request = {
       env_type : this.env_type ? this.env_type : null,
       prop_type : this.prop_type ? this.prop_type : null,
@@ -558,17 +560,14 @@ async loadMap() {
     if(!response.listings.length){
       const toast = await this.toastController.create({
         message: 'No listings returned',
-        duration: 3000, // Duration in milliseconds
-        color: 'danger', // Use 'danger' to display in red
-        position: 'bottom' // Position of the toast: 'top', 'middle', 'bottom'
+        duration: 3000,
+        color: 'danger',
+        position: 'bottom'
       });
       toast.present();
       setTimeout(() => { 
         this.searching = false;
         document.getElementById("searchButton")?.setAttribute("disabled", "false")
-        // document.getElementById("nextPage")?.setAttribute("disabled", "false")
-        // // if(this.currentPage > 0)
-        //   document.getElementById("prevPage")?.setAttribute("disabled", "false")
       }, 1500)
       return;
     }

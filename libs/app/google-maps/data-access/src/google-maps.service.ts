@@ -1,7 +1,7 @@
 // eslint-disable-next-line
 /// <reference types="@types/google.maps" />
 
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, OnInit } from '@angular/core';
 
 import { API_KEY_TOKEN } from '@properproperty/app/google-maps/util';
 import { Functions, httpsCallable } from '@angular/fire/functions';
@@ -12,10 +12,27 @@ import { GetNearbyPlacesRequest, GetNearbyPlacesResponse, StoredPlaces } from '@
   providedIn: 'root'
 })
 export class GmapsService {
+  SAGeocode :  google.maps.GeocoderResult | null = null;
   constructor(
     @Inject(API_KEY_TOKEN) private key: string,
     private readonly functions: Functions
   ) {}
+
+  async ngOnInit(){
+    this.getGeocoder().then((geocoder) => {
+      return new Promise<google.maps.GeocoderResult | null>((resolve, reject) => {
+        geocoder.geocode({ address: "South Africa" }, (results, status) => {
+          if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
+            resolve(results[0]);
+          } else {
+            console.error('geocodeAddress results: ', results);
+            console.error('geocodeAddress Status: ', status)
+            reject('Failed to geocode the address');
+          }
+        });
+      });
+    });
+  }
   geocoder!: google.maps.Geocoder;
   geometry!: google.maps.GeometryLibrary;
   autocompleteService!: google.maps.places.AutocompleteService;
@@ -90,9 +107,10 @@ export class GmapsService {
   geocodeAddress(address: string): Promise<google.maps.GeocoderResult | null> {
     return this.getGeocoder().then((geocoder) => {
       return new Promise<google.maps.GeocoderResult | null>((resolve, reject) => {
-        geocoder.geocode({ address: address }, (results, status) => {
+        geocoder.geocode({ address: address, bounds: this.SAGeocode?.geometry.bounds}, (results, status) => {
           if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
-            resolve(results[0]);
+              console.log("South Africa Bounds: ",  this.SAGeocode);
+              resolve(results[0]);
           } else {
             console.error('geocodeAddress results: ', results);
             console.error('geocodeAddress Status: ', status)
