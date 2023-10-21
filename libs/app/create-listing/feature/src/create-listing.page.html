@@ -150,6 +150,7 @@
                         *ngIf="!price">*</span></ion-label>
                   </ion-col>
                   <ion-col size="6" style="align-self: center;">
+ 
 
                     <ion-input class="digit-input box-size" type="text" id="price" [(ngModel)]="price" (input)="formatPrice()"
                     (keypress)="numericOnly($event)" (ionInput)="onInputPrice($event)" required></ion-input>
