@@ -113,9 +113,38 @@
           </ion-row>
           <ion-row class="upGrade">
             <ion-col>
-              <ion-button class="but1">
+              <ion-button class="but1" (click)="changePassword()">
                 <ion-label>Change Password</ion-label>
-              </ion-button>              
+              </ion-button>
+              <!-- <ion-modal class="change-password-modal" trigger="change-password-button">
+                <ng-template>
+                  <ion-content>
+                    <div id="change-password-content">
+                      <h2>
+                        Change Password
+                      </h2>
+                      <p>
+                        Please enter yout current password and your new password
+                      </p>
+                      <ion-item class="loginInput" style="background: #FFF">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        <ion-input [(ngModel)]="currentPassword" id="currentPasswordInput" type="password" placeholder="Current Password" required="true"></ion-input> 
+                      </ion-item>
+                      <ion-item class="loginInput" style="background: #FFF">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        <ion-input [(ngModel)]="newPassword" id="newPasswordInput" type="password" placeholder="New Password" required="true"></ion-input> 
+                      </ion-item>
+                      <ion-item class="loginInput" style="background: #FFF">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        <ion-input [(ngModel)]="repeatNewPassword" id="repeatNewPasswordInput" type="password" placeholder="New Password" required="true"></ion-input> 
+                      </ion-item>
+                      <ion-input placeholder="Enter an email" type="email" [ngModel]="resetEmail" style="border: 1px solid black; width: 60%;"></ion-input>
+                      <ion-button (click)="changePassword()" style="margin-bottom: 20px">Update Password</ion-button>
+                      <ion-button (click)="closePasswordModal()" style="margin-bottom: 20px">Cancel</ion-button>
+                    </div>
+                  </ion-content>
+                </ng-template>
+              </ion-modal> -->
             </ion-col>
           </ion-row>
           <ion-row class="logOut">

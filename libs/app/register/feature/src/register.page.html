@@ -50,12 +50,12 @@
           <ion-item [class.invalid]="!passwordMatch">
             <ng-container *ngIf="!showPassword; else showCP">
               <ion-icon name="lock-closed-outline"></ion-icon>
-              <ion-input type="password" [(ngModel)]="confirm_password" placeholder="  Confirm Password"></ion-input>
+              <ion-input type="password" [(ngModel)]="confirm_password" (ngModelChange)="checkStrength()" placeholder="  Confirm Password"></ion-input>
               <ion-icon (click)="showPass()" style="font-size: 24" name="eye"></ion-icon>
             </ng-container>
             <ng-template #showCP>
               <ion-icon name="lock-open-outline"></ion-icon>
-              <ion-input type="text" [(ngModel)]="confirm_password" placeholder="  Confirm Password"></ion-input>
+              <ion-input type="text" [(ngModel)]="confirm_password" (ngModelChange)="checkStrength()" placeholder="  Confirm Password"></ion-input>
               <ion-icon (click)="showPass()" style="font-size: 24" name="eye-off-outline"></ion-icon>
             </ng-template>
           </ion-item>
@@ -64,6 +64,21 @@
             <ion-col>
               <div *ngIf="!passwordMatch" class="invalid-feedback">
                 Passwords do not match!.
+              </div> 
+              <div *ngIf="length < 8" class="invalid-feedback">
+                The password must be at least 8 characters long.
+              </div> 
+              <div *ngIf="!lowercase" class="invalid-feedback">
+                The password must have at least 1 lowercase character.
+              </div> 
+              <div *ngIf="!uppercase" class="invalid-feedback">
+                The password must have at least 1 uppercase character.
+              </div> 
+              <div *ngIf="!numbers" class="invalid-feedback">
+                The password must have at least 1 numeric character.
+              </div> 
+              <div *ngIf="!specialchars" class="invalid-feedback">
+                The password must have at least 1 special character.
               </div> 
             </ion-col>
           </ion-row>
@@ -93,7 +108,7 @@
       </div>
       <div class="button-centerer">
         <div>
-          <ion-button class="button-centerer1"(click)="register()" shape="round">Sign Up</ion-button>
+          <ion-button [disabled]="!isStrong || !passwordMatch" class="button-centerer1"(click)="register()" shape="round">Sign Up</ion-button>
         </div>
       </div>
     </div>

@@ -24,7 +24,7 @@
 // }
 
 import { Injectable } from '@angular/core';
-import { GoogleAuthProvider, AuthProvider } from 'firebase/auth';
+import { GoogleAuthProvider, AuthProvider, EmailAuthProvider, reauthenticateWithCredential, updatePassword, confirmPasswordReset } from 'firebase/auth';
 import { 
   Auth,
   // getAuth, // 30:3   warning  'getAuth' is defined but never used
@@ -34,7 +34,11 @@ import {
   deleteUser,
   updateEmail,
   authState,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  // reauthenticateWithCredential,
+  fetchSignInMethodsForEmail,
+  // updatePassword,
+  sendEmailVerification
 } from "@angular/fire/auth";
 import { UserProfile } from '@properproperty/api/profile/util';
 import { ToastController, ToastOptions } from '@ionic/angular';
@@ -105,6 +109,29 @@ export class AuthService {
       this.errorHandler(error);
       return null;
     }
+  }
+  async updatePassword(oodb: string, newPassword: string) {
+    // if (!this.auth.currentUser?.email) {
+    //   console.log('No user is currently authenticated.')
+    //   return Promise.reject('No user is currently authenticated.');
+    // }
+    console.log(oodb);
+    try {
+      await confirmPasswordReset(this.auth, oodb, newPassword);
+      this.toastController.create({
+        message: "Password updated successfully",
+        duration: 2000,
+        color: "success"
+      }).then((toast) => {
+        toast.present();
+      });
+    } catch (error) {
+      console.log(error);
+      this.errorHandler(error);
+      return false;
+    }
+    
+    return true;
   }
 
   deleteCurrentUser() {
@@ -188,12 +215,14 @@ export class AuthService {
         failed.message = "Invlaid password.";
         break;
       case "auth/too-many-requests":
-        failed.message = "Too many failed attempts. Try again later or reset your password.";
+        failed.message = "Too many failed attempts. Please try again later or reset your password.";
         break;
       case "auth/missing-password":
         failed.message = "Invlaid password.";
         break;
-      
+      case "auth/invalid-action-code":
+        failed.message = "An error has occurred. The link may have expired. Please try again.";
+        break;
       default:
         failed.message = "Unknown error occurred";
         if (window.location.hostname.includes("localhost")) console.log(error);

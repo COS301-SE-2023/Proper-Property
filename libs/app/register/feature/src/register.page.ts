@@ -121,8 +121,15 @@ export class RegisterPage implements OnInit {
   }
 
   strengthScore = 0;
+  isStrong = false;
+  lowercase = false;
+  uppercase = false;
+  numbers = false;
+  specialchars = false;
   length = 0;
   checkStrength(){
+    this.passwordMatch =  (this.password === this.confirm_password)
+      
     this.length = this.password.length;
     document.getElementById("sec1")?.setAttribute("style", "");
       document.getElementById("sec2")?.setAttribute("style", "");
@@ -132,30 +139,30 @@ export class RegisterPage implements OnInit {
     const lowerCase = /[a-z]{1}/;
     const numbers = /[0-9]{1}/;
     const specialChars = /[\[\].!#$%&'*+\/=?^_`{|}~-]{1}/;
-
-    if(upperCase.test(this.password)){
+    this.uppercase = upperCase.test(this.password);
+    if(this.uppercase){
       console.log("uppcase");
       this.strengthScore += 2;
     }
     else{
       this.strengthScore -= 1;
     }
-    
-    if(lowerCase.test(this.password)){
+    this.lowercase = lowerCase.test(this.password);
+    if(this.lowercase){
       console.log("lowercase");
       this.strengthScore += 2;
     }else{
       this.strengthScore -= 1;
     }
-    
-    if(numbers.test(this.password)){
+    this.numbers = numbers.test(this.password);
+    if(this.numbers){
       console.log("numbers");
       this.strengthScore += 2;
     }else{
       this.strengthScore -= 1;
     }
-    
-    if(specialChars.test(this.password)){
+    this.specialchars = specialChars.test(this.password);
+    if(this.specialchars){
       console.log("specialChars");
       this.strengthScore += 2;
     }else{
@@ -175,7 +182,7 @@ export class RegisterPage implements OnInit {
     else if(this.length >= 15){
       this.strengthScore += 18
     }
-
+    this.isStrong = this.length > 8 && this.uppercase && this.lowercase && this.numbers && this.specialchars;
     if(this.strengthScore <= 3){
       document.getElementById("sec1")?.setAttribute("style", "height: 100%; width: 50%; background-color: red");
     }
