@@ -242,6 +242,14 @@ ion-item {
 
   background: transparent;
 }
+
+.trigger:hover
+{
+  background: #e8e8e8;
+  ion-icon{
+    background: #e8e8e8;
+  }
+}
 }
 
 .Mobile {
