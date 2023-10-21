@@ -209,7 +209,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
       let mapEl = null;
       mapEl = this.mapElementRef1.nativeElement;
 
-        const location = new googleMaps.LatLng(this.list?.geometry.lat, this.list?.geometry.lat);
+        const location = new googleMaps.LatLng(this.list?.geometry.lat, this.list?.geometry.lng);
         this.map = new googleMaps.Map(mapEl, {
           center: location,
           zoom: 15,
@@ -890,7 +890,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
        
 
         
-          const location = new googleMaps.LatLng(this.list?.geometry.lat, this.list?.geometry.lat);
+          const location = new googleMaps.LatLng(this.list?.geometry.lat, this.list?.geometry.lng);
           this.map = new googleMaps.Map(mapEl, {
             center: location,
             zoom: 15,
