@@ -28,7 +28,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
   @ViewChild(IonContent) content: IonContent | undefined;
   // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
 
-  @ViewChild('map1', { static: false }) mapElementRef1!: ElementRef;
+  @ViewChild('map', { static: false }) mapElementRef1!: ElementRef;
   MapView = false ;
   isMobile: boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
@@ -197,15 +197,17 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
 
   async loadMap() {
     try {     
-      // const mapElementRef1 = document.getElementById("map1") as HTMLElement;
+      // const mapElementRef1 = document.getElementById("map") as HTMLElement;
   
+      const mapElementRef = document.getElementById("map") as HTMLElement;
       
 
       const googleMaps: any = await this.gmaps.loadGoogleMaps();
       this.googleMaps = googleMaps;
       
       let mapEl = null;
-      mapEl = this.mapElementRef1.nativeElement;
+      mapEl = mapElementRef;
+
         const location = new googleMaps.LatLng(this.center.lat ?? this.list?.geometry.lat, this.center.lng ?? this.list?.geometry.lat);
         this.map = new googleMaps.Map(mapEl, {
           center: location,
@@ -213,11 +215,11 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
           maxZoom: 18, 
           minZoom: 5,
         });
-    
+  
   
         this.renderer.addClass(mapEl, 'visible');        
       
-        
+       
 
         if (this.list) {
           this.createListingCard(this.list);
@@ -238,10 +240,13 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
 
       this.MapView = !this.MapView;
       if(!this.MapView) {
-        const map1Element = document.getElementById("map1");
-        if (map1Element) {
-          map1Element.innerHTML = ''; // Clear the contents of the map1 div
+        const mapElement = document.getElementById("map");
+        if (mapElement) {
+          mapElement.innerHTML = ''; // Clear the contents of the map div
         }
+      }
+      else{
+        await this.loadMap();
       }
     }
   
