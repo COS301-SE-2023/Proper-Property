@@ -8,7 +8,7 @@ import {
   ViewChild,
   HostListener, 
   ViewChildren, 
-  QueryList ,
+  QueryList
 } from '@angular/core';
 import { 
   ActionSheetController, 
@@ -25,6 +25,8 @@ import { UserProfile } from '@properproperty/api/profile/util';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { ActivatedRoute } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { getDownloadURL} from 'firebase/storage';
+import { Storage, ref } from "@angular/fire/storage";
 // import { IonContent } from '@ionic/angular';
 
 @Component({
@@ -137,7 +139,8 @@ export class SearchPage implements OnDestroy, AfterViewInit {
     private listingServices: ListingsService,
     public gmapsService: GmapsService,
     private profileServices : UserProfileService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private storage: Storage
     ) {
       this.predictions = [];
       // this.defaultBounds = new google.maps.LatLngBounds();
@@ -155,7 +158,7 @@ export class SearchPage implements OnDestroy, AfterViewInit {
       this.isMobile = isMobile();
       this.MapView = false;
     }
-
+  
     async mapView(){
       this.MapView = !this.MapView;
       if(this.MapView &&this.isMobile){
