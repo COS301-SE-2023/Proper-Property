@@ -55,7 +55,7 @@ export class HomePage implements OnInit {
 
     if (imageElement) {
       // New href value
-      const newHref = '../assets/Cottage.jpg';
+      const newHref = '../assets/niceHouse.webp';
 
       // Update the xlink:href attribute
       imageElement.setAttribute('xlink:href', newHref);
@@ -85,7 +85,7 @@ export class HomePage implements OnInit {
 
     if (imageElement) {
       // New href value
-      const newHref = '../assets/Fancy House.jpg';
+      const newHref = '../assets/niceHouse2.jpeg';
 
       // Update the xlink:href attribute
       setTimeout(() => {
