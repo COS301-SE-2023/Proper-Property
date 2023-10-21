@@ -307,7 +307,8 @@ async loadMap() {
         }
       }
     } catch (e) {
-      console.log(e);
+      if (window.location.hostname.includes("localhost"))
+        console.log(e);
     }
   }
 
@@ -455,11 +456,7 @@ async loadMap() {
 
   Templistings: Listing[] = [];
 
-  // nextPage(){
-  //   console.log("Next page loading...")
-  // }
   async searchProperties(nextPage?: boolean, previousPage?: boolean) {
-    console.log(this.parking);
     if(!this.searchQuery){
       const toast = await this.toastController.create({
         message: 'Please enter an area for us to search in',
@@ -478,17 +475,12 @@ async loadMap() {
       return;
     }
     const tempSearchQuery = this.searchQuery.replace(", South Africa", '');
-    console.log(tempSearchQuery);
     const areaBounds = this.searchQuery?  await this.gmapsService.geocodeAddress(this.searchQuery) : null;
     if (!areaBounds) {
       // TODO Error message
       return;
     }
 
-    console.log(areaBounds);
-    console.log(areaBounds.geometry.viewport.toJSON());
-    console.log(areaBounds.geometry.viewport.toSpan());
-    console.log(this.listings);
     this.listings = [];
     if (!nextPage && !previousPage) {
       this.currentPage = 0;
@@ -496,25 +488,18 @@ async loadMap() {
     }
 
     if (previousPage) {
-      console.log("Previous page");
-      console.log(this.currentPage);
       if (this.currentPage > 0) {
         this.currentPage--;
-        console.log(this.currentPage * 5, " - ", this.allListings.length);
         this.listings = this.allListings.slice(this.currentPage * 5, this.currentPage * 5 + 5);
-        console.log(this.listings);
       }
       return;
     }
     if (nextPage) {
       if (this.currentPage * 5 + 5 < this.allListings.length) {
         this.currentPage++;
-        console.log(this.currentPage * 5, " - ", this.allListings.length);
         this.listings = this.allListings.slice(this.currentPage * 5, this.currentPage * 5 + 5);
-        console.log(this.listings);
         return;
       }
-      console.log("Next page");
     }
 
     // document.getElementById("nextPage")?.setAttribute("disabled", "true")
@@ -557,9 +542,7 @@ async loadMap() {
     if(nextPage && this.allListings.length > 0) {
       request.lastListingId = this.allListings[this.allListings.length - 1].listing_id;
     }
-    console.log(request);
     const response = (await this.listingServices.getFilteredListings(request));
-    console.log("Response:", response);
     if(!response.listings.length){
       const toast = await this.toastController.create({
         message: 'No listings returned',
@@ -572,45 +555,13 @@ async loadMap() {
         this.searching = false;
         document.getElementById("searchButton")?.setAttribute("disabled", "false")
       }, 1500)
-      return;
+      return;8
     }
     // this.allListings = [];
-    console.log(this.allListings);
     this.allListings = this.allListings.concat(response.listings);
-    console.log(this.allListings);
     if (nextPage) this.currentPage++;
-    console.log(this.currentPage * 5, " - ", this.allListings.length);
     this.listings = this.allListings.slice(this.currentPage * 5, this.currentPage * 5 + 5);
-    console.log("Listings: ", this.listings)
-    // if (areaBounds) {
-    //   for(const listing of response.listings){
-    //     const isInArea = await this.gmapsService.checkAddressInArea(areaBounds.geometry.viewport, listing.geometry);
-    //     const knockOffResult = await this.gmapsService.knockoffCheckInArea(areaBounds.geometry.viewport, listing.geometry);
-    //     if (window.location.hostname.includes("localhost")) {
-    //       console.log(isInArea);
-    //       console.log(knockOffResult);
-    //     }
-    //     if(isInArea){
-    //       this.allListings.push(listing);
-    //       if(listing.let_sell == "Sell"){
-    //         this.buyCount++;
-    //       }
-    //       else if(listing.let_sell == "Rent"){
-    //         this.rentCount++;
-    //       }
-    //     }
-    //   }
-    // } else {
-    //   // this.allListings = response.listings;
-    //   for(const list of response.listings){
-    //     if(list.let_sell == "Sell"){
-    //       this.buyCount++;
-    //     }
-    //     else if(list.let_sell == "Rent"){
-    //       this.rentCount++;
-    //     }
-    //   }
-    // }
+    
     const temp = [];
 
     if(this.allListings){
@@ -637,23 +588,22 @@ async loadMap() {
         if(list.property_size < this.smallestProp){
           this.smallestProp = list.property_size;
         }
-        if (window.location.hostname.includes("localhost"))
-          console.log(list.characteristics);
-          if(await this.listingServices.recommender(
-            list.characteristics, 
-            this.userInterestVector
-          )){
-            this.recommends.push({
-              listingID: list.listing_id,
-              recommended: true})
-            temp.unshift(list);
-          }
-          else{
-            this.recommends.push({
-              listingID: list.listing_id,
-              recommended: false})
-            temp.push(list);
-          }
+        
+        if(await this.listingServices.recommender(
+          list.characteristics, 
+          this.userInterestVector
+        )){
+          this.recommends.push({
+            listingID: list.listing_id,
+            recommended: true})
+          temp.unshift(list);
+        }
+        else{
+          this.recommends.push({
+            listingID: list.listing_id,
+            recommended: false})
+          temp.push(list);
+        }
       }
 
       // this.allListings = temp;
@@ -662,11 +612,6 @@ async loadMap() {
         if(listing.listing_id){
           this.cardView.set(listing.listing_id, false)
         }
-      }
-
-      if (window.location.hostname.includes("localhost")) {
-        console.warn(this.recommends);
-        console.warn(this.cardView);
       }
 
       // this.filterProperties();

@@ -155,7 +155,6 @@ export class AdminService {
         const currentPercentage = Math.floor(progressCounter/request.stationStats.length * 100);
         if(Math.floor(currentPercentage / 10) > percentageCounter){
           ++percentageCounter;
-          console.log(percentageCounter*10 + "%");
         }
         ++progressCounter;
         try{
@@ -378,7 +377,6 @@ export class AdminService {
   //   
   async uploadWaterQualityData(data : any[]){
     const runningLocally = window.location.hostname.includes("localhost");
-    if(runningLocally) console.log("uploading water quality data");
     let progressCounter = 0;
     let percentageCounter = 0;
     const WSAs : waterQualityWSA[] = []
@@ -386,7 +384,6 @@ export class AdminService {
       const currentPercentage = Math.floor(progressCounter/data.length * 100);
       if(Math.floor(currentPercentage / 10) > percentageCounter && runningLocally){
         ++percentageCounter;
-        console.log(percentageCounter*10 + "%");
       }
       ++progressCounter;
       WSAs.push({

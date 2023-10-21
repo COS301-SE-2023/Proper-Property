@@ -223,8 +223,6 @@ export class ListingsRepository {
         lastListingDoc = (await listingsCollection
           .doc(req.lastListingId)
           .get());
-
-        console.log(lastListingDoc.data);
       }
 
       if(req.prop_type){
@@ -258,82 +256,51 @@ export class ListingsRepository {
         // queryData.forEach((docSnapshot) => {
         for(const docSnapshot of queryData.docs){
           const data = docSnapshot.data();
-          console.log({
-            address: data.address,
-            lat: {
-              min: req.addressViewport?.sw.lat,
-              data: data.geometry.lat,
-              max: req.addressViewport?.ne.lat
-            },
-            lng: {
-              min: req.addressViewport?.sw.lng,
-              data: data.geometry.lng,
-              max: req.addressViewport?.ne.lng
-            }
-          });
           lastSnapshot = docSnapshot;
           if (!data.geometry || !req.addressViewport) {
             continue;
           }
           if(data.geometry.lat > req.addressViewport.ne.lat || data.geometry.lat < req.addressViewport.sw.lat
           || data.geometry.lng > req.addressViewport.ne.lng || data.geometry.lng < req.addressViewport.sw.lng) {
-            console.log("out of bounds");
             continue;
           }
           if (req.bath && data.bath < req.bath) {
-            console.log("bath")
             continue;
           }
           if (req.bed && data.bed < req.bed) {
-            console.log("bed");
             continue;
           }
           if (req.parking && data.parking < req.parking) {
-            console.log("parking");
             continue;
           }
           if ((req.price_min && data.price < req.price_min) ) {
-            console.log("price too low");
             continue;
           }
           if ((req.price_max && data.price > req.price_max)) {
-            console.log("price too high");
             continue;
           }
           if ((req.property_size_min && data.property_size < req.property_size_min ) ) {
-            console.log("property size too small");
             continue;
           }
           if ((req.property_size_max && data.property_size > req.property_size_max )) {
-            console.log("property size too big");
             continue;
           }
           if ((req.areaScore?.crimeScore && data.areaScore.crimeScore < req.areaScore.crimeScore)) {
-            console.log("crime");
             continue;
           }
           if ((req.areaScore?.waterScore && data.areaScore.waterScore < req.areaScore.waterScore)) {
-            console.log("water");
             continue;
           }
           if ((req.areaScore?.schoolScore && data.areaScore.schoolScore < req.areaScore.schoolScore)) {
-            console.log("school");
             continue;
           }
           if ((req.areaScore?.sanitationScore && data.areaScore.sanitationScore < req.areaScore.sanitationScore)) {
-            console.log("sanitation");
             continue;
           }
           if ((req.totalAreaScore && (data.areaScore.waterScore + data.areaScore.schoolScore + data.areaScore.crimeScore + data.areaScore.sanitationScore)/4 < req.totalAreaScore)) {
-            console.log("total area score");
             continue;
           }
-          console.log("passed");
-          // for (const listing of response.listings) {
-          //   if (listing.listing_id == data.listing_id) {
-          //     console.log("what");
-          //   }
-          // }
+
           response.listings.push(data);
           if(response.listings.length >= 5){
             return response;
@@ -342,7 +309,6 @@ export class ListingsRepository {
         if (lastSnapshot)
           query = query.startAfter(lastSnapshot).limit(5 - response.listings.length);
       }
-      console.log(response);
       return response;
     }
     catch(e: any){

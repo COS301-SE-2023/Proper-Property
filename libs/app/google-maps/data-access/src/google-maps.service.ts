@@ -94,10 +94,8 @@ export class GmapsService {
     const area1 = areaBounds;
     const point2 = listingGeometry;
     if (area1 && point2) {
-      const areaLatBounds = [ area1.getNorthEast().lat(), area1.getSouthWest().lat() ];
-      const areaLngBounds = [ area1.getNorthEast().lng(), area1.getSouthWest().lng() ];
-      console.log('areaLatBounds: ', areaLatBounds);
-      console.log('areaLngBounds: ', areaLngBounds);
+      // const areaLatBounds = [ area1.getNorthEast().lat(), area1.getSouthWest().lat() ];
+      // const areaLngBounds = [ area1.getNorthEast().lng(), area1.getSouthWest().lng() ];
       const latInBounds = area1.getSouthWest().lat() <= point2.lat && point2.lat <= area1.getNorthEast().lat();
       const lngInBounds = area1.getSouthWest().lng() <= point2.lng && point2.lng <= area1.getNorthEast().lng();
       return latInBounds && lngInBounds;
@@ -115,18 +113,9 @@ export class GmapsService {
         return null;
       }
     });
-    console.log("zaBounds: ", zaBounds); //https://developers.google.com/maps/documentation/javascript/reference/geocoder
     return new Promise<google.maps.GeocoderResult | null>((resolve, reject) => {
       geocoder.geocode({ address: address, bounds: zaBounds.results[0].geometry.bounds, componentRestrictions: {country: "South Africa"}}, (results, status) => {
         if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
-            console.log(results);
-            for(let res of results){
-              if(res.formatted_address.includes('South Africa')){
-                console.log("This includes: ",  res);
-                // resolve(res);
-              }
-            }
-            console.log("South Africa Bounds: ",  this.SAGeocode);
             resolve(results[0]);
         } else {
           console.error('geocodeAddress results: ', results);

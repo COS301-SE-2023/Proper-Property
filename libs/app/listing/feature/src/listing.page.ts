@@ -105,7 +105,6 @@ export class ListingPage implements OnDestroy, OnInit {
 
       await this.listingServices.getListing(list_id).then((list) => {
         this.list = list;
-        // console.log("QR viewing: " + qr)
       }).then(() => {
         if (admin) {
           this.admin = true;
@@ -131,7 +130,6 @@ export class ListingPage implements OnDestroy, OnInit {
           this.lister_name = user.firstName + " " + user.lastName;
 
           if (qr && this.list) {
-            // console.log(window.location.href, " ", this.router.url);
             this.userServices.qrListingRead({
               address: this.list.address,
               url: window.location.href.substring(0, window.location.href.indexOf(";qr")),
@@ -144,7 +142,6 @@ export class ListingPage implements OnDestroy, OnInit {
           this.userProfile = profile;
           this.saved = this.userProfile?.savedListings?.includes(this.listingId) ?? false;
           // this.isRed = this.saved;
-          if (window.location.hostname.includes("localhost")) console.log("userProfile Subscriber: ", this.saved);
           if (profile && this.list && this.userProfile?.userId == this.list?.user_id) {
             this.ownerViewing$ = of(true);
             this.profilePic = this.userProfile?.profilePicture ?? "";
@@ -168,7 +165,6 @@ export class ListingPage implements OnDestroy, OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    if (window.location.hostname.includes("localhost")) console.log(event);
     this.isMobile = window.innerWidth <= 576;
   }
 
@@ -223,7 +219,6 @@ export class ListingPage implements OnDestroy, OnInit {
       pageViews.push(i.pageView);
     }
 
-    // console.log(obj)
 
     const data = {
       labels: dates,
@@ -252,18 +247,12 @@ export class ListingPage implements OnDestroy, OnInit {
         type: 'line',
         data: data,
       });
-
-      // TODO proper error handling
-      if (chart) {
-        console.log("Chart created")
-      }
     }
     const avgPerUser = totEngagement / totUsers;
     const minutes = Math.floor(avgPerUser / 60);
     const seconds = (avgPerUser - minutes * 60).toPrecision(2);
 
     this.avgEnagement = seconds ? minutes + " min " + seconds + " sec" : "There is no data to show yet";
-    // console.log(this.avgEnagement)
     this.showData = true;
     const element = document.querySelector(".graph") as HTMLElement;
     loader.style.display = "none";
@@ -316,17 +305,14 @@ export class ListingPage implements OnDestroy, OnInit {
           lat: geocodeResult.geometry.location.lat() ?? 0,
           lng: geocodeResult.geometry.location.lng() ?? 0
         }
-        if (runningLocally) console.log(this.list.geometry);
       }
       if ((this.list.status == StatusEnum.PENDING_APPROVAL || this.list.status == StatusEnum.EDITED) && approved) {
-        if (runningLocally) console.log("Getting scores");
         
         crimeScore = this.list.areaScore.crimeScore;
         if (!crimeScore) {
           const score = await this.getCrimeScore();
           scoresCalculated.crimeScore = score > -1;
           crimeScore = Math.max(this.list.areaScore.crimeScore, score);
-          if (runningLocally) console.log("crimeScore: ", score);
         }
         // schoolScore = this.list.areaScore.schoolScore ? this.list.areaScore.schoolScore: await this.getSchoolRating(this.list.geometry);
         schoolScore = this.list.areaScore.schoolScore;
@@ -334,7 +320,6 @@ export class ListingPage implements OnDestroy, OnInit {
           const score = await this.getSchoolRating(this.list.geometry);
           scoresCalculated.schoolScore = score > -1;
           schoolScore = Math.max(this.list.areaScore.schoolScore, score);
-          if (runningLocally) console.log("schoolScore: ", score);
         }
         // waterScore = this.list.areaScore.waterScore ? this.list.areaScore.waterScore: await this.getWaterScore();
         waterScore = this.list.areaScore.waterScore;
@@ -342,7 +327,6 @@ export class ListingPage implements OnDestroy, OnInit {
           const score = await this.getWaterScore();
           scoresCalculated.waterScore = score > -1;
           waterScore = Math.max(this.list.areaScore.waterScore, score);
-          if (runningLocally) console.log("waterScore: ", score);
         }
         // sanitationScore = this.list.areaScore.sanitationScore ? this.list.areaScore.sanitationScore: await this.getSanitationScore();
         sanitationScore = this.list.areaScore.sanitationScore;
@@ -350,7 +334,6 @@ export class ListingPage implements OnDestroy, OnInit {
           const score = await this.getSanitationScore();
           scoresCalculated.sanitationScore = score > -1;
           sanitationScore = Math.max(this.list.areaScore.sanitationScore, score);
-          if (runningLocally) console.log("sanitationScore: ", score);
         }
       }
 
@@ -400,7 +383,6 @@ export class ListingPage implements OnDestroy, OnInit {
         toast.present();
         return;
       }
-      if (runningLocally) console.log(result);
 
       setTimeout(async () => {
         this.loading = false;
@@ -578,7 +560,6 @@ export class ListingPage implements OnDestroy, OnInit {
   }
 
   goNext(event: Event) {
-    if (window.location.hostname.includes("localhost")) console.log(event);
     if (this.swiperRef) {
       this.swiperRef.nativeElement.swiper.slideNext();
     }
@@ -639,12 +620,6 @@ export class ListingPage implements OnDestroy, OnInit {
   }
 
   async saveListing() {
-    if (window.location.hostname.includes("localhost")) {
-      console.log("SaveListing- is saved?: ", this.saved);
-      console.log(this.userProfile);
-      console.log(this.userProfile?.savedListings);
-    }
-    
     if (this.userProfile && !this.userProfile.savedListings?.includes(this.listingId)) {
       this.userProfile.savedListings = this.userProfile.savedListings ?? [];
       this.userProfile.savedListings.push(this.listingId);
@@ -698,7 +673,6 @@ export class ListingPage implements OnDestroy, OnInit {
   qrGenerated = false;
   generateQRCode() {
     const QRCode = require('qrcode')
-    console.log("Testing ti")
     const qrCodeCanvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
     if (qrCodeCanvas) {
       QRCode.toCanvas(qrCodeCanvas, window.location.href + ";qr=true", function (error: any) {
@@ -718,7 +692,6 @@ export class ListingPage implements OnDestroy, OnInit {
 
     if (canvas) {
       const dataURL = canvas.toDataURL("image/png");
-      // console.log(dataURL);
 
       const a = document.createElement('a');
       a.href = dataURL

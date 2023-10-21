@@ -69,8 +69,6 @@ export class UserProfileService {
       SendQREmailRequest,
       void
     >(this.functions, 'sendNotification')(request);
-    if (window.location.hostname.includes("localhost"))
-      console.log(resp);
   }
 
   vPotency = 0;
@@ -96,7 +94,6 @@ export class UserProfileService {
   async updateInterests(characteristic : characteristics, profile: UserProfile)
   {
     // const profile = this.getUser(userID);
-    console.log("old interests", profile);
     this.calculatePotency(characteristic);
 
     this.temp.gym=(await profile).interests.gym;
@@ -205,9 +202,7 @@ export class UserProfileService {
     (await profile).interests.owner = this.temp.owner;
     (await profile).interests.party = this.temp.party;
     (await profile).interests.student = this.temp.student;
-    // console.log("new interest1", profile);
     await this.updateUserProfile(await profile);
-    // console.log("new interest2", profile);
   }
 
   mainIncrease(fixed: number, boolCharacteristic: number)
@@ -217,7 +212,6 @@ export class UserProfileService {
     {
       updates=100;
     }
-    console.log("after ", updates);
     return updates;
   }
 
@@ -229,7 +223,6 @@ export class UserProfileService {
       ally=100;
     }
 
-    // console.log("after ", ally);
     
     return ally;
   }
@@ -241,7 +234,6 @@ export class UserProfileService {
     {
       enemy=0;
     }
-    // console.log("after ", enemy);
     return enemy;
   }
 
