@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, HostListener, OnDestroy, OnInit,Renderer2 } from '@angular/core';
+import { Component, ElementRef, ViewChild, HostListener, AfterViewInit, OnDestroy, OnInit,Renderer2 } from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { ChangeStatusResponse, Listing, StatusEnum } from '@properproperty/api/listings/util';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,10 +23,12 @@ export interface GetAnalyticsDataRequest {
   templateUrl: './listing.page.html',
   styleUrls: ['./listing.page.scss'],
 })
-export class ListingPage implements OnDestroy, OnInit {
+export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
 
   @ViewChild(IonContent) content: IonContent | undefined;
   // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
+
+  @ViewChild('map1', { static: false }) mapElementRef1!: ElementRef;
   MapView = false ;
   isMobile: boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
@@ -104,12 +106,16 @@ export class ListingPage implements OnDestroy, OnInit {
     Chart.register(...registerables);
   }
 
+  async ngAfterViewInit() {
+    await this.loadMap();
+  }
+
   async ngOnInit() {
     let list_id = "";
     let admin = "";
     let qr = false;
     
-    await this.loadMap();
+    
     
     this.route.params.subscribe(async (params) => {
       list_id = params['list'];
@@ -191,13 +197,15 @@ export class ListingPage implements OnDestroy, OnInit {
 
   async loadMap() {
     try {     
-      const mapElementRef1 = document.getElementById("map1") as HTMLElement;
-    
+      // const mapElementRef1 = document.getElementById("map1") as HTMLElement;
+  
+      
+
       const googleMaps: any = await this.gmaps.loadGoogleMaps();
       this.googleMaps = googleMaps;
       
       let mapEl = null;
-      mapEl = mapElementRef1;
+      mapEl = this.mapElementRef1.nativeElement;
         const location = new googleMaps.LatLng(this.center.lat ?? this.list?.geometry.lat, this.center.lng ?? this.list?.geometry.lat);
         this.map = new googleMaps.Map(mapEl, {
           center: location,
@@ -206,8 +214,11 @@ export class ListingPage implements OnDestroy, OnInit {
           minZoom: 5,
         });
     
+  
         this.renderer.addClass(mapEl, 'visible');        
       
+        
+
         if (this.list) {
           this.createListingCard(this.list);
           if (this.list.geometry.lat && this.list.geometry.lng ) {
@@ -224,8 +235,6 @@ export class ListingPage implements OnDestroy, OnInit {
 
 
     async mapView(){
-
-      
 
       this.MapView = !this.MapView;
       if(!this.MapView) {
