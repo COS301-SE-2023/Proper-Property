@@ -306,7 +306,19 @@ ion-content::part(scroll) {
       height: 0px;
     }
   }
-
+  #address-search-icon {
+    position: absolute; 
+    top: 16px; 
+    left: 13px; 
+    z-index: 10; 
+    font-size: 24px
+  }
+  #search-spinner {
+    position: absolute; 
+    top: 14px; 
+    left: 11px; 
+    z-index: 100;
+  }
   #address {
     // border-radius: 30px;
     border: 1.5px solid #e4e4e4;
@@ -323,7 +335,9 @@ ion-content::part(scroll) {
     --highlight-color-valid: none;
     --highlight-color-invalid: none;
   }
-  
+  #address:focus-within {
+    border: 1px solid black;
+  }
   .dropdown {
     width: 50%;
     height: 70%;

@@ -457,6 +457,23 @@ async loadMap() {
   //   console.log("Next page loading...")
   // }
   async searchProperties(nextPage?: boolean, previousPage?: boolean) {
+    if(!this.searchQuery){
+      const toast = await this.toastController.create({
+        message: 'Please enter an area for us to search in',
+        duration: 3000, // Duration in milliseconds
+        color: 'danger', // Use 'danger' to display in red
+        position: 'top' // Position of the toast: 'top', 'middle', 'bottom'
+      });
+      toast.present();
+      setTimeout(() => { 
+        this.searching = false;
+        document.getElementById("searchButton")?.setAttribute("disabled", "false")
+        // document.getElementById("nextPage")?.setAttribute("disabled", "false")
+        // // if(this.currentPage > 0)
+        //   document.getElementById("prevPage")?.setAttribute("disabled", "false")
+      }, 1500)
+      return;
+    }
     const areaBounds = this.searchQuery?  await this.gmapsService.geocodeAddress(this.searchQuery) : null;
     if (!areaBounds) {
       // TODO Error message
@@ -504,24 +521,8 @@ async loadMap() {
     // this.listings = await this.listingServices.getApprovedListings();
 
     if(this.isMobile)this.searchQuery = (document.getElementById("address1") as HTMLInputElement).value;
+
     else this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
-    if(!this.searchQuery){
-      const toast = await this.toastController.create({
-        message: 'Please enter an area for us to search in',
-        duration: 3000, // Duration in milliseconds
-        color: 'danger', // Use 'danger' to display in red
-        position: 'top' // Position of the toast: 'top', 'middle', 'bottom'
-      });
-      toast.present();
-      setTimeout(() => { 
-        this.searching = false;
-        document.getElementById("searchButton")?.setAttribute("disabled", "false")
-        // document.getElementById("nextPage")?.setAttribute("disabled", "false")
-        // // if(this.currentPage > 0)
-        //   document.getElementById("prevPage")?.setAttribute("disabled", "false")
-      }, 1500)
-      return;
-    }
 
     const request = {
       env_type : this.env_type ? this.env_type : null,
@@ -671,13 +672,13 @@ async loadMap() {
       // await this.addMarkersToMap();
       // await this.setCentre();
 
-      this.property_price_values.upper = this.highestPrice;
-      this.property_price_values.lower = this.lowestPrice;
-      this.rangeSteps = (this.highestPrice - this.lowestPrice)/10;
+      // this.property_price_values.upper = this.highestPrice;
+      // this.property_price_values.lower = this.lowestPrice;
+      // this.rangeSteps = (this.highestPrice - this.lowestPrice)/10;
 
-      this.property_size_values.upper = this.largestProp;
-      this.property_size_values.lower = this.smallestProp;
-      this.propSizeRangeSteps = (this.largestProp - this.smallestProp)/10;
+      // this.property_size_values.upper = this.largestProp;
+      // this.property_size_values.lower = this.smallestProp;
+      // this.propSizeRangeSteps = (this.largestProp - this.smallestProp)/10;
 
       setTimeout(() => { 
         this.searching = false;
