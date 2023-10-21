@@ -206,7 +206,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
       this.googleMaps = googleMaps;
       
       let mapEl = null;
-      mapEl = mapElementRef;
+      mapEl = this.mapElementRef1.nativeElement;
 
         const location = new googleMaps.LatLng(this.center.lat ?? this.list?.geometry.lat, this.center.lng ?? this.list?.geometry.lat);
         this.map = new googleMaps.Map(mapEl, {
@@ -240,9 +240,9 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
 
       this.MapView = !this.MapView;
       if(!this.MapView) {
-        const mapElement = document.getElementById("map");
+        const mapElement = this.mapElementRef1.nativeElement;
         if (mapElement) {
-          mapElement.innerHTML = ''; // Clear the contents of the map div
+          // mapElement.innerHTML = ''; // Clear the contents of the map div
         }
       }
       else{
