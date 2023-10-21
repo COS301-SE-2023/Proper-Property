@@ -259,7 +259,7 @@ export class SearchPage implements OnDestroy, AfterViewInit {
     // this.allListings = this.listings;
     // await this.addMarkersToMap();
     // this.filterProperties();
-    this.searchProperties();
+    // this.searchProperties();
     // this.addMarkersToMap();
   }
 async loadMap() {
@@ -751,7 +751,7 @@ addMMarker(listing: Listing) {
     this.features = [];
     this.searchQuery = "";
 
-    this.searchProperties();
+    // this.searchProperties();
 }
 
   get filteredBuyingProperties(): Listing[] {
