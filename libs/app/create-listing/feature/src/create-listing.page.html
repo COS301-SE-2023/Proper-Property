@@ -365,7 +365,7 @@
               </ion-col>
             </ion-row>
             <ion-list [hidden]="filteredAmenities.length === 0">
-              <ion-item lines="none" (click)="selectAmenity(amenity)" *ngFor="let amenity of filteredAmenities">
+              <ion-item lines="none" class="amenityClick" (click)="selectAmenity(amenity)" *ngFor="let amenity of filteredAmenities">
                 {{ amenity }}
               </ion-item>
             </ion-list>
