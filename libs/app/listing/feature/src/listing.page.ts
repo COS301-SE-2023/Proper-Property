@@ -77,7 +77,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
 
   areaScore = 0;
 
-  private center = { lat: -25.7477, lng: 28.2433 };
+  // private center = { lat: -25.7477, lng: 28.2433 };
   private mapClickListener: any;
   private markerClickListener: any;
   private markers: any[] = [];
@@ -208,9 +208,27 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
       let mapEl = null;
       mapEl = mapElementRef;
 
-      console.log("locked and loaded ",mapEl);
+
+      
+
+      if(this.list){
+        if (!this.list.geometry.lat|| !this.list.geometry.lng) {
+          const geocodeResult = await this.gmapsService.geocodeAddress(this.list.address);
+          if (!geocodeResult) {
+            this.loading = false;
+            const toast = await this.toastController.create(this.failedChange);
+            toast.present();
+            return;
+          }
+          this.list.geometry = {
+            lat: await geocodeResult.geometry.location.lat(),
+            lng: await geocodeResult.geometry.location.lng() ?? 0
+          };
+          
+        }
 
         const location = new googleMaps.LatLng(this.list?.geometry.lat, this.list?.geometry.lng);
+        
         this.map = new googleMaps.Map(mapEl, {
           center: location,
           zoom: 15,
@@ -218,35 +236,49 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
           minZoom: 5,
         });
   
+    
+          this.renderer.addClass(mapEl, 'visible');        
+          
+          console.log("map being loaded with ", mapElementRef);
+          
   
-        this.renderer.addClass(mapEl, 'visible');        
-        
-        if (this.list) {
-          this.createListingCard(this.list);
-          if (this.list.geometry.lat && this.list.geometry.lng ) {
-            const position = this.list.geometry;
-            
-              this.addMarker(position, this.list);
-            
+          if (this.list) {
+            this.createListingCard(this.list);
+            if (this.list.geometry.lat && this.list.geometry.lng ) {
+              const position = this.list.geometry;
+              
+                this.addMarker(position, this.list);
+              
+            }
           }
-        }
+      }
+
+      
+ 
       } catch (e) {
         console.log(e);
       }
+    
     }
 
 
-    async mapView(){
+    async mapView(open:boolean){
 
-      this.MapView = !this.MapView;
-      if(!this.MapView) {
 
-          this.mapElementRef.nativeElement.innerHTML = ''; // Clear the contents of the map div
+      if (this.MapView && open) {
+        return;
+      }
   
-      }
-      else{
-        await this.loadMap();
-      }
+
+
+        if(!this.MapView &&open) {
+
+          await this.loadMap();
+    
+        }
+        
+      this.MapView = open;
+
     }
   
     addMarker(position: any, listing: Listing) {
@@ -872,10 +904,8 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
   isMapModalOpen = false;
 
   setMapOpen(isOpen: boolean) {
-    if(!this.MapView){
-      this.mapView();
-    }
     this.isMapModalOpen = isOpen;
+    this.mapView(isOpen);
    
   }
 
