@@ -110,7 +110,8 @@ ion-input
 
 .button-centerer {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  // flex-direction: column;
   align-items: center;
   margin-top: 5%;
 }
@@ -119,7 +120,7 @@ ion-input
   color: white;
   --background: var(--ion-color-primary) !important;
   font-weight: 600;
-  margin-bottom: 10%;
+  padding-bottom: 10px;
   --border-radius: 0;
 }
 
@@ -134,22 +135,41 @@ ion-input
       --border-radius: 0;
 }
 
+.googleButton{
+  /* width: 90%; */
+  border: 2px solid var(--ion-color-primary);
+  /* border-radius: 80px !important; */
+  --background: rgba(255, 255, 255, 0) !important;
+  font-weight: 600;
+  --background-hover: var(--ion-color-primary);
+  /* margin-left: 5%; */
+  --border-radius: 0;
+}
+
 .Member
 {
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 50%;
-  flex-direction: column;
+  // flex-direction: column;
   min-width: 240px;
   padding: 0 10px;
+  background-color: #0a9042;
 }
 
 .rightPanel
 {
+  display: flex;
+  justify-content: center;
   top: 30%;
   position: absolute;
   text-align: center;
   width: 50%;
+}
+
+.content{
+  width: 100%;
 }
 
 .forgot
@@ -182,15 +202,13 @@ p
 
 .signUp
 {
-  position: absolute;
   align-items: center;
   justify-content: center;
   text-align: center;
   width: 80px;
   height: 40px;
-  background: rgb(0, 0, 0);
-  margin-left: 40%;
-  margin-right: 40%;
+  background: white;
+  color: #0a9042;
 }
 
 a
@@ -205,7 +223,7 @@ a
   background: var(--ion-color-primary);
 
   a{
-    color: black;
+    color: white;
   }
 
 }

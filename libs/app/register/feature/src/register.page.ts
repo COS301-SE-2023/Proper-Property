@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { AuthService } from '@properproperty/app/auth/data-access';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 // import { profile } from '@properproperty/api/profile/util';
 import { UserProfileState, UserProfileService } from '@properproperty/app/profile/data-access';
 import { Select, Store } from '@ngxs/store';
 import { Register } from '@properproperty/app/auth/util';
+
 
 import { UserProfile } from '@properproperty/api/profile/util';
 import { Observable } from 'rxjs';
@@ -27,7 +28,7 @@ export class RegisterPage implements OnInit {
 
   private user: User | null = null;
   private userProfileListener: Unsubscribe | null = null;
-
+  private activatedRoute = inject(ActivatedRoute);
   constructor(private readonly store: Store, public authService: AuthService,
      public router: Router, 
      public userProfileService: UserProfileService,) {
@@ -38,11 +39,12 @@ export class RegisterPage implements OnInit {
 
   name:string;
   surname:string;
-  password:string;
+  password:string = "";
   email:string;
   confirm_password:string;
   passwordMatch = true;
   validEmail=true;
+  showPassword = false;
 
   async register() {
     
@@ -57,9 +59,6 @@ export class RegisterPage implements OnInit {
 
     if (this.password !== this.confirm_password) {
       this.passwordMatch = false;
-      this.password='';
-      this.confirm_password='';
-
       return; // Prevent further execution
     }
 
@@ -122,71 +121,91 @@ export class RegisterPage implements OnInit {
   }
 
   strengthScore = 0;
+  length = 0;
   checkStrength(){
+    this.length = this.password.length;
+    document.getElementById("sec1")?.setAttribute("style", "");
+      document.getElementById("sec2")?.setAttribute("style", "");
+      document.getElementById("sec3")?.setAttribute("style", "");
     this.strengthScore = 0;
-    const upperCase = /[A-Z]{1,}/;
-    const lowerCase = /[a-z]{1,}/;
+    const upperCase = /[A-Z]{1}/;
+    const lowerCase = /[a-z]{1}/;
     const numbers = /[0-9]{1}/;
-    const specialChars = /[\[\].!#$%&'*+\/=?^_`{|}~-]{1,}/;
-    const length =  this.password.length;
+    const specialChars = /[\[\].!#$%&'*+\/=?^_`{|}~-]{1}/;
 
     if(upperCase.test(this.password)){
       console.log("uppcase");
       this.strengthScore += 2;
     }
+    else{
+      this.strengthScore -= 1;
+    }
     
     if(lowerCase.test(this.password)){
       console.log("lowercase");
       this.strengthScore += 2;
+    }else{
+      this.strengthScore -= 1;
     }
     
     if(numbers.test(this.password)){
       console.log("numbers");
       this.strengthScore += 2;
+    }else{
+      this.strengthScore -= 1;
     }
     
     if(specialChars.test(this.password)){
       console.log("specialChars");
       this.strengthScore += 2;
+    }else{
+      this.strengthScore -= 1;
     }
 
-    if(length <= 5){
+    if(this.length <= 5){
       this.strengthScore = 0;
     }
-    else if(length >= 5 && length < 8){
+    else if(this.length >= 5 && this.length < 8){
       this.strengthScore += 6
     }
-    else if(length >= 8){
+    else if(this.length >= 8 && this.length < 15){
       console.log("long boi")
       this.strengthScore += 10;
     }
+    else if(this.length >= 15){
+      this.strengthScore += 18
+    }
 
     if(this.strengthScore <= 3){
-      document.getElementById("sec1")?.setAttribute("style", "width: 50%; background-color: red");
+      document.getElementById("sec1")?.setAttribute("style", "height: 100%; width: 50%; background-color: red");
     }
     else if(this.strengthScore > 3 && this.strengthScore <= 6){
-      document.getElementById("sec1")?.setAttribute("style", "width: 100%; background-color: red");
+      document.getElementById("sec1")?.setAttribute("style", "height: 100%; width: 100%; background-color: red");
     }
     else if(this.strengthScore > 6 && this.strengthScore <= 9){
-      document.getElementById("sec1")?.setAttribute("style", "width: 100%; background-color: red");
-      document.getElementById("sec2")?.setAttribute("style", "width: 50%; background-color: red");
+      document.getElementById("sec1")?.setAttribute("style", "height: 100%; width: 100%; background-color: red");
+      document.getElementById("sec2")?.setAttribute("style", "height: 100%; width: 50%; background-color: red");
     }
     else if(this.strengthScore > 9 && this.strengthScore <= 12){
-      document.getElementById("sec1")?.setAttribute("style", "width: 100%; background-color: orange");
-      document.getElementById("sec2")?.setAttribute("style", "width: 100%; background-color: orange");
+      document.getElementById("sec1")?.setAttribute("style", "height: 100%; width: 100%; background-color: orange");
+      document.getElementById("sec2")?.setAttribute("style", "height: 100%; width: 100%; background-color: orange");
     }
     else if(this.strengthScore > 12 && this.strengthScore <= 15){
-      document.getElementById("sec1")?.setAttribute("style", "width: 100%; background-color: orange");
-      document.getElementById("sec2")?.setAttribute("style", "width: 100%; background-color: orange");
-      document.getElementById("sec3")?.setAttribute("style", "width: 50%; background-color: orange");
+      document.getElementById("sec1")?.setAttribute("style", "height: 100%; width: 100%; background-color: orange");
+      document.getElementById("sec2")?.setAttribute("style", "height: 100%; width: 100%; background-color: orange");
+      document.getElementById("sec3")?.setAttribute("style", "height: 100%; width: 50%; background-color: orange");
     }
-    else if(this.strengthScore > 15 && this.strengthScore <= 18){
-      document.getElementById("sec1")?.setAttribute("style", "width: 100%; background-color: green");
-      document.getElementById("sec2")?.setAttribute("style", "width: 100%; background-color: green");
-      document.getElementById("sec3")?.setAttribute("style", "width: 100%; background-color: green");
+    else if(this.strengthScore > 15){
+      document.getElementById("sec1")?.setAttribute("style", "height: 100%; width: 100%; background-color: green");
+      document.getElementById("sec2")?.setAttribute("style", "height: 100%; width: 100%; background-color: green");
+      document.getElementById("sec3")?.setAttribute("style", "height: 100%; width: 100%; background-color: green");
     }
 
     console.log(this.strengthScore);
+  }
+
+  showPass(){
+    this.showPassword = !this.showPassword;
   }
 }
 

@@ -19,15 +19,12 @@ ion-content
   display: flex;
   align-content: center;
   justify-content: center;
-  height: 15px;
+  height: 10px;
 }
 
 .strengthBar{
-  padding-top: 2px;
-  border: solid 1px black;
-  // background-color: black;
   width: 95%;
-  height: 5px;
+  height: 100%;
 }
 
 
@@ -39,7 +36,6 @@ ion-content
   height: 80vh;
   width: 70vw;
   margin-left: 15%;
-  // box-shadow: 0 4px 20px 0 rgba(0,0,0,0.3), 0 px 20px 0 rgba(0,0,0,0.3) ;
   background: linear-gradient(-45deg, #00330d,var(--ion-color-primary));
   box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.3);
 
@@ -121,23 +117,18 @@ ion-input
 .invalid-feedback {
   color: red;
   position: relative;
-  top: 70%;
 
   border-radius: 50px !important;
 
   width: 90%;
-  margin: auto;
-  margin-bottom: 3%;
-  display: flex;
 
 }
 
 
 .button-centerer {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    margin-top: 5%;
 }
 
 .button-centerer1 {
@@ -163,12 +154,14 @@ ion-input
 }
 .Member
 {
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 50%;
   flex-direction: column;
   min-width: 240px;
   padding: 0 10px;
+  background-color: #0a9042;
 }
 
 .leftPanel
@@ -201,9 +194,10 @@ p
   text-align: center;
   width: 80px;
   height: 40px;
-  background: rgb(0, 0, 0);
-  margin-left: 40%;
-  margin-right: 40%;
+  background: white;
+  color: #0a9042;
+  // margin-left: 40%;
+  // margin-right: 40%;
 }
 
 a
@@ -218,7 +212,7 @@ a
   background: var(--ion-color-primary);
 
   a{
-    color: black;
+    color: white;
   }
 
 }
@@ -310,7 +304,6 @@ ion-input
 .invalid-feedback {
   color: red;
   position: absolute;
-  top: 70%;
 }
 
 

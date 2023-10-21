@@ -14,8 +14,16 @@
             <ion-input type="email" [(ngModel)]="email" placeholder="  Email" required="true"></ion-input> 
           </ion-item>
           <ion-item class="loginInput">
-            <ion-icon name="lock-closed-outline"></ion-icon>
-            <ion-input type="password" [(ngModel)]="password" placeholder="  Password"></ion-input>
+            <ng-container *ngIf="!showPassword; else showP">
+              <ion-icon name="lock-closed-outline"></ion-icon>
+              <ion-input  type="password" [(ngModel)]="password" placeholder="  Password"></ion-input>
+              <ion-icon (click)="showPass()" style="font-size: 24" name="eye"></ion-icon>
+            </ng-container>
+            <ng-template #showP>
+              <ion-icon name="lock-open-outline"></ion-icon>
+              <ion-input type="text" [(ngModel)]="password" placeholder="  Password"></ion-input>
+              <ion-icon (click)="showPass()" style="font-size: 24" name="eye-off-outline"></ion-icon>
+            </ng-template>
           </ion-item>
           <ion-item id="forgotItem">
             <a href="javascript:;" class="forgot">Forgot your password?</a>
@@ -45,27 +53,27 @@
         </ion-list>
 
       </div>
-      <div class="button-centerer">
-
-        <div >
-          <ion-button class="button-centerer1"(click)="login()" shape="round">Login</ion-button>
-        </div>
-    
-        <div >
-          <ion-button class="button-centerer2" size="default" (click)="googleLogin()" shape="round">
+      <ion-grid style="padding-top: 10px">
+        <ion-row style="display: flex; justify-content: center;">
+            <ion-button class="button-centerer1"(click)="login()" shape="round">Login</ion-button>
+        </ion-row>
+        <ion-row style="display: flex; justify-content: center;">
+          <ion-button class="googleButton" size="default" (click)="googleLogin()" shape="round">
             <ion-icon name="logo-google"></ion-icon>
                Sign in with Google
           </ion-button>
-        </div>
-      </div>
+        </ion-row>
+      </ion-grid>
     </div>
     <div class="Member">
       <div class="rightPanel">
         <div class="content">
-          <h3>Don't Have an Account</h3>
-          <p>Do the Proper thing and sign up. The benefits await</p>
-          <div class="signUp">
-            <a routerLink="/register">Sign up</a>
+          <h3 style="color: white">Don't Have an Account</h3>
+          <p style="color: white">Do the Proper thing and sign up. The benefits await</p>
+          <div style="width: 100%; display: flex; justify-content: center">
+            <div class="signUp">
+              <a routerLink="/register">Sign up</a>
+            </div>
           </div>
         </div> 
       </div>

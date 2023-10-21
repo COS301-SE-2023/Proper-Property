@@ -30,27 +30,51 @@
             </div>
           
           <ion-item>
-            <ion-input type="email" [(ngModel)]="email" placeholder="Enter Email"></ion-input>
+            <ion-icon name="mail-outline"></ion-icon>
+            <ion-input type="email" [(ngModel)]="email" placeholder="  Enter Email"></ion-input>
           </ion-item>
           
           <ion-item>
-            <ion-input type="password" [(ngModel)]="password" (input)="checkStrength()" placeholder="Enter Password" placeholder="Enter Password"></ion-input>
+            <ng-container *ngIf="!showPassword; else showP">
+              <ion-icon name="lock-closed-outline"></ion-icon>
+              <ion-input  type="password" [(ngModel)]="password" (ngModelChange)="checkStrength()" placeholder="  Enter Password"></ion-input>
+              <ion-icon (click)="showPass()" style="font-size: 24" name="eye"></ion-icon>
+            </ng-container>
+            <ng-template #showP>
+              <ion-icon name="lock-open-outline"></ion-icon>
+              <ion-input [hidden]="!showPassword" type="text" [(ngModel)]="password" (ngModelChange)="checkStrength()" placeholder="  Enter Password"></ion-input>
+              <ion-icon (click)="showPass()" style="font-size: 24" name="eye-off-outline"></ion-icon>
+            </ng-template>
           </ion-item>
-
-          
-        <div *ngIf="!passwordMatch" class="invalid-feedback">
-          Passwords do not match!.
-          </div>
 
           <ion-item [class.invalid]="!passwordMatch">
-            <ion-input type="password" [(ngModel)]="confirm_password" placeholder="Confirm Password"></ion-input>
+            <ng-container *ngIf="!showPassword; else showCP">
+              <ion-icon name="lock-closed-outline"></ion-icon>
+              <ion-input type="password" [(ngModel)]="confirm_password" placeholder="  Confirm Password"></ion-input>
+              <ion-icon (click)="showPass()" style="font-size: 24" name="eye"></ion-icon>
+            </ng-container>
+            <ng-template #showCP>
+              <ion-icon name="lock-open-outline"></ion-icon>
+              <ion-input type="text" [(ngModel)]="confirm_password" placeholder="  Confirm Password"></ion-input>
+              <ion-icon (click)="showPass()" style="font-size: 24" name="eye-off-outline"></ion-icon>
+            </ng-template>
           </ion-item>
 
+          <ion-row>
+            <ion-col>
+              <div *ngIf="!passwordMatch" class="invalid-feedback">
+                Passwords do not match!.
+              </div> 
+            </ion-col>
+          </ion-row>
+          
+
+          <h6 style="text-align: center; color: #0dae4f">Password Strength:</h6>
           <ion-grid>
             <ion-row>
               <ion-col class="pwordStrength" id="block1">
                 <div class="strengthBar">
-                  <div id="sec1"></div>
+                  <div *ngIf="password.length > 0" id="sec1"></div>
                 </div>
               </ion-col>
               <ion-col class="pwordStrength" id="block1">
@@ -68,20 +92,20 @@
         </ion-list>
       </div>
       <div class="button-centerer">
-
-        <div >
+        <div>
           <ion-button class="button-centerer1"(click)="register()" shape="round">Sign Up</ion-button>
         </div>
-    
       </div>
     </div>
     <div class = "Member">
       <div class="leftPanel">
         <div class="content">
-          <h3>Already Have an Account</h3>
-          <p>Log In! Your World Is But a Few Clicks Away</p>
-          <div class="LogIn">
-            <a routerLink="/login">Log In</a>
+          <h3 style="color: white">Already Have an Account?</h3>
+          <p style="color: white">Log In! Your World Is But a Few Clicks Away</p>
+          <div style="width: 100%; display: flex; justify-content: center">
+            <div class="LogIn">
+              <a routerLink="/login">Log In</a>
+            </div>
           </div>
         </div> 
       </div>

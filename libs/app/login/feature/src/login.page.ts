@@ -27,6 +27,7 @@ export class LoginPage implements OnInit {
   isMobile = false;
   resetEmail = "";
   emailEntered = this.resetEmail? true : false;
+  showPassword = false;
 
   @ViewChild(IonModal) modal!: IonModal;
 
@@ -112,6 +113,10 @@ export class LoginPage implements OnInit {
   }
   async closePasswordModal(){
     this.modal.dismiss();
+  }
+
+  showPass(){
+    this.showPassword = !this.showPassword;
   }
 }
 
