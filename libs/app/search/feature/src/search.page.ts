@@ -1,4 +1,5 @@
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
+import { FormControl, Validators } from '@angular/forms';
 import {
   AfterViewInit,
   Component,
@@ -43,6 +44,8 @@ export class SearchPage implements OnDestroy, AfterViewInit {
   autocomplete: any;
   // defaultBounds: google.maps.LatLngBounds;
   predictions: google.maps.places.AutocompletePrediction[] = [];
+
+  @ViewChild('minPriceSelect', { static: false }) minPriceSelect!: ElementRef;
 
   @ViewChild('map', { static: false }) mapElementRef!: ElementRef;
   @ViewChild('map1', { static: false }) mapElementRef1!: ElementRef;
@@ -142,6 +145,13 @@ export class SearchPage implements OnDestroy, AfterViewInit {
     private toastController: ToastController,
     private storage: Storage
     ) {
+      this.areaScore = {
+        crimeScore: 0,
+        schoolScore: 0,
+        waterScore: 0,
+        sanitationScore: 0
+      };
+      
       this.predictions = [];
       // this.defaultBounds = new google.maps.LatLngBounds();
       
@@ -393,6 +403,7 @@ async loadMap() {
   `;
   }
 
+  
   checkAndRemoveMarker(marker: {
     position: { lat: () => any; lng: () => any };
   }) {
@@ -765,6 +776,16 @@ sortListings() {
       default:
           // Default sort logic here, if any
           break;
+  }
+}
+
+checkPriceRange(){
+  // if (this.property_price_values.lower > this.property_price_values.upper) {
+  //   this.property_price_values.lower = this.property_price_values.upper;
+   
+  // }
+  if(this.property_price_values.upper < this.property_price_values.lower){
+    this.property_price_values.upper = 99999999;
   }
 }
 
