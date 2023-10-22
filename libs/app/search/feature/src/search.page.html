@@ -360,7 +360,7 @@
             </div>
           </ng-container>
           <ng-template #listingsLoaded>
-            <ng-container *ngIf="listings.length == 0; else foundListings">
+            <ng-container *ngIf="listings.length === 0; else foundListings">
               <!-- <div style="display: flex; justify-content: space-between; font-weight: 500">
                 <p>Enter a search query to begin your search</p>
                 <ion-icon style="font-size: 24; padding-left: 10px;" name="search-outline"></ion-icon>
@@ -395,7 +395,7 @@
                           </ion-row>
                           <ion-row>
                             <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-                              {{listing.bed}} Bedroom {{listing.prop_type == "Commercial"? listing.prop_type + " Property" : listing.prop_type}}
+                              {{listing.bed}} Bedroom {{listing.prop_type === "Commercial"? listing.prop_type + " Property" : listing.prop_type}}
                             </p>
                           </ion-row>
                           <ion-row>

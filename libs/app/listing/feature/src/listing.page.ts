@@ -49,6 +49,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
   coordinates: { latitude: number, longitude: number } | null = null;
   profilePic = "";
   loading = true;
+  poiLoading = false;
 
   private map: any;
   googleMaps: any;
@@ -605,6 +606,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
   }
 
   async getNearbyPointsOfInterest() {
+    this.poiLoading = true;
     if (this.list?.listing_id) {
       try {
         const response = await this.gmapsService.getNearbyPlaces2(this.list.listing_id)
@@ -620,9 +622,11 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
           }
           const naam = place.name + " (" + (distance / 1000).toFixed(2) + "km)";
           this.pointsOfInterest.push({ photo: place.photos, name: naam })
+          this.poiLoading = false;
         })
       } catch (error) {
         console.error('Error retrieving nearby places:', error);
+        this.poiLoading = false;
       }
     }
   }
@@ -958,5 +962,6 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
   
 }
 function isMobile(): boolean {
+  document.getElementById("show")?.setAttribute("style", "min-width: none !important"); 
   return window.innerWidth <= 576;
 }

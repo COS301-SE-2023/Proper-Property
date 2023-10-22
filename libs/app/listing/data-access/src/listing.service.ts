@@ -164,8 +164,6 @@ export class ListingsService {
   }
 
   async changeStatus(listingId : string, admin : string, status: StatusEnum, crimeScore?: number, waterScore?: number, sanitationScore?: number, schoolScore?: number){
-    const runningLocally = window.location.hostname.includes('localhost');
-
     let request : ChangeStatusRequest;
     if(crimeScore && waterScore && sanitationScore && schoolScore){
       request = {

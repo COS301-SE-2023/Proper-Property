@@ -61,7 +61,8 @@
     display: flex;
   }
 }
-body{
+
+body.Desktop{
   width: 100vw;        /* Suppose you want minimum width of 1000px */
   min-width: 970px;
 }
