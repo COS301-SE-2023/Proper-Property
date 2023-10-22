@@ -75,7 +75,7 @@
               <ion-grid style="padding-top: 20px; padding-left:20px;">
                 <ion-row>
                   <ion-col size="6">
-                  <ion-card-title class="house-titles statusBadge {{list.status}}">{{list.status}}</ion-card-title>
+                  <ion-card-title *ngIf="(ownerViewing$ | async)" class="house-titles statusBadge {{list.status}}">{{list.status}}</ion-card-title>
                   </ion-col>
                   <ion-col>
                   <ion-button *ngIf="userProfile" class="save-button" [ngClass]="{'red': isRed}"
@@ -199,21 +199,35 @@
                   </ion-card-header>
                   <ion-card-content style="overflow-y: scroll; height: 150px;">
                     <ion-grid style="z-index: 1">
-                      <ion-row>
-                        <ion-col
-                          size="3"
-                          class="poi-card"
-                          *ngFor="let poi of pointsOfInterest; let i = index;"
-                        >
-                          <img
-                            [src]="poi.photo"
-                            alt="Place Photo"
-                            class="poi-photo"
-                            *ngIf="poi.photo"
-                          />
-                          <div class="text-small">{{ poi.name }}</div>
-                        </ion-col>
-                      </ion-row>
+                      <ng-container *ngIf="poiLoading; else poiLoaded">
+                        <div style="display: flex; justify-content: center;">
+                          <ion-spinner name="crescent" style="width: 75px; height: 75px;" color="black"></ion-spinner>
+                        </div>
+                      </ng-container>
+                      <ng-template #poiLoaded>
+                        <ng-container *ngIf="pointsOfInterest.length === 0 ; else POIs">
+                          <div style="display: flex; justify-content: center;">
+                            <div style="font-size: 20px; font-weight: 500; color: black;">No Points of Interest Found</div>
+                          </div>
+                        </ng-container>
+                        <ng-template #POIs>
+                          <ion-row>
+                            <ion-col
+                              size="3"
+                              class="poi-card"
+                              *ngFor="let poi of pointsOfInterest; let i = index;"
+                            >
+                              <img
+                                [src]="poi.photo"
+                                alt="Place Photo"
+                                class="poi-photo"
+                                *ngIf="poi.photo"
+                              />
+                              <div class="text-small">{{ poi.name }}</div>
+                            </ion-col>
+                          </ion-row>
+                        </ng-template>
+                      </ng-template>
                     </ion-grid>
                   </ion-card-content>
                 </ion-card>
@@ -359,7 +373,7 @@
                                   {{lister?.phoneNumber}}
                                 </ion-col>
                               </ion-row>
-                              <ion-row *ngIf="ownerViewing$" id="qrCodeRow" class="lister-row">
+                              <ion-row id="qrCodeRow" class="lister-row">
                                 <ion-row class="qrRows">
                                   <canvas id="qrCanvas"></canvas>
                                 </ion-row>
@@ -465,7 +479,7 @@
           </ion-row>
         </ion-grid>
       </div>
-      
+      <properproperty-footer></properproperty-footer>
     </ng-template>
   </ion-content>
   
@@ -937,8 +951,8 @@
             </div>
           </ion-row>
         </ion-grid>
-      </div>
-      <!-- <properproperty-footer></properproperty-footer> -->
+      </div> 
     </ng-template>
+      <!-- <properproperty-footer></properproperty-footer> -->
   </ion-content>
 </ion-template>

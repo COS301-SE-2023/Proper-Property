@@ -1,7 +1,7 @@
 // eslint-disable-next-line
 /// <reference types="@types/google.maps" />
 
-import { Injectable, Inject, OnInit } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 
 import { API_KEY_TOKEN } from '@properproperty/app/google-maps/util';
 import { Functions, httpsCallable } from '@angular/fire/functions';

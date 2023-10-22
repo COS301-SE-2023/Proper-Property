@@ -172,7 +172,6 @@ export class AdminPage implements OnInit{
   }
 
   async processData(){
-    const runningLocally = window.location.hostname.includes("localhost");
     if(this.muniFiles && this.muniFiles.length > 0){
       for (let index = 0; index < this.muniFiles.length; index++) {
         if (this.muniFiles.item(index)){
