@@ -78,6 +78,7 @@ import { NotificationsModule, NotificationsState } from '@properproperty/app/not
 import { GoogleMapsModule } from '@properproperty/app/google-maps/data-access';
 import { SkynetModule, OPEN_AI_API_KEY_TOKEN } from '@properproperty/app/open-ai/data-access';
 import { FooterModule } from '@properproperty/app/footer/feature';
+import { EmailActionModule } from '@properproperty/app/email-action-page/feature'
 
 const NX_ENVIRONMENT = process.env['NX_ENVIRONMENT'] || 'development';
 const USE_EMULATORS = (JSON.parse(process.env['NX_USE_EMULATORS'] || 'false') as boolean) && isDevMode();
@@ -152,7 +153,8 @@ if (NX_ENVIRONMENT === 'development') {
     GoogleMapsModule,
     NotificationsModule,
     SkynetModule,
-    FooterModule
+    FooterModule,
+    EmailActionModule
   ],
   // exports: [CoreShell],
   // 
