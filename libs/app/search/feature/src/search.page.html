@@ -1,5 +1,4 @@
-<!-- TODO: Move inline styling to stylesheet -->
-<ion-content *ngIf="!this.isMobile" class="Desktop">
+<ion-content *ngIf="true" class="Desktop">
   <div class="header-padding" style="height: 56px; opacity: 0; width: 100%"></div>
 
   <div [ngSwitch]="activeTab">
@@ -382,7 +381,7 @@
                         <ion-grid class="houseInfoGrid">
                           <ion-row>
                             <ion-col>
-                              <ion-card-title style="color: #0DAE4F;">R {{formatNumber(listing.price)}}</ion-card-title>
+                              <ion-card-title class="primary-title">R {{formatNumber(listing.price)}}</ion-card-title>
                             </ion-col>
                             <ion-col size="2">
                               <div class="area-score-toggle-container">
@@ -399,7 +398,7 @@
                             </p>
                           </ion-row>
                           <ion-row>
-                            <p class="houseText">For Sale!</p>
+                            <p class="houseText">{{listing.let_sell == "Sell" ? "For Sale" : "To Let"}}</p>
                           </ion-row>
                           <ion-row>
                             <p id="house_description">
@@ -441,7 +440,7 @@
                             <ion-grid>
                               <ion-row>
                                 <ion-col>
-                                  <ion-card-title style="color: #0DAE4F;">
+                                  <ion-card-title class="primary-title">
                                       Area Rating Average: 
                                       {{((listing.areaScore.schoolScore + 
                                         listing.areaScore.crimeScore + 
@@ -580,8 +579,8 @@
   <properproperty-footer></properproperty-footer>
 </ion-content>
 
-<ion-content *ngIf="this.isMobile" class="Mobile">
-  <ion-segment [(ngModel)]="activeTab" (ionChange)="changeTab()">
+<ion-content *ngIf="false" class="Mobile">
+  <!-- <ion-segment [(ngModel)]="activeTab" (ionChange)="changeTab()">
     <ion-segment-button value="buying">
       <ion-label>Buy</ion-label>
     </ion-segment-button>
@@ -764,5 +763,5 @@
       </ion-row>
     </ion-grid>
   </div>
-  <properproperty-footer style="margin-top: 2%"></properproperty-footer>
+  <properproperty-footer style="margin-top: 2%"></properproperty-footer> -->
 </ion-content>

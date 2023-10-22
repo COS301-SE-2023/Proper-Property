@@ -1,6 +1,6 @@
 #category{
   color: var(--ion-color-primary);
-  background: rgba(13, 174, 79, 0.05);
+  background: var(--ion-background-color-turquoise);
   
 }
 
@@ -8,8 +8,14 @@ ion-card{
   border-radius: 0px;
 }
 
+.listingCard{
+  --background: white;
+}
+.title {
+  color: var(--ion-color-primary)
+}
 .listingCard:hover{
-  box-shadow: 3px 3px 5px rgba(13, 174, 80, 0.7);
+  box-shadow: 3px 3px 5px var(--ion-color-primary);
 }
 
 .imageCol{
@@ -72,7 +78,7 @@ ion-card ion-card-content {
   bottom: 5%;
   right: 5%;
   width: 250px;
-  --background: rgba(13, 174, 79, 0.18);
+  --background: white;
   border-radius: 10px;
 }
 
@@ -81,7 +87,7 @@ ion-card ion-card-content {
   position: fixed;
   bottom: 5%;
   left: 1%;
-  --background: rgba(13, 174, 79, 0.8);
+  --background: white;
 }
 
 #first

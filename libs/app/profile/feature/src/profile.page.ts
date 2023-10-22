@@ -180,6 +180,7 @@ export class ProfilePage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Confirmation',
       message: 'Are you sure you want to delete your account?',
+      cssClass: '',
       buttons: [
         {
           text: 'Cancel',

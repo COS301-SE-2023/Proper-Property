@@ -16,7 +16,13 @@
   align-items: center;
   justify-content: center;
 }
-
+.primary-color {
+  color: var(--ion-color-primary);
+}
+.swiper-icon {
+  font-size: 64px;
+  color: var(--ion-color-primary);
+}
 #qrCodeRow {
   // border: 1px solid;
   height: 250px;
@@ -430,7 +436,7 @@ ion-col {
   color: grey;
   font-size: 15px;
   font-weight: 400;
-  margin-bottom: 5px;
+  // margin-bottom: 5px;
   z-index: 2;
 }
 
@@ -569,9 +575,9 @@ ion-col {
 
 
 .statusBadge {
-  width: 70%;
+  // width: 70%;
   height: 90%;
-  padding-top: 1%;
+  // padding-top: 1%;
   text-align: center;
   // border-radius: 5px;
 }

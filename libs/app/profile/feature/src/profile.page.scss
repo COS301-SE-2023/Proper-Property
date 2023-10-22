@@ -1,4 +1,8 @@
 .Desktop {
+
+  .text-input {
+    --highlight-color: var(--ion-color-primary) !important;
+  }
   *
 {
   margin: 0;
@@ -211,7 +215,6 @@ h2
   width: 100%;
   --background: transparent;
   color: #eb445a;
-  border: 3px solid #eb445a;
 }
 
 

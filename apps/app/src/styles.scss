@@ -73,3 +73,15 @@ body.Desktop{
   --height: 600px;
   
 }
+
+ion-alert{
+  --background: white !important;
+
+  .danger{
+    color: red !important;
+  }
+
+  .secondary{
+    color: var(--ion-color-primary) !important;
+  }
+}

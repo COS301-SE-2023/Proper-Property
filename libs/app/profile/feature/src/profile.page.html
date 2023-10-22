@@ -1,4 +1,4 @@
-<ion-content *ngIf = "!isMobile" class ="Desktop">
+<ion-content *ngIf = "true" class ="Desktop">
   <div class="profileCard">
 
     <ion-grid>
@@ -357,8 +357,8 @@
             </ion-col>
 
             <div class="edits" *ngIf="isEditingName">
-              <ion-input type="text" [(ngModel)]="newFirstName" placeholder="Enter a new first name" clearInput></ion-input>
-              <ion-input type="text" [(ngModel)]="newLastName" placeholder="Enter a new last name" clearInput></ion-input>
+              <ion-input class="text-input" type="text" [(ngModel)]="newFirstName" placeholder="Enter a new first name" clearInput></ion-input>
+              <ion-input class="text-input" type="text" [(ngModel)]="newLastName" placeholder="Enter a new last name" clearInput></ion-input>
               <ion-button expand="full" color="primary" (click)="saveName()">Save</ion-button>
               <ion-button expand="full" color="danger" (click)="discardName()">Cancel</ion-button>
             </div>
@@ -382,7 +382,7 @@
                   * Please note you are logged in via Google and this email change will only affect where notifications are sent to.
                 </p>
               </ion-item>
-              <ion-input type="email" [(ngModel)]="newEmail" placeholder="Enter a new email" id="email" clearInput></ion-input>
+              <ion-input class="text-input" type="email" [(ngModel)]="newEmail" placeholder="Enter a new email" id="email" clearInput></ion-input>
               <ion-button expand="full" color="primary" (click)="saveEmail()">Save</ion-button>
               <ion-button expand="full" color="danger" (click)="discardEmail()">Cancel</ion-button>
             </div>
@@ -402,7 +402,7 @@
             </ion-col>
 
             <div class="edits" *ngIf="isEditingPhoneNumber">
-              <ion-input type="text" [(ngModel)]="newPhoneNumber" id="phoneNumber" placeholder="Enter a new phone number" clearInput></ion-input>
+              <ion-input class="text-input" type="text" [(ngModel)]="newPhoneNumber" id="phoneNumber" placeholder="Enter a new phone number" clearInput></ion-input>
               <ion-button expand="full" color="primary" (click)="savePhoneNumber()">Save</ion-button>
               <ion-button expand="full" color="danger" (click)="discardPhoneNumber()">Cancel</ion-button>
             </div>
@@ -414,8 +414,8 @@
 
   </div>
 </ion-content>
-<ion-content *ngIf = "isMobile"  class ="Mobile">
-  <div class="profileCard">
+<ion-content *ngIf = "false"  class ="Mobile">
+  <!-- <div class="profileCard">
 
     <ion-grid>
       <ion-row class="profilePic">
@@ -549,5 +549,5 @@
       </ion-col>
     </ion-grid>
 
-  </div>
+  </div> -->
 </ion-content>

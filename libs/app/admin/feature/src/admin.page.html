@@ -1,5 +1,3 @@
-<p>admin-page works!</p>
-
 <ion-content id="content" [fullscreen]="true">
   <ng-container *ngIf="loading; else loaded">
     <div id="loader">
@@ -36,7 +34,7 @@
                     <ion-grid>
                       <ion-row>
                         <ion-col>
-                          <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
+                          <ion-card-title style="color: var(--ion-color-primary)">R {{formatNumber(listing.price)}}</ion-card-title>
                         </ion-col>
                       </ion-row>
                     </ion-grid>
@@ -88,7 +86,7 @@
                 </ion-row>
                   <ion-row class="file-upload">
                     <div id="popoverHeading"><h3>Import Crime Data</h3></div><br>
-                    <ng-container *ngIf="!muniUploaded; else sanitationDiv">
+                    <ng-container class="beforeMuni" *ngIf="!muniUploaded; else sanitationDiv">
                       <div class="text-container">
                         <h5>Please Upload municipality data first</h5>
                       </div>
@@ -104,7 +102,7 @@
                     </ion-row>
                     <ion-row class="file-upload">
                       <div id="popoverHeading"><h3>Import Sanitation Data</h3></div><br>
-                      <ng-container *ngIf="!muniUploaded; else saniDiv">
+                      <ng-container class="beforeMuni" *ngIf="!muniUploaded; else saniDiv">
                         <div class="text-container">
                           <h5>Please Upload municipality data first</h5>
                         </div>
@@ -125,7 +123,7 @@
                   </ion-row>
                   <ion-row class="file-upload">
                     <div id="popoverHeading"><h3>Import Water Access Data</h3></div><br>
-                    <ng-container *ngIf="!muniUploaded; else waterDiv">
+                    <ng-container class="beforeMuni" *ngIf="!muniUploaded; else waterDiv">
                       <div class="text-container">
                         <h5>Please Upload municipality data first</h5>
                       </div>

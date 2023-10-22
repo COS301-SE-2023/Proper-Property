@@ -39,9 +39,9 @@
           </ion-grid>
         </div>
         <div class="swiper-container-wrapper">
-          <ion-buttons slot="start" class="swiper-button1" #one>
+          <ion-buttons *ngIf="list.photos.length > 1" slot="start" class="swiper-button1" #one>
             <ion-button style="height: 100px" (click)="goPrev()" #one>
-              <img src="assets/icon/arrow1.svg" #back alt="swiper-back"/>
+              <ion-icon class="swiper-icon" name="chevron-back-outline"></ion-icon>
             </ion-button>
           </ion-buttons>
           <swiper-container
@@ -56,14 +56,14 @@
               <img alt="img" src="{{picture}}"  onerror="this.src='assets/no-propertyfound.png'"/>
             </swiper-slide>
           </swiper-container>
-          <ion-buttons slot="end" class="swiper-button2" #two>
+          <ion-buttons *ngIf="list.photos.length > 1"slot="end" class="swiper-button2" #two>
             <ion-button
               id="next-button"
-              style="height: 100px"
+              style="height: 100px;"
               (click)="goNext($event)"
               #two
             >
-              <img src="assets/icon/arrow.svg" #forward alt="swiper-forward"/>
+            <ion-icon class="swiper-icon" name="chevron-forward-outline"></ion-icon>
             </ion-button>
           </ion-buttons>
         </div>
@@ -85,36 +85,32 @@
                   </ion-col>
                 </ion-row>
                 <ng-template [ngIf]="list.let_sell === 'Sell'">
-                  <ion-row>
+                  <!-- <ion-row> -->
                     <ion-card-title class="house-titles" style="margin-top: 8px"
                       >R {{formatNumber(list.price)}}</ion-card-title
                     >
                     <ion-card-subtitle
                       class="house-subtitles"
                       style="
-                        margin-top: 25px;
                         margin-bottom: 0;
-                        margin-left: 10px;
                       "
                       >R {{price_per_sm}}/ m<sup>2</sup></ion-card-subtitle
                     >
-                  </ion-row>
+                  <!-- </ion-row> -->
                   </ng-template>
                   <ng-template [ngIf]="list.let_sell === 'Rent'">
-                    <ion-row>
+                    <!-- <ion-row> -->
                       <ion-card-title class="house-titles" style="margin-top: 8px"
-                        >R {{list.price}}/pm</ion-card-title
+                        >R {{formatNumber(list.price)}}/pm</ion-card-title
                       >
                       <ion-card-subtitle
                         class="house-subtitles"
                         style="
-                          margin-top: 25px;
                           margin-bottom: 0;
-                          margin-left: 10px;
                         "
                         >R {{price_per_sm}}/ m<sup>2</sup></ion-card-subtitle
                       >
-                    </ion-row>
+                    <!-- </ion-row> -->
                   </ng-template>
                   <br>
                   <ion-row>
@@ -129,7 +125,7 @@
                   <ion-row style="margin-top: 10px">
                     <ion-col>
                       <div>
-                        <button style="color: #0dae4f"  (click)="scrollToCalculator()">Calculate</button>
+                        <button class="primary-color"  (click)="scrollToCalculator()">Calculate</button>
                         your
                         monthly payments below!
                       </div>
@@ -137,7 +133,7 @@
                   </ion-row>
                   <ion-row>
                     <ion-card-subtitle class="house-subtitles"
-                      > by <button style="color: #0dae4f"  (click)="setOpen(true)"> {{lister_name}}</button></ion-card-subtitle
+                      > by <button class="primary-color"  (click)="setOpen(true)"> {{lister_name}}</button></ion-card-subtitle
                     >
                   </ion-row>
                 </ion-grid>
@@ -421,21 +417,21 @@
                 <ion-card-title>Bond Calculator</ion-card-title>
               </ion-card-header>
               <ion-item>
-                <ion-label position="floating" style="color: #0dae4f"
+                <ion-label position="floating" class="primary-color"
                   >Loan Amount (R)</ion-label
                 >
                 <ion-input type="number" [(ngModel)]="loanAmount"></ion-input>
               </ion-item>
 
               <ion-item>
-                <ion-label position="floating" style="color: #0dae4f"
+                <ion-label position="floating" class="primary-color"
                   >Interest Rate (%)</ion-label
                 >
                 <ion-input type="number" [(ngModel)]="interestRate"></ion-input>
               </ion-item>
 
               <ion-item>
-                <ion-label position="floating" style="color: #0dae4f"
+                <ion-label position="floating" class="primary-color"
                   >Loan Term (Years)</ion-label
                 >
                 <ion-input type="number" [(ngModel)]="loanTerm"></ion-input>
@@ -511,7 +507,7 @@
         <div class="swiper-container-wrapper">
           <ion-buttons slot="start" class="swiper-button1" #one>
             <ion-button style="height: 100px" (click)="goPrev()" #one>
-              <img src="assets/icon/arrow1.svg" #back alt="swiper-back-mobile"/>
+              <ion-icon name="chevron-back-outline"></ion-icon>
             </ion-button>
           </ion-buttons>
           <swiper-container
@@ -539,7 +535,7 @@
               (click)="goNext($event)"
               #two
             >
-              <img src="assets/icon/arrow.svg" #forward alt="swiper-forward-mobile"/>
+              <ion-icon name="chevron-forward-outline"></ion-icon>
             </ion-button>
           </ion-buttons>
         </div>
@@ -894,21 +890,21 @@
           <ion-row id="calculator" style="margin-top: 1%">
             <ion-card class="full-container">
               <ion-item>
-                <ion-label position="floating" style="color: #0dae4f"
+                <ion-label position="floating" class="primary-color"
                   >Loan Amount (R)</ion-label
                 >
                 <ion-input type="number" [(ngModel)]="loanAmount"></ion-input>
               </ion-item>
   
               <ion-item>
-                <ion-label position="floating" style="color: #0dae4f"
+                <ion-label position="floating" class="primary-color"
                   >Interest Rate (%)</ion-label
                 >
                 <ion-input type="number" [(ngModel)]="interestRate"></ion-input>
               </ion-item>
   
               <ion-item>
-                <ion-label position="floating" style="color: #0dae4f"
+                <ion-label position="floating" class="primary-color"
                   >Loan Term (Years)</ion-label
                 >
                 <ion-input type="number" [(ngModel)]="loanTerm"></ion-input>

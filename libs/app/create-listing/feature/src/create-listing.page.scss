@@ -10,6 +10,9 @@
 
   .toggleCol {
     align-self: center;
+    ion-toggle {
+      --track-background-checked: var(--light-background-highlight)
+    }
   }
 
   .toggleLabel {
@@ -19,7 +22,6 @@
     // font-style: normal;
     font-weight: 400;
   }
-
   #loader {
     position: absolute;
     right: 40%;
@@ -356,6 +358,7 @@
     // margin-left: 3%;
     margin-bottom: 1%;
     --padding-start: 10px;
+    --highlight-color: var(--ion-color-primary);
     margin-top: 2%;
     margin-right: 0;
     width: 420px;
@@ -375,6 +378,7 @@
     margin-bottom: 1%;
     padding: 3px;
     --padding-start: 10px;
+    --highlight-color: var(--ion-color-primary);
   }
 
   .container {
@@ -853,4 +857,5 @@
   --padding-bottom: 5px;
   --padding-top: 5px;
   --padding-start: 5px;
+  --highlight-color: var(--ion-color-primary);
 }

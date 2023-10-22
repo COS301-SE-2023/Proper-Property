@@ -106,6 +106,7 @@ ion-icon
 ion-input
 {
   font-size: 130%;
+  --highlight-color: var(--ion-color-primary) !important;
 }
 
 
@@ -161,7 +162,7 @@ ion-input
   flex-direction: column;
   min-width: 240px;
   padding: 0 10px;
-  background-color: #0a9042;
+  background-color: var(--ion-color-primary);
 }
 
 .leftPanel
@@ -210,6 +211,7 @@ a
 .LogIn:hover
 {
   background: var(--ion-color-primary);
+  border: 2px solid white;
 
   a{
     color: white;

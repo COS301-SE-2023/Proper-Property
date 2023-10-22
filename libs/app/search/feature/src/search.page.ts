@@ -459,6 +459,7 @@ async loadMap() {
   Templistings: Listing[] = [];
 
   async searchProperties(nextPage?: boolean, previousPage?: boolean) {
+    this.predictions = [];
     if(!this.searchQuery){
       const toast = await this.toastController.create({
         message: 'Please enter an area for us to search in',
