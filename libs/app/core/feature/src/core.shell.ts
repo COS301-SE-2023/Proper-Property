@@ -5,7 +5,8 @@ import {
   Inject,
   HostListener, 
   inject,
-  isDevMode
+  isDevMode,
+  AfterViewInit
 } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { SubscribeToAuthState } from '@properproperty/app/auth/util';
@@ -21,7 +22,6 @@ import { NotificationsService } from 'libs/app/notifications/data-access/src/not
 import { DOCUMENT } from '@angular/common';
 import { Notification } from '@properproperty/api/notifications/util';
 import { UserProfile } from '@properproperty/api/profile/util';
-
 declare const gtag: any;
 
 @Component({
@@ -29,7 +29,7 @@ declare const gtag: any;
   templateUrl: './core.shell.html',
   styleUrls: ['./core.shell.scss'],
 })
-export class CoreShellComponent implements OnInit, OnDestroy {
+export class CoreShellComponent implements OnInit, OnDestroy, AfterViewInit {
   
   isMobile: boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
@@ -76,14 +76,18 @@ export class CoreShellComponent implements OnInit, OnDestroy {
       this.notifications = notifications?.reverse() ?? [];
     });
     this.userProfile$.subscribe((profile) => {
-      let destination = '/'
-      if (!this.loggedIn && profile && (!profile.firstName || !profile.lastName)) {
+      let destination = '';
+      if(this.router.url == "/login" || this.router.url == "/register"){
+        destination = '/'
+      }
+      
+      if (!this.loggedIn && profile && (!profile.firstName || !profile.lastName) && this.router.url != '/profile') {
         destination = '/profile';
       }
       this.userProfile = profile;
       this.loggedIn = this.userProfile != null && this.userProfile != undefined;
       this.admin = (profile && profile.admin) ?? false;
-      this.router.navigate([destination]);
+      if (destination) this.router.navigate([destination]);
     });
 
     this.isMobile = window.innerWidth <= 576;
@@ -101,6 +105,12 @@ export class CoreShellComponent implements OnInit, OnDestroy {
   
   ngOnInit() {
     this.store.dispatch(new SubscribeToAuthState());
+  }
+  ngAfterViewInit(): void {
+    // if desktop, assign "Desktop" class to body
+    if (!this.isMobile) {
+      this.document.body.classList.add('Desktop');
+    }
   }
   // Unsubscribes from snapshot listeners when window is unloaded
   @HostListener('window:beforeunload')

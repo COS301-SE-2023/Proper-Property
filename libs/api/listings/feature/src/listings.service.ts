@@ -97,7 +97,6 @@ export class ListingsService {
     let apiUrl = 'https://api.openai.com/v1/completions'
     let response = (await axios.post(apiUrl, data, {headers : headers})).data;
     desc = response['choices'][0]['text'];
-    console.log(desc)
     const data2 = {
       model: "text-davinci-003",
       prompt: "Create a short heading for a listing based on this description of the property: " + desc,

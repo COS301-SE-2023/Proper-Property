@@ -24,7 +24,7 @@
 // }
 
 import { Injectable } from '@angular/core';
-import { GoogleAuthProvider, AuthProvider } from 'firebase/auth';
+import { GoogleAuthProvider, AuthProvider, EmailAuthProvider, reauthenticateWithCredential, updatePassword, confirmPasswordReset } from 'firebase/auth';
 import { 
   Auth,
   // getAuth, // 30:3   warning  'getAuth' is defined but never used
@@ -33,7 +33,12 @@ import {
   createUserWithEmailAndPassword,
   deleteUser,
   updateEmail,
-  authState
+  authState,
+  sendPasswordResetEmail,
+  // reauthenticateWithCredential,
+  fetchSignInMethodsForEmail,
+  // updatePassword,
+  sendEmailVerification
 } from "@angular/fire/auth";
 import { UserProfile } from '@properproperty/api/profile/util';
 import { ToastController, ToastOptions } from '@ionic/angular';
@@ -80,6 +85,54 @@ export class AuthService {
       return null;
     }
   }
+  async logout() {
+    return this.auth.signOut();
+  }
+
+  async forgotPassword(email: string) {
+    try {
+      const response = await sendPasswordResetEmail(this.auth, email);
+
+      if(window.location.hostname.includes("localhost")) console.warn(response);
+      
+      const success = {
+        message: "Password reset email sent.",
+        duration: 3000, // Duration in milliseconds
+        color: 'success', // Use 'danger' to display in red
+        position: 'bottom'
+      } as ToastOptions;
+      const toast = await this.toastController.create(success);
+      toast.present();
+
+      return response
+    } catch (error) {
+      this.errorHandler(error);
+      return null;
+    }
+  }
+  async updatePassword(oodb: string, newPassword: string) {
+    // if (!this.auth.currentUser?.email) {
+    //   console.log('No user is currently authenticated.')
+    //   return Promise.reject('No user is currently authenticated.');
+    // }
+    console.log(oodb);
+    try {
+      await confirmPasswordReset(this.auth, oodb, newPassword);
+      this.toastController.create({
+        message: "Password updated successfully",
+        duration: 2000,
+        color: "success"
+      }).then((toast) => {
+        toast.present();
+      });
+    } catch (error) {
+      console.log(error);
+      this.errorHandler(error);
+      return false;
+    }
+    
+    return true;
+  }
 
   deleteCurrentUser() {
     const user = this.auth.currentUser;
@@ -92,11 +145,12 @@ export class AuthService {
     return Promise.reject('No user is currently authenticated.'); // Return a rejected promise if no user is found
   }
 
-  editEmail(newEmail: string) {
+  async editEmail(newEmail: string) {
     const user = this.auth.currentUser;
     if (user) {
-      return updateEmail(user, newEmail)
+      return await updateEmail(user, newEmail)
       .catch((error) => {
+        this.errorHandler(error);
         console.log(error);
       });
     }
@@ -160,8 +214,14 @@ export class AuthService {
       case "auth/invalid-password":
         failed.message = "Invlaid password.";
         break;
+      case "auth/too-many-requests":
+        failed.message = "Too many failed attempts. Please try again later or reset your password.";
+        break;
       case "auth/missing-password":
         failed.message = "Invlaid password.";
+        break;
+      case "auth/invalid-action-code":
+        failed.message = "An error has occurred. The link may have expired. Please try again.";
         break;
       default:
         failed.message = "Unknown error occurred";

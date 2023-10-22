@@ -3,7 +3,7 @@ import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
 import { User } from '@angular/fire/auth';
 import { AuthService } from './auth.service';
-import { Login, SubscribeToAuthState, SetAuthUser, Register, AuthProviderLogin, Logout } from '@properproperty/app/auth/util';
+import { Login, SubscribeToAuthState, SetAuthUser, Register, AuthProviderLogin, Logout, ForgotPassword } from '@properproperty/app/auth/util';
 import { SubscribeToUserProfile } from '@properproperty/app/profile/util';
 import { tap } from 'rxjs';
 
@@ -89,6 +89,13 @@ export class AuthState {
 
   @Action(Logout)
   logout(ctx: StateContext<AuthStateModel>) {
+    this.authService.logout();
+    // unset user
     ctx.setState({ user: null });
+  }
+
+  @Action(ForgotPassword)
+  async forgotPassword(ctx: StateContext<AuthStateModel>, {email}: ForgotPassword){
+    this.authService.forgotPassword(email);
   }
 }

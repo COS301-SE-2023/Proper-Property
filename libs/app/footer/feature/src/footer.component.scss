@@ -1,17 +1,24 @@
 #footer {
   margin-top: 10px;
-  height: 348px;
+  height: 150px;
   width: 100%;
   // bottom: 0;
   // left: 0;
   // position: absolute;
-  background-image: url('../../../assets/footer.svg');
-  background-size: cover;
+  // background-image: url('../../../assets/footer.svg');
+  // background-size: cover;
   box-shadow: none;
+  background-color: #f1f2f1;
 
   @media only screen and (max-width: 600px) {
     height: auto;
   }
+}
+
+.invisible-button {
+  --background: transparent;
+  --border-color: transparent;
+  --box-shadow: none;
 }
 
 .formButtons {
@@ -23,13 +30,26 @@
   align-items: center;
   flex-shrink: 0;
   border-radius: 5px;
-  background: #FFF;
+
 
   @media only screen and (max-width: 600px) {
     width: 90%;
     position: static;
     margin: 0 auto 10px;
   }
+}
+//border boxes
+* {
+  box-sizing: border-box;
+}
+// .hover-text{
+//   color: white;
+// }
+.hover-text:hover {
+  --background: white;
+  color: var(--ion-color-primary);
+  border: 2px solid var(--ion-color-primary);
+  border-radius: 4px;
 }
 
 .guideColumn{

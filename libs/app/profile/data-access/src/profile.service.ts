@@ -48,6 +48,8 @@ export class UserProfileService {
       UpdateUserProfileRequest,
       UpdateUserProfileResponse
     >(this.functions, 'updateUserProfile')({user: uProfile});
+    if (window.location.pathname === '/profile')
+      location.reload();
   }
 
   async uploadProfilePic(userID : string, input: string) {
@@ -61,6 +63,7 @@ export class UserProfileService {
     // TODO Add this via CQRS
     const userRef = doc(this.firestore, `users/${userID}`);
     await updateDoc(userRef, {profilePicture: photoURL});
+      location.reload();
     return photoURL;
   }
 
@@ -69,8 +72,6 @@ export class UserProfileService {
       SendQREmailRequest,
       void
     >(this.functions, 'sendNotification')(request);
-    if (window.location.hostname.includes("localhost"))
-      console.log(resp);
   }
 
   vPotency = 0;
@@ -93,10 +94,9 @@ export class UserProfileService {
   }
 
   
-  async updateInterests(characteristic : characteristics, userID: string)
+  async updateInterests(characteristic : characteristics, profile: UserProfile)
   {
-    const profile = this.getUser(userID);
-    // console.log("old interests", profile);
+    // const profile = this.getUser(userID);
     this.calculatePotency(characteristic);
 
     this.temp.gym=(await profile).interests.gym;
@@ -205,9 +205,7 @@ export class UserProfileService {
     (await profile).interests.owner = this.temp.owner;
     (await profile).interests.party = this.temp.party;
     (await profile).interests.student = this.temp.student;
-    // console.log("new interest1", profile);
-    this.updateUserProfile(await profile);
-    // console.log("new interest2", profile);
+    await this.updateUserProfile(await profile);
   }
 
   mainIncrease(fixed: number, boolCharacteristic: number)
@@ -217,7 +215,6 @@ export class UserProfileService {
     {
       updates=100;
     }
-    // console.log("after ", updates);
     return updates;
   }
 
@@ -229,7 +226,6 @@ export class UserProfileService {
       ally=100;
     }
 
-    // console.log("after ", ally);
     
     return ally;
   }
@@ -241,7 +237,6 @@ export class UserProfileService {
     {
       enemy=0;
     }
-    // console.log("after ", enemy);
     return enemy;
   }
 

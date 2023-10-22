@@ -4,39 +4,76 @@
       <div class="login">
         <ion-list>
           <h2>Log In</h2>
-          <ion-item>
+
+          <div *ngIf="!validEmail" class="invalid-feedback">
+            Invalid email entered
+            </div>
+            
+          <ion-item class="loginInput">
             <ion-icon name="mail-outline"></ion-icon>
             <ion-input type="email" [(ngModel)]="email" placeholder="  Email" required="true"></ion-input> 
           </ion-item>
-          <ion-item>
-            <ion-icon name="lock-closed-outline"></ion-icon>
-            <ion-input type="password" [(ngModel)]="password" placeholder="  Password"></ion-input>
+          <ion-item class="loginInput">
+            <ng-container *ngIf="!showPassword; else showP">
+              <ion-icon name="lock-closed-outline"></ion-icon>
+              <ion-input  type="password" [(ngModel)]="password" placeholder="  Password"></ion-input>
+              <ion-icon (click)="showPass()" style="font-size: 24" name="eye"></ion-icon>
+            </ng-container>
+            <ng-template #showP>
+              <ion-icon name="lock-open-outline"></ion-icon>
+              <ion-input type="text" [(ngModel)]="password" placeholder="  Password"></ion-input>
+              <ion-icon (click)="showPass()" style="font-size: 24" name="eye-off-outline"></ion-icon>
+            </ng-template>
           </ion-item>
-          <p class="forgot"><span class="forgot1"></span></p>
+          <ion-item id="forgotItem" lines="none">
+            <a href="javascript:;" class="forgot">Forgot your password?</a>
+          </ion-item>
+          <ion-modal class="forgot-modal" trigger="forgotItem">
+            <ng-template>
+              <ion-content>
+                <div id="forgot-password-content">
+                  <h2>
+                    Please enter your email:
+                  </h2>
+                  <p>
+                    Please enter your email address and click 'Reset Password'. 
+                    A link will be sent to this email address to reset your password.
+                  </p>
+                  <ion-item class="loginInput" style="background: #FFF">
+                    <ion-icon name="mail-outline"></ion-icon>
+                    <ion-input id="forgotPasswordInput" type="email" [(ngModel)]="email" placeholder="  Email" required="true"></ion-input> 
+                  </ion-item>
+                  <!-- <ion-input placeholder="Enter an email" type="email" [ngModel]="resetEmail" style="border: 1px solid black; width: 60%;"></ion-input> -->
+                  <ion-button (click)="forgotPassword()" style="margin-bottom: 20px">Reset Password</ion-button>
+                  <ion-button (click)="closePasswordModal()" style="margin-bottom: 20px">Cancel</ion-button>
+                </div>
+              </ion-content>
+            </ng-template>
+          </ion-modal>
         </ion-list>
 
       </div>
-      <div class="button-centerer">
-
-        <div >
-          <ion-button class="button-centerer1"(click)="login()" shape="round">Login</ion-button>
-        </div>
-    
-        <div >
-          <ion-button class="button-centerer2" size="default" (click)="googleLogin()" shape="round">
+      <ion-grid style="padding-top: 10px">
+        <ion-row style="display: flex; justify-content: center;">
+            <ion-button class="button-centerer1"(click)="login()" shape="round">Login</ion-button>
+        </ion-row>
+        <ion-row style="display: flex; justify-content: center;">
+          <ion-button class="googleButton" size="default" (click)="googleLogin()" shape="round">
             <ion-icon name="logo-google"></ion-icon>
                Sign in with Google
           </ion-button>
-        </div>
-      </div>
+        </ion-row>
+      </ion-grid>
     </div>
     <div class="Member">
       <div class="rightPanel">
         <div class="content">
-          <h3>Don't Have an Account</h3>
-          <p>Do the Proper thing and sign up. The benefits await</p>
-          <div class="signUp">
-            <a routerLink="/register">Sign up</a>
+          <h3 style="color: white">Don't Have an Account?</h3>
+          <p style="color: white">Do the Proper thing and sign up. The benefits await!</p>
+          <div style="width: 100%; display: flex; justify-content: center">
+            <div class="signUp">
+              <a routerLink="/register">Sign up</a>
+            </div>
           </div>
         </div> 
       </div>
@@ -61,6 +98,9 @@
             </ion-button>
           </div>
           <p class="or-text">or</p>
+
+
+
           <ion-item>
             <ion-icon name="mail-outline"></ion-icon>
             <ion-input type="email" [(ngModel)]="email" placeholder="  Email" required="true"></ion-input> 

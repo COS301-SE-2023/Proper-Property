@@ -1,4 +1,8 @@
 .Desktop {
+
+  .text-input {
+    --highlight-color: var(--ion-color-primary) !important;
+  }
   *
 {
   margin: 0;
@@ -34,6 +38,17 @@ ion-content
   background: rgb(243, 243, 243);
 }
 
+#profilePic2{
+  margin: 10px; 
+  border-radius: 50%; 
+  border: 1px solid black; 
+  width: 100px; 
+  height: 100px; 
+  background-size: cover; 
+  background-position-x: center; 
+  background-position-y: center;
+}
+
 .utils
 {
   height: 45vh;
@@ -41,7 +56,7 @@ ion-content
 }
 
 ion-icon {
-  font-size: 600%;
+  // font-size: 600%;
   margin-left: 2%;
   margin-top: 1%;
   border-radius: 50%;
@@ -59,9 +74,7 @@ ion-icon {
 h1
 {
   top: 5%;
-  left: 15%;
   position: absolute;
-  margin-left: 3%;
 }
 
 h3
@@ -77,9 +90,9 @@ h3
   background: transparent;
   margin-left: 3%;
   height: 70%;
-  width: 75%;
+  width: 100%;
   position: absolute;
-  left: 15% ;
+  // left: 15% ;
   top:25%;
 }
 
@@ -117,14 +130,12 @@ h3
   background: transparent;
 }
 
-.logOut:hover
-{
-  background: orange;
-  ion-label
-  {
-    color: black;
-  }
+.delete{
+  height: 25%;
+  width: 100%;
+  background: transparent;
 }
+
 
 .but1
 {
@@ -183,11 +194,23 @@ h2
   background: white;
   border:1px solid var(--ion-color-primary);
 }
-
+.button-icon {
+  font-size: 24px;
+  color: var(--ion-color-primary);
+  width: 24px !important;
+  margin:0;
+  padding: 0;
+}
 .delete-account-button
 {
-  margin-left: 40%;
+  height: 25%;
+  position: absolute;
+  width: 100%;
+  --background: transparent;
+  color: var(--ion-color-primary);
 }
+
+
 
 
 ion-item {
@@ -216,6 +239,14 @@ ion-item {
 .edit-icon {
 
   background: transparent;
+}
+
+.trigger:hover
+{
+  background: #e8e8e8;
+  ion-icon{
+    background: #e8e8e8;
+  }
 }
 }
 
@@ -270,7 +301,7 @@ ion-content
 }
 
 ion-icon {
-  font-size: 600%;
+  // font-size: 600%;
   margin-left: 2%;
   margin-top: 1%;
   border-radius: 50%;
@@ -282,9 +313,9 @@ ion-icon {
 h1
 {
   top: 5%;
-  left: 15%;
+  // left: 15%;
   position: absolute;
-  margin-left: 3%;
+  // margin-left: 3%;
 }
 
 h3
@@ -298,11 +329,11 @@ h3
 .Userlabels
 {
   background: transparent;
-  margin-left: 3%;
+  // margin-left: 3%;
   height: 70%;
   width: 75%;
   position: absolute;
-  left: 15% ;
+  // left: 15% ;
   top:25%;
 }
 

@@ -1,28 +1,36 @@
 <ion-footer id="footer">
   <ion-row style="position: absolute; bottom: 30%; width: 100%; height: 80px">
-    <ion-col class="guideColumn" size="6">
+    <!-- <ion-col class="guideColumn" size="6">
       <a id="helpGuide" target="_blank"><button class="formButtons">Help Guide</button></a>
     </ion-col>
     <ion-col class="guideColumn" size="6">
-      <a id="contactUs" target="_blank"><button class="formButtons">Contact Us</button></a>
-    </ion-col>
+        <a id="contactUs" target="_blank"><button class="formButtons">Contact Us</button></a>
+      </ion-col> -->
   </ion-row>
   <ion-grid id="footer-grid">
     <ion-row class="footer-row">
-      <ion-col></ion-col>
-      <ion-col>
-        © 2023 All Rights Reserved
+      <ion-col >
+        <ion-button id="helpGuide"  class="hover-text">
+          Help Guide
+       </ion-button>
+     
       </ion-col>
       <ion-col>
-        Privacy Policy
+        
+        <ion-button  routerLink="/privacy-policy" routerDirection="root"  class="hover-text">Privacy Policy</ion-button>
+
+        <ion-row style="display: flex; justify-content: center;">
+          <ion-button class="invisible-button" disabled>
+          © 2023 All Rights Reserved
+         </ion-button></ion-row>
       </ion-col>
       <ion-col>
-        Terms of Use
+      
+          <ion-button  routerLink="/terms-of-use" routerDirection="root"  class="hover-text">Terms of Use</ion-button>
+    
+      
       </ion-col>
-      <ion-col>
-        Legal
-      </ion-col>
-      <ion-col></ion-col>
     </ion-row>
+
   </ion-grid>
 </ion-footer>

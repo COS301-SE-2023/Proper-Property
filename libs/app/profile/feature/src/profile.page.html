@@ -1,4 +1,4 @@
-<ion-content *ngIf = "!isMobile" class ="Desktop">
+<ion-content *ngIf = "true" class ="Desktop">
   <div class="profileCard">
 
     <ion-grid>
@@ -15,83 +15,261 @@
         <ion-col size="3.5">
         <ion-grid>
           <ion-row class="ion-justify-content-center">
-            <div (click)="fileInput.click()" style="margin: 10px; border-radius: 50%; border: 1px solid black; width: 100px; height: 100px; background-image: url({{profilePic}}); background-size: cover; background-position-x: center; background-position-y: center;" id="profilePic2"></div>
+            <div (click)="fileInput.click()" style="background-image: url({{profilePic}});" id="profilePic2"></div>
             <input type="file" accept="image/*" (change)="handleFileInput($event)" hidden #fileInput>
           </ion-row>
           <ion-row class="ion-justify-content-center">
-            <ion-button style="float: right;" size="small" expand="full" color="primary" (click)="saveProfilePic()">Save Profile</ion-button>
+            <ion-button [disabled]="!saveProfile" style="float: right;" size="small" expand="full" color="primary" (click)="saveProfilePic()">Save Profile</ion-button>
           </ion-row>
-          <!-- <ion-row class="ion-justify-content-center">            
-            <h3>{{ user?.firstName }} {{ user?.lastName }}</h3>
-          </ion-row> -->
         </ion-grid>
       </ion-col>
         <ion-col>
-          <h1>{{ user?.firstName }} {{ user?.lastName }}</h1>
-      
+          <h1>User Interests</h1>
+
             <ion-grid class="Userlabels">
               <ion-row class="row1">
-                  <ion-item>
+                  <ion-item id="hover-trigger1" lines="none" class="trigger">
                     <ion-icon class="iconic" name="flower-outline" size="small"></ion-icon>
                     <ion-label position="stacked"></ion-label>
                     <ion-range [(ngModel)]="interests.garden" ></ion-range>
                   </ion-item>
+                  <ion-popover trigger="hover-trigger1" triggerAction="click">
+                    <ng-template>
+                      <ion-content class="ion-padding">
+                        <ion-row>
+                          <ion-col size="2">
+                           <ion-icon class="iconic" name="flower-outline" color="primary" size="large"></ion-icon> 
+                          </ion-col>
+                          <ion-col>
+                            <ion-label color="primary" style="position: absolute; top: 20%;">Garden Lover</ion-label>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row>
+                          <ion-col size="2"></ion-col>
+                          <ion-col size="10">"A garden is a must!"</ion-col>
+                        </ion-row>
+                        </ion-content>
+                    </ng-template>
+                  </ion-popover>
   
-                  <ion-item>
+                  <ion-item lines="none" id="hover-trigger2" class="trigger">
                     <ion-icon class="iconic" name="home-outline" size="small"></ion-icon>
                     <ion-label position="stacked"></ion-label>
                     <ion-range [(ngModel)]="interests.mansion" ></ion-range>
-                  </ion-item>  
+                  </ion-item>
+                  <ion-popover trigger="hover-trigger2" triggerAction="click">
+                    <ng-template>
+                      <ion-content class="ion-padding">
+                        <ion-row>
+                          <ion-col size="2">
+                           <ion-icon class="iconic" name="home-outline" color="primary" size="large"></ion-icon> 
+                          </ion-col>
+                          <ion-col>
+                            <ion-label color="primary" style="position: absolute; top: 20%;">Mansion Passion</ion-label>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row>
+                          <ion-col size="2"></ion-col>
+                          <ion-col size="10">"Passionate for Mansionates"</ion-col>
+                        </ion-row>
+                        </ion-content>
+                    </ng-template>
+                  </ion-popover>
 
-                  <ion-item>
+                  <ion-item lines="none" id="hover-trigger3" class="trigger">
                     <ion-icon class="iconic" name="eye-off-outline" size="small"></ion-icon>
                     <ion-label position="stacked"></ion-label>
                     <ion-range [(ngModel)]="interests.accessible" ></ion-range>
                   </ion-item>
+                  <ion-popover trigger="hover-trigger3" triggerAction="click">
+                    <ng-template>
+                      <ion-content class="ion-padding">
+                        <ion-row>
+                          <ion-col size="2">
+                           <ion-icon class="iconic" name="eye-off-outline" color="primary" size="large"></ion-icon> 
+                          </ion-col>
+                          <ion-col>
+                            <ion-label color="primary" style="position: absolute; top: 20%;">Accessible</ion-label>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row>
+                          <ion-col size="2"></ion-col>
+                          <ion-col size="10">"You prioritize an accessible castle."</ion-col>
+                        </ion-row>
+                        </ion-content>
+                    </ng-template>
+                  </ion-popover>
 
-                  <ion-item>
+                  <ion-item lines="none" id="hover-trigger4" class="trigger">
                     <ion-icon class="iconic" name="beer-outline" size="small"></ion-icon>
                     <ion-label position="stacked"></ion-label>
                     <ion-range [(ngModel)]="interests.party" ></ion-range>
                   </ion-item>
+                  <ion-popover trigger="hover-trigger4" triggerAction="click">
+                    <ng-template>
+                      <ion-content class="ion-padding">
+                        <ion-row>
+                          <ion-col size="2">
+                           <ion-icon class="iconic" name="beer-outline" color="primary" size="large"></ion-icon> 
+                          </ion-col>
+                          <ion-col>
+                            <ion-label color="primary" style="position: absolute; top: 20%;">Where the Party Is</ion-label>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row>
+                          <ion-col size="2"></ion-col>
+                          <ion-col size="10">"Chasing cities that never sleep."</ion-col>
+                        </ion-row>
+                        </ion-content>
+                    </ng-template>
+                  </ion-popover>
   
-                  <ion-item>
+                  <ion-item lines="none" id="hover-trigger5" class="trigger">
                     <ion-icon class="iconic" name="airplane-outline" size="small"></ion-icon>
                     <ion-label position="stacked"></ion-label>
                     <ion-range [(ngModel)]="interests.foreign" ></ion-range>
-                  </ion-item>  
+                  </ion-item>
+
+                  <ion-popover trigger="hover-trigger5" triggerAction="click">
+                    <ng-template>
+                      <ion-content class="ion-padding">
+                        <ion-row>
+                          <ion-col size="2">
+                           <ion-icon class="iconic" name="airplane-outline" color="primary" size="large"></ion-icon> 
+                          </ion-col>
+                          <ion-col>
+                            <ion-label color="primary" style="position: absolute; top: 20%;">Foreign Crush</ion-label>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row>
+                          <ion-col size="2"></ion-col>
+                          <ion-col size="10">"You've got an eye for tourist hotspots."</ion-col>
+                        </ion-row>
+                        </ion-content>
+                    </ng-template>
+                  </ion-popover>
 
               </ion-row>
               <ion-row class="row1">
-                <ion-item>
+                <ion-item lines="none" id="hover-trigger6" class="trigger">
                   <ion-icon class="iconic" name="school-outline" size="small"></ion-icon>
                   <ion-label position="stacked"></ion-label>
                   <ion-range [(ngModel)]="interests.student"></ion-range>
                 </ion-item>
+                <ion-popover trigger="hover-trigger6" triggerAction="click">
+                  <ng-template>
+                    <ion-content class="ion-padding">
+                      <ion-row>
+                        <ion-col size="2">
+                         <ion-icon class="iconic" name="school-outline" color="primary" size="large"></ion-icon> 
+                        </ion-col>
+                        <ion-col>
+                          <ion-label color="primary" style="position: absolute; top: 20%;">Student Life</ion-label>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row>
+                        <ion-col size="2"></ion-col>
+                        <ion-col size="10">"Sororities, fraternities or a good enough crib near campus."</ion-col>
+                      </ion-row>
+                      </ion-content>
+                  </ng-template>
+                </ion-popover>
 
-                <ion-item>
+                <ion-item  lines="none" id="hover-trigger7" class="trigger">
                   <ion-icon class="iconic" class="iconic" name="fast-food-outline" size="small"></ion-icon>
                   <ion-label position="stacked"></ion-label>
                   <ion-range [(ngModel)]="interests.lovinIt"></ion-range>
                 </ion-item>
+                <ion-popover trigger="hover-trigger7" triggerAction="click">
+                  <ng-template>
+                    <ion-content class="ion-padding">
+                      <ion-row>
+                        <ion-col size="2">
+                         <ion-icon class="iconic" name="fast-food-outline" color="primary" size="large"></ion-icon> 
+                        </ion-col>
+                        <ion-col>
+                          <ion-label color="primary" style="position: absolute; top: 20%;">I'm Lovin' It</ion-label>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row>
+                        <ion-col size="2"></ion-col>
+                        <ion-col size="10">"From Italian to Amerian or plain vetkoek just around the corner."</ion-col>
+                      </ion-row>
+                      </ion-content>
+                  </ng-template>
+                </ion-popover>
 
-                <ion-item>
+                <ion-item lines="none" id="hover-trigger8" class="trigger">
                   <ion-icon class="iconic" name="compass-outline" size="small" ></ion-icon>
                   <ion-label position="stacked"></ion-label>
                   <ion-range [(ngModel)]="interests.farm" ></ion-range>
                 </ion-item>
+                <ion-popover trigger="hover-trigger8" triggerAction="click">
+                  <ng-template>
+                    <ion-content class="ion-padding">
+                      <ion-row>
+                        <ion-col size="2">
+                         <ion-icon class="iconic" name="compass-outline" color="primary" size="large"></ion-icon> 
+                        </ion-col>
+                        <ion-col>
+                          <ion-label color="primary" style="position: absolute; top: 20%;">By Die Plaas</ion-label>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row>
+                        <ion-col size="2"></ion-col>
+                        <ion-col size="10">"Searching for a quiet life away from society."</ion-col>
+                      </ion-row>
+                      </ion-content>
+                  </ng-template>
+                </ion-popover>
 
-                <ion-item>
+                <ion-item lines="none" id="hover-trigger9" class="trigger">
                   <ion-icon class="iconic" name="barbell-outline" size="small"></ion-icon>
                   <ion-label position="stacked"></ion-label>
                   <ion-range [(ngModel)]="interests.gym" ></ion-range>
                 </ion-item>  
+                <ion-popover trigger="hover-trigger9" triggerAction="click">
+                  <ng-template>
+                    <ion-content class="ion-padding">
+                      <ion-row>
+                        <ion-col size="2">
+                         <ion-icon class="iconic" name="barbell-outline" color="primary" size="large"></ion-icon> 
+                        </ion-col>
+                        <ion-col>
+                          <ion-label color="primary" style="position: absolute; top: 20%;">Gym Rat</ion-label>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row>
+                        <ion-col size="2"></ion-col>
+                        <ion-col size="10">"Your Active life needs you near a gym."</ion-col>
+                      </ion-row>
+                      </ion-content>
+                  </ng-template>
+                </ion-popover>
 
-                <ion-item>
+                <ion-item lines="none" id="hover-trigger10" class="trigger">
                   <ion-icon class="iconic" name="car-sport-outline" size="small"></ion-icon>
                   <ion-label position="stacked"></ion-label>
                   <ion-range [(ngModel)]="interests.owner" ></ion-range>
                 </ion-item>
+                <ion-popover trigger="hover-trigger10" triggerAction="click">
+                  <ng-template>
+                    <ion-content class="ion-padding">
+                      <ion-row>
+                        <ion-col size="2">
+                         <ion-icon class="iconic" name="car-sport-outline" color="primary" size="large"></ion-icon> 
+                        </ion-col>
+                        <ion-col>
+                          <ion-label color="primary" style="position: absolute; top: 20%;">Home Owner</ion-label>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row>
+                        <ion-col size="2"></ion-col>
+                        <ion-col size="10">"Wifi, pools, braai areas or solar. A feature full dwelling is what you like."</ion-col>
+                      </ion-row>
+                      </ion-content>
+                  </ng-template>
+                </ion-popover>
               </ion-row>
             </ion-grid>
         </ion-col>
@@ -102,30 +280,52 @@
           <ion-row class="toListings">
             <ion-col>
               <ion-button class="but1" routerLink="/saved-listings" routerDirection="root">
-                <ion-icon name="heart-outline" size="large"></ion-icon>
+                <ion-icon class="button-icon" name="heart-outline"></ion-icon>
                 <ion-label>Saved Listings</ion-label>
               </ion-button>             
             </ion-col>
             <ion-col>
               <ion-button class="but1" routerLink="/my-listings" routerDirection="root">
-                <ion-icon name="list-outline" size="large"></ion-icon>
+                <ion-icon class="button-icon" name="list-outline"></ion-icon>
                 <ion-label>My Listings</ion-label>
-              </ion-button>              
+              </ion-button>
             </ion-col>
 
           </ion-row>
           <ion-row class="upGrade">
             <ion-col>
-              <ion-button class="but1">
-                <ion-label>Upgrade Preferences</ion-label>
-              </ion-button>              
-            </ion-col>
-          </ion-row>
-          <ion-row class="upGrade">
-            <ion-col>
-              <ion-button class="but1">
-                <ion-label>NEW FEATURE COMMING SOON</ion-label>
-              </ion-button>              
+              <ion-button class="but1" (click)="changePassword()">
+                <ion-label>Change Password</ion-label>
+              </ion-button>
+              <!-- <ion-modal class="change-password-modal" trigger="change-password-button">
+                <ng-template>
+                  <ion-content>
+                    <div id="change-password-content">
+                      <h2>
+                        Change Password
+                      </h2>
+                      <p>
+                        Please enter yout current password and your new password
+                      </p>
+                      <ion-item class="loginInput" style="background: #FFF">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        <ion-input [(ngModel)]="currentPassword" id="currentPasswordInput" type="password" placeholder="Current Password" required="true"></ion-input> 
+                      </ion-item>
+                      <ion-item class="loginInput" style="background: #FFF">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        <ion-input [(ngModel)]="newPassword" id="newPasswordInput" type="password" placeholder="New Password" required="true"></ion-input> 
+                      </ion-item>
+                      <ion-item class="loginInput" style="background: #FFF">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        <ion-input [(ngModel)]="repeatNewPassword" id="repeatNewPasswordInput" type="password" placeholder="New Password" required="true"></ion-input> 
+                      </ion-item>
+                      <ion-input placeholder="Enter an email" type="email" [ngModel]="resetEmail" style="border: 1px solid black; width: 60%;"></ion-input>
+                      <ion-button (click)="changePassword()" style="margin-bottom: 20px">Update Password</ion-button>
+                      <ion-button (click)="closePasswordModal()" style="margin-bottom: 20px">Cancel</ion-button>
+                    </div>
+                  </ion-content>
+                </ng-template>
+              </ion-modal> -->
             </ion-col>
           </ion-row>
           <ion-row class="logOut">
@@ -134,7 +334,12 @@
                 <ion-label>Log Out</ion-label>
               </ion-button>
             </ion-col>
-          </ion-row>            
+          </ion-row>
+          <ion-row class="delete">
+            <ion-button class="delete-account-button" expand="full" (click)="confirmDeleteAccount()">
+              Delete Account
+            </ion-button>
+          </ion-row>          
         </ion-col>
 
         <ion-col class="settings">
@@ -147,13 +352,13 @@
             </ion-col>
             <ion-col>
               <ion-button  (click)="editName()" class="but2">
-                <ion-icon name="create-outline" class="edit-icon" size="large"></ion-icon>
+                <ion-icon name="create-outline" class="edit-icon" size="small"></ion-icon>
               </ion-button>           
             </ion-col>
 
             <div class="edits" *ngIf="isEditingName">
-              <ion-input type="text" [(ngModel)]="newFirstName" placeholder="Enter a new first name" clearInput></ion-input>
-              <ion-input type="text" [(ngModel)]="newLastName" placeholder="Enter a new last name" clearInput></ion-input>
+              <ion-input class="text-input" type="text" [(ngModel)]="newFirstName" placeholder="Enter a new first name" clearInput></ion-input>
+              <ion-input class="text-input" type="text" [(ngModel)]="newLastName" placeholder="Enter a new last name" clearInput></ion-input>
               <ion-button expand="full" color="primary" (click)="saveName()">Save</ion-button>
               <ion-button expand="full" color="danger" (click)="discardName()">Cancel</ion-button>
             </div>
@@ -162,17 +367,22 @@
           <ion-row>
 
             <ion-col size="8">
-              <h3>Edit Email {{ user?.email }}</h3>
+              <h3>Email: {{ user?.email }}</h3>
             </ion-col>
             <ion-col>
               <ion-button class="but2" (click)="editEmail()">
-                <ion-icon name="create-outline" class="edit-icon" size="large"></ion-icon>
+                <ion-icon name="create-outline" class="edit-icon" size="small"></ion-icon>
               </ion-button>
             </ion-col>
 
 
             <div class="edits" *ngIf="isEditingEmail">
-              <ion-input type="text" [(ngModel)]="newEmail" placeholder="Enter a new email" clearInput></ion-input>
+              <ion-item style="width: 100%">
+                <p *ngIf="googleLogged" style="color: red">
+                  * Please note you are logged in via Google and this email change will only affect where notifications are sent to.
+                </p>
+              </ion-item>
+              <ion-input class="text-input" type="email" [(ngModel)]="newEmail" placeholder="Enter a new email" id="email" clearInput></ion-input>
               <ion-button expand="full" color="primary" (click)="saveEmail()">Save</ion-button>
               <ion-button expand="full" color="danger" (click)="discardEmail()">Cancel</ion-button>
             </div>
@@ -182,27 +392,21 @@
           <ion-row>
 
             <ion-col size="8">
-              <h3>Edit Phone Number {{ user?.phoneNumber }}</h3>
+              <h3>Phone Number: {{ user?.phoneNumber }}</h3>
             </ion-col>
 
             <ion-col>
               <ion-button class="but2" (click)="editPhoneNumber()">
-                <ion-icon name="create-outline" class="edit-icon" size="large"></ion-icon>
+                <ion-icon name="create-outline" class="edit-icon" size="small"></ion-icon>
               </ion-button>
             </ion-col>
 
             <div class="edits" *ngIf="isEditingPhoneNumber">
-              <ion-input type="text" [(ngModel)]="newPhoneNumber" placeholder="Enter a new phone number" clearInput></ion-input>
+              <ion-input class="text-input" type="text" [(ngModel)]="newPhoneNumber" id="phoneNumber" placeholder="Enter a new phone number" clearInput></ion-input>
               <ion-button expand="full" color="primary" (click)="savePhoneNumber()">Save</ion-button>
               <ion-button expand="full" color="danger" (click)="discardPhoneNumber()">Cancel</ion-button>
             </div>
 
-          </ion-row>
-          <br>
-          <ion-row>
-              <ion-button class="delete-account-button" expand="full" color="danger" (click)="confirmDeleteAccount()">
-                Delete Account
-              </ion-button>
           </ion-row>
         </ion-col>
       </ion-row>
@@ -210,8 +414,8 @@
 
   </div>
 </ion-content>
-<ion-content *ngIf = "isMobile"  class ="Mobile">
-  <div class="profileCard">
+<ion-content *ngIf = "false"  class ="Mobile">
+  <!-- <div class="profileCard">
 
     <ion-grid>
       <ion-row class="profilePic">
@@ -306,7 +510,7 @@
 
 
             <div class="edits" *ngIf="isEditingEmail">
-              <ion-input type="text" [(ngModel)]="newEmail" placeholder="Enter a new email" clearInput></ion-input>
+              <ion-input [(ngModel)]="newEmail" placeholder="Enter a new email" clearInput></ion-input>
               <ion-button expand="full" color="primary" (click)="saveEmail()">Save</ion-button>
               <ion-button expand="full" color="danger" (click)="discardEmail()">Cancel</ion-button>
             </div>
@@ -334,7 +538,7 @@
           </ion-row>
 
           <ion-row>
-              <ion-button class="delete-account-button" expand="full" color="danger" (click)="confirmDeleteAccount()">
+              <ion-button class="delete-account-button" expand="full"  (click)="confirmDeleteAccount()">
                 Delete Account
               </ion-button>
           </ion-row>
@@ -345,5 +549,5 @@
       </ion-col>
     </ion-grid>
 
-  </div>
+  </div> -->
 </ion-content>

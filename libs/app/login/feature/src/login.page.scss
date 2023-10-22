@@ -21,13 +21,12 @@ ion-content
   position: absolute;
   display: flex;
   height: 80vh;
-  width: 70vw;
+  width: 70%;
   margin-left: 15%;
   // box-shadow: 0 4px 20px 0 rgba(0,0,0,0.3), 0 px 20px 0 rgba(0,0,0,0.3) ;
   background: linear-gradient(-45deg, #00330d,var(--ion-color-primary));
   transition: 0.3s;
   box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.3);
-  border-radius: 30px;
 }
 
 // .loggingIn:hover
@@ -52,8 +51,6 @@ ion-content
   background-position: bottom;
   background-repeat: no-repeat;
   background-size: contain;
-  border-top-left-radius: 30px;
-  border-bottom-left-radius: 30px;
 }
 
 .login
@@ -85,9 +82,9 @@ ion-list
   
 }
 
-ion-item
+.loginInput
 {
-  border-radius: 50px !important;
+  border-radius: 5px !important;
   border: 2px solid var(--ion-color-primary) !important;
   --background: white;
   width: 90%;
@@ -95,6 +92,7 @@ ion-item
   margin-bottom: 3%;
   display: flex;
 }
+
 
 ion-icon
 {
@@ -105,11 +103,13 @@ ion-icon
 ion-input
 {
   font-size: 130%;
+  --highlight-color: var(--ion-color-primary) !important;
 }
 
 .button-centerer {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  // flex-direction: column;
   align-items: center;
   margin-top: 5%;
 }
@@ -118,58 +118,71 @@ ion-input
   color: white;
   --background: var(--ion-color-primary) !important;
   font-weight: 600;
-  margin-bottom: 10%;
+  margin-bottom: 10px;
+  --border-radius: 0;
 }
 
 .button-centerer2 {
-  width: 90%;
-  // height: 50%;
+      /* width: 90%; */
+      border: 2px solid var(--ion-color-primary);
+      /* border-radius: 80px !important; */
+      --background: rgba(255, 255, 255, 0) !important;
+      font-weight: 600;
+      --background-hover: var(--ion-color-primary);
+      /* margin-left: 5%; */
+      --border-radius: 0;
+}
+
+.googleButton{
+  /* width: 90%; */
   border: 2px solid var(--ion-color-primary);
-  border-radius: 80px !important;
+  /* border-radius: 80px !important; */
   --background: rgba(255, 255, 255, 0) !important;
-  // --color: var(--ion-color-primary--contrast);
   font-weight: 600;
-  // --text-transform: lowercase;
   --background-hover: var(--ion-color-primary);
-  // margin-right: 5%;
-  margin-left: 5%;
+  /* margin-left: 5%; */
+  --border-radius: 0;
 }
 
 .Member
 {
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 50%;
-  flex-direction: column;
+  // flex-direction: column;
   min-width: 240px;
   padding: 0 10px;
+  background-color: var(--ion-color-primary);
 }
 
 .rightPanel
 {
+  display: flex;
+  justify-content: center;
   top: 30%;
   position: absolute;
   text-align: center;
   width: 50%;
 }
 
+.content{
+  width: 100%;
+}
+
 .forgot
 {
-  margin-right: 5%;
+  margin-left: auto;
   text-align: right;
   font-size: 15px;
   text-decoration: underline;
   color: var(--ion-color-primary);
 }
 
-.forgot1:after
-{
-  content: 'Forgot Password?';
-}
-
-.forgot1:hover:after
-{
-  content: 'Too Bad, Buddy';
+#forgotItem{
+  display: flex;
+  --background: white !important;
+  opacity: 1;
 }
 
 h3
@@ -189,16 +202,13 @@ p
 
 .signUp
 {
-  position: absolute;
   align-items: center;
   justify-content: center;
   text-align: center;
   width: 80px;
   height: 40px;
-  background: rgb(0, 0, 0);
-  border-radius: 50px;
-  margin-left: 40%;
-  margin-right: 40%;
+  background: white;
+  color: #0a9042;
 }
 
 a
@@ -211,12 +221,28 @@ a
 .signUp:hover
 {
   background: var(--ion-color-primary);
+  border: 2px solid white;
 
   a{
-    color: black;
+    color: white;
   }
 
 }
+
+.invalid-feedback {
+  color: red;
+  position: relative;
+  top: 70%;
+
+  border-radius: 50px !important;
+
+  width: 90%;
+  margin: auto;
+  margin-bottom: 3%;
+  display: flex;
+
+}
+
 }
 
 .Mobile {

@@ -84,14 +84,14 @@
       "@properproperty/app/copyright/feature": [
         "libs/app/copyright/feature/src/index.ts"
       ],
-      "@properproperty/app/terms-of-use/feature": [
-        "libs/app/terms-of-use/feature/src/index.ts"
-      ],
       "@properproperty/app/core/feature": [
         "libs/app/core/feature/src/index.ts"
       ],
       "@properproperty/app/create-listing/feature": [
         "libs/app/create-listing/feature/src/index.ts"
+      ],
+      "@properproperty/app/email-action-page/feature": [
+        "libs/app/email-action-page/feature/src/index.ts"
       ],
       "@properproperty/app/footer/feature": [
         "libs/app/footer/feature/src/index.ts"
@@ -132,6 +132,9 @@
       "@properproperty/app/open-ai/data-access": [
         "libs/app/open-ai/data-access/src/index.ts"
       ],
+      "@properproperty/app/privacy-policy/feature": [
+        "libs/app/privacy-policy/feature/src/index.ts"
+      ],
       "@properproperty/app/profile/data-access": [
         "libs/app/profile/data-access/src/index.ts"
       ],
@@ -161,6 +164,9 @@
       ],
       "@properproperty/app/settings/feature": [
         "libs/app/settings/feature/src/index.ts"
+      ],
+      "@properproperty/app/terms-of-use/feature": [
+        "libs/app/terms-of-use/feature/src/index.ts"
       ],
       "@properproperty/app/version/feature": [
         "libs/app/version/feature/src/index.ts"

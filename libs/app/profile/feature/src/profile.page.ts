@@ -1,25 +1,28 @@
 
-import { Component, OnInit,HostListener } from '@angular/core';
+import { Component, OnInit,HostListener, ViewChild } from '@angular/core';
 import { UserProfileState, UserProfileService } from '@properproperty/app/profile/data-access';
 import { AuthService} from '@properproperty/app/auth/data-access';
 import { Logout } from '@properproperty/app/auth/util';
-import { AlertController } from '@ionic/angular';
-
+import { AlertController, IonModal, ToastController, ToastOptions } from '@ionic/angular';
+import { AuthState } from '@properproperty/app/auth/data-access';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { UserProfile, Interests } from '@properproperty/api/profile/util';
 import { UpdateUserProfile, RemoveCurrentUser } from '@properproperty/app/profile/util';
+import { User } from 'firebase/auth';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
-
+  @ViewChild(IonModal) modal!: IonModal;
   isMobile:boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   user: UserProfile | null = null;
+  @Select(AuthState.user) userAuthSelector$!: Observable<User | null>;
+  userAuth: User | null = null;
   interests: Interests; // Needs to not be nullable cus ngModel no like
   isEditingEmail: boolean;
   isEditingName: boolean;
@@ -32,6 +35,10 @@ export class ProfilePage implements OnInit {
   profilePic = "";
   saveProfile = false;
   profileComplete = false;
+  googleLogged = false;
+  currentPassword = "";
+  newPassword = "";
+  repeatNewPassword = "";
   // appPages = [
   //   { title: 'Saved Listings', url: '/saved-listings', icon: 'bookmark' },
   //   { title: 'My Listings', url: '/my-listings', icon: 'list' },
@@ -52,15 +59,30 @@ export class ProfilePage implements OnInit {
     this.newEmail = this.user.email ?? '';
   }
 
-  saveEmail() {
-    this.isEditingEmail = false;
-    if (!this.user) {
-      return;
-    }
-    this.user.email = this.newEmail;
+  async saveEmail() {
+    const regex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9]*\.[a-z]{2,6}$/;
 
-    this.store.dispatch(new UpdateUserProfile({email: this.newEmail}));
-    this.newEmail = '';
+    if (regex.test(this.newEmail)) {
+      this.isEditingEmail = false;
+      if (!this.user) {
+        return;
+      }
+      this.user.email = this.newEmail;
+
+      this.store.dispatch(new UpdateUserProfile({email: this.newEmail}));
+      this.newEmail = '';
+    }else{
+      document.getElementById("email")?.setAttribute("style", "color: red")
+      const failed = {
+        message: "Please enter a valid emailaddress.",
+        duration: 3000, // Duration in milliseconds
+        color: 'danger', // Use 'danger' to display in red
+        position: 'bottom'
+      } as ToastOptions;
+    
+      const toast = await this.toastController.create(failed);
+      toast.present();
+    }
   }
 
   discardEmail() {
@@ -73,9 +95,9 @@ export class ProfilePage implements OnInit {
       private readonly authServices:AuthService, 
       private readonly alertController: AlertController, 
       private readonly router: Router,
-      private readonly store: Store
+      private readonly store: Store,
+      private readonly toastController : ToastController
     ) {
-      
       this.isMobile = window.innerWidth <= 576;
     // default value cus ngModel cries when the user is null
     this.interests = {
@@ -111,6 +133,9 @@ export class ProfilePage implements OnInit {
    }
    
   ngOnInit() {
+    this.userAuthSelector$.subscribe((user) => {
+      this.userAuth = user;
+    });
     this.userProfile$.subscribe((profile) => {
       this.user = profile;
       this.profilePic = profile?.profilePicture ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2t2r3zx8jVPz6isicXtXbueLZFfWIuRMkW8X6KQ3_&s";
@@ -123,7 +148,6 @@ export class ProfilePage implements OnInit {
         this.profileComplete = true;
       }
       
-      console.log(profile);
       if(profile) {
         if(profile.interests !== undefined){
           this.interests = profile.interests;
@@ -148,12 +172,15 @@ export class ProfilePage implements OnInit {
         };
       }
     });
+    if (window.location.hostname.includes('localhost')) console.log(this.userAuth);
+    this.googleLogged = this.userAuth?.providerData?.[0].providerId != "password";
   }
 
   async confirmDeleteAccount() {
     const alert = await this.alertController.create({
       header: 'Confirmation',
       message: 'Are you sure you want to delete your account?',
+      cssClass: '',
       buttons: [
         {
           text: 'Cancel',
@@ -228,14 +255,29 @@ export class ProfilePage implements OnInit {
     this.newPhoneNumber = this.user.phoneNumber ?? '';
   }
 
-  savePhoneNumber() {
-    this.isEditingPhoneNumber = false;
-    if (!this.user) {
-      return;
+  async savePhoneNumber() {
+    const regex = /^((\(\+27\)[1-9]([0-9]{8}))|(0[1-9]([0-9]{8})))$/;
+
+    if (regex.test(this.newPhoneNumber)) {
+      this.isEditingPhoneNumber = false;
+      if (!this.user) {
+        return;
+      }
+      this.user.phoneNumber = this.newPhoneNumber;
+      this.store.dispatch(new UpdateUserProfile({phoneNumber: this.newPhoneNumber}));
+      this.newPhoneNumber = '';
+    } else {
+        document.getElementById("phoneNumber")?.setAttribute("style", "color: red")
+        const failed = {
+          message: "Please enter a valid phone number. Examples include: (+27)XXXXXXXXX or 0XXXXXXXXX",
+          duration: 3000, // Duration in milliseconds
+          color: 'danger', // Use 'danger' to display in red
+          position: 'bottom'
+        } as ToastOptions;
+      
+        const toast = await this.toastController.create(failed);
+        toast.present();
     }
-    this.user.phoneNumber = this.newPhoneNumber;
-    this.store.dispatch(new UpdateUserProfile({phoneNumber: this.newPhoneNumber}));
-    this.newPhoneNumber = '';
   }
 
   discardPhoneNumber() {
@@ -274,5 +316,24 @@ export class ProfilePage implements OnInit {
       document.getElementById("profilePic2")?.setAttribute("style", "margin: 10px; border-radius: 50%; border: 1px solid black; width: 100px; height: 100px; background-image: url('" + this.profilePic + "'); background-size: cover; background-position-x: center; background-position-y: center;")
       this.saveProfile = false;
     }
+  }
+
+  async changePassword() {
+    if (!this.userAuth?.email) {
+      return;
+    }
+    this.authServices.forgotPassword(this.userAuth.email);
+    // this.toastController.create({
+    //   message: "Password updated successfully",
+    //   duration: 2000,
+    //   color: "success"
+    // }).then((toast) => {
+    //   toast.present();
+    // });
+    // this.closePasswordModal();
+  }
+
+  async closePasswordModal() {
+    this.modal.dismiss();
   }
 }
