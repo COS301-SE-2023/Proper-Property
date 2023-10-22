@@ -54,21 +54,21 @@
                   <ion-item lines="none" class="filter">
                     <ion-label class="filter-text">Minimum Price</ion-label>
                     <select id="min-price" class="dropdown" style="width: 40%" [(ngModel)]="property_price_values.lower">
-                      <option value="0">Any</option>
-                      <option value="100000">R 100K</option>
-                      <option value="150000">R 150K</option>
-                      <option value="200000">R 200K</option>
-                      <option value="300000">R 300k</option>
-                      <option value="400000">R 400k</option>
-                      <option value="500000">R 500k</option>
-                      <option value="1000000">R 1M</option>
-                      <option value="2000000">R 2M</option>
-                      <option value="3000000">R 3M</option>
-                      <option value="4000000">R 4M</option>
-                      <option value="5000000">R 5M</option>
-                      <option value="10000000">R 10M</option>
-                      <option value="15000000">R 15M</option>
-                      <option value="20000000">R 20M</option>
+                      <option value="0" (click)="checkPriceRange(true)">Any</option>
+                      <option value="100000" (click)="checkPriceRange(true)">R 100K</option>
+                      <option value="150000" (click)="checkPriceRange(true)">R 150K</option>
+                      <option value="200000" (click)="checkPriceRange(true)">R 200K</option>
+                      <option value="300000" (click)="checkPriceRange(true)">R 300k</option>
+                      <option value="400000" (click)="checkPriceRange(true)">R 400k</option>
+                      <option value="500000" (click)="checkPriceRange(true)">R 500k</option>
+                      <option value="1000000" (click)="checkPriceRange(true)">R 1M</option>
+                      <option value="2000000" (click)="checkPriceRange(true)">R 2M</option>
+                      <option value="3000000" (click)="checkPriceRange(true)">R 3M</option>
+                      <option value="4000000" (click)="checkPriceRange(true)">R 4M</option>
+                      <option value="5000000" (click)="checkPriceRange(true)">R 5M</option>
+                      <option value="10000000" (click)="checkPriceRange(true)">R 10M</option>
+                      <option value="15000000" (click)="checkPriceRange(true)">R 15M</option>
+                      <option value="20000000" (click)="checkPriceRange(true)">R 20M</option>
                     </select>
                   </ion-item>
                 </ion-col>
@@ -76,21 +76,21 @@
                   <ion-item lines="none" class="filter">
                     <ion-label class="filter-text">Maximum Price</ion-label>
                     <select class="dropdown" style="width: 40%" [(ngModel)]="property_price_values.upper">
-                      <option value="99999999">Any</option>
-                      <option value="100000">R 100K</option>
-                      <option value="150000">R 150K</option>
-                      <option value="200000">R 200K</option>
-                      <option value="300000">R 300k</option>
-                      <option value="400000">R 400k</option>
-                      <option value="500000">R 500k</option>
-                      <option value="1000000">R 1M</option>
-                      <option value="2000000">R 2M</option>
-                      <option value="3000000">R 3M</option>
-                      <option value="4000000">R 4M</option>
-                      <option value="5000000">R 5M</option>
-                      <option value="10000000">R 10M</option>
-                      <option value="15000000">R 15M</option>
-                      <option value="20000000">R 20M+</option>
+                      <option value="99999999" (click)="checkPriceRange(false)">Any</option>
+                      <option value="100000" (click)="checkPriceRange(false)">R 100K</option>
+                      <option value="150000" (click)="checkPriceRange(false)">R 150K</option>
+                      <option value="200000" (click)="checkPriceRange(false)">R 200K</option>
+                      <option value="300000" (click)="checkPriceRange(false)">R 300k</option>
+                      <option value="400000" (click)="checkPriceRange(false)">R 400k</option>
+                      <option value="500000" (click)="checkPriceRange(false)">R 500k</option>
+                      <option value="1000000" (click)="checkPriceRange(false)">R 1M</option>
+                      <option value="2000000" (click)="checkPriceRange(false)">R 2M</option>
+                      <option value="3000000" (click)="checkPriceRange(false)">R 3M</option>
+                      <option value="4000000" (click)="checkPriceRange(false)">R 4M</option>
+                      <option value="5000000" (click)="checkPriceRange(false)">R 5M</option>
+                      <option value="10000000" (click)="checkPriceRange(false)">R 10M</option>
+                      <option value="15000000" (click)="checkPriceRange(false)">R 15M</option>
+                      <option value="20000000" (click)="checkPriceRange(false)">R 20M+</option>
                     </select>
                   </ion-item>
 
@@ -100,21 +100,21 @@
                   <ion-item lines="none" class="filter">
                     <ion-label class="filter-text">Minimum Price</ion-label>
                     <select id="min-price" style="overflow-y: scroll" class="dropdown" style="width: 40%" [(ngModel)]="property_price_values.lower" change="checkPriceRange(true)">
-                      <option value="0">Any</option>
-                      <option value="2500" >R 2 500</option>
-                      <option value="3000">R 3 000</option>
-                      <option value="4000">R 4 000</option>
-                      <option value="5000">R 5 000</option>
-                      <option value="6000">R 6 000</option>
-                      <option value="7000">R 7 000</option>
-                      <option value="8000">R 8 000</option>
-                      <option value="9000">R9 000</option>
-                      <option value="10000">R 10 000</option>
-                      <option value="15000">R 15 000</option>
-                      <option value="20000">R 20 000</option>
-                      <option value="30000">R 30 000</option>
-                      <option value="40000">R 40 000</option>
-                      <option value="50000">R 50 000</option>
+                      <option value="0" (click)="checkPriceRange(true)">Any</option>
+                      <option value="2500" (click)="checkPriceRange(true)">R 2 500</option>
+                      <option value="3000" (click)="checkPriceRange(true)">R 3 000</option>
+                      <option value="4000" (click)="checkPriceRange(true)">R 4 000</option>
+                      <option value="5000" (click)="checkPriceRange(true)">R 5 000</option>
+                      <option value="6000" (click)="checkPriceRange(true)">R 6 000</option>
+                      <option value="7000" (click)="checkPriceRange(true)">R 7 000</option>
+                      <option value="8000" (click)="checkPriceRange(true)">R 8 000</option>
+                      <option value="9000" (click)="checkPriceRange(true)">R9 000</option>
+                      <option value="10000" (click)="checkPriceRange(true)">R 10 000</option>
+                      <option value="15000" (click)="checkPriceRange(true)">R 15 000</option>
+                      <option value="20000" (click)="checkPriceRange(true)">R 20 000</option>
+                      <option value="30000" (click)="checkPriceRange(true)">R 30 000</option>
+                      <option value="40000" (click)="checkPriceRange(true)">R 40 000</option>
+                      <option value="50000" (click)="checkPriceRange(true)">R 50 000</option>
                     </select>
                   </ion-item>
                 </ion-col>
@@ -122,21 +122,21 @@
                   <ion-item lines="none" class="filter">
                     <ion-label class="filter-text">Maximum Price</ion-label>
                     <select class="dropdown" style="width: 40%" [(ngModel)]="property_price_values.upper" (ionChange)="checkPriceRange(false)">
-                      <option value="99999999">Any</option>
-                      <option value="2500">R 2 500</option>
-                      <option value="3000">R 3 000</option>
-                      <option value="4000">R 4 000</option>
-                      <option value="5000">R 5 000</option>
-                      <option value="6000">R 6 000</option>
-                      <option value="7000">R 7 000</option>
-                      <option value="8000">R 8 000</option>
-                      <option value="9000">R9 000</option>
-                      <option value="10000">R 10 000</option>
-                      <option value="15000">R 15 000</option>
-                      <option value="20000">R 20 000</option>
-                      <option value="30000">R 30 000</option>
-                      <option value="40000">R 40 000</option>
-                      <option value="50000">R 50 000</option>
+                      <option value="99999999" (click)="checkPriceRange(false)">Any</option>
+                      <option value="2500" (click)="checkPriceRange(false)">R 2 500</option>
+                      <option value="3000" (click)="checkPriceRange(false)">R 3 000</option>
+                      <option value="4000" (click)="checkPriceRange(false)">R 4 000</option>
+                      <option value="5000" (click)="checkPriceRange(false)">R 5 000</option>
+                      <option value="6000" (click)="checkPriceRange(false)">R 6 000</option>
+                      <option value="7000" (click)="checkPriceRange(false)">R 7 000</option>
+                      <option value="8000" (click)="checkPriceRange(false)">R 8 000</option>
+                      <option value="9000" (click)="checkPriceRange(false)">R9 000</option>
+                      <option value="10000" (click)="checkPriceRange(false)">R 10 000</option>
+                      <option value="15000" (click)="checkPriceRange(false)">R 15 000</option>
+                      <option value="20000" (click)="checkPriceRange(false)">R 20 000</option>
+                      <option value="30000" (click)="checkPriceRange(false)">R 30 000</option>
+                      <option value="40000" (click)="checkPriceRange(false)">R 40 000</option>
+                      <option value="50000" (click)="checkPriceRange(false)">R 50 000</option>
                     </select>
                   </ion-item>
 
