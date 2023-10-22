@@ -59,6 +59,7 @@ export class SearchPage implements OnDestroy, AfterViewInit {
   private markers: any[] = [];
   public listings: Listing[] = [];
   public allListings: Listing[] = [];
+  public noResults = false;
   
   public activeTab = 'Any';
   public searchQuery = '';
@@ -644,6 +645,14 @@ async loadMap() {
         document.getElementById("searchButton")?.setAttribute("disabled", "false")
       }, 1500)
     }
+  }
+
+  //no result that returns a boolean
+  noResult(){
+    if(this.searchQuery!='' && this.listings.length == 0){
+      return true;
+    }
+    return false;
   }
 
   async addMarkersToMap() {

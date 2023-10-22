@@ -465,11 +465,10 @@
             </div>
           </ng-container>
           <ng-template #listingsLoaded>
-            <ng-container *ngIf="listings.length === 0; else foundListings">
-              <!-- <div style="display: flex; justify-content: space-between; font-weight: 500">
-                <p>Enter a search query to begin your search</p>
-                <ion-icon style="font-size: 24; padding-left: 10px;" name="search-outline"></ion-icon>
-              </div> -->
+            <ng-container *ngIf="listings.length === 0 && searchQuery!==''; else foundListings">
+              <div style="display: flex; justify-content: space-between; font-weight: 500">
+                <p>No Search Results Found in {{searchQuery}}</p>
+              </div>
             </ng-container> 
             <ng-template #foundListings>
               <div class="lists" id="lists">
