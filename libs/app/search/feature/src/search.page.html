@@ -266,7 +266,7 @@
                         <ion-label class="filter-text">Min Erf(m<sup>2</sup>)</ion-label>
                         <select class="dropdown" style="width: 40%"  [(ngModel)]="property_size_values.lower" (ionChange)="filterProperties()">
                           <option value="20">20</option>
-                          <option value="40">>40</option>
+                          <option value="40">40</option>
                           <option value="60">60</option>
                           <option value="80">80</option>
                           <option value="100">100</option>
@@ -287,7 +287,7 @@
                         <ion-label class="filter-text">Max Erf(m<sup>2</sup>)</ion-label>
                         <select class="dropdown" style="width: 40%"  [(ngModel)]="property_size_values.upper" (ionChange)="filterProperties()">
                           <option value="20">20</option>
-                          <option value="40">>40</option>
+                          <option value="40">40</option>
                           <option value="60">60</option>
                           <option value="80">80</option>
                           <option value="100">100</option>
@@ -304,7 +304,7 @@
                     </ion-col>
                   </ion-row>
                   <ion-row>
-                    <ion-col size="12">
+                    <ion-col size="4">
                       <ion-item lines="none" class="filter">
                        <ion-label class="filter-text">Features</ion-label>
                        <ion-select id="amenities-select" style="width: 40%"  class="dropdown" [(ngModel)]="features" (ionChange)="filterProperties()"
@@ -534,46 +534,44 @@
             <ion-button *ngIf="listings.length > 0" [disabled]="listings.length < 5 || searching" (click)="searchProperties(true, false)" class="pageButton" id="nextPage">Next Page</ion-button>
           </ion-col>
         </ion-row>
-        <ion-item>
-          <ion-row style="display: flex; justify-content: space-evenly; padding-top: 30px;; padding-bottom: 20px;">
-            <ion-col size="2">
-              <div>
-                <ion-row style="display: flex; justify-content: center">
-                  <img style="height: 200px; width: 200px; border-radius: 50%; object-fit: cover" alt="searchPageImage" src="assets/loginImage.png">
-                </ion-row>
-                <ion-row style="display: flex; justify-content: center; padding-top: 10px">
-                  <p style="width: 75%; text-align: center">
-                    <a routerLink="/register">Sign up</a> for an account to save listings and begin experiencing the full power of Proper Property's recommendation system.
-                  </p>
-                </ion-row>
-              </div>
-            </ion-col>
-            <ion-col size="2">
-              <div>
-                <ion-row style="display: flex; justify-content: center">
-                  <img style="height: 200px; width: 200px; border-radius: 50%; object-fit: cover" alt="searchPageImage" src="assets/areaScoreImage.jpg">
-                </ion-row>
-                <ion-row style="display: flex; justify-content: center; padding-top: 10px">
-                  <p style="width: 75%; text-align: center">
-                    Find detailed information about the area surrounding a property by clicking on the area rating toggle.
-                  </p>
-                </ion-row>
-              </div>
-            </ion-col>
-            <ion-col size="2">
-              <div>
-                <ion-row style="display: flex; justify-content: center">
-                  <img style="height: 200px; width: 200px; border-radius: 50%; object-fit: cover" alt="searchPageImage" src="assets/userManual.jpg">
-                </ion-row>
-                <ion-row style="display: flex; justify-content: center; padding-top: 10px">
-                  <p style="width: 75%; text-align: center">
-                    Feeling a bit lost? Find out help guide in the footer to get a better understanding of how to use Proper Property.
-                  </p>
-                </ion-row>
-              </div>
-            </ion-col>
-          </ion-row>
-        </ion-item>
+        <ion-row style="display: flex; justify-content: space-evenly;">
+          <ion-col size="2">
+            <div>
+              <ion-row style="display: flex; justify-content: center">
+                <img style="height: 200px; width: 200px; border-radius: 50%; object-fit: cover" alt="searchPageImage" src="assets/loginImage.png">
+              </ion-row>
+              <ion-row style="display: flex; justify-content: center; padding-top: 10px">
+                <p style="width: 75%; text-align: center">
+                  <a routerLink="/register">Sign up</a> for an account to save listings and begin experiencing the full power of Proper Property's recommendation system.
+                </p>
+              </ion-row>
+            </div>
+          </ion-col>
+          <ion-col size="2">
+            <div>
+              <ion-row style="display: flex; justify-content: center">
+                <img style="height: 200px; width: 200px; border-radius: 50%; object-fit: cover" alt="searchPageImage" src="assets/areaScoreImage.jpg">
+              </ion-row>
+              <ion-row style="display: flex; justify-content: center; padding-top: 10px">
+                <p style="width: 75%; text-align: center">
+                  Find detailed information about the area surrounding a property by clicking on the area rating toggle.
+                </p>
+              </ion-row>
+            </div>
+          </ion-col>
+          <ion-col size="2">
+            <div>
+              <ion-row style="display: flex; justify-content: center">
+                <img style="height: 200px; width: 200px; border-radius: 50%; object-fit: cover" alt="searchPageImage" src="assets/userManual.jpg">
+              </ion-row>
+              <ion-row style="display: flex; justify-content: center; padding-top: 10px">
+                <p style="width: 75%; text-align: center">
+                  Feeling a bit lost? Find our help guide in the footer to get a better understanding of how to use Proper Property.
+                </p>
+              </ion-row>
+            </div>
+          </ion-col>
+        </ion-row>
       </ion-grid>
     </div>
   </section>
