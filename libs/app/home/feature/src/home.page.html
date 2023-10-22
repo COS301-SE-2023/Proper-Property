@@ -16,7 +16,8 @@ core.shell.html
         <h1 id="caption">Discover Your Dream Home: Where Living Extends Beyond Walls</h1>
       </div>
       <div class="search-container">
-        <ion-input lines="none" type="text" id="query" (ionInput)="handleInputChange($event)" class="query" [(ngModel)]="searchQuery" placeholder="Area Search"></ion-input>
+        <ion-input lines="none" type="text" id="query" (ionInput)="handleInputChange($event)" class="query"
+          [(ngModel)]="searchQuery" placeholder="Area Search"></ion-input>
         <ion-button [disabled]="predictionsLoading" id="search-button" (click)="searchProperties()">
           <ng-container *ngIf="!predictionsLoading; then searchIcon; else spinner">
           </ng-container>
@@ -29,9 +30,10 @@ core.shell.html
           <!-- <h1 class="search-button-text" style="margin-top: 10px;">Search</h1> -->
         </ion-button>
         <ion-list *ngIf="predictionDisplay()" class="prediction-result-list">
-          <ion-item class="prediction-result" (click)="replaceInputText($event,prediction.description)" *ngFor="let prediction of predictions">
+          <ion-item class="prediction-result" (click)="replaceInputText($event,prediction.description)"
+            *ngFor="let prediction of predictions">
             <!-- <a href="#" class="prediction-button"> -->
-              <ion-icon name="search-outline"></ion-icon>{{ prediction.description }}
+            <ion-icon name="search-outline"></ion-icon>{{ prediction.description }}
             <!-- </a> -->
           </ion-item>
         </ion-list>
@@ -50,10 +52,12 @@ core.shell.html
         <img src="../../assets/fakeNN.avif">
         <h3>Proper Recommendations</h3>
         <p>With the use of our recommendation system powered by artificial intelligence, we will be sure to understand
-          your preferences and offer the <span class="bold2">Proper Property</span> you are looking for.</p>
+          your preferences and offer the Proper Property you are looking for, making your property search a seamless and
+          <span class="bold2">personalized experience</span>.
+        </p>
       </div>
 
-      <div class="serv-box" style="margin-top: 10%;">
+      <div class="serv-box" style="margin-top: 5%;">
         <img src="../../assets/mapImg.webp">
         <h3>Proper Communities</h3>
         <p>At Proper Property, we understand the importance of the surrounding area when choosing a property. We
@@ -62,11 +66,13 @@ core.shell.html
           preferences.
       </div>
 
-      <div class="serv-box" style="margin-top: 20%;">
+      <div class="serv-box" style="margin-top: 10%;">
         <img src="../../assets/Cottage.jpg">
         <h3>Proper Properties</h3>
-        <p>Properties of all types, cultures, prices, and <span class="bold2">more</span>. Renting or sharing. Stairs or
-          elevators. The library is endless and always Proper</p>
+        <p>Our Properties cover an extensive array of properties to suit your <span class="bold2">unique
+            preferences</span>. Our
+          listings encompass a wide spectrum of property types, catering to various cultures and budgets. Whether you're
+          seeking a rental property or open to the idea of shared accommodations, we have you covered.</p>
       </div>
     </div>
   </section>
@@ -79,13 +85,14 @@ core.shell.html
       <ion-row style="width:100%;">
         <ion-col size="4">
           <ion-row style="height:50%;">
-            <div class="case-box">
+            <div class="case-box" (mouseover)="image1()">
               <ion-grid>
                 <ion-row>
                   <h4>View all Property Types</h4>
                 </ion-row>
                 <ion-row>
-                  <p>Unlock a world of possibilities with our 'View all Property Types' feature! Whether it's a cozy apartment,
+                  <p>Unlock a world of possibilities with our 'View all Property Types' feature! Whether it's a cozy
+                    apartment,
                     a charming farmhouse, or a luxurious villa, we've got it all.
                     Explore a diverse range of properties and find the one that fits your lifestyle.
                   </p>
@@ -95,14 +102,15 @@ core.shell.html
           </ion-row>
 
           <ion-row style="height:50%;">
-            <div class="case-box">
+            <div class="case-box" (mouseover)="image2()">
               <ion-grid>
                 <ion-row>
                   <h4>Swift Location Browsing</h4>
                 </ion-row>
                 <ion-row>
                   <p>Navigate the real estate market with ease using Swift location browsing!
-                    Explore properties in your desired areas with just a few taps, making your property search efficient and stress-free.
+                    Explore properties in your desired areas with just a few taps, making your property search efficient
+                    and stress-free.
                     Don't waste time, find your perfect home faster than ever before!
                   </p>
                 </ion-row>
@@ -112,7 +120,8 @@ core.shell.html
         </ion-col>
 
         <ion-col class="image-col" size="4">
-          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 678 834" fill="none" style="margin-top: 10%;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 678 834" fill="none"
+            style="margin-top: 10%;" class="image-transition">
             <!-- Define a clipPath with the same path data -->
             <clipPath id="house-clip-path">
               <path
@@ -121,8 +130,8 @@ core.shell.html
 
             <!-- Use the image element with xlink:href attribute to fill the SVG with the image -->
             <!-- Replace 'path/to/your/image.jpg' with the path to your image file -->
-            <image xlink:href="../../assets/house5.jpg" width="100%" height="100%" preserveAspectRatio="xMinYMin slice"
-              clip-path="url(#house-clip-path)" />
+            <image id="myImage" xlink:href="../../assets/house5.jpg" width="100%" height="100%"
+              preserveAspectRatio="xMinYMin slice" clip-path="url(#house-clip-path)" />
           </svg>
 
           <!-- <svg xmlns="http://www.w3.org/2000/svg" width="678" height="820" viewBox="0 0 678 820" fill="none">
@@ -133,14 +142,16 @@ core.shell.html
 
         <ion-col size="4">
           <ion-row style="height:50%;">
-            <div class="case-box">
+            <div class="case-box" (mouseover)="image3()">
               <ion-grid>
                 <ion-row>
                   <h4>User-Friendly Filters</h4>
                 </ion-row>
                 <ion-row>
-                  <p>Effortlessly find what you need with our user-friendly filters.
-                    Streamline your search and discover tailored results at your fingertips.
+                  <p>
+                    Effortlessly find what you need with our user-friendly filters, streamlining your search and
+                    delivering tailored results at your fingertips, ensuring that your online exploration is not only
+                    efficient but also a genuinely satisfying experience with minimal effort.
                   </p>
                 </ion-row>
               </ion-grid>
@@ -148,7 +159,7 @@ core.shell.html
           </ion-row>
 
           <ion-row style="height:50%">
-            <div class="case-box">
+            <div class="case-box" (mouseover)="image4()">
               <ion-grid>
                 <ion-row>
                   <h4>Even Rentals and Sharing</h4>
@@ -176,21 +187,22 @@ core.shell.html
 
   <section class="sec1">
     <!-- Simplified version of the SlideShow and Searchbar Section for mobile -->
-    
-    
+
+
     <div class="slogan">
       <img alt="homeCover" class="homeCover" src="assets/HomeCover.png">
       <h1 class="mainHeading">Proper Properties For You</h1>
       <h1 id="caption">Discover Your Dream Home</h1>
       <div class="search-container">
-        <ion-input type="text" id="query1" (ionInput)="handleInputChange($event)" class="query1" [(ngModel)]="searchQuery" placeholder="Property Location Search"></ion-input>
+        <ion-input type="text" id="query1" (ionInput)="handleInputChange($event)" class="query1"
+          [(ngModel)]="searchQuery" placeholder="Property Location Search"></ion-input>
         <ion-button id="search-button" (click)="searchProperties()">
           <ion-icon name="search" class="search-icon"></ion-icon>
         </ion-button>
         <ion-list [hidden]="predictions.length <= 0">
           <ion-item (click)="replaceInputText($event,prediction.description)" *ngFor="let prediction of predictions">
             <!-- <a href="#" class="prediction-button"> -->
-              {{ prediction.description }}
+            {{ prediction.description }}
             <!-- </a> -->
           </ion-item>
         </ion-list>

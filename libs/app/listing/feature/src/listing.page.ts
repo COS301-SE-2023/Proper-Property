@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, HostListener, AfterViewInit, OnDestroy, OnInit,Renderer2 } from '@angular/core';
 import { GmapsService } from '@properproperty/app/google-maps/data-access';
 import { ChangeStatusResponse, Listing, StatusEnum } from '@properproperty/api/listings/util';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { Chart, registerables } from 'chart.js';
 import { Unsubscribe } from 'firebase/auth';
 import { IonContent, ToastOptions } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
-import { ToastController } from '@ionic/angular';
+import { ToastController, ActionSheetController } from '@ionic/angular';
 
 register();
 export interface GetAnalyticsDataRequest {
@@ -23,11 +23,14 @@ export interface GetAnalyticsDataRequest {
   templateUrl: './listing.page.html',
   styleUrls: ['./listing.page.scss'],
 })
-export class ListingPage implements OnDestroy, OnInit {
+export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
 
   @ViewChild(IonContent) content: IonContent | undefined;
   // @ViewChild("avgEnagement") avgEnagement: IonInput | undefined;
 
+  @ViewChild('map', { static: false }) mapElementRef1!: ElementRef;
+  @ViewChild('map1', { static: false }) mapElementRef2!: ElementRef;
+  MapView = false ;
   isMobile: boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   @Select(UserProfileState.userProfileListener) userProfileListener$!: Observable<Unsubscribe | null>;
@@ -46,6 +49,11 @@ export class ListingPage implements OnDestroy, OnInit {
   coordinates: { latitude: number, longitude: number } | null = null;
   profilePic = "";
   loading = true;
+
+  private map: any;
+  googleMaps: any;
+
+  private marker:any;
   saved = false;
   price_per_sm = "";
   lister_name = "";
@@ -72,11 +80,21 @@ export class ListingPage implements OnDestroy, OnInit {
 
   areaScore = 0;
 
+  private center = { lat: -25.7477, lng: 28.2433 };
+  private mapClickListener: any;
+  private markerClickListener: any;
+  private markers: any[] = [];
+  public listings: Listing[] = [];
+  public allListings: Listing[] = [];
+
   constructor(private router: Router,
     private route: ActivatedRoute,
+    private renderer: Renderer2,
     private listingServices: ListingsService,
     private userServices: UserProfileService,
+    private gmaps: GmapsService,
     public gmapsService: GmapsService,
+    private actionSheetCtrl: ActionSheetController,
     private functions: Functions,
     private profileServices: UserProfileService,
     private toastController: ToastController
@@ -91,11 +109,17 @@ export class ListingPage implements OnDestroy, OnInit {
     Chart.register(...registerables);
   }
 
+  async ngAfterViewInit() {
+    await this.loadMap();
+  }
+
   async ngOnInit() {
     let list_id = "";
     let admin = "";
     let qr = false;
-
+    
+    
+    
     this.route.params.subscribe(async (params) => {
       list_id = params['list'];
       qr = params['qr'];
@@ -163,6 +187,176 @@ export class ListingPage implements OnDestroy, OnInit {
     }, 1500)
   }
 
+
+  async loadMap() {
+    try {     
+      // const mapElementRef1 = document.getElementById("map") as HTMLElement;
+  
+      const mapElementRef = document.getElementById("map") as HTMLElement;
+      
+
+      const googleMaps: any = await this.gmaps.loadGoogleMaps();
+      this.googleMaps = googleMaps;
+      
+      let mapEl = null;
+      mapEl = this.mapElementRef1.nativeElement;
+
+        const location = new googleMaps.LatLng(this.list?.geometry.lat, this.list?.geometry.lng);
+        this.map = new googleMaps.Map(mapEl, {
+          center: location,
+          zoom: 15,
+          maxZoom: 18, 
+          minZoom: 5,
+        });
+  
+  
+        this.renderer.addClass(mapEl, 'visible');        
+      
+
+        if (this.list) {
+          this.createListingCard(this.list);
+          if (this.list.geometry.lat && this.list.geometry.lng ) {
+            const position = this.list.geometry;
+            
+              this.addMarker(position, this.list);
+            
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+
+    async mapView(){
+
+      this.MapView = !this.MapView;
+      if(!this.MapView) {
+        const mapElement = this.mapElementRef1.nativeElement;
+        if (mapElement) {
+          // mapElement.innerHTML = ''; // Clear the contents of the map div
+        }
+      }
+      else{
+        await this.loadMap();
+      }
+    }
+  
+    addMarker(position: any, listing: Listing) {
+      const googleMaps: any = this.googleMaps;
+      const icon = {
+        url: 'assets/icon/icons8-location-pin-96.png',
+        scaledSize: new googleMaps.Size(40, 40), // Adjust the size of the marker icon as desired
+      };
+      const marker = new googleMaps.Marker({
+        position: position,
+        map: this.map,
+        icon: icon,
+        listing: listing, // Store the listing object in the marker for later use
+      });
+  
+      // Create an info window for the marker
+      const infoWindow = new googleMaps.InfoWindow({
+        content: this.createListingCard(listing),
+      });
+      
+      // Add a click event listener to the marker
+      googleMaps.event.addListener(marker, 'click', () => {
+        infoWindow.open(this.map, marker);
+      });
+  
+      // Add a click event listener to the info window
+      infoWindow.addListener('domready', () => {
+        const infoWindowElement = document.querySelector('.marker-card');
+        const dumbButton = document.querySelector('.gm-ui-hover-effect');
+        if (dumbButton) {
+          dumbButton.addEventListener('click', (event: Event) => {
+            event.stopPropagation();
+          });
+          return;
+        }
+        if (infoWindowElement) {
+          infoWindowElement.addEventListener('click', (event: Event) => {
+            event.stopPropagation();
+            this.mapMarkerClicked(event,infoWindowElement.getAttribute( "data-id") ?? ""); // Call the navigateToPropertyListingPage function with the marker's listing object
+          });
+        }
+      });
+  
+      this.marker=marker;
+    }
+    mapMarkerClicked(event: Event, listingId?: string) {
+      event.stopPropagation();
+      if (listingId) {
+        this.router.navigate(['/listing', { list: listingId }]);
+      }
+    }
+    
+    createListingCard(listing: Listing): any {
+      return `
+      <ion-card data-id="${listing.listing_id}"class="marker-card" style="max-width: 250px; max-height: 300px;" (click)="mapMarkerClicked($event, ${listing.listing_id})">
+        <ion-card-header style="padding: 0;">
+          <img src="${listing.photos[0]}" alt="Listing Image" style="max-width: 100%; max-height: 80px;">
+        </ion-card-header>
+        <ion-card-content style="padding: 0.5rem;">
+          <ion-card-title style="font-size: 1rem; line-height: 1.2; margin-bottom: 0.5rem;">${listing.prop_type}</ion-card-title>
+          <ion-card-subtitle style="color: #0DAE4F; font-size: 0.9rem; line-height: 1;">R ${listing.price}</ion-card-subtitle>
+          <div id="house_details" style="font-size: 0.8rem; line-height: 1.2;">
+            <img src="assets/icon/bedrooms.png" style="max-width: 7.5px; height: auto;">
+            ${listing.bed}
+            &nbsp; &nbsp;&nbsp;
+            <img src="assets/icon/bathrooms.png" style="max-width: 7.5px; height: auto;">
+            ${listing.bath}
+            &nbsp; &nbsp;&nbsp;
+            <img src="assets/icon/floorplan.png" style="max-width: 7.5px; height: auto;">
+            ${listing.floor_size} m<sup>2</sup>
+            &nbsp; &nbsp;&nbsp;
+            <img src="assets/icon/erf.png" style="max-width: 7.5px; height: auto;">
+            ${listing.property_size} m<sup>2</sup>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    `;
+    }
+
+  
+    async presentActionSheet() {
+      const actionSheet = await this.actionSheetCtrl.create({
+        header: 'Added Marker',
+        subHeader: '',
+        buttons: [
+          {
+            text: 'Remove',
+            role: 'destructive',
+            data: {
+              action: 'delete',
+            },
+          },
+          {
+            text: 'Save',
+            data: {
+              action: 'share',
+            },
+          },
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            data: {
+              action: 'cancel',
+            },
+          },
+        ],
+      });
+  
+      await actionSheet.present();
+    }
+  
+    async redirectToPage(listing: Listing) {
+      this.router.navigate(['/listing', { list: listing.listing_id }]);
+    }
+
+    
+  
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     this.isMobile = window.innerWidth <= 576;
@@ -337,6 +531,7 @@ export class ListingPage implements OnDestroy, OnInit {
         }
       }
 
+      
 
       let result: ChangeStatusResponse | null;
       if (
@@ -658,6 +853,53 @@ export class ListingPage implements OnDestroy, OnInit {
     this.isModalOpen = isOpen;
   }
 
+  isMapModalOpen = false;
+
+  async setMapOpen(isOpen: boolean) {
+    this.isMapModalOpen = isOpen;
+
+    if(this.isMapModalOpen){
+      try {     
+        // const mapElementRef1 = document.getElementById("map") as HTMLElement;
+    
+       
+        const mapElementRef = document.getElementById("map1") as HTMLElement;
+  
+        const googleMaps: any = await this.gmaps.loadGoogleMaps();
+        this.googleMaps = googleMaps;
+        
+        let mapEl = null;
+        mapEl = this.mapElementRef2.nativeElement;
+       
+
+        
+          const location = new googleMaps.LatLng(this.list?.geometry.lat, this.list?.geometry.lng);
+          this.map = new googleMaps.Map(mapEl, {
+            center: location,
+            zoom: 15,
+            maxZoom: 18, 
+            minZoom: 5,
+          });
+    
+          this.renderer.addClass(this.mapElementRef2.nativeElement, 'visible'); 
+              
+        
+  
+          if (this.list) {
+            this.createListingCard(this.list);
+            if (this.list.geometry.lat && this.list.geometry.lng ) {
+              const position = this.list.geometry;
+              
+                this.addMarker(position, this.list);
+              
+            }
+          }
+        } catch (e) {
+          console.log(e);
+        }
+    }
+  }
+
   scrollToBottom() {
     if (this.content && document.getElementById('calculator')) {
       const calculatorRow = document.getElementById('calculator')?.getBoundingClientRect().top;
@@ -679,6 +921,7 @@ export class ListingPage implements OnDestroy, OnInit {
   generateQRCode() {
     const QRCode = require('qrcode')
     const qrCodeCanvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
+    console.log("for example ", qrCodeCanvas);
     if (qrCodeCanvas) {
       QRCode.toCanvas(qrCodeCanvas, window.location.href + ";qr=true", function (error: any) {
         if (error) {
@@ -707,6 +950,10 @@ export class ListingPage implements OnDestroy, OnInit {
 
   formatNumber(num: number): string {
     return num.toString().split('').reverse().join('').replace(/(\d{3})(?=\d)/g, '\$1 ').split('').reverse().join('');
+  }
+  
+  scrollToCalculator() {
+    document.getElementById('calculator')?.scrollIntoView();
   }
   
 }

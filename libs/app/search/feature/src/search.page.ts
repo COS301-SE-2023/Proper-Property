@@ -277,13 +277,15 @@ async loadMap() {
     
     if(!this.isMobile) mapEl = this.mapElementRef.nativeElement;
     else if(this.isMobile && this.MapView) mapEl = mapElementRef1;
-      const location = new googleMaps.LatLng(this.center.lat ?? -25.7477, this.center.lng ?? 28.2433);
+ 
+    const location = new googleMaps.LatLng(this.center.lat ?? -25.7477, this.center.lng ?? 28.2433);
       this.map = new googleMaps.Map(mapEl, {
         center: location,
         zoom: 15,
         maxZoom: 18, // Set the maximum allowed zoom level
         minZoom: 5,
       });
+
       //this.map.fitBounds(this.gmaps.getBoundsFromLatLng(this.center.lat,this.center.lng));
 
       //const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
