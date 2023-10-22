@@ -54,7 +54,7 @@
     
   </ng-container>
   <ng-template #loaded> -->
-    <section id="first">
+    <section id="first" style="display: block">
       <ion-grid>
         <ion-row>
           <ion-col class="rightBorder" size="6">
@@ -68,7 +68,7 @@
                       <ion-grid>
                         <ion-row>
                           <ion-col>
-                            <ion-card-title style="color: #0DAE4F;">R {{formatNumber(listing.price)}}</ion-card-title>
+                            <ion-card-title class="title">R {{formatNumber(listing.price)}}</ion-card-title>
                           </ion-col>
                           <ion-col>
                             <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
@@ -118,7 +118,7 @@
                     <ion-grid>
                       <ion-row>
                         <ion-col>
-                          <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
+                          <ion-card-title class="title">R {{listing.price}}</ion-card-title>
                         </ion-col>
                         <ion-col>
                           <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
@@ -161,7 +161,7 @@
       </ion-grid>
     </section>
   
-    <section id="second">
+    <section id="second" style="display: none">
       <ion-grid>
         <ion-row>
           <ion-col>
@@ -177,7 +177,7 @@
                         <ion-grid>
                           <ion-row>
                             <ion-col>
-                              <ion-card-title style="color: #0DAE4F;">Area Ratings</ion-card-title>
+                              <ion-card-title class="title">Area Ratings</ion-card-title>
                             </ion-col>
                             <ion-col>
                               <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
@@ -260,7 +260,7 @@
                         <ion-grid>
                           <ion-row>
                             <ion-col>
-                              <ion-card-title style="color: #0DAE4F;">Area Ratings</ion-card-title>
+                              <ion-card-title clas="title">Area Ratings</ion-card-title>
                             </ion-col>
                             <ion-col>
                               <div class="statusBadge {{listing.status}}">{{listing.status}}</div>
@@ -341,7 +341,7 @@
     </ion-button>
   
     <ion-button id="swap" (click)="Change()">
-      <ion-icon name="swap-horizontal-outline"></ion-icon>
+      <ion-icon color="primary" name="swap-horizontal-outline"></ion-icon>
     </ion-button>
   <!-- </ng-template> -->
 </ion-content>

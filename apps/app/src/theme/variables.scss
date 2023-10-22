@@ -1,16 +1,30 @@
-// Ionic Variables and Theming. For more info, please see:
+ // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
 
 /** Ionic CSS Variables **/
 :root {
   color-scheme: light;
+
+  --background-color: rgb(163, 96, 96);
+  --primary-color: #1CA39C;
+  --light-background-highlight: rgba(196, 255, 245, 0.555);
+  --ion-background-color-turquoise: rgba(209, 255, 247, 0.425);
+  // --neutral-color: 
+  --ion-color-primary-darker: #0d8383;
+  --dark-border: #151F29;
+  --dark-background: #151F29;
+  --complimentary-highlight-color: #dfb42a;
+  // --ion-background-color: rgba(238, 255, 252, 0.425);
+  --ion-background-color: rgb(255, 255, 255);
+  // --accent-border: ;
   /** primary **/
-  --ion-color-primary: #0DAE4F;
+  // --ion-color-primary: #26bdbd;
+  --ion-color-primary: #0aadad;
   --ion-color-primary-rgb: 45, 211, 111;
   --ion-color-primary-contrast: #000000;
   --ion-color-primary-contrast-rgb: 0, 0, 0;
-  --ion-color-primary-shade: #0DAE4F;;
-  --ion-color-primary-tint: #0DAE4F;;
+  --ion-color-primary-shade: #159596;;
+  --ion-color-primary-tint: #159596;;
 
   /** secondary **/
   --ion-color-secondary: #3dc2ff;
@@ -69,7 +83,7 @@
   --ion-color-medium-tint: #9d9fa6;
 
   /** light **/
-  --ion-color-light: #f4f5f8;
+  --ion-color-light: #15959659;
   --ion-color-light-rgb: 244, 245, 248;
   --ion-color-light-contrast: #000000;
   --ion-color-light-contrast-rgb: 0, 0, 0;

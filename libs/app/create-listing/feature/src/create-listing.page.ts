@@ -472,7 +472,7 @@ export class CreateListingPage {
     if (this.address && this.price && this.pos_type && this.env_type && this.prop_type
       && this.furnish_type && this.orientation && this.floor_size && this.erf_size
       && this.bathrooms && this.bedrooms && this.parking) {
-      const info = "Address: " + this.address + "\n "      + "Price: " + this.price + "\n "      + "Possession type: " + this.pos_type + "\n "      + "Environment type: " + this.env_type + "\n "      + "Property type: " + this.prop_type + "\n "      + "Furnishing state: " + this.furnish_type + "\n "      + "Orientation of the house: " + this.orientation + "\n "      + "Floor size: " + this.floor_size + "\n "      + "Property size: " + this.erf_size + "\n "      + "Number of bathrooms: " + this.bathrooms + "\n "      + "Number of bedrooms" + this.bedrooms + "\n "      + "Number of parking spots: " + this.parking + "\n";
+      const info = "Address: " + this.address + "\n "      + "Price: " + this.price + " ZAR\n "      + "Possession type: " + this.pos_type + "\n "      + "Environment type: " + this.env_type + "\n "      + "Property type: " + this.prop_type + "\n "      + "Furnishing state: " + this.furnish_type + "\n "      + "Orientation of the house: " + this.orientation + "\n "      + "Floor size: " + this.floor_size + "square meters\n "      + "Property size: " + this.erf_size + "square meters\n "      + "Number of bathrooms: " + this.bathrooms + "\n "      + "Number of bedrooms" + this.bedrooms + "\n "      + "Number of parking spots: " + this.parking + "\n";
       + "Features: " + feats + "\n";
 
       const response = await this.openAIService.getHeadingAndDesc("Give me a description of a property with the following information: \n" + info

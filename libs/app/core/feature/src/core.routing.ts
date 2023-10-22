@@ -60,7 +60,6 @@ const routes: Routes = [
   },
   {
     path: 'search',
-    canActivate: [profileCompletionGuard],
     loadChildren: () => import('@properproperty/app/search/feature').then( m => m.SearchPageModule)
   },
   {

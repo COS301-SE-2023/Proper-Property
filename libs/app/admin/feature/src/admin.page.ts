@@ -277,4 +277,8 @@ export class AdminPage implements OnInit{
     }
     this.isPopoverOpen = false;
   }
+
+  formatNumber(num: number): string {
+    return num.toString().split('').reverse().join('').replace(/(\d{3})(?=\d)/g, '\$1 ').split('').reverse().join('');
+  }
 }

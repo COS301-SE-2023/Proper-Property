@@ -90,7 +90,7 @@
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
       <ion-title class="title-container">
-        <img class="logo" src="assets/Logo_v1.png" width="10%">
+        <img class="logo" src="assets/Logo_v1.png" width="13%">
       </ion-title>
     </ion-toolbar>
   </ion-header>
@@ -104,19 +104,19 @@
     </ion-header>
     <ion-content class="ion-padding">
       <div>
-        <ion-button *ngIf="!this.loggedIn" id="login-button" fill="clear" routerLink="login" routerDirection="root"
+        <!-- <ion-button *ngIf="!this.loggedIn" id="login-button" fill="clear" routerLink="login" routerDirection="root"
           routerLinkActive="active" class="link" style="display: block;">
           Log In
         </ion-button>
         <ion-button *ngIf="!this.loggedIn" id="signup-button" fill="clear" routerLink="register" routerDirection="root"
           routerLinkActive="active" class="link" style="display: block;">
           Sign Up
-        </ion-button>
+        </ion-button> -->
         <ion-button fill="clear" routerLink="home" routerDirection="root" routerLinkActive="active" class="link"
           style="display: block;">
           Home
         </ion-button>
-        <ion-button *ngIf="this.loggedIn" fill="clear" routerLink="/create-listing" routerDirection="root"
+        <!-- <ion-button *ngIf="this.loggedIn" fill="clear" routerLink="/create-listing" routerDirection="root"
           routerLinkActive="active" class="link" style="display: block;">
           Add Listing
         </ion-button>
@@ -127,7 +127,7 @@
         <ion-button *ngIf="this.loggedIn" fill="clear" routerLink="/profile" routerDirection="root"
           routerLinkActive="active" class="link" style="display: block;">
           Profile
-        </ion-button>
+        </ion-button> -->
 
       </div>
     </ion-content>

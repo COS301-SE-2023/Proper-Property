@@ -1,5 +1,3 @@
-<p>admin-page works!</p>
-
 <ion-content id="content" [fullscreen]="true">
   <ng-container *ngIf="loading; else loaded">
     <div id="loader">
@@ -9,7 +7,7 @@
     </div>
   </ng-container>
   <ng-template #loaded>
-    <div id="show">
+    <div id="show" style="margin-top: 50px;">
       <div *ngIf="adminLogged">      
         <ion-grid>
           <ion-row class="headings">
@@ -36,7 +34,7 @@
                     <ion-grid>
                       <ion-row>
                         <ion-col>
-                          <ion-card-title style="color: #0DAE4F;">R {{listing.price}}</ion-card-title>
+                          <ion-card-title style="color: var(--ion-color-primary)">R {{formatNumber(listing.price)}}</ion-card-title>
                         </ion-col>
                       </ion-row>
                     </ion-grid>
@@ -78,7 +76,7 @@
                   <ng-container *ngIf="!muniUploaded; else showMuniFiles">
                       <div class="drag-drop-area-muni" (click)="muniFileInput.click()">
                         <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
-                        <ion-label class="imageText">Click here or drag and drop a file</ion-label>
+                        <ion-label class="imageText">Click here to add a file</ion-label>
                         <input type="file" accept="file/*" (change)="handleFileInput($event, 'muni')" hidden #muniFileInput>
                       </div>
                   </ng-container>
@@ -88,7 +86,7 @@
                 </ion-row>
                   <ion-row class="file-upload">
                     <div id="popoverHeading"><h3>Import Crime Data</h3></div><br>
-                    <ng-container *ngIf="!muniUploaded; else sanitationDiv">
+                    <ng-container class="beforeMuni" *ngIf="!muniUploaded; else sanitationDiv">
                       <div class="text-container">
                         <h5>Please Upload municipality data first</h5>
                       </div>
@@ -96,7 +94,7 @@
                     <ng-template #sanitationDiv>
                         <div class="drag-drop-area" (click)="crimeFileInput.click()" >
                           <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
-                          <ion-label class="imageText">Click here or drag and drop a file</ion-label>
+                          <ion-label class="imageText">Click here to add a file</ion-label>
                           <input type="file" accept="file/*" (change)="handleFileInput($event, 'crime')" hidden #crimeFileInput>
                         </div>
                         <ion-input type="text" [(ngModel)]="quarter" placeholder="Enter a quater of the form MONTH YEAR to MONTH YEAR" clearInput></ion-input>
@@ -104,7 +102,7 @@
                     </ion-row>
                     <ion-row class="file-upload">
                       <div id="popoverHeading"><h3>Import Sanitation Data</h3></div><br>
-                      <ng-container *ngIf="!muniUploaded; else saniDiv">
+                      <ng-container class="beforeMuni" *ngIf="!muniUploaded; else saniDiv">
                         <div class="text-container">
                           <h5>Please Upload municipality data first</h5>
                         </div>
@@ -112,20 +110,20 @@
                       <ng-template #saniDiv>
                         <div class="drag-drop-area" (click)="sanitationFileInput.click()">
                           <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
-                          <ion-label class="imageText">Click here or drag and drop a file</ion-label>
+                          <ion-label class="imageText">Click here to add a file</ion-label>
                           <input type="file" accept="file/*" (change)="handleFileInput($event, 'sanitation')" hidden #sanitationFileInput>
                         </div>
                       <div id="popoverHeading"><h3>Import Waste Water Quality Data</h3></div><br>
                       <div class="drag-drop-area" (click)="WWQFileInput.click()">
                         <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
-                        <ion-label class="imageText">Click here or drag and drop a file</ion-label>
+                        <ion-label class="imageText">Click here to add a file</ion-label>
                         <input type="file" accept="file/*" (change)="handleFileInput($event, 'WWQ')" hidden #WWQFileInput>
                       </div>
                     </ng-template>
                   </ion-row>
                   <ion-row class="file-upload">
                     <div id="popoverHeading"><h3>Import Water Access Data</h3></div><br>
-                    <ng-container *ngIf="!muniUploaded; else waterDiv">
+                    <ng-container class="beforeMuni" *ngIf="!muniUploaded; else waterDiv">
                       <div class="text-container">
                         <h5>Please Upload municipality data first</h5>
                       </div>
@@ -133,25 +131,25 @@
                     <ng-template #waterDiv>
                       <div class="drag-drop-area" (click)="waterAccessFileInput.click()">
                         <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
-                        <ion-label class="imageText">Click here or drag and drop a file</ion-label>
+                        <ion-label class="imageText">Click here to add a file</ion-label>
                         <input type="file" accept="file/*" (change)="handleFileInput($event, 'waterAccess')" hidden #waterAccessFileInput>
                       </div>
                       <div id="popoverHeading"><h3>Import Water Quality Data</h3></div><br>
                       <div class="drag-drop-area" (click)="waterQualityFileInput.click()">
                         <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
-                        <ion-label class="imageText">Click here or drag and drop a file</ion-label>
+                        <ion-label class="imageText">Click here to add a file</ion-label>
                         <input type="file" accept="file/*" (change)="handleFileInput($event, 'waterQuality')" hidden #waterQualityFileInput>
                       </div>
                       <div id="popoverHeading"><h3>Import Water Reliability Data</h3></div><br>
                       <div class="drag-drop-area" (click)="waterReliabilityFileInput.click()">
                         <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
-                        <ion-label class="imageText">Click here or drag and drop a file</ion-label>
+                        <ion-label class="imageText">Click here to add a file</ion-label>
                         <input type="file" accept="file/*" (change)="handleFileInput($event, 'waterReliability')" hidden #waterReliabilityFileInput>
                       </div>
                       <div id="popoverHeading"><h3>Import Water Tariffs Data</h3></div><br>
                       <div class="drag-drop-area" (click)="waterTariffsFileInput.click()">
                         <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
-                        <ion-label class="imageText">Click here or drag and drop a file</ion-label>
+                        <ion-label class="imageText">Click here to add a file</ion-label>
                         <input type="file" accept="file/*" (change)="handleFileInput($event, 'waterTariffs')" hidden #waterTariffsFileInput>
                       </div>
                     </ng-template>

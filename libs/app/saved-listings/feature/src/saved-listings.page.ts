@@ -133,7 +133,8 @@ export class SavedListingsPage implements OnInit {
   {
     const tog1 = document.getElementById("first") as HTMLInputElement;
     const tog2 = document.getElementById("second") as HTMLInputElement;
-
+    console.log(tog1.style.display);
+    console.log(tog2.style.display);
     if(tog1.style.display=='block')
     {
       

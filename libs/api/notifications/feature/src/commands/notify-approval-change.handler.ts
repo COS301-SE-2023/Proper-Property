@@ -75,7 +75,7 @@ export class NotifyApprovalChangeHandler implements ICommandHandler<NotifyApprov
     if(status == StatusEnum.ON_MARKET){
       return {
         head: "Your listing has been approved",
-        body: "Your listing  at " + address + " is now visible to other users and you will be able to review its engagement"
+        body: "Your listing  at " + address + " is now visible to other users and you will be able to review its engagement. Please allow for a few minutes for us to calculate the listing's area score and gather nearby points of interest."
       }
     }
     

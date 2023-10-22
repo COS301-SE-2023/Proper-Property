@@ -51,7 +51,7 @@ core.shell.html
       <div class="serv-box">
         <img src="../../assets/fakeNN.avif">
         <h3>Proper Recommendations</h3>
-        <p>With the use of our recommendation system powered by artificial intelligence, we will be sure to understand
+        <p>With the use of our recommendation system powered by innovation, we will be sure to understand
           your preferences and offer the Proper Property you are looking for, making your property search a seamless and
           <span class="bold2">personalized experience</span>.
         </p>
@@ -194,18 +194,20 @@ core.shell.html
       <h1 class="mainHeading">Proper Properties For You</h1>
       <h1 id="caption">Discover Your Dream Home</h1>
       <div class="search-container">
-        <ion-input type="text" id="query1" (ionInput)="handleInputChange($event)" class="query1"
+        <!-- <ion-input type="text" id="query1" (ionInput)="handleInputChange($event)" class="query1"
           [(ngModel)]="searchQuery" placeholder="Property Location Search"></ion-input>
         <ion-button id="search-button" (click)="searchProperties()">
           <ion-icon name="search" class="search-icon"></ion-icon>
         </ion-button>
         <ion-list [hidden]="predictions.length <= 0">
           <ion-item (click)="replaceInputText($event,prediction.description)" *ngFor="let prediction of predictions">
-            <!-- <a href="#" class="prediction-button"> -->
-            {{ prediction.description }}
-            <!-- </a> -->
+            <a href="#" class="prediction-button"> -->
+            <!-- {{ prediction.description }} -->
+            <!-- </a>
           </ion-item>
-        </ion-list>
+        </ion-list> -->
+
+        <h4>Access Proper Property on your PC for the full experience</h4>
       </div>
     </div>
   </section>
@@ -265,7 +267,7 @@ core.shell.html
           elevators. The library is endless and always Proper</p>
       </div>
     </div>
-    <properproperty-footer></properproperty-footer>
+    <!-- <properproperty-footer></properproperty-footer> -->
   </section>
   <!------------------------------------Use Case Section---------------------------------------------->
 
