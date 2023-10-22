@@ -1,11 +1,22 @@
-// Ionic Variables and Theming. For more info, please see:
+ // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
 
 /** Ionic CSS Variables **/
 :root {
   color-scheme: light;
+
+  --background-color: rgb(163, 96, 96);
+  --primary-color: #1CA39C;
+  --light-background-highlight: rgba(211, 255, 248, 0.425);
+  // --neutral-color: 
+  --dark-border: #151F29;
+  --dark-background: #151F29;
+  --complimentary-highlight-color: #dfb42a;
+  --ion-background-color: rgba(232, 255, 251, 0.425);
+  // --accent-border: ;
   /** primary **/
-  --ion-color-primary: #159596;
+  // --ion-color-primary: #1CA39C;
+  --ion-color-primary: #26bdbd;
   --ion-color-primary-rgb: 45, 211, 111;
   --ion-color-primary-contrast: #000000;
   --ion-color-primary-contrast-rgb: 0, 0, 0;
@@ -69,7 +80,7 @@
   --ion-color-medium-tint: #9d9fa6;
 
   /** light **/
-  --ion-color-light: #f4f5f8;
+  --ion-color-light: #15959659;
   --ion-color-light-rgb: 244, 245, 248;
   --ion-color-light-contrast: #000000;
   --ion-color-light-contrast-rgb: 0, 0, 0;

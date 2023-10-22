@@ -12,7 +12,7 @@ ion-content
 }
 
 #notifs{
-  border: 1px solid rgb(13, 174, 79);
+  border: 1px solid var(--ion-color-primary);
   background-color: rgb(255, 255, 255);
 }
 
@@ -94,7 +94,7 @@ ion-button:hover span:nth-child(1){
 }
 
 ion-button:hover{
-  background-color: #a3debb;
+  background-color: var(--light-background-highlight);
   animation-delay: 1s;
 }
 
