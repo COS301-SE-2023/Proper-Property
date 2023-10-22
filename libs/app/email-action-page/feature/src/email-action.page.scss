@@ -34,9 +34,8 @@ ion-content
   position: absolute;
   display: flex;
   height: 80vh;
-  width: 70vw;
-  margin-left: 15%;
-  background: linear-gradient(-45deg, #00330d,var(--ion-color-primary));
+  width: 35vw;
+  margin-left: 30%;
   box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.3);
 
 }
@@ -45,7 +44,7 @@ ion-content
 {
   align-items: center;
   justify-content: center;
-  width: 50%;
+  width: 100%;
   flex-direction:row;
   background: white;
   min-width: 240px;
@@ -56,6 +55,22 @@ ion-content
   background-position: bottom;
   background-repeat: no-repeat;
   background-size: contain;
+}
+
+#checkers
+{
+  border:none;
+  display: none;
+}
+
+#strength
+{
+  display: none;
+}
+
+#passMatch
+{
+  display: none;
 }
 
 .reg
