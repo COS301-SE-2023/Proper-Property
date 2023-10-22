@@ -22,6 +22,22 @@ ion-content
   height: 10px;
 }
 
+#checkers
+{
+  border:none;
+  display: none;
+}
+
+#strength
+{
+  display: none;
+}
+
+#passMatch
+{
+  display: none;
+}
+
 .strengthBar{
   width: 95%;
   height: 100%;

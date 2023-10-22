@@ -56,7 +56,7 @@ ion-content
 }
 
 ion-icon {
-  font-size: 600%;
+  // font-size: 600%;
   margin-left: 2%;
   margin-top: 1%;
   border-radius: 50%;
@@ -136,19 +136,6 @@ h3
   background: transparent;
 }
 
-.logOut:hover
-{
-  background: orange;
-  ion-label
-  {
-    color: black;
-  }
-}
-
-.delete-account-button:hover{
-  color: white;
-  background: #eb445a;
-}
 
 .but1
 {
@@ -207,15 +194,23 @@ h2
   background: white;
   border:1px solid var(--ion-color-primary);
 }
-
+.button-icon {
+  font-size: 24px;
+  color: var(--ion-color-primary);
+  width: 24px !important;
+  margin:0;
+  padding: 0;
+}
 .delete-account-button
 {
   height: 25%;
   position: absolute;
   width: 100%;
   --background: transparent;
-  color: #eb445a;
+  color: var(--ion-color-primary);
 }
+
+
 
 
 ion-item {
@@ -306,7 +301,7 @@ ion-content
 }
 
 ion-icon {
-  font-size: 600%;
+  // font-size: 600%;
   margin-left: 2%;
   margin-top: 1%;
   border-radius: 50%;

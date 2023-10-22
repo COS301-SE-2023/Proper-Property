@@ -25,7 +25,7 @@
               <ion-icon (click)="showPass()" style="font-size: 24" name="eye-off-outline"></ion-icon>
             </ng-template>
           </ion-item>
-          <ion-item id="forgotItem">
+          <ion-item id="forgotItem" lines="none">
             <a href="javascript:;" class="forgot">Forgot your password?</a>
           </ion-item>
           <ion-modal class="forgot-modal" trigger="forgotItem">
@@ -68,8 +68,8 @@
     <div class="Member">
       <div class="rightPanel">
         <div class="content">
-          <h3 style="color: white">Don't Have an Account</h3>
-          <p style="color: white">Do the Proper thing and sign up. The benefits await</p>
+          <h3 style="color: white">Don't Have an Account?</h3>
+          <p style="color: white">Do the Proper thing and sign up. The benefits await!</p>
           <div style="width: 100%; display: flex; justify-content: center">
             <div class="signUp">
               <a routerLink="/register">Sign up</a>
