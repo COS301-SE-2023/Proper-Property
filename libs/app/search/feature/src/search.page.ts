@@ -789,6 +789,18 @@ checkPriceRange(lower:boolean){
   }
 
 }
+checkErfRange(lower:boolean){
+  if(lower == false){
+    if (this.property_size_values.lower > this.property_size_values.upper) {
+      this.property_size_values.lower = 0;
+    }  
+  } else if(lower == true){
+    if (this.property_size_values.lower > this.property_size_values.upper) {
+      this.property_size_values.upper = 999999999;
+    }  
+  }
+
+}
 
   changeTab(): void {
     // Reset the selected filters and search query when changing tabs
