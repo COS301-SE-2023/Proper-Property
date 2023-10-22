@@ -150,22 +150,27 @@ export class CreateListingPage {
   filteredMunicipalities: string[] = [];
 
   handleMunicipalityInputChange(event: Event): void {
+    this.municipalitySelected = false;
     const input = event.target as HTMLInputElement;
     const inputValue = input.value.toLowerCase();
 
     if (inputValue.length <= 0) {
       this.filteredMunicipalities = [];
+      this.showMunicipalities = false;
       return;
     }
 
     this.filteredMunicipalities = this.municipalities.filter((municipality) =>
     municipality.toLowerCase().includes(inputValue)
     );
+    this.showMunicipalities = true;
   }
 
   selectMunicipality(municipality: string): void {
+    this.municipalitySelected = true;
     this.district = municipality;
     this.filteredMunicipalities = [];
+    this.showMunicipalities = false;
   }
 
   filteredOptions: Observable<string[]>;
@@ -179,13 +184,15 @@ export class CreateListingPage {
   // autocomplete: any;;
   maps: any;
   predictions: any[] = [];
+  showPredictions = false;
+  showMunicipalities = false;
   isMobile = false;
   currentUser: User | null = null;
   description = "";
   heading = "";
   ownerViewing = false;
   listingEditee: Listing | null = null;
-
+  municipalitySelected = false;
   photos: string[] = [];
   address = "";
   district = "";
@@ -317,10 +324,12 @@ export class CreateListingPage {
 
       if (input.value.length <= 0) {
         this.predictions = [];
+        this.showPredictions = false;
       }
       else {
         this.gmapsService.handleInput(input, new this.maps.LatLngBounds()).then(() => {
           this.predictions = this.gmapsService.predictions;
+          this.showPredictions = true;
           this.loadingAddress = false;
         });
       }
@@ -353,7 +362,7 @@ export class CreateListingPage {
       addressInput.value = prediction;
     }
     this.predictions = [];
-
+    this.showPredictions = false;
     // Update the 'address' property of the component class
     this.address = prediction;
 
@@ -486,6 +495,19 @@ export class CreateListingPage {
       }
     }
   }
+
+  addFeatureNow(amenity: string) {
+
+    if (amenity != "") {
+      this.features.push(amenity);
+    }
+
+    const feat_in = document.getElementById('feat-in') as HTMLInputElement;
+     this.selectedAmenity = "";
+    feat_in.value = "";
+  }
+
+
   //removeFeature
   removeFeature(index: number) {
     this.features.splice(index, 1);
@@ -767,6 +789,7 @@ export class CreateListingPage {
 
   selectAmenity(amenity: string): void {
     this.selectedAmenity = amenity;
+    this.addFeatureNow(amenity);
     this.filteredAmenities = [];
   }
 
