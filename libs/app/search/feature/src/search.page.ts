@@ -25,8 +25,7 @@ import { UserProfile } from '@properproperty/api/profile/util';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { ActivatedRoute } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { getDownloadURL} from 'firebase/storage';
-import { Storage, ref } from "@angular/fire/storage";
+import { Storage } from "@angular/fire/storage";
 // import { IonContent } from '@ionic/angular';
 
 @Component({
@@ -476,7 +475,6 @@ async loadMap() {
       }, 1500)
       return;
     }
-    const tempSearchQuery = this.searchQuery.replace(", South Africa", '');
     const areaBounds = this.searchQuery?  await this.gmapsService.geocodeAddress(this.searchQuery) : null;
     if (!areaBounds) {
       // TODO Error message
@@ -610,7 +608,7 @@ async loadMap() {
 
       // this.allListings = temp;
 
-      for(let listing of this.allListings){
+      for(const listing of this.allListings){
         if(listing.listing_id){
           this.cardView.set(listing.listing_id, false)
         }

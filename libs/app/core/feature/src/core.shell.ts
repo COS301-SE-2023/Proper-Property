@@ -22,7 +22,6 @@ import { NotificationsService } from 'libs/app/notifications/data-access/src/not
 import { DOCUMENT } from '@angular/common';
 import { Notification } from '@properproperty/api/notifications/util';
 import { UserProfile } from '@properproperty/api/profile/util';
-import { DeviceDetectorService } from 'ngx-device-detector';
 declare const gtag: any;
 
 @Component({
