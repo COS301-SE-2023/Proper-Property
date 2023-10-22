@@ -148,7 +148,6 @@ export class ProfilePage implements OnInit {
         this.profileComplete = true;
       }
       
-      console.log(profile);
       if(profile) {
         if(profile.interests !== undefined){
           this.interests = profile.interests;

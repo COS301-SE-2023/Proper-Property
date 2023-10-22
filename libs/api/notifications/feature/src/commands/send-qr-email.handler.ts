@@ -5,13 +5,10 @@ import  * as nodemailer  from 'nodemailer';
 @CommandHandler(SendQREmailCommand)
 export class SendQREmailHandler implements ICommandHandler<SendQREmailCommand> {
   async execute(command: SendQREmailCommand) {
-    console.log('---NotifyApprovalChangeCommand: ' + command.req.address);
     if (!command.req.lister) {
-      console.log('---User profile not found');
       return;
     }
     if (!command.req.lister.email) {
-      console.log('---User profile email not found');
       return;
     }
     const transporter = nodemailer.createTransport({

@@ -27,7 +27,6 @@ export class CreateListingPage {
   @ViewChild('inputElement', { static: false }) inputElement!: ElementRef;
 
   onInputPrice(ev: { target: any; }) {
-    console.log(ev.target.value);
     let value = ev.target!.value;
     value = value.replace(/^0+/,'');
     if (!value) { return; }
@@ -42,7 +41,6 @@ export class CreateListingPage {
   }
 
   onInputBathroom(ev: { target: any; }) {
-    console.log(ev.target.value);
     let value = ev.target!.value;
     value = value.replace(/^0+/,'');
 
@@ -58,7 +56,6 @@ export class CreateListingPage {
   }
 
   onInputBedroom(ev: { target: any; }) {
-    console.log(ev.target.value);
     let value = ev.target!.value;
     value = value.replace(/^0+/,'');
 
@@ -74,7 +71,6 @@ export class CreateListingPage {
   }
 
   onInputFloor(ev: { target: any; }) {
-    console.log(ev.target.value);
     let value = ev.target!.value;
     value = value.replace(/^0+/,'');
 
@@ -90,7 +86,6 @@ export class CreateListingPage {
   }
 
   onInputErf(ev: { target: any; }) {
-    console.log(ev.target.value);
     let value = ev.target!.value;
     value = value.replace(/^0+/,'');
 
@@ -106,7 +101,6 @@ export class CreateListingPage {
   }
 
   onInputParking(ev: { target: any; }) {
-    console.log(ev.target.value);
     let value = ev.target!.value;
     value = value.replace(/^0+/,'');
 
@@ -156,22 +150,27 @@ export class CreateListingPage {
   filteredMunicipalities: string[] = [];
 
   handleMunicipalityInputChange(event: Event): void {
+    this.municipalitySelected = false;
     const input = event.target as HTMLInputElement;
     const inputValue = input.value.toLowerCase();
 
     if (inputValue.length <= 0) {
       this.filteredMunicipalities = [];
+      this.showMunicipalities = false;
       return;
     }
 
     this.filteredMunicipalities = this.municipalities.filter((municipality) =>
     municipality.toLowerCase().includes(inputValue)
     );
+    this.showMunicipalities = true;
   }
 
   selectMunicipality(municipality: string): void {
+    this.municipalitySelected = true;
     this.district = municipality;
     this.filteredMunicipalities = [];
+    this.showMunicipalities = false;
   }
 
   filteredOptions: Observable<string[]>;
@@ -185,13 +184,15 @@ export class CreateListingPage {
   // autocomplete: any;;
   maps: any;
   predictions: any[] = [];
+  showPredictions = false;
+  showMunicipalities = false;
   isMobile = false;
   currentUser: User | null = null;
   description = "";
   heading = "";
   ownerViewing = false;
   listingEditee: Listing | null = null;
-
+  municipalitySelected = false;
   photos: string[] = [];
   address = "";
   district = "";
@@ -306,7 +307,6 @@ export class CreateListingPage {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    if (!event) console.log(event);
     this.isMobile = window.innerWidth <= 576;
   }
 
@@ -324,10 +324,12 @@ export class CreateListingPage {
 
       if (input.value.length <= 0) {
         this.predictions = [];
+        this.showPredictions = false;
       }
       else {
         this.gmapsService.handleInput(input, new this.maps.LatLngBounds()).then(() => {
           this.predictions = this.gmapsService.predictions;
+          this.showPredictions = true;
           this.loadingAddress = false;
         });
       }
@@ -360,7 +362,7 @@ export class CreateListingPage {
       addressInput.value = prediction;
     }
     this.predictions = [];
-
+    this.showPredictions = false;
     // Update the 'address' property of the component class
     this.address = prediction;
 
@@ -476,8 +478,8 @@ export class CreateListingPage {
       const response = await this.openAIService.getHeadingAndDesc("Give me a description of a property with the following information: \n" + info
         + "Be as descriptive as possible such that I would want to buy the house after reading the description")
 
-      this.description = response.description;
-      this.heading = response.head;
+      this.description = response.description.slice(1).trim();
+      this.heading = response.head.trim();
     }
 
     this.descriptionLoading = false;
@@ -493,6 +495,19 @@ export class CreateListingPage {
       }
     }
   }
+
+  addFeatureNow(amenity: string) {
+
+    if (amenity != "") {
+      this.features.push(amenity);
+    }
+
+    const feat_in = document.getElementById('feat-in') as HTMLInputElement;
+     this.selectedAmenity = "";
+    feat_in.value = "";
+  }
+
+
   //removeFeature
   removeFeature(index: number) {
     this.features.splice(index, 1);
@@ -545,270 +560,6 @@ export class CreateListingPage {
     { lat: -24.572030884249113, long: 30.79878685209525 },
     { lat: -24.057146033668925, long: 30.86003735206916 },
   ];
-
-  // async setCharacteristics()
-  // {
-  //   return;
-  //   //Garden
-  //   this.garden = this.checkfeature("Garden");
-  //   // Check for garden image
-
-  //   //party
-  //   if(await this.checklocationfeatures("bar", 1000) || await this.checklocationfeatures("night_club", 1000) || await this.checklocationfeatures("casino", 2000))
-  //   {
-  //     if(await this.checklocationfeaturesCounter("liquor_store", 1000)> 1)
-  //     {
-  //       this.party = true;
-  //     }
-
-  //   }
-
-  //   //Mansion
-
-  //   if(this.floor_size >= 2500 && this.bedrooms >= 4)
-  //   {
-  //     this.mansion = true;
-  //   }
-
-  //   //accessible
-  //   for(const feat of this.features)
-  //   {
-  //     if(feat == "Accessible")
-  //     {
-  //       this.accessible = true;
-  //     }
-  //   }
-
-  //   //Foreign
-  //   if(await this.checkNearTourist())
-  //   {
-  //     this.foreign = true;
-  //   }
-
-
-  //   //gym
-  //   if(await this.checklocationfeatures("gym", 3000))
-  //   {
-  //     this.gym = true;
-  //   }
-
-  //   //Food
-  //   this.food = true;
-  //   const Dansw = this.checklocationfeaturesCounter("meal_delivery", 3000);
-  //   console.log("Meal Delivery: ", Dansw);
-  //   if(await Dansw < 2)
-  //   {
-  //     this.food = false;
-  //   }
-
-  //   const Ransw = this.checklocationfeaturesCounter("restaurant", 3000);
-  //   console.log("Restaurants: ", Ransw);
-  //   if(await Ransw < 3)
-  //   {
-  //     this.food = false;
-  //   }
-
-  //   const Cansw = this.checklocationfeaturesCounter("cafe", 3000);
-  //   console.log("Cafes: ", Cansw);
-  //   if(await Cansw < 1)
-  //   {
-  //     this.food = false;
-  //   }
-
-  //   const Tansw = this.checklocationfeaturesCounter("meal_takeaway", 3000);
-  //   console.log("Takeawaya: ", Tansw);
-  //   if(await Tansw < 6)
-  //   {
-  //     this.food = false;
-  //   }
-
-  //   //Student
-
-  //   if(await this.checklocationfeatures("university", 5000))
-  //   {
-  //     if(this.price < 6000)
-  //     {
-  //       if(this.checkfeature("Wifi"))
-  //       {
-  //         this.students = true;
-  //       }
-  //     }
-  //   }
-
-  //   //owner
-  //   if(this.features.length > 8 && (this.furnish_type== "Furnished"|| this.furnish_type== "Partly Furnished"))
-  //   {
-  //     console.log("Is an owner and ", this.furnish_type);
-  //     this.owner = true;
-  //   }
-
-
-  //   //Middle of nowhere, farm
-
-  //   if(await this.checkNolocationfeatures(10000))
-  //   {
-  //     this.farm = true;
-  //   }
-
-
-  // }
-
-  // checkfeature(a : string)
-  // {
-  //     for(let x =0; x< this.features.length; x++)
-  //     {
-  //       if(a == this.features[x])
-  //       {
-  //         return true;
-  //       }
-  //     }
-
-  //     return false;
-  // }
-
-
-  // async checklocationfeatures(placeType: string, distanceFrom: number)
-  // {
-  //   try {
-  //     const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
-  //     if (coordinates) {
-  //       const results = await this.gmapsService.getNearbyPlaceType(
-  //         coordinates.latitude,
-  //         coordinates.longitude,
-  //         placeType
-  //       );
-
-  //       console.log(results);
-
-  //       for (const result of results) {
-  //         if(result.types){
-  //           for(const type of result.types){
-  //             if(type == placeType){
-  //               if(result.vicinity)
-  //               {
-  //                 const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
-
-  //                 const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
-  //                 console.log(result.name, distance, "meters away from ", this.address);
-  //                 if(distance< distanceFrom)
-  //                 {
-  //                   return true;
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('Error retrieving nearby places:', error);
-  //   }
-
-  //   return false;
-  // }
-
-  // async checklocationfeaturesCounter(placeType: string, distanceFrom: number)
-  // {
-  //   this.count = 0;
-  //   try {
-  //     const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
-  //     if (coordinates) {
-  //       const results = await this.gmapsService.getNearbyPlaceType(
-  //         coordinates.latitude,
-  //         coordinates.longitude,
-  //         placeType
-  //       );
-
-  //       console.log(results);
-
-  //       for (const result of results) {
-  //         if(result.types){
-  //           for(const type of result.types){
-  //             if(type == placeType){
-  //               if(result.vicinity)
-  //               {
-  //                 const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
-
-  //                 const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
-  //                 console.log(result.name, distance, "meters away from ", this.address);
-  //                 if(distance< distanceFrom)
-  //                 {
-  //                   this.count++;
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('Error retrieving nearby places:', error);
-  //   }
-  //   return this.count;
-  // }
-
-  // async checkNearTourist()
-  // {
-
-  //   const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
-
-  //   for(const pin of this.touristDestinations)
-  //   {
-  //     const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, pin.lat, pin.long)
-
-  //     if(distance< 15000)
-  //     {
-  //       console.log("tourist coordinates:", pin.lat, pin.long);
-  //       return true;
-  //     }
-  //   }
-
-  //   return false;
-  // }
-
-  //TODO redo in google -maps.repository using the new stored POIs
-  // async checkNolocationfeatures(distanceFrom: number)
-  // {
-  //   return false;
-  //   // try {
-  //   //   const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
-  //   //   if (coordinates) {
-  //   //     const results = await this.gmapsService.getNearbyPlaces(
-  //   //       coordinates.latitude,
-  //   //       coordinates.longitude
-  //   //     );
-
-  //   //     console.log(results);
-
-  //   //     for (const result of results) {
-  //   //       if(result.types){
-  //   //         for(const type of result.types){
-  //   //           if(type != "cemetery" && type != "campground"){
-  //   //             if(result.vicinity)
-  //   //             {
-  //   //               const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
-
-  //   //               const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
-  //   //               console.log(result.name, distance, "meters away from ", this.address);
-  //   //               if(distance< distanceFrom)
-  //   //               {
-  //   //                 return false;
-  //   //               }
-  //   //             }
-  //   //           }
-  //   //         }
-  //   //       }
-  //   //     }
-  //   //   }
-  //   // } catch (error) {
-  //   //   console.error('Error retrieving nearby places:', error);
-  //   // }
-
-  //   // return true;
-  // }
-
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   changeListingType() {
     if (this.selectedValue) {
@@ -922,7 +673,8 @@ export class CreateListingPage {
       }
       loader.style.opacity = "0";
       property.style.opacity = "1";
-      this.router.navigate(['/home']);
+      window.location.reload();
+      // this.router.navigate(['/home']);
     }
     else {
       console.log("Error in create-lisitng.page.ts - there is no current user");
@@ -1037,6 +789,7 @@ export class CreateListingPage {
 
   selectAmenity(amenity: string): void {
     this.selectedAmenity = amenity;
+    this.addFeatureNow(amenity);
     this.filteredAmenities = [];
   }
 
@@ -1146,19 +899,7 @@ export class CreateListingPage {
     // URL.revokeObjectURL(blobUrl); // Revoke the blob URL
     return canvas.toDataURL(); // Convert to a regular data URL
   }
-
-  //   getImageDimensions(imageUrl: string): void {
-  //     const image = new Image();
-  //     image.src = imageUrl;
-
-  //     image.onload = () => {
-  //       const width = image.naturalWidth;
-  //       const height = image.naturalHeight;
-
-  //       console.log(`Image dimensions: ${width} x ${height} pixels`);
-  //     };
-  //   }
-
+  
   async checkGeocodableAddress(address: string) {
     try {
       const geocoderResult = await this.gmapsService.geocodeAddress(address);

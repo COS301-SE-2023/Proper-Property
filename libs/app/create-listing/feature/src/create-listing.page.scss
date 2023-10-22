@@ -1,12 +1,11 @@
 .Desktop {
   select {
-    background-color: #eeeeee !important;
-    width: 100%;
+    background-color: white !important;
+    width: 81%;
     border: 1px solid rgb(183, 183, 183) !important;
   }
   option {
-    border-radius: 5px;
-    background-color: #eeeeee !important;
+    background-color: white !important;
   }
 
   .toggleCol {
@@ -16,9 +15,9 @@
   .toggleLabel {
     margin: auto;
     color: rgb(68, 68, 68);
-    font-size: 22px;
-    font-style: normal;
-    font-weight: 600;
+    // font-size: 22px;
+    // font-style: normal;
+    font-weight: 400;
   }
 
   #loader {
@@ -46,11 +45,15 @@
     background-size: contain;
   }
 
+  #full-grid > ion-row {
+    width: 900px !important;
+  }
+
   #add-photos {
     opacity: 0.6499999761581421;
-    background: var(--green, #0dae4f);
+    background: white;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    width: 80%;
+    // width: 80%;
     margin: auto;
   }
 
@@ -64,8 +67,8 @@
   }
 
   .uploaded-image {
-    width: 100px;
     height: 100px;
+    width: auto;
     display: inline-block;
     position: relative;
     margin-right: 10px;
@@ -118,14 +121,23 @@
 
   #house-details {
     opacity: 0.9300000071525574;
-    background: var(--light-grey, #ededed);
+    background: white;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    width: 80%;
+    // width: 80%;
+    // padding-left: 30%;
     margin: auto;
-    margin-top: 2%;
-    padding: 2%;
+    margin-top:20px;
+    // padding: 2% 4%;
+    ion-row {
+      width: 100%;
+    }
   }
-
+  #house-details > ion-row {
+    padding: 5px 20px;
+    ion-col {
+      padding: 5px;
+    }
+  }
   .icon-on-top {
     font-size: 32px;
     margin-bottom: 8px;
@@ -197,9 +209,14 @@
   }
 
   .addButt {
-    height: 30px;
+
     /* Adjust the height value as needed */
     vertical-align: middle;
+  }
+
+  ion-button
+  {
+    color: white;
   }
 
   .prediction-button {
@@ -208,13 +225,12 @@
     padding: 8px 16px;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    // border-radius: 4px;
     text-decoration: none;
     color: #333;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
-
   .prediction-button:hover {
     background-color: #e0e0e0;
   }
@@ -228,16 +244,25 @@
   }
 
   .prediction-result-list {
-    left: 0;
-    border-radius: 5px;
-    width: 92%;
+    left: 5px;
+    position: absolute;
+    background: white;
+    z-index: 100;
+    top: 100%;
+    border-radius: 2px;
+    border: 1px solid black;
+    width: 420px;
     padding: 0;
     background: rgba(0, 0, 0, 0);
     .prediction-result {
       cursor: pointer;
-      padding: 0 0;
-      border: 2px solid grey;
-      border-radius: 24px;
+      // padding: 0 0;
+      // border: 2px solid grey;
+      // border-radius: 24px;
+    }
+    .search-result-icon {
+      font-size: 24px;
+      margin-right: 10px;
     }
   }
 
@@ -247,6 +272,10 @@
     margin: auto;
   }
 
+  .align
+  {
+    margin: auto;
+  }
   #addressAutocompletions {
     height: 40px;
     width: 92%;
@@ -320,39 +349,71 @@
   }
 
   #address {
-    border: 1.5px solid #000;
+    border: 1px solid #b1b1b1;
     background: #fff;
-    height: 40px;
-    width: 92%;
+    height: 20px;
+    // width: 90%;
     // margin-left: 3%;
     margin-bottom: 1%;
     --padding-start: 10px;
     margin-top: 2%;
+    margin-right: 0;
+    width: 420px;
   }
-
+  #address-spinner {
+    position: absolute;
+    font-size: 24px;
+    right: 13px;
+    top: 13px;
+  }
   #feat-in {
-    border: 1.5px solid #000;
+    border: 1.5px solid rgb(183, 183, 183);
     background: #fff;
     height: 40px;
-    width: 95%;
+    width: 100%;
     margin-top: 2%;
     margin-bottom: 1%;
     padding: 3px;
+    --padding-start: 10px;
   }
 
   .container {
-    width: 100%;
+    width: 101%;
   }
 
+  .amenityClick
+  {
+    cursor: pointer;
+  }
+  // .label-col {
+  //   align-self: center;
+  // }
   .house-text {
-    color: rgb(68, 68, 68);
-    font-size: 20px;
+    color: rgb(0, 0, 0);
+    font-size: 15px;
     font-style: normal;
-    font-weight: 600;
+    // font-weight: 400;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    // background-color: green;
   }
+  #help-icon {
+    // position: absolute;
+    // top: 0;
+    // right: 0;
+    margin-top: -1px;
+    * {
+      margin: 0;
+      padding: 0;
+      height: 15px !important;
+    }
+  }
+
+  // .box-size
+  // {
+  //   width: 86%;
+  // }
 
   .tooltip {
     position: relative;
@@ -382,33 +443,39 @@
   #desc {
     border: 1.5px solid #000;
     background: #fff;
-    width: 100%;
+    width: 90%;
     margin-top: 2%;
     margin-bottom: 2%;
     padding: 2%;
-    max-width: 100%;
-    min-width: 100%;
+    max-width: 90%;
+    min-width: 90%;
   }
 
   .addButt {
-    height: 35px;
+    width: 60%;
     margin-top: 5%;
+    margin-left: 10%;
   }
 
   .dropdown {
-    bottom: 0;
-    position: absolute;
+
     width: 100%;
-    padding-bottom: 1%;
+    // margin-top: 10px;
+    align-self: center;
+  }
+
+  .align
+  {
+
   }
 
   .house-dropdown {
     color: rgb(68, 68, 68);
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 500;
+    padding: 4px;
+    font-weight: 400;
     background-color: transparent;
     border: none;
+    width: 100%;
   }
 
   #districtHelp + #districtHelpSpan {
@@ -471,12 +538,12 @@
   }
 
   #photoHeading {
-    color: rgba(0, 0, 0, 0.85);
-    font-size: 28px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 120.5%;
-    margin-left: 10%;
+    // color: rgba(0, 0, 0, 0.85);
+    // font-size: 28px;
+    // font-style: normal;
+    // font-weight: 500;
+    // line-height: 120.5%;
+    // margin-left: 10%;
   }
 
   .uploaded-image {
@@ -781,6 +848,9 @@
 
 .digit-input {
   border: 1px solid rgb(183, 183, 183) !important;
+  height: 30px !important;
+  min-height: 30px;
   --padding-bottom: 5px;
   --padding-top: 5px;
+  --padding-start: 5px;
 }

@@ -225,7 +225,6 @@ export class AuthService {
         break;
       default:
         failed.message = "Unknown error occurred";
-        if (window.location.hostname.includes("localhost")) console.log(error);
         break;
     }
   

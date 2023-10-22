@@ -62,7 +62,6 @@ export class MyListingsPage  implements OnInit, OnDestroy  {
       const tempB: Listing[] = [];
       const tempR: Listing[] = [];
       //for i = 0; i< listings size i++
-      if (window.location.hostname.includes('localhost')) console.log(this.listings)
       for (const listing of this.listings) {
         //get the user_id of the listing
         const user_ID = listing.user_id;

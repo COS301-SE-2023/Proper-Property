@@ -12,10 +12,27 @@ import { GetNearbyPlacesRequest, GetNearbyPlacesResponse, StoredPlaces } from '@
   providedIn: 'root'
 })
 export class GmapsService {
+  SAGeocode :  google.maps.GeocoderResult | null = null;
   constructor(
     @Inject(API_KEY_TOKEN) private key: string,
     private readonly functions: Functions
   ) {}
+
+  // async ngOnInit(){
+  //   await this.getGeocoder().then((geocoder) => {
+  //     return new Promise<google.maps.GeocoderResult | null>((resolve, reject) => {
+  //       geocoder.geocode({ address: "South Africa" }, (results, status) => {
+  //         if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
+  //           resolve(results[0]);
+  //         } else {
+  //           console.error('geocodeAddress results: ', results);
+  //           console.error('geocodeAddress Status: ', status)
+  //           reject('Failed to geocode the address');
+  //         }
+  //       });
+  //     });
+  //   });
+  // }
   geocoder!: google.maps.Geocoder;
   geometry!: google.maps.GeometryLibrary;
   autocompleteService!: google.maps.places.AutocompleteService;
@@ -73,17 +90,38 @@ export class GmapsService {
       }
     return false;
   }
-
-  geocodeAddress(address: string): Promise<google.maps.GeocoderResult | null> {
-    return this.getGeocoder().then((geocoder) => {
-      return new Promise<google.maps.GeocoderResult | null>((resolve, reject) => {
-        geocoder.geocode({ address: address }, (results, status) => {
-          if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
+  async knockoffCheckInArea(areaBounds: google.maps.LatLngBounds, listingGeometry: google.maps.LatLngLiteral): Promise<boolean> {
+    const area1 = areaBounds;
+    const point2 = listingGeometry;
+    if (area1 && point2) {
+      // const areaLatBounds = [ area1.getNorthEast().lat(), area1.getSouthWest().lat() ];
+      // const areaLngBounds = [ area1.getNorthEast().lng(), area1.getSouthWest().lng() ];
+      const latInBounds = area1.getSouthWest().lat() <= point2.lat && point2.lat <= area1.getNorthEast().lat();
+      const lngInBounds = area1.getSouthWest().lng() <= point2.lng && point2.lng <= area1.getNorthEast().lng();
+      return latInBounds && lngInBounds;
+    }
+    return false;
+  }
+  async geocodeAddress(address: string): Promise<google.maps.GeocoderResult | null> {
+    const geocoder = await this.getGeocoder();
+    const zaBounds = await geocoder.geocode({ address: "South Africa" }, (results, status) => {
+      if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
+        return results[0];
+      } else {
+        console.error('geocodeAddress results: ', results);
+        console.error('geocodeAddress Status: ', status)
+        return null;
+      }
+    });
+    return new Promise<google.maps.GeocoderResult | null>((resolve, reject) => {
+      geocoder.geocode({ address: address, bounds: zaBounds.results[0].geometry.bounds, componentRestrictions: {country: "South Africa"}}, (results, status) => {
+        if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
             resolve(results[0]);
-          } else {
-            reject('Failed to geocode the address');
-          }
-        });
+        } else {
+          console.error('geocodeAddress results: ', results);
+          console.error('geocodeAddress Status: ', status)
+          reject('Failed to geocode the address');
+        }
       });
     });
   }
