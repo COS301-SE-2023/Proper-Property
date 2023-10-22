@@ -68,7 +68,7 @@ export class EmailActionPage implements OnInit{
     // wait for 2 seconds for toast to disappear
     await new Promise(resolve => setTimeout(resolve, 2000));
     // navigate to login page
-    this.router.navigate(['/login']);
+    this.router.navigate(['/home']);
   }
 
 
