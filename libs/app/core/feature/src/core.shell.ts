@@ -5,7 +5,8 @@ import {
   Inject,
   HostListener, 
   inject,
-  isDevMode
+  isDevMode,
+  AfterViewInit
 } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { SubscribeToAuthState } from '@properproperty/app/auth/util';
@@ -21,7 +22,7 @@ import { NotificationsService } from 'libs/app/notifications/data-access/src/not
 import { DOCUMENT } from '@angular/common';
 import { Notification } from '@properproperty/api/notifications/util';
 import { UserProfile } from '@properproperty/api/profile/util';
-
+import { DeviceDetectorService } from 'ngx-device-detector';
 declare const gtag: any;
 
 @Component({
@@ -29,7 +30,7 @@ declare const gtag: any;
   templateUrl: './core.shell.html',
   styleUrls: ['./core.shell.scss'],
 })
-export class CoreShellComponent implements OnInit, OnDestroy {
+export class CoreShellComponent implements OnInit, OnDestroy, AfterViewInit {
   
   isMobile: boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
@@ -105,6 +106,12 @@ export class CoreShellComponent implements OnInit, OnDestroy {
   
   ngOnInit() {
     this.store.dispatch(new SubscribeToAuthState());
+  }
+  ngAfterViewInit(): void {
+    // if desktop, assign "Desktop" class to body
+    if (!this.isMobile) {
+      this.document.body.classList.add('Desktop');
+    }
   }
   // Unsubscribes from snapshot listeners when window is unloaded
   @HostListener('window:beforeunload')
