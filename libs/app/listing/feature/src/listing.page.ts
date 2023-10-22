@@ -958,5 +958,6 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
   
 }
 function isMobile(): boolean {
+  document.getElementById("show")?.setAttribute("style", "min-width: none !important"); 
   return window.innerWidth <= 576;
 }
