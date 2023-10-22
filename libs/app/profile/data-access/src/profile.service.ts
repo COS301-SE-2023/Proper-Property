@@ -48,7 +48,8 @@ export class UserProfileService {
       UpdateUserProfileRequest,
       UpdateUserProfileResponse
     >(this.functions, 'updateUserProfile')({user: uProfile});
-    location.reload();
+    if (window.location.pathname === '/profile')
+      location.reload();
   }
 
   async uploadProfilePic(userID : string, input: string) {
@@ -62,7 +63,7 @@ export class UserProfileService {
     // TODO Add this via CQRS
     const userRef = doc(this.firestore, `users/${userID}`);
     await updateDoc(userRef, {profilePicture: photoURL});
-    location.reload();
+      location.reload();
     return photoURL;
   }
 
