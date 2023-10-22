@@ -1,5 +1,5 @@
-<ion-template *ngIf="list&&!isMobile">
-  <ion-header [translucent]="true">
+
+  <ion-header [translucent]="true" *ngIf="list&&!isMobile">
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-button
@@ -14,7 +14,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-content [fullscreen]="true">
+  <ion-content [fullscreen]="true" *ngIf="list&&!isMobile">
     <ng-container *ngIf="loading; else loaded">
       <div id="loader">
         <img src="assets/500.gif" alt="loading-anim"/>
@@ -139,7 +139,7 @@
                   </ion-row>
                   <ion-row>
                     <ion-card-subtitle class="house-subtitles"
-                      >by {{lister_name}}</ion-card-subtitle
+                      > by <button style="color: #0dae4f"  (click)="setOpen(true)"> {{lister_name}}</button></ion-card-subtitle
                     >
                   </ion-row>
                 </ion-grid>
@@ -464,11 +464,11 @@
           </ion-row>
         </ion-grid>
       </div>
+      
     </ng-template>
     <properproperty-footer></properproperty-footer>
   </ion-content>
   
-</ion-template>
 
 <ion-template *ngIf="list&&isMobile">
   <ion-header [translucent]="true">
