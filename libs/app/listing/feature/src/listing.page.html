@@ -84,19 +84,6 @@
                   </ion-button>
                   </ion-col>
                 </ion-row>
-                <ion-row>
-                  <ion-card-title
-                    class="house-titles"
-                    style="margin-top: 8px; font-size: 25px"
-                    >{{list.bed}} Bedroom, {{list.bath}} Bathroom {{list.prop_type}}</ion-card-title
-                  >
-                </ion-row>
-                <ion-row>
-                  <ion-card-subtitle class="house-subtitles">{{list.parking}} Parking Spaces</ion-card-subtitle>
-                </ion-row>
-                <ion-row>
-                  <ion-card-subtitle class="house-subtitles">{{list.address}}</ion-card-subtitle>
-                </ion-row>
                 <ng-template [ngIf]="list.let_sell === 'Sell'">
                   <ion-row>
                     <ion-card-title class="house-titles" style="margin-top: 8px"
@@ -129,6 +116,16 @@
                       >
                     </ion-row>
                   </ng-template>
+
+                  <ion-row>
+                    <ion-card-subtitle class="house-subtitles">{{list.address}}</ion-card-subtitle>
+                  </ion-row>
+                  
+                <ion-row>
+                  <ion-card-subtitle class="house-subtitles">{{list.bed}} Beds, {{list.bath}} Baths {{list.prop_type}}, {{list.parking}} Parking</ion-card-subtitle>
+                </ion-row>
+
+
                   <ion-row style="margin-top: 10px">
                     <ion-col>
                       <div>
