@@ -777,14 +777,17 @@ sortListings() {
   }
 }
 
-checkPriceRange(){
-  // if (this.property_price_values.lower > this.property_price_values.upper) {
-  //   this.property_price_values.lower = this.property_price_values.upper;
-   
-  // }
-  if(this.property_price_values.upper < this.property_price_values.lower){
-    this.property_price_values.upper = 99999999;
+checkPriceRange(lower:boolean){
+  if(lower == false){
+    if (this.property_price_values.lower > this.property_price_values.upper) {
+      this.property_price_values.lower = 0;
+    }  
+  } else if(lower == true){
+    if (this.property_price_values.lower > this.property_price_values.upper) {
+      this.property_price_values.upper = 99999999;
+    }  
   }
+
 }
 
   changeTab(): void {
