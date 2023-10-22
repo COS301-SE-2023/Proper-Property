@@ -392,6 +392,10 @@ ion-col {
   transition: width 0.3s ease-in-out;
 }
 
+.no-scroll {
+  --overflow: hidden;
+}
+
 .errorProgressBar {
   position: absolute;
   top: 0;
