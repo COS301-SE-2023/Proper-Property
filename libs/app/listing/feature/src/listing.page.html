@@ -116,11 +116,11 @@
                       >
                     </ion-row>
                   </ng-template>
-
+                  <br>
                   <ion-row>
                     <ion-card-subtitle class="house-subtitles">{{list.address}}</ion-card-subtitle>
                   </ion-row>
-                  
+                  <br>
                 <ion-row>
                   <ion-card-subtitle class="house-subtitles">{{list.bed}} Beds, {{list.bath}} Baths {{list.prop_type}}, {{list.parking}} Parking</ion-card-subtitle>
                 </ion-row>
@@ -129,7 +129,8 @@
                   <ion-row style="margin-top: 10px">
                     <ion-col>
                       <div>
-                        Calculate your
+                        <button style="color: #0dae4f"  (click)="scrollToCalculator()">Calculate</button>
+                        your
                         monthly payments below!
                       </div>
                     </ion-col>

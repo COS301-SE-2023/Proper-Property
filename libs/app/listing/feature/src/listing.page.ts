@@ -553,6 +553,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
         }
       }
 
+      
 
       let result: ChangeStatusResponse | null;
       if (
@@ -969,6 +970,10 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
 
   formatNumber(num: number): string {
     return num.toString().split('').reverse().join('').replace(/(\d{3})(?=\d)/g, '\$1 ').split('').reverse().join('');
+  }
+  
+  scrollToCalculator() {
+    document.getElementById('calculator')?.scrollIntoView();
   }
   
 }
