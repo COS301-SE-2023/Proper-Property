@@ -22,19 +22,46 @@
           <ion-item [class.invalid]="!passwordMatch">
             <ng-container *ngIf="!showPassword; else showCP">
               <ion-icon name="lock-closed-outline"></ion-icon>
-              <ion-input type="password" [(ngModel)]="confirm_password" (ngModelChange)="checkStrength()" placeholder="  Confirm Password"></ion-input>
+              <ion-input type="password" [(ngModel)]="confirm_password" (ngModelChange)="secondCheckConfirm()" placeholder="  Confirm Password"></ion-input>
               <ion-icon (click)="showPass()" style="font-size: 24" name="eye"></ion-icon>
             </ng-container>
             <ng-template #showCP>
               <ion-icon name="lock-open-outline"></ion-icon>
-              <ion-input type="text" [(ngModel)]="confirm_password" (ngModelChange)="checkStrength()" placeholder="  Confirm Password"></ion-input>
+              <ion-input type="text" [(ngModel)]="confirm_password" (ngModelChange)="secondCheckConfirm()" placeholder="  Confirm Password"></ion-input>
               <ion-icon (click)="showPass()" style="font-size: 24" name="eye-off-outline"></ion-icon>
             </ng-template>
           </ion-item>
 
-          <ion-row>
-            <ion-col>
-              <div *ngIf="!passwordMatch" class="invalid-feedback">
+         
+        
+          <ion-grid id="strength">
+            <ion-row>
+              <ion-col size="2"></ion-col>
+              <ion-col size="8"><h6 style="text-align: center; color: var(--ion-color-primary);">Password Strength:</h6></ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col class="pwordStrength" id="block1">
+                <div class="strengthBar">
+                  <div *ngIf="password.length > 0" id="sec1"></div>
+                </div>
+              </ion-col>
+              <ion-col class="pwordStrength" id="block1">
+                <div class="strengthBar">
+                  <div id="sec2"></div>
+                </div>
+              </ion-col>
+              <ion-col class="pwordStrength" id="block1">
+                <div class="strengthBar">
+                  <div id="sec3"></div>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+          <ion-row id="checkers">
+            <ion-col size="1"></ion-col>
+            <ion-col size="11">
+              <div *ngIf="!passwordMatch" class="invalid-feedback" id="passMatch">
                 The passwords do not match!
               </div> 
               <div *ngIf="length < 8" class="invalid-feedback">
@@ -54,28 +81,6 @@
               </div> 
             </ion-col>
           </ion-row>
-          
-
-          <h6 style="text-align: center; color: #0dae4f">Password Strength:</h6>
-          <ion-grid>
-            <ion-row>
-              <ion-col class="pwordStrength" id="block1">
-                <div class="strengthBar">
-                  <div *ngIf="password.length > 0" id="sec1"></div>
-                </div>
-              </ion-col>
-              <ion-col class="pwordStrength" id="block1">
-                <div class="strengthBar">
-                  <div id="sec2"></div>
-                </div>
-              </ion-col>
-              <ion-col class="pwordStrength" id="block1">
-                <div class="strengthBar">
-                  <div id="sec3"></div>
-                </div>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
         </ion-list>
       </div>
       <div class="button-centerer">

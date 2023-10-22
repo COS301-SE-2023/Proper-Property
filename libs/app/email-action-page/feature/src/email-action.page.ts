@@ -80,7 +80,23 @@ export class EmailActionPage implements OnInit{
   uppercase = false;
   numbers = false;
   specialchars = false;
+
+  displayCheck()
+  {
+    document.getElementById("checkers")?.setAttribute("style", "display: block;");
+    document.getElementById("strength")?.setAttribute("style", "display: block;");
+  }
+
+  secondCheckConfirm()
+  {
+    this.passwordMatch =  (this.password === this.confirm_password)
+    document.getElementById("passMatch")?.setAttribute("style", "display: block;");
+    document.getElementById("checkers")?.setAttribute("style", "display: block;");
+    document.getElementById("strength")?.setAttribute("style", "display: none;");
+  }
+
   checkStrength(){
+    this.displayCheck();
     this.passwordMatch =  (this.password === this.confirm_password)
       
     this.length = this.password.length;
