@@ -405,7 +405,12 @@ export class ListingPage implements OnDestroy, OnInit {
 
       // this.loading = false;
       if (result.success) {
-        this.router.navigate(['/admin']);
+        this.router.navigateByUrl('/admin').then(() => {
+          // Add a small delay to allow the URL to change before reloading
+          setTimeout(() => {
+            window.location.reload();
+          }, 100);
+        });
         this.successfulChange.message = (approved? "Approval" : "Rejection") + this.successfulChange.message;
         const toast = await this.toastController.create(this.successfulChange);
         toast.present();
