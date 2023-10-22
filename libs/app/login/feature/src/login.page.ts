@@ -86,12 +86,6 @@ export class LoginPage implements OnInit {
       return;
     }
     const email = forgotPasswordInput.value;
-    if(window.location.hostname.includes("localhost")) {
-      console.log("Forgot password button click");
-      console.log(this.resetEmail);
-      console.log(forgotPasswordInput);
-      console.log(this.email);
-    }
     if(!this.email){
       const failed = {
         message: "Please enter an email address.",

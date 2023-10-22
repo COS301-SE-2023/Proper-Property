@@ -34,7 +34,7 @@ export class MyListingsPage  implements OnInit, OnDestroy  {
   listings: Listing[] = []
   listingsB: Listing[]=[];
   listingsR: Listing[]=[]
-  loading = false;
+  loading = true;
   loadingMessage = ";"
 
   constructor(
@@ -45,40 +45,43 @@ export class MyListingsPage  implements OnInit, OnDestroy  {
     private listingServices : ListingsService,
     private userServices: UserProfileService,
     ) {
-      this.user$.subscribe((user: User | null) => {
-        this.currentUser =  user;
-      });
       //this.userServices.getCurrentUser()?.user_id      
     }
 
   async ngOnInit() {
-    this.loadingMessage = "Loading your listings..."
-    this.listingsB = [];
-    this.listingsR = [];
-    this.listings = [];
-    this.loading = true;
-    this.listings = await this.listingServices.getListings(this.currentUser?.uid);
-    const user_listings: Listing[] = [];
-
-    //for i = 0; i< listings size i++
-    for (const listing of this.listings) {
-      //get the user_id of the listing
-      const user_ID = listing.user_id;
-      //declare a listing[] array
-      if (this.currentUser?.uid == user_ID) {
-        user_listings.push(listing);
-        // Forgive me father for I have sinned
-        // (listing.let_sell=="Sell" ? this.listingsB : this.listingsR).push(listing);
-        if (listing.let_sell=="Sell")
-          this.listingsB.push(listing);
-        else
-          this.listingsR.push(listing);
+    this.loadingMessage = "Loading your listings...";
+    // this.loading = true;
+    this.user$.subscribe(async (user: User | null) => {
+      this.currentUser =  user;
+      this.listingsB = [];
+      this.listingsR = [];
+      this.listings = [];
+      if (!this.currentUser) return;
+      this.listings = await this.listingServices.getListings(this.currentUser.uid);
+      const user_listings: Listing[] = [];
+      const tempB: Listing[] = [];
+      const tempR: Listing[] = [];
+      //for i = 0; i< listings size i++
+      for (const listing of this.listings) {
+        //get the user_id of the listing
+        const user_ID = listing.user_id;
+        //declare a listing[] array
+        if (this.currentUser.uid === user_ID) {
+          user_listings.push(listing);
+          // Forgive me father for I have sinned
+          // (listing.let_sell=="Sell" ? this.listingsB : this.listingsR).push(listing);
+          if (listing.let_sell=="Sell")
+            tempB.push(listing);
+          else
+            tempR.push(listing);
+        }
       }
-    }
-    
-    setTimeout(() => {
-    this.loading = false;
-    }, 3000);
+      this.listingsB = tempB;
+      this.listingsR = tempR;
+      setTimeout(() => {
+        this.loading = false;
+      }, 3000);
+    });
   }
 
   async redirectToPage(listing : Listing) {
@@ -122,6 +125,10 @@ export class MyListingsPage  implements OnInit, OnDestroy  {
       tog2.style.display = 'none';
     }
 
+  }
+
+  formatNumber(num: number): string {
+    return num.toString().split('').reverse().join('').replace(/(\d{3})(?=\d)/g, '\$1 ').split('').reverse().join('');
   }
 }
   

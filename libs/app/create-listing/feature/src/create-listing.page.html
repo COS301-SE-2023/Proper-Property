@@ -115,8 +115,27 @@
                     </ion-icon>
                   </a><span class="required-indicator" *ngIf="!address">*</span>
                 </label>
-                <ion-input type="text" class="house-text" id="address" [(ngModel)]="district"
-                  placeholder="Enter the district of your listing"></ion-input>
+                <!-- <ion-input type="text" class="house-text" id="address" [(ngModel)]="district"
+                  placeholder="Enter the district of you listing" (ionInput)="handleMunicipalityInputChange($event)"></ion-input>
+
+                  <ion-list [hidden]="filteredMunicipalities.length === 0">
+                    <ion-item (click)="selectMunicipality(municipality)" *ngFor="let municipality of filteredMunicipalities">
+                      {{ municipality }}
+                    </ion-item>
+                  </ion-list> -->
+
+                  <ion-row>
+                    <ion-col size="12">
+                      <ion-input (ionInput)="handleMunicipalityInputChange($event)" class="house-text" id="address" [(ngModel)]="district"
+                      placeholder="Enter the district of you listing"></ion-input>
+                    </ion-col>
+                  </ion-row>
+                  <ion-list [hidden]="filteredMunicipalities.length === 0" class="prediction-result-list">
+                    <ion-item (click)="selectMunicipality(municipality)" *ngFor="let municipality of filteredMunicipalities">
+                      {{ municipality }}
+                    </ion-item>
+                  </ion-list>
+
               </div>
             </div>
           </ion-col>

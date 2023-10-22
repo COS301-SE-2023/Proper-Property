@@ -27,7 +27,6 @@ export class CreateListingPage {
   @ViewChild('inputElement', { static: false }) inputElement!: ElementRef;
 
   onInputPrice(ev: { target: any; }) {
-    console.log(ev.target.value);
     let value = ev.target!.value;
     value = value.replace(/^0+/,'');
     if (!value) { return; }
@@ -42,7 +41,6 @@ export class CreateListingPage {
   }
 
   onInputBathroom(ev: { target: any; }) {
-    console.log(ev.target.value);
     let value = ev.target!.value;
     value = value.replace(/^0+/,'');
 
@@ -58,7 +56,6 @@ export class CreateListingPage {
   }
 
   onInputBedroom(ev: { target: any; }) {
-    console.log(ev.target.value);
     let value = ev.target!.value;
     value = value.replace(/^0+/,'');
 
@@ -74,7 +71,6 @@ export class CreateListingPage {
   }
 
   onInputFloor(ev: { target: any; }) {
-    console.log(ev.target.value);
     let value = ev.target!.value;
     value = value.replace(/^0+/,'');
 
@@ -90,7 +86,6 @@ export class CreateListingPage {
   }
 
   onInputErf(ev: { target: any; }) {
-    console.log(ev.target.value);
     let value = ev.target!.value;
     value = value.replace(/^0+/,'');
 
@@ -106,7 +101,6 @@ export class CreateListingPage {
   }
 
   onInputParking(ev: { target: any; }) {
-    console.log(ev.target.value);
     let value = ev.target!.value;
     value = value.replace(/^0+/,'');
 
@@ -123,6 +117,57 @@ export class CreateListingPage {
 
   myControl = new FormControl();
   options: string[] = ['Angular', 'React', 'Vue', 'Ionic', 'TypeScript'];
+  municipalities:string[] = [
+    'Umzinyathi District municipality(DC24)',
+  'eThekwini Metropolitan Municipality(ETH)',
+  'The Msunduzi Local Municipality(KZN225)',
+  'Ugu District municipality(DC21)',
+  'Amajuba District municipality(DC25)',
+  'UMgungundlovu District municipality(DC22)',
+  'Newcastle Local Municipality(KZN252)', 
+  'Zululand District municipality(DC26)', 
+  'King Cetshwayo DM(DC28)',
+   'Harry Gwala District municipality(DC43)', 'Uthukela District municipality(DC23)', 'uMhlathuze Local Municipality(KZN282)', 'Umkhanyakude District municipality(DC27)', 'iLembe District municipality(DC29)', 'Theewaterskloof Local Municipality(WC031)', 'Cederberg Local Municipality(WC012)', 'Letsemeng Local Municipality(FS161)', 'Setsoto Local Municipality(FS191)', 'Kopanong Local Municipality(FS162)', 'Mohokare Local Municipality(FS163)', 'Masilonyana Local Municipality(FS181)', 'Dihlabeng Local Municipality(FS192)', 'Matjhabeng Local Municipality(FS184)', 'Phumelela Local Municipality(FS195)', 'Tswelopele Local Municipality(FS183)', 'Nketoana Local Municipality(FS193)', 'Maluti a Phofung Local Municipality(FS194)', 'Moqhaka Local Municipality(FS201)', 'Nala Local Municipality(FS185)', 'Mangaung(MAN)', 'Mantsopa Local Municipality(FS196)', 'Ngwathe Local Municipality(FS203)', 'Metsimaholo Local Municipality(FS204)', 'Mafube Local Municipality(FS205)', 'Matzikama Local Municipality(WC011)', 'Drakenstein Local Municipality(WC023)', 'Hessequa Local Municipality(WC042)', 'Bergrivier Local Municipality(WC013)', 'Cape Agulhas Local Municipality(WC033)', 'Langeberg Municipality(WC026)', 'Mossel Bay Local Municipality(WC043)', 'Saldanha Bay Local Municipality(WC014)', 'Oudtshoorn Local Municipality(WC045)', 'Overstrand Local Municipality(WC032)', 'Beaufort West Local Municipality(WC053)', 'Swartland Local Municipality(WC015)', 'Knysna Local Municipality(WC048)', 'Swellendam Local Municipality(WC034)', 'City of Cape Town Metropolitan Municipality(CPT)', 'Witzenberg Local Municipality(WC022)', 'George Local Municipality(WC044)', 'Stellenbosch Local Municipality(WC024)', 'Bitou Local Municipality(WC047)', 'Breede Valley Local Municipality(WC025)', 'Laingsburg Local Municipality(WC051)', 'Kannaland Local Municipality(WC041)', 'Prince Albert Local Municipality(WC052)', 'Emfuleni Local Municipality(GT421)', 'City of Tshwane Metropolitan Municipality(TSH)', 'Rand West City(GT485)', 'Mogale City Local Municipality(GT481)', 'Midvaal Local Municipality(GT422)', 'Merafong City Local Municipality(GT484)', 'Lesedi Local Municipality(GT423)', 'City of Ekurhuleni(EKU)', 'City of Johannesburg Metropolitan Municipality(JHB)', 'Vhembe District municipality(DC34)', 'Mopani District municipality(DC33)', 'Modimolle/Mookgophong(LIM368)', 'Polokwane Local Municipality(LIM354)', 'Capricorn District municipality(DC35)', 'Greater Sekhukhune District Municipality(DC47)', 'Thabazimbi Local Municipality(LIM361)', 'Mogalakwena Local Municipality(LIM367)', 'Lephalale Local Municipality(LIM362)', 'Bela-Bela Local Municipality(LIM366)', 'Richtersveld Local Municipality(NC061)', 'Kamiesberg Local Municipality(NC064)', 'Nama Khoi Local Municipality(NC062)', 'Khai-Ma Local Municipality(NC067)', 'Hantam Local Municipality(NC065)', 'Karoo Hoogland Local Municipality(NC066)', 'Emthanjeni Local Municipality(NC073)', 'Ubuntu Local Municipality(NC071)', 'Thembelihle Local Municipality(NC076)', 'Umsobomvu Local Municipality(NC072)', 'Kareeberg Local Municipality(NC074)', 'Dawid Kruiper(NC087)', 'Siyancuma Local Municipality(NC078)', 'Siyathemba Local Municipality(NC077)', 'Renosterberg Local Municipality(NC075)', 'Phokwane Local Municipality(NC094)', 'Dikgatlong Local Municipality(NC092)', 'Kgatelopele Local Municipality(NC086)', '!Kai! Garib Local Municipality(NC082)', 'Ga-Segonyana Local Municipality(NC452)', 'Joe Morolong Local Municipality(NC451)', 'Magareng Local Municipality(NC093)', '!Kheis Local Municipality(NC084)', 'Gamagara Local Municipality(NC453)', 'Sol Plaatjie Local Municipality(NC091)', 'Blue Crane Route Local Municipality(EC102)', 'Makana Local Municipality(EC104)', 'Dr Beyers Naude(EC101)', 'Sunday`s River Valley Local Municipality(EC106)', 'Amatole District municipality(DC12)', 'Kouga Local Municipality(EC108)', 'Ndlambe Local Municipality(EC105)', 'Kou-Kamma Local Municipality(EC109)', 'Chris Hani District municipality(DC13)', 'Buffalo City Local Municipality(BUF)', 'Joe Gqabi District municipality(DC14)', 'Nelson Mandela Metropolitan Municipality(NMA)', 'O.R.Tambo District municipality(DC15)', 'Alfred Nzo District municipality(DC44)', 'Albert Luthuli Local Municipality(MP301)', 'Steve Tshwete Local Municipality(MP313)', 'Mkhondo Local Municipality(MP303)', 'Msukaligwa Local Municipality(MP302)', 'Lekwa Local Municipality(MP305)', 'Emakhazeni Local Municipality(MP314)', 'Pixley Ka Seme Local Municipality(MP304)', 'Dipaleseng Local Municipality(MP306)', 'Emalahleni Local Municipality(MP312)',
+  'Victor Khanye Local Municipality(MP311)',
+  'Govan Mbeki Local Municipality(MP307)',
+  'Dr JS Moroka Local Municipality(MP316)',
+  'Thembisile Local Municipality(MP315)',
+  'Bushbuckridge Local Municipality(MP325)',
+  'Thaba Chweu Local Municipality(MP321)',
+  'Mbombela/Umjindi(MP326)',
+  'Nkomazi Local Municipality(MP324)',
+  'Maquassi Hills Local Municipality(NW404)',
+  'Local Municipality of Madibeng(NW372)',
+  'Moretele Local Municipality(NW371)',
+  'Rustenburg Local Municipality(NW373)',
+  'JB Marks Local Municipality(NW405)',
+  'Kgetlengrivier Local Municipality(NW374)',
+  'Ngaka Modiri Molema District Municipality(DC38)',
+  'Moses Kotane Local Municipality(NW375)',
+  'Dr. Ruth S Mompati District Municipality(DC39)',
+  'Matlosana Local Municipality(NW403)'];
+
+  filteredMunicipalities: string[] = [];
+
+  handleMunicipalityInputChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const inputValue = input.value.toLowerCase();
+
+    if (inputValue.length <= 0) {
+      this.filteredMunicipalities = [];
+      return;
+    }
+
+    this.filteredMunicipalities = this.municipalities.filter((municipality) =>
+    municipality.toLowerCase().includes(inputValue)
+    );
+  }
+
+  selectMunicipality(municipality: string): void {
+    this.district = municipality;
+    this.filteredMunicipalities = [];
+  }
+
   filteredOptions: Observable<string[]>;
 
   items: any[] = [];
@@ -255,7 +300,6 @@ export class CreateListingPage {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    if (!event) console.log(event);
     this.isMobile = window.innerWidth <= 576;
   }
 
@@ -419,25 +463,14 @@ export class CreateListingPage {
     if (this.address && this.price && this.pos_type && this.env_type && this.prop_type
       && this.furnish_type && this.orientation && this.floor_size && this.erf_size
       && this.bathrooms && this.bedrooms && this.parking) {
-      const info = "Address: " + this.address + "\n"
-        + "Price: " + this.price + "\n"
-        + "Possession type: " + this.pos_type + "\n"
-        + "Environment type: " + this.env_type + "\n"
-        + "Property type: " + this.prop_type + "\n"
-        + "Furnishing state: " + this.furnish_type + "\n"
-        + "Orientation of the house: " + this.orientation + "\n"
-        + "Floor size: " + this.floor_size + "\n"
-        + "Property size: " + this.erf_size + "\n"
-        + "Number of bathrooms: " + this.bathrooms + "\n"
-        + "Number of bedrooms" + this.bedrooms + "\n"
-        + "Number of parking spots: " + this.parking + "\n";
+      const info = "Address: " + this.address + "\n "      + "Price: " + this.price + "\n "      + "Possession type: " + this.pos_type + "\n "      + "Environment type: " + this.env_type + "\n "      + "Property type: " + this.prop_type + "\n "      + "Furnishing state: " + this.furnish_type + "\n "      + "Orientation of the house: " + this.orientation + "\n "      + "Floor size: " + this.floor_size + "\n "      + "Property size: " + this.erf_size + "\n "      + "Number of bathrooms: " + this.bathrooms + "\n "      + "Number of bedrooms" + this.bedrooms + "\n "      + "Number of parking spots: " + this.parking + "\n";
       + "Features: " + feats + "\n";
 
       const response = await this.openAIService.getHeadingAndDesc("Give me a description of a property with the following information: \n" + info
         + "Be as descriptive as possible such that I would want to buy the house after reading the description")
 
-      this.description = response.description;
-      this.heading = response.head;
+      this.description = response.description.slice(1).trim();
+      this.heading = response.head.trim();
     }
 
     this.descriptionLoading = false;
@@ -505,270 +538,6 @@ export class CreateListingPage {
     { lat: -24.572030884249113, long: 30.79878685209525 },
     { lat: -24.057146033668925, long: 30.86003735206916 },
   ];
-
-  // async setCharacteristics()
-  // {
-  //   return;
-  //   //Garden
-  //   this.garden = this.checkfeature("Garden");
-  //   // Check for garden image
-
-  //   //party
-  //   if(await this.checklocationfeatures("bar", 1000) || await this.checklocationfeatures("night_club", 1000) || await this.checklocationfeatures("casino", 2000))
-  //   {
-  //     if(await this.checklocationfeaturesCounter("liquor_store", 1000)> 1)
-  //     {
-  //       this.party = true;
-  //     }
-
-  //   }
-
-  //   //Mansion
-
-  //   if(this.floor_size >= 2500 && this.bedrooms >= 4)
-  //   {
-  //     this.mansion = true;
-  //   }
-
-  //   //accessible
-  //   for(const feat of this.features)
-  //   {
-  //     if(feat == "Accessible")
-  //     {
-  //       this.accessible = true;
-  //     }
-  //   }
-
-  //   //Foreign
-  //   if(await this.checkNearTourist())
-  //   {
-  //     this.foreign = true;
-  //   }
-
-
-  //   //gym
-  //   if(await this.checklocationfeatures("gym", 3000))
-  //   {
-  //     this.gym = true;
-  //   }
-
-  //   //Food
-  //   this.food = true;
-  //   const Dansw = this.checklocationfeaturesCounter("meal_delivery", 3000);
-  //   console.log("Meal Delivery: ", Dansw);
-  //   if(await Dansw < 2)
-  //   {
-  //     this.food = false;
-  //   }
-
-  //   const Ransw = this.checklocationfeaturesCounter("restaurant", 3000);
-  //   console.log("Restaurants: ", Ransw);
-  //   if(await Ransw < 3)
-  //   {
-  //     this.food = false;
-  //   }
-
-  //   const Cansw = this.checklocationfeaturesCounter("cafe", 3000);
-  //   console.log("Cafes: ", Cansw);
-  //   if(await Cansw < 1)
-  //   {
-  //     this.food = false;
-  //   }
-
-  //   const Tansw = this.checklocationfeaturesCounter("meal_takeaway", 3000);
-  //   console.log("Takeawaya: ", Tansw);
-  //   if(await Tansw < 6)
-  //   {
-  //     this.food = false;
-  //   }
-
-  //   //Student
-
-  //   if(await this.checklocationfeatures("university", 5000))
-  //   {
-  //     if(this.price < 6000)
-  //     {
-  //       if(this.checkfeature("Wifi"))
-  //       {
-  //         this.students = true;
-  //       }
-  //     }
-  //   }
-
-  //   //owner
-  //   if(this.features.length > 8 && (this.furnish_type== "Furnished"|| this.furnish_type== "Partly Furnished"))
-  //   {
-  //     console.log("Is an owner and ", this.furnish_type);
-  //     this.owner = true;
-  //   }
-
-
-  //   //Middle of nowhere, farm
-
-  //   if(await this.checkNolocationfeatures(10000))
-  //   {
-  //     this.farm = true;
-  //   }
-
-
-  // }
-
-  // checkfeature(a : string)
-  // {
-  //     for(let x =0; x< this.features.length; x++)
-  //     {
-  //       if(a == this.features[x])
-  //       {
-  //         return true;
-  //       }
-  //     }
-
-  //     return false;
-  // }
-
-
-  // async checklocationfeatures(placeType: string, distanceFrom: number)
-  // {
-  //   try {
-  //     const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
-  //     if (coordinates) {
-  //       const results = await this.gmapsService.getNearbyPlaceType(
-  //         coordinates.latitude,
-  //         coordinates.longitude,
-  //         placeType
-  //       );
-
-  //       console.log(results);
-
-  //       for (const result of results) {
-  //         if(result.types){
-  //           for(const type of result.types){
-  //             if(type == placeType){
-  //               if(result.vicinity)
-  //               {
-  //                 const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
-
-  //                 const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
-  //                 console.log(result.name, distance, "meters away from ", this.address);
-  //                 if(distance< distanceFrom)
-  //                 {
-  //                   return true;
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('Error retrieving nearby places:', error);
-  //   }
-
-  //   return false;
-  // }
-
-  // async checklocationfeaturesCounter(placeType: string, distanceFrom: number)
-  // {
-  //   this.count = 0;
-  //   try {
-  //     const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
-  //     if (coordinates) {
-  //       const results = await this.gmapsService.getNearbyPlaceType(
-  //         coordinates.latitude,
-  //         coordinates.longitude,
-  //         placeType
-  //       );
-
-  //       console.log(results);
-
-  //       for (const result of results) {
-  //         if(result.types){
-  //           for(const type of result.types){
-  //             if(type == placeType){
-  //               if(result.vicinity)
-  //               {
-  //                 const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
-
-  //                 const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
-  //                 console.log(result.name, distance, "meters away from ", this.address);
-  //                 if(distance< distanceFrom)
-  //                 {
-  //                   this.count++;
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('Error retrieving nearby places:', error);
-  //   }
-  //   return this.count;
-  // }
-
-  // async checkNearTourist()
-  // {
-
-  //   const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
-
-  //   for(const pin of this.touristDestinations)
-  //   {
-  //     const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, pin.lat, pin.long)
-
-  //     if(distance< 15000)
-  //     {
-  //       console.log("tourist coordinates:", pin.lat, pin.long);
-  //       return true;
-  //     }
-  //   }
-
-  //   return false;
-  // }
-
-  //TODO redo in google -maps.repository using the new stored POIs
-  // async checkNolocationfeatures(distanceFrom: number)
-  // {
-  //   return false;
-  //   // try {
-  //   //   const coordinates = await this.gmapsService.getLatLongFromAddress(this.address);
-  //   //   if (coordinates) {
-  //   //     const results = await this.gmapsService.getNearbyPlaces(
-  //   //       coordinates.latitude,
-  //   //       coordinates.longitude
-  //   //     );
-
-  //   //     console.log(results);
-
-  //   //     for (const result of results) {
-  //   //       if(result.types){
-  //   //         for(const type of result.types){
-  //   //           if(type != "cemetery" && type != "campground"){
-  //   //             if(result.vicinity)
-  //   //             {
-  //   //               const latlong = this.gmapsService.getLatLongFromAddress(result.vicinity);
-
-  //   //               const distance = await this.gmapsService.calculateDistanceInMeters(coordinates.latitude, coordinates.longitude, (await latlong).latitude, (await latlong).longitude)
-  //   //               console.log(result.name, distance, "meters away from ", this.address);
-  //   //               if(distance< distanceFrom)
-  //   //               {
-  //   //                 return false;
-  //   //               }
-  //   //             }
-  //   //           }
-  //   //         }
-  //   //       }
-  //   //     }
-  //   //   }
-  //   // } catch (error) {
-  //   //   console.error('Error retrieving nearby places:', error);
-  //   // }
-
-  //   // return true;
-  // }
-
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   changeListingType() {
     if (this.selectedValue) {
@@ -882,7 +651,8 @@ export class CreateListingPage {
       }
       loader.style.opacity = "0";
       property.style.opacity = "1";
-      this.router.navigate(['/home']);
+      window.location.reload();
+      // this.router.navigate(['/home']);
     }
     else {
       console.log("Error in create-lisitng.page.ts - there is no current user");
@@ -1106,19 +876,7 @@ export class CreateListingPage {
     // URL.revokeObjectURL(blobUrl); // Revoke the blob URL
     return canvas.toDataURL(); // Convert to a regular data URL
   }
-
-  //   getImageDimensions(imageUrl: string): void {
-  //     const image = new Image();
-  //     image.src = imageUrl;
-
-  //     image.onload = () => {
-  //       const width = image.naturalWidth;
-  //       const height = image.naturalHeight;
-
-  //       console.log(`Image dimensions: ${width} x ${height} pixels`);
-  //     };
-  //   }
-
+  
   async checkGeocodableAddress(address: string) {
     try {
       const geocoderResult = await this.gmapsService.geocodeAddress(address);

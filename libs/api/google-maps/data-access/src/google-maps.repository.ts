@@ -25,7 +25,6 @@ export class GoogleMapsRepository {
   private storedPlaces: StoredPlaces[] = [];
   private recalculating = false;
   async getPointsOfInterest(listingId: string): Promise<GetNearbyPlacesResponse> {
-    // console.log("getPointsOfInterest", listingId);
     const docData = (await admin
       .firestore()
       .collection('listings')
@@ -35,20 +34,16 @@ export class GoogleMapsRepository {
       })
       .doc(listingId)
       .get()).data();
-    // console.log(docData);
     if (!docData?.pointsOfInterestIds) {
-      // console.log("No points of interest found")
       throw new Error("No listings were found");
     }
     const pointIDs = docData.pointsOfInterestIds ?? [];
     if (pointIDs.length == 0) {
-      // console.log("There are no points of interest found")
       return { response: []};
     }
     const response2 = new Promise<GetNearbyPlacesResponse>(async (resolve) => {
       const results: StoredPlaces[] = [];
       for (let startIndex = 0; startIndex < pointIDs.length; startIndex += 30) {
-        // console.log("Start index: ", startIndex, ": ", pointIDs.slice(startIndex, Math.min(startIndex+ 29, pointIDs.length)));
 
         const queryRes = (await admin
           .firestore()
@@ -60,13 +55,10 @@ export class GoogleMapsRepository {
           const place = doc.data() as StoredPlaces;
           results.push(place);
         })
-        // console.log(results.length);
       }
-      // console.log("Num results: ", results.length)
       resolve({response: results});
     });
 
-    // console.log(response2);
     return (response2);
   }
   
@@ -414,7 +406,6 @@ export class GoogleMapsRepository {
         icon: place.icon,
       });
     });
-    // console.log("Before | after: ", before, "->", this.places.length)
   }
 
   async recalculateCharacteristicsOnly() {
@@ -484,7 +475,6 @@ export class GoogleMapsRepository {
       }, {merge: true});
   }
   async addMissingPlaces() {
-    // console.log("Adding places: ", this.poiIDs.length, " ", this.places.length);
     if (this.poiIDs.length == 0) {
       return;
     }
@@ -556,9 +546,7 @@ export class GoogleMapsRepository {
         type: type
       }
     };
-    // console.log(request);
     const response = await this.mapsClient.placesNearby(request);
-    // console.log("Num found: ", response.data.results.length);
     this.filterUnwantedPlaces(response.data.results);
     return (response.data.results.length >= size);
   }
@@ -645,11 +633,9 @@ export class GoogleMapsRepository {
   async checkUniversity() {
     const listing = this.docData;
     if (!listing) {
-      // console.log("No doc");
       return;
     }
     if(listing.price > 6000 || listing.features.indexOf("Wifi") == -1) {
-      // console.log("Price: ", listing.price, " | Wifi: ", listing.features.indexOf("Wifi"));
       this.students = false;
       return
     }

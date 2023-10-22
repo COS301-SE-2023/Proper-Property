@@ -1,36 +1,42 @@
+*{
+  font-family: 'Poppins', sans-serif;
+}
+
 #notApprovedHeadCol {
   // outline: 2px solid black;
-  border-right: 2px solid black;
+  border-right: 1px solid rgba(214, 214, 214, 0.4);
 }
 
 #notApprovedHead {
   width: 35%;
   height: auto;
   text-align: center;
-  border-radius: 30px;
-  border: 3px solid #000;
-  background: #DE1313;
+  // border: 1px solid #000;
+  
   margin: auto;
   margin-top: 0.5%;
   align-items:center;
   padding: 1%;
 }
 
+.headings
+{
+  border-bottom: 1px solid rgba(214, 214, 214, 0.4);
+  background: rgba(245, 245, 245, 0.4);
+}
+
 #notApprovedBodyCol {
-  width: 49.8%;
-  outline: 3px solid red;
-  margin-right: 0.2%;
-  background: rgba(222, 19, 19, 0.10);
+  width: 50%;
+  border-right: 1px solid rgba(214, 214, 214, 0.4);
+  // background: rgba(222, 19, 19, 0.10);
   min-height: 84vh;
 }
 
 #approvedHead {
-  width: 35%;
-  height: auto;
+  // width: 35%;
+  // height: auto;
   text-align: center;
-  border-radius: 30px;
-  border: 3px solid #000;
-  background: #0DAE4F;
+  // border: 1px solid #000;
   margin: auto;
   margin-top: 0.5%;
   align-items:center;
@@ -39,24 +45,62 @@
 
 #approvedBodyCol {
   width: 49.8%;
-  outline: 3px solid #0DAE4F;
+
   margin-left: 0.2%;
   background: rgba(13, 174, 79, 0.10);
 }
 
+ion-card{
+  border-radius: 0px;
+  margin-top: 3%;
+}
+
+.listingCard:hover{
+  box-shadow: 3px 3px 5px rgba(13, 174, 80, 0.7);
+}
+
+.imageCol{
+  height: 100%;
+  width: 25%;
+}
+
+.green-tab {
+  --color: green;
+}#house_details img {
+  width: 10px; /* Adjust the size as desired */
+  height: 10px; /* Adjust the size as desired */
+}
+
+ion-card-header{
+
+  width: 70%;
+
+}
+
+#house_description{
+  // height: 10% !important;
+  width: 90%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
 //make the img in ion-card-header smaller
-ion-card-header img {
-  width: 200px;
-  height: 130px;
-  //rounded edges
-  border-radius: 10px;
+.imageCol img {
+  width: 300px;
+  height: 200px;
+  position: relative;
+  object-fit: cover;
+  overflow: hidden;
 }
 
 //Make the ion-card-title in  ion-card-header to the right of ion-card-header img
 ion-card-header ion-card-title {
-  margin-left: 220px;
+  margin-left: 55%;
+  padding-top: 5px;
   //move ths up
-  margin-top: -130px;
+  margin-top: -210px;
 }
 
 ion-card-header ion-card-subtitle {
@@ -64,22 +108,11 @@ ion-card-header ion-card-subtitle {
 }
 
 ion-card ion-card-content {
-  margin-left: 220px;
-}
-
-//make the ion-card take only half of the page
-ion-card {
-  width: 90%;
   margin-left: 2%;
-  margin-top: 10px;
-  border-radius: 10px;
+  margin-right: 5%;
+  width: 65%;
 }
 
-#house_details img {
-  //set image size
-  width: 15px;
-  height: 15px;
-}
 
 .drag-drop-area {
   display: flex;
@@ -124,9 +157,10 @@ ion-card {
 
 .file-upload {
   border: 2px solid #94d2ae;
-  margin: 2px 4px;
-  border-radius: 10px;
+  margin: auto;
+  // border-radius: 10px;
   overflow: hidden;
+  margin-top: 3%;
 }
 
 .file-name{
@@ -147,4 +181,18 @@ ion-card {
 
 #show{
   // opacity: 1;
+}
+
+.imageText, .text-container h5{
+  // margin:auto;
+  font-weight:300;
+  font-size: 18;
+}
+
+.text-container{
+  margin: auto;
+}
+
+#popoverHeading h3{
+  margin-top: 10px;
 }

@@ -8,7 +8,7 @@ import {
   ViewChild,
   HostListener, 
   ViewChildren, 
-  QueryList ,
+  QueryList
 } from '@angular/core';
 import { 
   ActionSheetController, 
@@ -25,6 +25,8 @@ import { UserProfile } from '@properproperty/api/profile/util';
 import { UserProfileService, UserProfileState } from '@properproperty/app/profile/data-access';
 import { ActivatedRoute } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { getDownloadURL} from 'firebase/storage';
+import { Storage, ref } from "@angular/fire/storage";
 // import { IonContent } from '@ionic/angular';
 
 @Component({
@@ -36,6 +38,7 @@ export class SearchPage implements OnDestroy, AfterViewInit {
   @ViewChild('address', { static: false }) addressInput!: ElementRef<HTMLInputElement>;
   @ViewChild('address1', { static: false }) addressInput1!: ElementRef<HTMLInputElement>;
   isMobile = true;
+  currentPage = 0;
   MapView = true ;
   autocomplete: any;
   // defaultBounds: google.maps.LatLngBounds;
@@ -55,7 +58,7 @@ export class SearchPage implements OnDestroy, AfterViewInit {
   public listings: Listing[] = [];
   public allListings: Listing[] = [];
   
-  public activeTab = 'all';
+  public activeTab = 'Any';
   public searchQuery = '';
   public searching = false;
   public env_type : string | null = null;
@@ -79,10 +82,11 @@ export class SearchPage implements OnDestroy, AfterViewInit {
   userInterestVector: number[]=[];
   public rangeSteps = 10000;
   public propSizeRangeSteps = 200;
-  public highestPrice = 0;
-  public lowestPrice = 99999999;
+  public highestPrice = 99999999;
+  public lowestPrice = 0;
   public smallestProp = 99999999;
   public largestProp = 0;
+  cardView = new Map();
 
   recommendationMinimum = 100000;
 
@@ -135,7 +139,8 @@ export class SearchPage implements OnDestroy, AfterViewInit {
     private listingServices: ListingsService,
     public gmapsService: GmapsService,
     private profileServices : UserProfileService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private storage: Storage
     ) {
       this.predictions = [];
       // this.defaultBounds = new google.maps.LatLngBounds();
@@ -153,7 +158,7 @@ export class SearchPage implements OnDestroy, AfterViewInit {
       this.isMobile = isMobile();
       this.MapView = false;
     }
-
+  
     async mapView(){
       this.MapView = !this.MapView;
       if(this.MapView &&this.isMobile){
@@ -236,8 +241,7 @@ export class SearchPage implements OnDestroy, AfterViewInit {
 
     }
 
-  ngAfterViewInit() {
-    
+  async ngAfterViewInit() {    
     if(!this.isMobile ||this.MapView) {
       this.setCentre();
       this.loadMap();
@@ -257,7 +261,7 @@ export class SearchPage implements OnDestroy, AfterViewInit {
     // this.allListings = this.listings;
     // await this.addMarkersToMap();
     // this.filterProperties();
-    this.searchProperties();
+    // this.searchProperties();
     // this.addMarkersToMap();
   }
 async loadMap() {
@@ -305,7 +309,8 @@ async loadMap() {
         }
       }
     } catch (e) {
-      console.log(e);
+      if (window.location.hostname.includes("localhost"))
+        console.log(e);
     }
   }
 
@@ -453,7 +458,54 @@ async loadMap() {
 
   Templistings: Listing[] = [];
 
-  async searchProperties() {
+  async searchProperties(nextPage?: boolean, previousPage?: boolean) {
+    if(!this.searchQuery){
+      const toast = await this.toastController.create({
+        message: 'Please enter an area for us to search in',
+        duration: 3000, // Duration in milliseconds
+        color: 'danger', // Use 'danger' to display in red
+        position: 'top' // Position of the toast: 'top', 'middle', 'bottom'
+      });
+      toast.present();
+      setTimeout(() => { 
+        this.searching = false;
+        document.getElementById("searchButton")?.setAttribute("disabled", "false")
+        // document.getElementById("nextPage")?.setAttribute("disabled", "false")
+        // // if(this.currentPage > 0)
+        //   document.getElementById("prevPage")?.setAttribute("disabled", "false")
+      }, 1500)
+      return;
+    }
+    const tempSearchQuery = this.searchQuery.replace(", South Africa", '');
+    const areaBounds = this.searchQuery?  await this.gmapsService.geocodeAddress(this.searchQuery) : null;
+    if (!areaBounds) {
+      // TODO Error message
+      return;
+    }
+
+    this.listings = [];
+    if (!nextPage && !previousPage) {
+      this.currentPage = 0;
+      this.allListings = [];
+    }
+
+    if (previousPage) {
+      if (this.currentPage > 0) {
+        this.currentPage--;
+        this.listings = this.allListings.slice(this.currentPage * 5, this.currentPage * 5 + 5);
+      }
+      return;
+    }
+    if (nextPage) {
+      if (this.currentPage * 5 + 5 < this.allListings.length) {
+        this.currentPage++;
+        this.listings = this.allListings.slice(this.currentPage * 5, this.currentPage * 5 + 5);
+        return;
+      }
+    }
+
+    // document.getElementById("nextPage")?.setAttribute("disabled", "true")
+    // document.getElementById("prevPage")?.setAttribute("disabled", "true")
     document.getElementById("searchButton")?.setAttribute("disabled", "true")
     this.buyCount = 0
     this.rentCount = 0;
@@ -461,8 +513,9 @@ async loadMap() {
     // this.listings = await this.listingServices.getApprovedListings();
 
     if(this.isMobile)this.searchQuery = (document.getElementById("address1") as HTMLInputElement).value;
-    else this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
 
+    else this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
+    
     const request = {
       env_type : this.env_type ? this.env_type : null,
       prop_type : this.prop_type ? this.prop_type : null,
@@ -475,18 +528,29 @@ async loadMap() {
       price_min : this.property_price_values.lower ? this.property_price_values.lower : null,
       price_max : this.property_price_values.upper ? this.property_price_values.upper : null,
       areaScore : this.areaScore? this.areaScore : null,
-      totalAreaScore : this.totalAreaScore? this.totalAreaScore : null
-    } as GetFilteredListingsRequest
+      totalAreaScore : this.totalAreaScore? this.totalAreaScore : null,
+      let_sell : this.activeTab ? this.activeTab : null,
+      addressViewport: {
+        ne: {
+          lat: areaBounds.geometry.viewport.getNorthEast().lat(),
+          lng: areaBounds.geometry.viewport.getNorthEast().lng(),
+        },
+        sw: {
+          lat: areaBounds.geometry.viewport.getSouthWest().lat(),
+          lng: areaBounds.geometry.viewport.getSouthWest().lng(),
+        },
+      }
+    } as GetFilteredListingsRequest;
+    if(nextPage && this.allListings.length > 0) {
+      request.lastListingId = this.allListings[this.allListings.length - 1].listing_id;
+    }
     const response = (await this.listingServices.getFilteredListings(request));
-    this.allListings = [];
-
-
     if(!response.listings.length){
       const toast = await this.toastController.create({
         message: 'No listings returned',
-        duration: 3000, // Duration in milliseconds
-        color: 'danger', // Use 'danger' to display in red
-        position: 'bottom' // Position of the toast: 'top', 'middle', 'bottom'
+        duration: 3000,
+        color: 'danger',
+        position: 'bottom'
       });
       toast.present();
       setTimeout(() => { 
@@ -495,32 +559,12 @@ async loadMap() {
       }, 1500)
       return;
     }
-      
-    const areaBounds = this.searchQuery?  await this.gmapsService.geocodeAddress(this.searchQuery) : null;
-    if (areaBounds) {
-      for(const listing of response.listings){
-        const isInArea = await this.gmapsService.checkAddressInArea(areaBounds.geometry.viewport, listing.geometry)
-        if(isInArea){
-          this.allListings.push(listing);
-          if(listing.let_sell == "Sell"){
-            this.buyCount++;
-          }
-          else if(listing.let_sell == "Rent"){
-            this.rentCount++;
-          }
-        }
-      }
-    } else {
-      this.allListings = response.listings;
-      for(const list of response.listings){
-        if(list.let_sell == "Sell"){
-          this.buyCount++;
-        }
-        else if(list.let_sell == "Rent"){
-          this.rentCount++;
-        }
-      }
-    }
+    // this.allListings = [];
+    this.allListings = this.allListings.concat(response.listings);
+    if (nextPage) this.currentPage++;
+    this.listings = this.allListings.slice(this.currentPage * 5, this.currentPage * 5 + 5);
+    
+    const temp = [];
 
     if(this.allListings){
       //Recommendation algo
@@ -546,38 +590,49 @@ async loadMap() {
         if(list.property_size < this.smallestProp){
           this.smallestProp = list.property_size;
         }
-        if (window.location.hostname.includes("localhost"))
-          console.log(list.characteristics);
-        this.recommends.push({
-          listingID: list.listing_id,
-          recommended: await this.listingServices.recommender(
-            list.characteristics, 
-            this.userInterestVector
-            )
-          })
+        
+        if(await this.listingServices.recommender(
+          list.characteristics, 
+          this.userInterestVector
+        )){
+          this.recommends.push({
+            listingID: list.listing_id,
+            recommended: true})
+          temp.unshift(list);
+        }
+        else{
+          this.recommends.push({
+            listingID: list.listing_id,
+            recommended: false})
+          temp.push(list);
+        }
       }
-      
-      if (window.location.hostname.includes("localhost"))
-        console.warn(this.recommends);
 
-      this.filterProperties();
-      await this.loadMap();
-      await this.addMarkersToMap();
-      await this.setCentre();
+      // this.allListings = temp;
 
-      this.property_price_values.upper = this.highestPrice;
-      this.property_price_values.lower = this.lowestPrice;
-      this.rangeSteps = (this.highestPrice - this.lowestPrice)/10;
+      for(let listing of this.allListings){
+        if(listing.listing_id){
+          this.cardView.set(listing.listing_id, false)
+        }
+      }
 
-      this.property_size_values.upper = this.largestProp;
-      this.property_size_values.lower = this.smallestProp;
-      this.propSizeRangeSteps = (this.largestProp - this.smallestProp)/10;
+      // this.filterProperties();
+      // await this.loadMap();
+      // await this.addMarkersToMap();
+      // await this.setCentre();
+
+      // this.property_price_values.upper = this.highestPrice;
+      // this.property_price_values.lower = this.lowestPrice;
+      // this.rangeSteps = (this.highestPrice - this.lowestPrice)/10;
+
+      // this.property_size_values.upper = this.largestProp;
+      // this.property_size_values.lower = this.smallestProp;
+      // this.propSizeRangeSteps = (this.largestProp - this.smallestProp)/10;
 
       setTimeout(() => { 
         this.searching = false;
         document.getElementById("searchButton")?.setAttribute("disabled", "false")
       }, 1500)
-      // await this.addMarkersToMap();
     }
   }
 
@@ -645,7 +700,7 @@ addMMarker(listing: Listing) {
     this.features = [];
     this.searchQuery = "";
 
-    this.searchProperties();
+    // this.searchProperties();
 }
 
   get filteredBuyingProperties(): Listing[] {
@@ -831,6 +886,12 @@ dropDown(){
 
   formatNumber(num: number): string {
     return num.toString().split('').reverse().join('').replace(/(\d{3})(?=\d)/g, '\$1 ').split('').reverse().join('');
+  }
+
+  changeView(listingId : string){
+    if(listingId){
+      this.cardView.set(listingId, !this.cardView.get(listingId));
+    }
   }
   
 }

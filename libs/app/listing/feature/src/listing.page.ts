@@ -54,6 +54,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
   googleMaps: any;
 
   private marker:any;
+  saved = false;
   price_per_sm = "";
   lister_name = "";
   avgEnagement = "";
@@ -72,6 +73,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
     "November",
     "December"
   ];
+  changingSaved = false;
 
   isRed = false;
   showData = false;
@@ -162,16 +164,12 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
 
         this.userProfile$.subscribe((profile) => {
           this.userProfile = profile;
-          this.isRed = this.isSaved(this.listingId);
+          this.saved = this.userProfile?.savedListings?.includes(this.listingId) ?? false;
+          // this.isRed = this.saved;
           if (profile && this.list && this.userProfile?.userId == this.list?.user_id) {
             this.ownerViewing$ = of(true);
             this.profilePic = this.userProfile?.profilePicture ?? "";
           }
-        });
-
-        // when the window is unloaded
-        this.userProfileListener$.subscribe((listener) => {
-          this.userProfileListener = listener;
         });
 
         if (this.list?.geometry && this.list?.status == StatusEnum.ON_MARKET) {
@@ -182,12 +180,6 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
           this.setWaterScore();
         }
       });
-    });
-
-    // Update listener whenever is changes such that it can be unsubscribed from
-    // when the window is unloaded
-    this.userProfileListener$.subscribe((listener) => {
-      this.userProfileListener = listener;
     });
 
     setTimeout(async () => {
@@ -367,7 +359,6 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
   
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    if (window.location.hostname.includes("localhost")) console.log(event);
     this.isMobile = window.innerWidth <= 576;
   }
 
@@ -422,7 +413,6 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
       pageViews.push(i.pageView);
     }
 
-    // console.log(obj)
 
     const data = {
       labels: dates,
@@ -451,18 +441,12 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
         type: 'line',
         data: data,
       });
-
-      // TODO proper error handling
-      if (chart) {
-        console.log("Chart created")
-      }
     }
     const avgPerUser = totEngagement / totUsers;
     const minutes = Math.floor(avgPerUser / 60);
     const seconds = (avgPerUser - minutes * 60).toPrecision(2);
 
     this.avgEnagement = seconds ? minutes + " min " + seconds + " sec" : "There is no data to show yet";
-    // console.log(this.avgEnagement)
     this.showData = true;
     const element = document.querySelector(".graph") as HTMLElement;
     loader.style.display = "none";
@@ -515,17 +499,14 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
           lat: geocodeResult.geometry.location.lat() ?? 0,
           lng: geocodeResult.geometry.location.lng() ?? 0
         }
-        if (runningLocally) console.log(this.list.geometry);
       }
       if ((this.list.status == StatusEnum.PENDING_APPROVAL || this.list.status == StatusEnum.EDITED) && approved) {
-        if (runningLocally) console.log("Getting scores");
         
         crimeScore = this.list.areaScore.crimeScore;
         if (!crimeScore) {
           const score = await this.getCrimeScore();
           scoresCalculated.crimeScore = score > -1;
           crimeScore = Math.max(this.list.areaScore.crimeScore, score);
-          if (runningLocally) console.log("crimeScore: ", score);
         }
         // schoolScore = this.list.areaScore.schoolScore ? this.list.areaScore.schoolScore: await this.getSchoolRating(this.list.geometry);
         schoolScore = this.list.areaScore.schoolScore;
@@ -533,7 +514,6 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
           const score = await this.getSchoolRating(this.list.geometry);
           scoresCalculated.schoolScore = score > -1;
           schoolScore = Math.max(this.list.areaScore.schoolScore, score);
-          if (runningLocally) console.log("schoolScore: ", score);
         }
         // waterScore = this.list.areaScore.waterScore ? this.list.areaScore.waterScore: await this.getWaterScore();
         waterScore = this.list.areaScore.waterScore;
@@ -541,7 +521,6 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
           const score = await this.getWaterScore();
           scoresCalculated.waterScore = score > -1;
           waterScore = Math.max(this.list.areaScore.waterScore, score);
-          if (runningLocally) console.log("waterScore: ", score);
         }
         // sanitationScore = this.list.areaScore.sanitationScore ? this.list.areaScore.sanitationScore: await this.getSanitationScore();
         sanitationScore = this.list.areaScore.sanitationScore;
@@ -549,7 +528,6 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
           const score = await this.getSanitationScore();
           scoresCalculated.sanitationScore = score > -1;
           sanitationScore = Math.max(this.list.areaScore.sanitationScore, score);
-          if (runningLocally) console.log("sanitationScore: ", score);
         }
       }
 
@@ -565,7 +543,10 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
         && (sanitationScore || scoresCalculated.sanitationScore)
       ) {
         // return;
-        result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, crimeScore, waterScore, sanitationScore, schoolScore);
+        result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, 
+        StatusEnum.ON_MARKET, 
+        crimeScore, waterScore, 
+        sanitationScore, schoolScore);
       }
       else if ((this.list.status == StatusEnum.PENDING_APPROVAL || StatusEnum.EDITED) && approved) {
         result = await this.listingServices.changeStatus("" + this.list.listing_id, this.adminId, StatusEnum.ON_MARKET, 0, 0, 0, 0);
@@ -597,7 +578,6 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
         toast.present();
         return;
       }
-      if (runningLocally) console.log(result);
 
       setTimeout(async () => {
         this.loading = false;
@@ -605,7 +585,12 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
 
       // this.loading = false;
       if (result.success) {
-        this.router.navigate(['/admin']);
+        this.router.navigateByUrl('/admin').then(() => {
+          // Add a small delay to allow the URL to change before reloading
+          setTimeout(() => {
+            window.location.reload();
+          }, 100);
+        });
         this.successfulChange.message = (approved? "Approval" : "Rejection") + this.successfulChange.message;
         const toast = await this.toastController.create(this.successfulChange);
         toast.present();
@@ -775,7 +760,6 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
   }
 
   goNext(event: Event) {
-    if (window.location.hostname.includes("localhost")) console.log(event);
     if (this.swiperRef) {
       this.swiperRef.nativeElement.swiper.slideNext();
     }
@@ -811,14 +795,16 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
     this.minGrossMonthlyIncome = this.monthlyPayment * 3; // Assuming minimum income requirement is 3 times the monthly payment
   }
 
-  toggleColor() {
-    if (this.isRed)
-      this.unsaveListing();
+  async toggleColor() {
+    this.changingSaved = true;
+    if (this.saved)
+      await this.unsaveListing();
     else
-      this.saveListing();
+      await this.saveListing();
 
+    this.changingSaved = false;
 
-    this.isRed = !this.isRed;
+    // this.isRed = !this.isRed;
   }
 
   isSaved(listing_id: string) {
@@ -833,34 +819,30 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
     return false;
   }
 
-  saveListing() {
-    if (!this.isSaved(this.listingId)) {
-      if (this.userProfile) {
-        if (this.userProfile.savedListings) {
-          this.userProfile.savedListings.push(this.listingId);
-        }
-        else {
-          this.userProfile.savedListings = [this.listingId];
-        }
-
-        this.profileServices.updateUserProfile(this.userProfile);
-
-        if (this.list && this.list.characteristics) {
-          this.profileServices.updateInterests(this.list.characteristics, this.userProfile.userId);
-        }
-
-
+  async saveListing() {
+    if (this.userProfile && !this.userProfile.savedListings?.includes(this.listingId)) {
+      this.userProfile.savedListings = this.userProfile.savedListings ?? [];
+      this.userProfile.savedListings.push(this.listingId);
+      
+      if (this.list && this.list.characteristics) {
+        await this.profileServices.updateInterests(this.list.characteristics, this.userProfile);
       }
+      else {
+        await this.profileServices.updateUserProfile(this.userProfile);
+      }
+
+
     }
+    
   }
 
-  unsaveListing() {
-    if (this.isSaved(this.listingId)) {
+  async unsaveListing() {
+    if (this.saved) {
       if (this.userProfile) {
         if (this.userProfile.savedListings) {
           this.userProfile.savedListings.splice(this.userProfile.savedListings.indexOf(this.listingId), 1);
         }
-        this.profileServices.updateUserProfile(this.userProfile);
+        await this.profileServices.updateUserProfile(this.userProfile);
       }
     }
   }
@@ -938,7 +920,6 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
   qrGenerated = false;
   generateQRCode() {
     const QRCode = require('qrcode')
-    console.log("Testing ti")
     const qrCodeCanvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
     console.log("for example ", qrCodeCanvas);
     if (qrCodeCanvas) {
@@ -959,7 +940,6 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
 
     if (canvas) {
       const dataURL = canvas.toDataURL("image/png");
-      // console.log(dataURL);
 
       const a = document.createElement('a');
       a.href = dataURL
