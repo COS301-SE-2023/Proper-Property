@@ -255,6 +255,7 @@ export class SearchPage implements OnDestroy, AfterViewInit {
     const addressInput = document.getElementById(inputElementId) as HTMLInputElement;
     if (this.searchQuery!='') {
       addressInput.value = this.searchQuery;
+      this.searchProperties();
     }
     // this.listings = await this.listingServices.getApprovedListings();
     // this.allListings = this.listings;
