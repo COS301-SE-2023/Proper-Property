@@ -8,7 +8,7 @@
       <ion-row id="searchBar" style="width: 100%;">
         <ion-col size="10" class="search-filter-col">
           <ion-input type="text" (ionInput)="handleInputChange($event)" id="address" class="address"
-            [(ngModel)]="searchQuery" placeholder="Search in an area">
+            [(ngModel)]="searchQuery" placeholder="Search for area">
             <ion-icon id="address-search-icon" name="search-outline" *ngIf="!searchLoading"></ion-icon>
             <ion-spinner id="search-spinner" name="crescent" color="primary" *ngIf="searchLoading"></ion-spinner>
         </ion-input>
@@ -54,20 +54,20 @@
                     <ion-label class="filter-text">Minimum Price</ion-label>
                     <select class="dropdown" style="width: 40%" [(ngModel)]="property_price_values.lower">
                       <option value="0">R0</option>
-                      <option value="1000">R1K</option>
-                      <option value="10000">R10K</option>
                       <option value="100000">R100K</option>
+                      <option value="150000">R150K</option>
+                      <option value="200000">R200K</option>
+                      <option value="300000">R300k</option>
+                      <option value="400000">R400k</option>
+                      <option value="500000">R500k</option>
                       <option value="1000000">R1M</option>
+                      <option value="2000000">R2M</option>
+                      <option value="3000000">R3M</option>
+                      <option value="4000000">R4M</option>
+                      <option value="5000000">R5M</option>
                       <option value="10000000">R10M</option>
+                      <option value="15000000">R15M</option>
                       <option value="20000000">R20M</option>
-                      <option value="30000000">R30M</option>
-                      <option value="40000000">R40M</option>
-                      <option value="50000000">R50M</option>
-                      <option value="60000000">R60M</option>
-                      <option value="70000000">R70M</option>
-                      <option value="80000000">R80M</option>
-                      <option value="90000000">R90M</option>
-                      <option value="99999999">R100M</option>
                     </select>
                   </ion-item>
                 </ion-col>
@@ -76,20 +76,20 @@
                     <ion-label class="filter-text">Maximum Price</ion-label>
                     <select class="dropdown" style="width: 40%" [(ngModel)]="property_price_values.upper">
                       <option value="0">R0</option>
-                      <option value="1000">R1K</option>
-                      <option value="10000">R10K</option>
                       <option value="100000">R100K</option>
+                      <option value="150000">R150K</option>
+                      <option value="200000">R200K</option>
+                      <option value="300000">R300k</option>
+                      <option value="400000">R400k</option>
+                      <option value="500000">R500k</option>
                       <option value="1000000">R1M</option>
+                      <option value="2000000">R2M</option>
+                      <option value="3000000">R3M</option>
+                      <option value="4000000">R4M</option>
+                      <option value="5000000">R5M</option>
                       <option value="10000000">R10M</option>
+                      <option value="15000000">R15M</option>
                       <option value="20000000">R20M</option>
-                      <option value="30000000">R30M</option>
-                      <option value="40000000">R40M</option>
-                      <option value="50000000">R50M</option>
-                      <option value="60000000">R60M</option>
-                      <option value="70000000">R70M</option>
-                      <option value="80000000">R80M</option>
-                      <option value="90000000">R90M</option>
-                      <option value="99999999">R100M</option>
                     </select>
                   </ion-item>
 
@@ -361,10 +361,10 @@
           </ng-container>
           <ng-template #listingsLoaded>
             <ng-container *ngIf="listings.length == 0; else foundListings">
-              <div style="display: flex; justify-content: space-between; font-weight: 500">
+              <!-- <div style="display: flex; justify-content: space-between; font-weight: 500">
                 <p>Enter a search query to begin your search</p>
                 <ion-icon style="font-size: 24; padding-left: 10px;" name="search-outline"></ion-icon>
-              </div>
+              </div> -->
             </ng-container> 
             <ng-template #foundListings>
               <div class="lists" id="lists">
@@ -528,10 +528,10 @@
       <ion-grid>
         <ion-row style="display: flex; justify-content: center">
           <ion-col size="2" class="pageButtonCol">
-            <ion-button [disabled]="currentPage === 0 || searching" (click)="searchProperties(false, true)" id="prevPage" class="pageButton">Previous Page</ion-button>
+            <ion-button *ngIf="listings.length > 5" [disabled]="currentPage === 0 || searching" (click)="searchProperties(false, true)" id="prevPage" class="pageButton">Previous Page</ion-button>
           </ion-col>
           <ion-col size="2" class="pageButtonCol">
-            <ion-button [disabled]="listings.length < 5 || searching" (click)="searchProperties(true, false)" class="pageButton" id="nextPage">Next Page</ion-button>
+            <ion-button *ngIf="listings.length > 5" [disabled]="listings.length < 5 || searching" (click)="searchProperties(true, false)" class="pageButton" id="nextPage">Next Page</ion-button>
           </ion-col>
         </ion-row>
         <ion-item>
