@@ -132,19 +132,6 @@ h3
   background: transparent;
 }
 
-.logOut:hover
-{
-  background: orange;
-  ion-label
-  {
-    color: black;
-  }
-}
-
-.delete-account-button:hover{
-  color: white;
-  background: #eb445a;
-}
 
 .but1
 {
@@ -210,9 +197,16 @@ h2
   position: absolute;
   width: 100%;
   --background: transparent;
-  color: #eb445a;
-  border: 3px solid #eb445a;
+  color: var(--ion-color-primary);
+  // color: #eb445a;
+  // border: 3px solid #eb445a;
 }
+
+.danger {
+  color: red !important;
+}
+
+
 
 
 ion-item {
