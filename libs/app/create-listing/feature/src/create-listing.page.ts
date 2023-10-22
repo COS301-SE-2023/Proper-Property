@@ -469,8 +469,8 @@ export class CreateListingPage {
       const response = await this.openAIService.getHeadingAndDesc("Give me a description of a property with the following information: \n" + info
         + "Be as descriptive as possible such that I would want to buy the house after reading the description")
 
-      this.description = response.description;
-      this.heading = response.head;
+      this.description = response.description.slice(1).trim();
+      this.heading = response.head.trim();
     }
 
     this.descriptionLoading = false;
@@ -651,7 +651,8 @@ export class CreateListingPage {
       }
       loader.style.opacity = "0";
       property.style.opacity = "1";
-      this.router.navigate(['/home']);
+      window.location.reload();
+      // this.router.navigate(['/home']);
     }
     else {
       console.log("Error in create-lisitng.page.ts - there is no current user");
