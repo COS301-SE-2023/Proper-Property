@@ -90,7 +90,7 @@ export class SearchPage implements OnDestroy, AfterViewInit {
   public smallestProp = 99999999;
   public largestProp = 0;
   cardView = new Map();
-
+  searched = false;
   recommendationMinimum = 100000;
 
 
@@ -199,6 +199,7 @@ export class SearchPage implements OnDestroy, AfterViewInit {
     // this.predictions = this.gmapsService.regionPredictions;
     // if timeout is already set, reset remaining duration
     clearTimeout(this.timeout);
+    this.searched = false;
     if (this.searchQuery.length == 0) {
       this.searchLoading = false;
       this.predictions = [];
@@ -469,8 +470,9 @@ async loadMap() {
   }
 
   Templistings: Listing[] = [];
-
+  pageSize = 10;
   async searchProperties(nextPage?: boolean, previousPage?: boolean) {
+    this.searched = false;
     if(!this.searchQuery){
       const toast = await this.toastController.create({
         message: 'Please enter an area for us to search in',
@@ -503,14 +505,14 @@ async loadMap() {
     if (previousPage) {
       if (this.currentPage > 0) {
         this.currentPage--;
-        this.listings = this.allListings.slice(this.currentPage * 5, this.currentPage * 5 + 5);
+        this.listings = this.allListings.slice(this.currentPage * this.pageSize, this.currentPage * this.pageSize + this.pageSize);
       }
       return;
     }
     if (nextPage) {
-      if (this.currentPage * 5 + 5 < this.allListings.length) {
+      if (this.currentPage * this.pageSize + this.pageSize < this.allListings.length) {
         this.currentPage++;
-        this.listings = this.allListings.slice(this.currentPage * 5, this.currentPage * 5 + 5);
+        this.listings = this.allListings.slice(this.currentPage * this.pageSize, this.currentPage * this.pageSize + this.pageSize);
         return;
       }
     }
@@ -573,7 +575,7 @@ async loadMap() {
     // this.allListings = [];
     this.allListings = this.allListings.concat(response.listings);
     if (nextPage) this.currentPage++;
-    this.listings = this.allListings.slice(this.currentPage * 5, this.currentPage * 5 + 5);
+    this.listings = this.allListings.slice(this.currentPage * this.pageSize, this.currentPage * this.pageSize + this.pageSize);
     
     const temp = [];
 
@@ -642,6 +644,7 @@ async loadMap() {
 
       setTimeout(() => { 
         this.searching = false;
+        this.searched = true;
         document.getElementById("searchButton")?.setAttribute("disabled", "false")
       }, 1500)
     }

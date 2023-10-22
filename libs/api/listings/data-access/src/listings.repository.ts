@@ -39,7 +39,7 @@ export class ListingsRepository {
     let query: admin.firestore.Query;
 
     if(req.userId){
-      query = collection.where('user_id', '==', req.userId).limit(5);
+      query = collection.where('user_id', '==', req.userId);
     }
     else{
       query = collection.limit(10);
@@ -206,7 +206,7 @@ export class ListingsRepository {
 
     return {unapprovedListings : listings};
   }
-
+  pageSize = 10;
   async getFilteredListings(req: GetFilteredListingsRequest): Promise<GetFilteredListingsResponse>{
     try{
       const listingsCollection = admin.firestore().collection('listings');
@@ -244,13 +244,13 @@ export class ListingsRepository {
       }
       
       if (lastListingDoc?.exists) {
-        query = query.startAfter(lastListingDoc).limit(5);
+        query = query.startAfter(lastListingDoc).limit(this.pageSize);
       }
       let loopLimit = 0;
       // let lastListing: Listing | undefined = undefined;
       // let lastQualityRating = 0;
       let lastSnapshot: DocumentSnapshot | undefined = undefined 
-      while (response.listings.length < 5 && loopLimit < 25) {
+      while (response.listings.length < 10 && loopLimit < 25) {
         const queryData = await query.get();
         ++loopLimit;
         // queryData.forEach((docSnapshot) => {
@@ -302,12 +302,12 @@ export class ListingsRepository {
           }
 
           response.listings.push(data);
-          if(response.listings.length >= 5){
+          if(response.listings.length >= this.pageSize){
             return response;
           }
         }
         if (lastSnapshot)
-          query = query.startAfter(lastSnapshot).limit(5 - response.listings.length);
+          query = query.startAfter(lastSnapshot).limit(this.pageSize - response.listings.length);
       }
       return response;
     }

@@ -465,7 +465,7 @@
             </div>
           </ng-container>
           <ng-template #listingsLoaded>
-            <ng-container *ngIf="listings.length === 0 && searchQuery!==''; else foundListings">
+            <ng-container *ngIf="listings.length === 0 && searchQuery!=='' && searched; else foundListings">
               <div style="display: flex; justify-content: space-between; font-weight: 500">
                 <p>No Search Results Found in {{searchQuery}}</p>
               </div>
