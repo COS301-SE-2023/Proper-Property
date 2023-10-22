@@ -40,7 +40,7 @@
         </div>
         <div class="swiper-container-wrapper">
           <ion-buttons slot="start" class="swiper-button1" #one>
-            <ion-button style="height: 100px" (click)="goPrev()" #one>
+            <ion-button  *ngIf="list.photos.length>1" style="height: 100px" (click)="goPrev()" #one>
               <img src="assets/icon/arrow1.svg" #back alt="swiper-back"/>
             </ion-button>
           </ion-buttons>
@@ -52,12 +52,13 @@
             slides-per-view="1"
             class="swiper-container"
           >
-            <swiper-slide *ngFor="let picture of list.photos">
+            <swiper-slide *ngFor="let picture of list.photos"   class="uploaded-image">
               <img alt="img" src="{{picture}}"  onerror="this.src='assets/no-propertyfound.png'"/>
             </swiper-slide>
           </swiper-container>
           <ion-buttons slot="end" class="swiper-button2" #two>
             <ion-button
+            *ngIf="list.photos.length>1"
               id="next-button"
               style="height: 100px"
               (click)="goNext($event)"
@@ -350,7 +351,9 @@
                                     <div
                                       style="border-radius: 50%; border: 1px solid black; width: 100%; height: 100%; background-image: url({{profilePic}}); background-size: cover; background-position-x: center; background-position-y: center;"
                                       id="profilePic2"
-                                    ></div>
+                                    >
+                                    
+                                  </div>
                                   </ion-avatar>
                                 </ion-col>
                                 <ion-col style="border-left: 1px solid #0dae4f;">
@@ -442,7 +445,7 @@
               </ion-item>
 
               <ion-button
-                style="border-radius: 30px; width: 100%; margin: 0 auto"
+                style="width: 100%; margin: 0 auto"
                 (click)="calculateMortgage()"
                 >Calculate</ion-button
               >
@@ -915,7 +918,7 @@
               </ion-item>
   
               <ion-button
-                style="border-radius: 30px; width: 100%; margin: 0 auto"
+                style=" width: 100%; margin: 0 auto"
                 (click)="calculateMortgage()"
                 >Calculate</ion-button
               >

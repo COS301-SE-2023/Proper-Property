@@ -4,6 +4,9 @@
   align-items: center;
 }
 
+// .uploaded-image img {
+//   width: 100%;
+// }
 
 .swiper-container {
   position: relative;
@@ -110,7 +113,7 @@ swiper-slide {
 swiper-slide img {
   width: auto;
   height: 600px;
-  border-radius: 20px;
+  // border-radius: 20px;
   margin: auto;
   display: flex;
 }
@@ -381,7 +384,7 @@ ion-col {
   width: 100%;
   height: 13px;
   background-color: rgb(150, 150, 150);
-  border-radius: 5px;
+  // border-radius: 5px;
   margin-bottom: 5px;
 }
 
@@ -391,7 +394,7 @@ ion-col {
   left: 0;
   height: 100%;
   background-color: green;
-  border-radius: 5px;
+  // border-radius: 5px;
   transition: width 0.3s ease-in-out;
 }
 
@@ -405,7 +408,7 @@ ion-col {
   left: 0;
   height: 100%;
   background-color: red;
-  border-radius: 5px;
+  // border-radius: 5px;
   transition: width 0.3s ease-in-out;
 }
 
@@ -415,7 +418,7 @@ ion-col {
   left: 0;
   height: 100%;
   background-color: #ffcc00;
-  border-radius: 5px;
+  // border-radius: 5px;
   transition: width 0.3s ease-in-out;
 }
 
