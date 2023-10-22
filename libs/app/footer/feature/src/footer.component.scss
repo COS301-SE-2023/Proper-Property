@@ -38,9 +38,18 @@
     margin: 0 auto 10px;
   }
 }
-
+//border boxes
+* {
+  box-sizing: border-box;
+}
+// .hover-text{
+//   color: white;
+// }
 .hover-text:hover {
-  --color: white;
+  --background: white;
+  color: var(--ion-color-primary);
+  border: 2px solid var(--ion-color-primary);
+  border-radius: 4px;
 }
 
 .guideColumn{

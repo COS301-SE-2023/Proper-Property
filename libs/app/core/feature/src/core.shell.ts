@@ -81,7 +81,7 @@ export class CoreShellComponent implements OnInit, OnDestroy, AfterViewInit {
         destination = '/'
       }
       
-      if (!this.loggedIn && profile && (!profile.firstName || !profile.lastName)) {
+      if (!this.loggedIn && profile && (!profile.firstName || !profile.lastName) && this.router.url != '/profile') {
         destination = '/profile';
       }
       this.userProfile = profile;
