@@ -120,6 +120,19 @@ export class RegisterPage implements OnInit {
     });
   }
 
+  displayCheck()
+  {
+    document.getElementById("checkers")?.setAttribute("style", "display: block;");
+    document.getElementById("strength")?.setAttribute("style", "display: block;");
+  }
+
+  secondCheckConfirm()
+  {
+    this.passwordMatch =  (this.password === this.confirm_password)
+    document.getElementById("passMatch")?.setAttribute("style", "display: block;");
+    document.getElementById("checkers")?.setAttribute("style", "display: block;");
+    document.getElementById("strength")?.setAttribute("style", "display: none;");
+  }
   strengthScore = 0;
   isStrong = false;
   lowercase = false;
@@ -128,6 +141,7 @@ export class RegisterPage implements OnInit {
   specialchars = false;
   length = 0;
   checkStrength(){
+    this.displayCheck();
     this.passwordMatch =  (this.password === this.confirm_password)
       
     this.length = this.password.length;
