@@ -50,7 +50,7 @@ export class ListingsService {
     >(this.functions, 'createListing')(request)).data;
 
     if (response.status) {
-      this.uploadImages(response.message, list.photos);
+      await this.uploadImages(response.message, list.photos);
     }
   }
 
