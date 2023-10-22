@@ -373,7 +373,7 @@
                         </ng-template>
                       </ion-modal>
 
-                      <ion-modal class="contactDetails" (ionModalDidPresent)="setMapOpen(true)" [isOpen]="isMapModalOpen" backdropDismiss="false">
+                      <ion-modal class="contactDetails" (ionModalDidPresent)="setMapOpen(true)" [isOpen]="isMapModalOpen" (ionBackdropTap)="setMapOpen(false)" >
                         <ng-template>
                           <ion-header>
                             <ion-toolbar>
@@ -464,34 +464,9 @@
         </ion-grid>
       </div>
     </ng-template>
-
-    <ion-col>
-
-        <!-- <ng-template>
-          <ion-header>
-            <ion-toolbar>
-              <ion-title>Map View</ion-title>
-              <ion-buttons slot="end">
-                <ion-button (click)="setOpen(false)"
-                  >Close</ion-button
-                >
-              </ion-buttons>
-            </ion-toolbar>
-          </ion-header>
-          <ion-content class="ion-padding">
-            <ion-grid> -->
-              <!-- <ion-col>
-                
-                  <div class="map" id="map" #map></div>
-                
-              </ion-col>           -->
-            <!-- </ion-grid>
-          </ion-content>
-        </ng-template> -->
-    </ion-col>
-
-
+    <properproperty-footer></properproperty-footer>
   </ion-content>
+  
 </ion-template>
 
 <ion-template *ngIf="list&&isMobile">
