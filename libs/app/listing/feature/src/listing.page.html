@@ -40,7 +40,7 @@
         </div>
         <div class="swiper-container-wrapper">
           <ion-buttons slot="start" class="swiper-button1" #one>
-            <ion-button style="height: 100px" (click)="goPrev()" #one>
+            <ion-button  *ngIf="list.photos.length>1" style="height: 100px" (click)="goPrev()" #one>
               <img src="assets/icon/arrow1.svg" #back alt="swiper-back"/>
             </ion-button>
           </ion-buttons>
@@ -58,6 +58,7 @@
           </swiper-container>
           <ion-buttons slot="end" class="swiper-button2" #two>
             <ion-button
+            *ngIf="list.photos.length>1"
               id="next-button"
               style="height: 100px"
               (click)="goNext($event)"
