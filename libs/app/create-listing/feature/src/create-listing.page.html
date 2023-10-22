@@ -48,7 +48,7 @@
           </div>
           <div class="drag-drop-area" (click)="fileInput.click()">
             <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
-            <ion-label class="house-text">Click here or drag and drop images of your property<span class="required-indicator" *ngIf="!photos.length">*</span></ion-label>
+            <ion-label class="house-text">Click here to add an image of your property<span class="required-indicator" *ngIf="!photos.length">*</span></ion-label>
             
           </div>
         </ion-col>
@@ -129,7 +129,7 @@
           <ion-col width="6">
                 <ion-row class="dropdown">
                   <ion-col size="6" class="label-col">
-                    <ion-label class="house-text">Listing Price<span class="required-indicator"
+                    <ion-label class="house-text">Listing Price (ZAR)<span class="required-indicator"
                         *ngIf="!price">*</span></ion-label>
                   </ion-col>
                   <ion-col size="6" class="label-col">
@@ -406,7 +406,7 @@
           </div>
           <div class="drag-drop-area" (click)="fileInput.click()">
             <ion-icon name="add-circle-outline" class="icon-on-top"></ion-icon>
-            <ion-label class="imageText">Click here or drag and drop an image</ion-label>
+            <ion-label class="imageText">Click here to add an image</ion-label>
           </div>
         </ion-col>
       </ion-row>

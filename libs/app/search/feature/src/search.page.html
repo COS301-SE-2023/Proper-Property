@@ -213,20 +213,6 @@
 
                     <ion-col size="4">
                       <ion-item lines="none" class="filter">
-                        <ion-label class="filter-text">Parking</ion-label>
-                        <select class="dropdown" style="width: 40%"  [(ngModel)]="parking" (ionChange)="filterProperties()">
-                          <option value="null">Any</option>
-                          <option value="1">1+</option>
-                          <option value="2">2+</option>
-                          <option value="3">3+</option>
-                          <option value="4">4+</option>
-                          <option value="5">5+</option>
-                        </select>
-                      </ion-item>
-                    </ion-col>
-
-                    <ion-col size="4">
-                      <ion-item lines="none" class="filter">
                         <ion-label class="filter-text">Bedrooms</ion-label>
                         <select class="dropdown" style="width: 40%" [(ngModel)]="bed">
                           <option value="null">Any</option>
@@ -243,8 +229,33 @@
                     </ion-col>
 
                     
+                    <ion-col size="4">
+                      <ion-item lines="none" class="filter">
+                        <ion-label class="filter-text">Parking</ion-label>
+                        <select class="dropdown" style="width: 40%"  [(ngModel)]="parking" (ionChange)="filterProperties()">
+                          <option value="null">Any</option>
+                          <option value="1">1+</option>
+                          <option value="2">2+</option>
+                          <option value="3">3+</option>
+                          <option value="4">4+</option>
+                          <option value="5">5+</option>
+                        </select>
+                      </ion-item>
+                    </ion-col>
+                    
                   </ion-row>
                   <ion-row>
+
+                    <ion-col size="4">
+                      <ion-item lines="none" class="filter">
+                        <ion-label class="filter-text">Buy/Rent</ion-label>
+                        <select class="dropdown" style="width: 40%"  [(ngModel)]="activeTab" (ionChange)="changeTab()">
+                          <option value="Any">All</option>
+                          <option value="Sell">Buy</option>
+                          <option value="Rent">Rent</option>
+                        </select>
+                      </ion-item>
+                    </ion-col>
 
                     <ion-col size="4">
                       <ion-item lines="none" class="filter">
@@ -275,7 +286,9 @@
                         </select>
                       </ion-item>
                     </ion-col>
-
+                    
+                  </ion-row>
+                  <ion-row>
                     <ion-col size="4">
                       <ion-item lines="none" class="filter">
                         <ion-label class="filter-text">Water Score</ion-label>
@@ -293,9 +306,7 @@
                         </select>
                       </ion-item>
                     </ion-col>
-                    
-                  </ion-row>
-                  <ion-row>
+
                     <ion-col size="4">
                       <ion-item lines="none" class="filter">
                         <ion-label class="filter-text">Crime Score</ion-label>
@@ -331,6 +342,8 @@
                       </ion-item>
                     </ion-col>
 
+                  </ion-row>
+                  <ion-row>
                     <ion-col size="4">
                       <ion-item lines="none" class="filter">
                         <ion-label class="filter-text">School Score</ion-label>
@@ -345,19 +358,6 @@
                           <option value="70">>70%</option>
                           <option value="80">>80%</option>
                           <option value="90">>90%</option>
-                        </select>
-                      </ion-item>
-                    </ion-col>
-
-                  </ion-row>
-                  <ion-row>
-                    <ion-col size="4">
-                      <ion-item lines="none" class="filter">
-                        <ion-label class="filter-text">Sell/Let</ion-label>
-                        <select class="dropdown" style="width: 40%"  [(ngModel)]="activeTab" (ionChange)="changeTab()">
-                          <option value="Any">Any</option>
-                          <option value="Sell">Buy</option>
-                          <option value="Rent">Rent</option>
                         </select>
                       </ion-item>
                     </ion-col>
