@@ -805,10 +805,9 @@ checkErfRange(lower:boolean){
   changeTab(): void {
     // Reset the selected filters and search query when changing tabs
     this.prop_type = '';
-    this.price_min = 0;
-    this.price_max = 0;
-    this.bed = 0;
-    this.searchQuery = '';
+    this.property_price_values.lower = 0;
+    this.property_price_values.upper = 99999999;
+    this.bed = null;
     this.features = [];
     this.filterProperties();
   }
