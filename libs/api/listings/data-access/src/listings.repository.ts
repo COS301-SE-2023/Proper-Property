@@ -13,7 +13,8 @@ import { GetListingsRequest,
   GetUnapprovedListingsResponse,
   StatusEnum,
   GetFilteredListingsRequest,
-  GetFilteredListingsResponse
+  GetFilteredListingsResponse,
+  RentSell
 } from '@properproperty/api/listings/util';
 @Injectable()
 export class ListingsRepository {
@@ -208,27 +209,20 @@ export class ListingsRepository {
 
   async getFilteredListings(req: GetFilteredListingsRequest): Promise<GetFilteredListingsResponse>{
     try{
-      let query = admin
-        .firestore()
-        .collection('listings')
+      const listingsCollection = admin.firestore().collection('listings');
+      let query = listingsCollection
         .withConverter<Listing>({
           fromFirestore: (snapshot) => snapshot.data() as Listing,
           toFirestore: (listing: Listing) => listing
         })
         .where('status', '==', StatusEnum.ON_MARKET)
         .orderBy('quality_rating')
-        query.limit(12);
 
-      
+      let lastListingDoc: DocumentSnapshot | undefined = undefined;
       if (req.lastListingId) {
-        const lastListingDoc = (await admin
-          .firestore()
-          .collection('listings')
+        lastListingDoc = (await listingsCollection
           .doc(req.lastListingId)
           .get());
-        if (lastListingDoc.exists) {
-          query = query.startAfter(lastListingDoc);
-        }
       }
 
       if(req.prop_type){
@@ -238,60 +232,83 @@ export class ListingsRepository {
       if(req.features){
         query = query.where("features", "array-contains-any", req.features);
       }
-
+      if (req.let_sell && req.let_sell != RentSell.ANY) {
+        query = query.where("let_sell", "==", req.let_sell);
+      }
+      if(req.env_type){
+        query = query.where("env_type", "==", req.env_type);
+      }
       const response: GetFilteredListingsResponse = {
         status: true,
         listings: []
       }
-
+      
+      if (lastListingDoc?.exists) {
+        query = query.startAfter(lastListingDoc).limit(5);
+      }
       let loopLimit = 0;
       // let lastListing: Listing | undefined = undefined;
       // let lastQualityRating = 0;
       let lastSnapshot: DocumentSnapshot | undefined = undefined 
-      while (response.listings.length < 12 && loopLimit < 25) {
+      while (response.listings.length < 5 && loopLimit < 25) {
         const queryData = await query.get();
         ++loopLimit;
         // queryData.forEach((docSnapshot) => {
         for(const docSnapshot of queryData.docs){
           const data = docSnapshot.data();
-          if ( //double eww
-              (!req.bath || (req.bath && data.bath >= req.bath))
-            && (!req.bed || (req.bed && data.bed >= req.bed))
-            && (!req.parking || (req.parking && data.parking >= req.parking))
-            && (
-              (!req.price_min || (req.price_min && data.price >= req.price_min) )
-              && (!req.price_max || (req.price_max && data.price <= req.price_max)
-            )
-            && (
-              (!req.property_size_min || (req.property_size_min && data.property_size >= req.property_size_min ) )
-              && (!req.property_size_max || (req.property_size_max && data.property_size <= req.property_size_max ))
-            ))
-            && (
-              (!req.areaScore?.crimeScore || (req.areaScore.crimeScore && data.areaScore.crimeScore >= req.areaScore.crimeScore))
-              &&
-              (!req.areaScore?.waterScore || (req.areaScore.waterScore && data.areaScore.waterScore >= req.areaScore.waterScore))
-              &&
-              (!req.areaScore?.schoolScore || (req.areaScore.schoolScore && data.areaScore.schoolScore >= req.areaScore.schoolScore))
-              &&
-              (!req.areaScore?.sanitationScore || (req.areaScore.sanitationScore && data.areaScore.sanitationScore >= req.areaScore.sanitationScore))
-              &&
-              (!req.totalAreaScore || (req.totalAreaScore && (data.areaScore.waterScore + data.areaScore.schoolScore + data.areaScore.crimeScore + data.areaScore.sanitationScore)/4 >= req.totalAreaScore))
-            )
-          ){
-            // for (const listing of response.listings) {
-            //   if (listing.listing_id == data.listing_id) {
-            //     console.log("what");
-            //   }
-            // }
-            response.listings.push(data);
+          lastSnapshot = docSnapshot;
+          if (!data.geometry || !req.addressViewport) {
+            continue;
+          }
+          if(data.geometry.lat > req.addressViewport.ne.lat || data.geometry.lat < req.addressViewport.sw.lat
+          || data.geometry.lng > req.addressViewport.ne.lng || data.geometry.lng < req.addressViewport.sw.lng) {
+            continue;
+          }
+          if (req.bath && data.bath < req.bath) {
+            continue;
+          }
+          if (req.bed && data.bed < req.bed) {
+            continue;
+          }
+          if (req.parking && data.parking < req.parking) {
+            continue;
+          }
+          if ((req.price_min && data.price < req.price_min) ) {
+            continue;
+          }
+          if ((req.price_max && data.price > req.price_max)) {
+            continue;
+          }
+          if ((req.property_size_min && data.property_size < req.property_size_min ) ) {
+            continue;
+          }
+          if ((req.property_size_max && data.property_size > req.property_size_max )) {
+            continue;
+          }
+          if ((req.areaScore?.crimeScore && data.areaScore.crimeScore < req.areaScore.crimeScore)) {
+            continue;
+          }
+          if ((req.areaScore?.waterScore && data.areaScore.waterScore < req.areaScore.waterScore)) {
+            continue;
+          }
+          if ((req.areaScore?.schoolScore && data.areaScore.schoolScore < req.areaScore.schoolScore)) {
+            continue;
+          }
+          if ((req.areaScore?.sanitationScore && data.areaScore.sanitationScore < req.areaScore.sanitationScore)) {
+            continue;
+          }
+          if ((req.totalAreaScore && (data.areaScore.waterScore + data.areaScore.schoolScore + data.areaScore.crimeScore + data.areaScore.sanitationScore)/4 < req.totalAreaScore)) {
+            continue;
           }
 
-          lastSnapshot = docSnapshot;
+          response.listings.push(data);
+          if(response.listings.length >= 5){
+            return response;
+          }
         }
         if (lastSnapshot)
-          query = query.startAfter(lastSnapshot);
+          query = query.startAfter(lastSnapshot).limit(5 - response.listings.length);
       }
-    
       return response;
     }
     catch(e: any){

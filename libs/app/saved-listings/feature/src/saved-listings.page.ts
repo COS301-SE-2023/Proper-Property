@@ -64,11 +64,6 @@ export class SavedListingsPage implements OnInit {
           }
           this.savedListingsB = tempB;
           this.savedListingsR = tempR;
-          if (window.location.hostname.includes("localhost")) {
-            console.log(this.userProfile.savedListings);
-            console.log(this.savedListingsB);
-            console.log(this.savedListingsR);
-          }
             
         }
       }

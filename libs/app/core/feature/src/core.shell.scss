@@ -3,6 +3,14 @@ ion-content
   --background: rgb(255, 255, 255);
 }
 
+.navbar{
+  white-space: nowrap;
+}
+
+.logo{
+  margin-left: 30%;
+}
+
 #notifs{
   border: 1px solid rgb(13, 174, 79);
   background-color: rgb(255, 255, 255);
@@ -74,7 +82,7 @@ ion-button span{
 }
 
 ion-button span:nth-child(1){
-  top: -70%;
+  top: -10px;
   left: -150%;
   width: 100%;
   height: 2px;
@@ -91,7 +99,7 @@ ion-button:hover{
 }
 
 ion-button span:nth-child(3){
-  bottom: -70%;
+  bottom: -10px;
   right: -150%;
   width: 100%;
   height: 2px;

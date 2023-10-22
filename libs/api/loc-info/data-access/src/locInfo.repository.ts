@@ -422,13 +422,14 @@ export class LocInfoRepository {
       let wwqWSA = "";
 
       for(let wsa of saniWSAs){
-        if(wsa.toLowerCase().includes("" + req.district?.toLowerCase())){
+        if(wsa.toLowerCase().includes("" + req.district?.toLowerCase()) || req.district?.toLowerCase().toLowerCase().includes("" + wsa.toLowerCase())){
           saniWSA = wsa.toLowerCase();
         }
       }
 
       for(let wsa of wwqWSAs){
-        if(wsa.toLowerCase().includes("" + req.district?.toLowerCase())){
+        if(wsa.toLowerCase().includes("" + req.district?.toLowerCase())
+        || req.district?.toLowerCase().toLowerCase().includes("" + wsa.toLowerCase())){
           wwqWSA = wsa.toLowerCase();
         }
       }
@@ -523,19 +524,22 @@ export class LocInfoRepository {
       let qualityWSA = "";
       let reliabilityWSA = "";
       for(let wsa of accessWSAs){
-        if(wsa.toLowerCase().includes("" + req.district?.toLowerCase())){
+        if(wsa.toLowerCase().includes("" + req.district?.toLowerCase())
+        || req.district?.toLowerCase().toLowerCase().includes("" + wsa.toLowerCase())){
           accessWSA = wsa;
           break;
         }
       }
       for(let wsa of qualityWSAs){
-        if(wsa.toLowerCase().includes("" + req.district?.toLowerCase())){
+        if(wsa.toLowerCase().includes("" + req.district?.toLowerCase())
+        || req.district?.toLowerCase().toLowerCase().includes("" + wsa.toLowerCase())){
           qualityWSA = wsa;
           break;
         }
       }
       for(let wsa of reliabilityWSAs){
-        if(wsa.toLowerCase().includes("" + req.district?.toLowerCase())){
+        if(wsa.toLowerCase().includes("" + req.district?.toLowerCase())
+        || req.district?.toLowerCase().toLowerCase().includes("" + wsa.toLowerCase())){
           reliabilityWSA = wsa;
           break;
         }
