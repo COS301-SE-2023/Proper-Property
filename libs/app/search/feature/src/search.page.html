@@ -528,10 +528,10 @@
       <ion-grid>
         <ion-row style="display: flex; justify-content: center">
           <ion-col size="2" class="pageButtonCol">
-            <ion-button *ngIf="listings.length > 5" [disabled]="currentPage === 0 || searching" (click)="searchProperties(false, true)" id="prevPage" class="pageButton">Previous Page</ion-button>
+            <ion-button *ngIf="listings.length > 0" [disabled]="currentPage === 0 || searching" (click)="searchProperties(false, true)" id="prevPage" class="pageButton">Previous Page</ion-button>
           </ion-col>
           <ion-col size="2" class="pageButtonCol">
-            <ion-button *ngIf="listings.length > 5" [disabled]="listings.length < 5 || searching" (click)="searchProperties(true, false)" class="pageButton" id="nextPage">Next Page</ion-button>
+            <ion-button *ngIf="listings.length > 0" [disabled]="listings.length < 5 || searching" (click)="searchProperties(true, false)" class="pageButton" id="nextPage">Next Page</ion-button>
           </ion-col>
         </ion-row>
         <ion-item>
