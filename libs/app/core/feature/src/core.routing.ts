@@ -4,6 +4,8 @@ import { UserProfileState } from '@properproperty/app/profile/data-access';
 import { inject } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Router } from '@angular/router';
+import { redirectUnauthorizedTo, canActivate } from '@angular/fire/auth-guard';
+const authGuard = () => redirectUnauthorizedTo(['login']);
 export const profileCompletionGuard = (
   route: ActivatedRouteSnapshot, 
   state: RouterStateSnapshot
@@ -14,21 +16,22 @@ export const profileCompletionGuard = (
     console.log(state);
     console.log(profile);
   }
+  if (!profile 
+    && (state.url.includes('/create-listing')
+      || state.url.includes('/profile')
+      || state.url.includes('/my-listings')
+      || state.url.includes('/saved-listings')
+      || state.url.includes('/admin')
+    )
+  ) {
+    inject(Router).navigate(['/login']);
+    return false;
+  }
   if (profile && (!profile.firstName || !profile.lastName || !profile.phoneNumber || !profile.email)) {
 
     inject(Router).navigate(['/profile']);
     return false;
   } 
-  // if (!profile 
-  //   && (state.url.includes('/create-listing')
-  //     || state.url.includes('/profile')
-  //     || state.url.includes('/my-listings')
-  //     || state.url.includes('/saved-listings')
-  //   )
-  // ) {
-  //   inject(Router).navigate(['/login']);
-  //   return false;
-  // }
   return true;
 }
 const routes: Routes = [
@@ -39,7 +42,7 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    canActivate: [profileCompletionGuard],
+    // canActivate: [profileCompletionGuard],
     loadChildren: () => import('@properproperty/app/home/feature').then( m => m.HomePageModule)
   },
   {
@@ -52,6 +55,7 @@ const routes: Routes = [
   },
   {
     path: 'profile',
+    // canActivate: [profileCompletionGuard],
     loadChildren: () => import('@properproperty/app/profile/feature').then( m => m.ProfilePageModule)
   },
   {
@@ -96,15 +100,22 @@ const routes: Routes = [
   },
   {
     path: 'saved-listings',
+    canActivate: [profileCompletionGuard],
     loadChildren: () => import('@properproperty/app/saved-listings/feature').then( m => m.SavedListingsPageModule)
   },
   {
     path: 'my-listings',
+    canActivate: [profileCompletionGuard],
     loadChildren: () => import('@properproperty/app/my-listings/feature').then( m => m.MyListingsPageModule)
   },
   {
     path: 'admin',
+    canActivate: [profileCompletionGuard],
     loadChildren: () => import('@properproperty/app/admin/feature').then( m => m.AdminPageModule)
+  },
+  {
+    path: 'action',
+    loadChildren: () => import('@properproperty/app/email-action-page/feature').then( m => m.EmailActionModule)
   }
 
 

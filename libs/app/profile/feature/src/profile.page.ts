@@ -1,9 +1,9 @@
 
-import { Component, OnInit,HostListener } from '@angular/core';
+import { Component, OnInit,HostListener, ViewChild } from '@angular/core';
 import { UserProfileState, UserProfileService } from '@properproperty/app/profile/data-access';
 import { AuthService} from '@properproperty/app/auth/data-access';
 import { Logout } from '@properproperty/app/auth/util';
-import { AlertController, ToastController, ToastOptions } from '@ionic/angular';
+import { AlertController, IonModal, ToastController, ToastOptions } from '@ionic/angular';
 import { AuthState } from '@properproperty/app/auth/data-access';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
@@ -17,7 +17,7 @@ import { User } from 'firebase/auth';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
-
+  @ViewChild(IonModal) modal!: IonModal;
   isMobile:boolean;
   @Select(UserProfileState.userProfile) userProfile$!: Observable<UserProfile | null>;
   user: UserProfile | null = null;
@@ -36,6 +36,9 @@ export class ProfilePage implements OnInit {
   saveProfile = false;
   profileComplete = false;
   googleLogged = false;
+  currentPassword = "";
+  newPassword = "";
+  repeatNewPassword = "";
   // appPages = [
   //   { title: 'Saved Listings', url: '/saved-listings', icon: 'bookmark' },
   //   { title: 'My Listings', url: '/my-listings', icon: 'list' },
@@ -169,7 +172,7 @@ export class ProfilePage implements OnInit {
         };
       }
     });
-
+    if (window.location.hostname.includes('localhost')) console.log(this.userAuth);
     this.googleLogged = this.userAuth?.providerData?.[0].providerId != "password";
   }
 
@@ -312,5 +315,24 @@ export class ProfilePage implements OnInit {
       document.getElementById("profilePic2")?.setAttribute("style", "margin: 10px; border-radius: 50%; border: 1px solid black; width: 100px; height: 100px; background-image: url('" + this.profilePic + "'); background-size: cover; background-position-x: center; background-position-y: center;")
       this.saveProfile = false;
     }
+  }
+
+  async changePassword() {
+    if (!this.userAuth?.email) {
+      return;
+    }
+    this.authServices.forgotPassword(this.userAuth.email);
+    // this.toastController.create({
+    //   message: "Password updated successfully",
+    //   duration: 2000,
+    //   color: "success"
+    // }).then((toast) => {
+    //   toast.present();
+    // });
+    // this.closePasswordModal();
+  }
+
+  async closePasswordModal() {
+    this.modal.dismiss();
   }
 }
