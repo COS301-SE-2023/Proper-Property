@@ -187,38 +187,39 @@
             </ion-col>
             <ion-col>
               <ion-row>
-                <ion-card style="overflow-y: scroll" class="quarter-container">
+                <ion-card class="quarter-container">
                   <ion-card-header>
                     <div style="display:flex;">
-                    <div style="
-                    font-size: 25px;
-                    font-weight: 500;
-                    color: black;
-                    flex-grow:1;"Ï>Points of Interest
+                      <div style="
+                      font-size: 25px;
+                      font-weight: 500;
+                      color: black;
+                      flex-grow:1;">Points of Interest
+                      </div>
+                      <ion-button class="mapButton" (click)="mapView()" (click)="setMapOpen(true)">View Map<ion-icon style="margin-left:5%;" name="map-outline"></ion-icon></ion-button>
                     </div>
-                    <ion-button class="mapButton" (click)="mapView()" (click)="setMapOpen(true)">View Map<ion-icon style="margin-left:5%;" name="map-outline"></ion-icon></ion-button>
-                    </div>
-                    <ion-card-content>
-                      <ion-grid style="z-index: 1">
-                        <ion-row>
-                          <ion-col
-                            size="3"
-                            class="poi-card"
-                            *ngFor="let poi of pointsOfInterest; let i = index;"
-                          >
-                            <img
-                              [src]="poi.photo"
-                              alt="Place Photo"
-                              class="poi-photo"
-                              *ngIf="poi.photo"
-                            />
-                            <div class="text-small">{{ poi.name }}</div>
-                          </ion-col>
-                        </ion-row>
-                      </ion-grid>
-                    </ion-card-content>
                   </ion-card-header>
+                  <ion-card-content style="overflow-y: scroll; height: 150px;">
+                    <ion-grid style="z-index: 1">
+                      <ion-row>
+                        <ion-col
+                          size="3"
+                          class="poi-card"
+                          *ngFor="let poi of pointsOfInterest; let i = index;"
+                        >
+                          <img
+                            [src]="poi.photo"
+                            alt="Place Photo"
+                            class="poi-photo"
+                            *ngIf="poi.photo"
+                          />
+                          <div class="text-small">{{ poi.name }}</div>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-card-content>
                 </ion-card>
+                
               </ion-row>
               <ion-row>
                 <ion-card
@@ -668,7 +669,7 @@
                     <ion-grid style="z-index: 1">
                       <ion-row>
                         <ion-col
-                          size="3"
+                          size="4"
                           class="poi-card"
                           *ngFor="let poi of pointsOfInterest; let i = index;"
                         >
