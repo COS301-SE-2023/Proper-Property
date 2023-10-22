@@ -45,11 +45,15 @@
     background-size: contain;
   }
 
+  #full-grid > ion-row {
+    width: 900px !important;
+  }
+
   #add-photos {
     opacity: 0.6499999761581421;
     background: white;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    width: 80%;
+    // width: 80%;
     margin: auto;
   }
 
@@ -119,13 +123,21 @@
     opacity: 0.9300000071525574;
     background: white;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    width: 80%;
-    padding-left: 30%;
+    // width: 80%;
+    // padding-left: 30%;
     margin: auto;
-    margin-top: 2%;
-    padding: 2% 0% 2% 4%;
+    margin-top:20px;
+    // padding: 2% 4%;
+    ion-row {
+      width: 100%;
+    }
   }
-
+  #house-details > ion-row {
+    padding: 5px 20px;
+    ion-col {
+      padding: 5px;
+    }
+  }
   .icon-on-top {
     font-size: 32px;
     margin-bottom: 8px;
@@ -219,7 +231,6 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
-
   .prediction-button:hover {
     background-color: #e0e0e0;
   }
@@ -233,16 +244,25 @@
   }
 
   .prediction-result-list {
-    left: 0;
-    border-radius: 5px;
-    width: 92%;
+    left: 5px;
+    position: absolute;
+    background: white;
+    z-index: 100;
+    top: 100%;
+    border-radius: 2px;
+    border: 1px solid black;
+    width: 420px;
     padding: 0;
     background: rgba(0, 0, 0, 0);
     .prediction-result {
       cursor: pointer;
-      padding: 0 0;
-      border: 2px solid grey;
-      border-radius: 24px;
+      // padding: 0 0;
+      // border: 2px solid grey;
+      // border-radius: 24px;
+    }
+    .search-result-icon {
+      font-size: 24px;
+      margin-right: 10px;
     }
   }
 
@@ -332,13 +352,20 @@
     border: 1px solid #b1b1b1;
     background: #fff;
     height: 20px;
-    width: 90%;
+    // width: 90%;
     // margin-left: 3%;
     margin-bottom: 1%;
     --padding-start: 10px;
     margin-top: 2%;
+    margin-right: 0;
+    width: 420px;
   }
-
+  #address-spinner {
+    position: absolute;
+    font-size: 24px;
+    right: 13px;
+    top: 13px;
+  }
   #feat-in {
     border: 1.5px solid rgb(183, 183, 183);
     background: #fff;
@@ -358,7 +385,9 @@
   {
     cursor: pointer;
   }
-  
+  // .label-col {
+  //   align-self: center;
+  // }
   .house-text {
     color: rgb(0, 0, 0);
     font-size: 15px;
@@ -367,12 +396,24 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    // background-color: green;
+  }
+  #help-icon {
+    // position: absolute;
+    // top: 0;
+    // right: 0;
+    margin-top: -1px;
+    * {
+      margin: 0;
+      padding: 0;
+      height: 15px !important;
+    }
   }
 
-  .box-size
-  {
-    width: 86%;
-  }
+  // .box-size
+  // {
+  //   width: 86%;
+  // }
 
   .tooltip {
     position: relative;
@@ -419,7 +460,8 @@
   .dropdown {
 
     width: 100%;
-    margin-top: 2%;
+    // margin-top: 10px;
+    align-self: center;
   }
 
   .align
@@ -433,6 +475,7 @@
     font-weight: 400;
     background-color: transparent;
     border: none;
+    width: 100%;
   }
 
   #districtHelp + #districtHelpSpan {
@@ -805,6 +848,9 @@
 
 .digit-input {
   border: 1px solid rgb(183, 183, 183) !important;
+  height: 30px !important;
+  min-height: 30px;
   --padding-bottom: 5px;
   --padding-top: 5px;
+  --padding-start: 5px;
 }
