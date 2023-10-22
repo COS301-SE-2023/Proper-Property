@@ -52,7 +52,7 @@
             slides-per-view="1"
             class="swiper-container"
           >
-            <swiper-slide *ngFor="let picture of list.photos">
+            <swiper-slide *ngFor="let picture of list.photos"   class="uploaded-image">
               <img alt="img" src="{{picture}}"  onerror="this.src='assets/no-propertyfound.png'"/>
             </swiper-slide>
           </swiper-container>
