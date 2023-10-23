@@ -7,7 +7,10 @@
 // .uploaded-image img {
 //   width: 100%;
 // }
-
+// ion-button {
+//   --background: var(--ion-color-primary) !important;
+//   color: white;
+// }
 .swiper-container {
   position: relative;
   width: 80%;
@@ -483,7 +486,7 @@ ion-col {
 }
 
 .lister-row {
-  border: 2px solid #0DAE4F;
+  border: 2px solid var(--ion-color-primary);
   margin-top: 3%;
   // border-radius: 30px;
   padding: 5px;
@@ -570,10 +573,13 @@ ion-col {
 
 
 }
-
+.button2 {
+  color: white;
+}
 .mapButton {
   margin: 0;
-  --background: white;
+  color: white;
+  --background: var(--ion-color-primary);
 }
 
 

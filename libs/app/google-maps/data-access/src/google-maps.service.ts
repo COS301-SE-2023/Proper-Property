@@ -116,7 +116,13 @@ export class GmapsService {
     return new Promise<google.maps.GeocoderResult | null>((resolve, reject) => {
       geocoder.geocode({ address: address, bounds: zaBounds.results[0].geometry.bounds, componentRestrictions: {country: "South Africa"}}, (results, status) => {
         if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
+          try {
+            console.log(results);
             resolve(results[0]);
+          } catch (error) {
+            console.error(error);
+            reject('Failed to geocode the address');
+          }
         } else {
           console.error('geocodeAddress results: ', results);
           console.error('geocodeAddress Status: ', status)

@@ -31,7 +31,7 @@
 </ion-header>
 
 
-<ion-content [fullscreen]="true" *ngIf="!isMobile" class="Desktop" style="position: absolute; top: 13%;">
+<ion-content [fullscreen]="true" *ngIf="!isMobile" class="Desktop" style="margin-top: 120px">
   <div id="loader" #loader>
     <div id="approval-message">{{loadingMessage}}</div>
     <img src="assets/500.gif">
@@ -326,17 +326,19 @@
                 {{ amenity }}
               </ion-item>
             </ion-list>
-            <ion-item lines="none" class="ion-container" *ngFor="let feat of features,; let i = index">
-              <ion-label>
-                <ion-chip color="black">
-                  &nbsp;
-                  {{feat}}
-                  &nbsp;
-                  <ion-icon name="close-circle" (click)="removeFeature(i)"></ion-icon>
-                  <ion-icon name="close" slot="end"></ion-icon>
-                </ion-chip>
-              </ion-label>
-            </ion-item>
+            <ion-list style="height: 290px;; overflow-y: scroll">
+              <ion-item lines="none" class="ion-container" *ngFor="let feat of features,; let i = index">
+                <ion-label>
+                  <ion-chip color="black">
+                    &nbsp;
+                    {{feat}}
+                    &nbsp;
+                    <ion-icon name="close-circle" (click)="removeFeature(i)"></ion-icon>
+                    <ion-icon name="close" slot="end"></ion-icon>
+                  </ion-chip>
+                </ion-label>
+              </ion-item>
+            </ion-list>
           </ion-col>
           <ion-col size="6">
               <ion-row>
@@ -354,7 +356,7 @@
                         class="search-icon"></ion-spinner></ion-button>
                   </ng-container>
                   <ng-template #generateButton>
-                    <ion-button (click)="generateDesc()">AI Generated Description</ion-button>
+                    <ion-button (click)="generateDesc()" style="z-index:20; position: relative">AI Generated Description</ion-button>
                   </ng-template>
                 </ion-col>
               </ion-row>

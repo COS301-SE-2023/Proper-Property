@@ -130,11 +130,26 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
 
       await this.listingServices.getListing(list_id).then((list) => {
         this.list = list;
-      }).then(() => {
+        this.gmapsService.getGeocoder().then((geocoder) => {
+          console.log("hey");
+          geocoder.geocode({ address: this.list?.address }, (results: any, status: any) => {
+            console.log("listen");
+            if (status === 'OK') {
+              console.log({lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()});
+              // this.list?.geometry.lat = results[0].geometry.location.lat();
+              // this.list?.geometry.lng = results[0].geometry.location.lng();
+            }
+            else {
+              console.log('Geocode was not successful for the following reason: ' + status);
+            }
+          });
+        }
+      ).then(() => {
         if (admin) {
           this.admin = true;
           this.adminId = admin;
         }
+      });
 
 
         // TODO
@@ -586,12 +601,16 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
 
       // this.loading = false;
       if (result.success) {
-        this.router.navigateByUrl('/admin').then(() => {
+        // this.router.navigateByUrl('/admin').then(() => {
           // Add a small delay to allow the URL to change before reloading
           setTimeout(() => {
             window.location.reload();
+            //sleep for 1 sec
+            new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
+              this.router.navigate(['/admin']);
+            });
           }, 100);
-        });
+        // });
         this.successfulChange.message = (approved? "Approval" : "Rejection") + this.successfulChange.message;
         const toast = await this.toastController.create(this.successfulChange);
         toast.present();

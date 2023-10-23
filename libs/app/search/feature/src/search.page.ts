@@ -64,22 +64,27 @@ export class SearchPage implements OnDestroy, AfterViewInit {
   public activeTab = 'Any';
   public searchQuery = '';
   public searching = false;
-  public env_type : string | null = null;
-  public prop_type : string | null = null;
+  public env_type = "null";
+  public prop_type = "null";
   public let_sell : string | null = null;
-  public price_min : number | null = null;
-  public price_max : number | null = null;
+  public price_min = '0';
+  public price_max = '99999999';
   public prop_size_min : number | null = null;
   public prop_size_max : number | null = null; 
-  public bed : number | null = null;
+  public bed = '0';
   public showAdditionalFilters = false;
-  public bath : number | null = null;
-  public parking : number | null = null;
+  public bath = '0';
+  public parking = '0';
   public features: string[] = [];
-  public areaScore : Partial<areaScore> = {};
+  public areaScore = {
+    crimeScore: '0',
+    schoolScore: '0',
+    waterScore: '0',
+    sanitationScore: '0'
+  };
   public totalAreaScore : number | null = null;
-  public property_size_values: {lower: number, upper: number} = {lower: 0, upper: 99999999};
-  public property_price_values: {lower: number, upper: number} = {lower: 0, upper: 99999999};
+  public property_size_values: {lower: string, upper: string} = {lower: '0', upper: '99999999'};
+  // public property_price_values: {lower: number, upper: number} = {lower: '0', upper: '99999999'};
   private profile: UserProfile | null = null;  
   public recommends: Recommend[]=[];
   userInterestVector: number[]=[];
@@ -146,10 +151,10 @@ export class SearchPage implements OnDestroy, AfterViewInit {
     private storage: Storage
     ) {
       this.areaScore = {
-        crimeScore: 0,
-        schoolScore: 0,
-        waterScore: 0,
-        sanitationScore: 0
+        crimeScore: '0',
+        schoolScore: '0',
+        waterScore: '0',
+        sanitationScore: '0'
       };
       
       this.predictions = [];
@@ -472,6 +477,7 @@ async loadMap() {
   Templistings: Listing[] = [];
   pageSize = 10;
   async searchProperties(nextPage?: boolean, previousPage?: boolean) {
+    console.log(typeof this.property_size_values.lower);
     this.predictions = [];
     this.searched = false;
     if(!this.searchQuery){
@@ -497,7 +503,6 @@ async loadMap() {
       return;
     }
 
-    this.listings = [];
     if (!nextPage && !previousPage) {
       this.currentPage = 0;
       this.allListings = [];
@@ -529,19 +534,25 @@ async loadMap() {
     if(this.isMobile)this.searchQuery = (document.getElementById("address1") as HTMLInputElement).value;
 
     else this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
-    
+    console.log(document.getElementById(""))
     const request = {
-      env_type : this.env_type ? this.env_type : null,
-      prop_type : this.prop_type ? this.prop_type : null,
-      bath : this.bath ? this.bath : null,
-      bed : this.bed ? this.bed : null,
-      parking : this.parking ? this.parking : null,
+      // gross
+      bath : parseInt(this.bath),
+      bed : parseInt(this.bed),
+      parking : parseInt(this.parking),
+      property_size_min : parseInt(this.property_size_values.lower),
+      property_size_max : parseInt(this.property_size_values.upper),
+      price_min : parseInt(this.price_min),
+      price_max : parseInt(this.price_max),
+      env_type : this.env_type != "null" ? this.env_type : null,
+      prop_type : this.prop_type != "null" ? this.prop_type : null,
       features : this.features.length > 0 ? this.features : null,
-      property_size_min : this.property_size_values.lower ? this.property_size_values.lower : null,
-      property_size_max : this.property_size_values.upper ? this.property_size_values.upper : null,
-      price_min : this.property_price_values.lower ? this.property_price_values.lower : null,
-      price_max : this.property_price_values.upper ? this.property_price_values.upper : null,
-      areaScore : this.areaScore? this.areaScore : null,
+      areaScore : {
+          crimeScore: parseInt(this.areaScore.crimeScore),
+          schoolScore: parseInt(this.areaScore.schoolScore),
+          waterScore: parseInt(this.areaScore.waterScore),
+          sanitationScore: parseInt(this.areaScore.sanitationScore)
+      },
       totalAreaScore : this.totalAreaScore? this.totalAreaScore : null,
       let_sell : this.activeTab ? this.activeTab : null,
       addressViewport: {
@@ -558,6 +569,7 @@ async loadMap() {
     if(nextPage && this.allListings.length > 0) {
       request.lastListingId = this.allListings[this.allListings.length - 1].listing_id;
     }
+    if (window.location.hostname.includes("localhost")) console.log(request);
     const response = (await this.listingServices.getFilteredListings(request));
     if(!response.listings.length){
       const toast = await this.toastController.create({
@@ -706,20 +718,25 @@ addMMarker(listing: Listing) {
   }
 
   resetFilters() {
-    this.prop_type = null;
-    this.env_type = null;
+    this.prop_type = "null";
+    this.env_type = "null";
     this.let_sell = null;
-    this.price_min = null;
-    this.price_max = null;
-    this.property_size_values.lower = 0;
-    this.property_size_values.upper = 999999999;
-    this.property_price_values.lower = 0;
-    this.property_price_values.upper = 99999999;
-    this.areaScore = {};
+    this.price_min = '0';
+    this.price_max = '999999999';
+    this.property_size_values.lower = '0';
+    this.property_size_values.upper = '999999999';
+    // this.property_price_values.lower = '0';
+    // this.property_price_values.upper = '99999999';
+    this.areaScore = {
+      crimeScore: '0',
+      schoolScore: '0',
+      waterScore: '0',
+      sanitationScore: '0'
+    };
     this.totalAreaScore = null;
-    this.bed = null;
-    this.bath = null;
-    this.parking = null;
+    this.bed = '0';
+    this.bath = '0';
+    this.parking = '0';
     this.features = [];
     this.searchQuery = "";
 
@@ -791,13 +808,15 @@ sortListings() {
 }
 
 checkPriceRange(lower:boolean){
+  console.log(this.price_min)
+  console.log(this.price_max)
   if(lower == false){
-    if (this.property_price_values.lower > this.property_price_values.upper) {
-      this.property_price_values.lower = 0;
+    if (parseInt(this.price_min) > parseInt(this.price_max)) {
+      this.price_min = '0';
     }  
   } else if(lower == true){
-    if (this.property_price_values.lower > this.property_price_values.upper) {
-      this.property_price_values.upper = 99999999;
+    if (parseInt(this.price_min) > parseInt(this.price_min)) {
+      this.price_max = '99999999';
     }  
   }
 
@@ -805,11 +824,11 @@ checkPriceRange(lower:boolean){
 checkErfRange(lower:boolean){
   if(lower == false){
     if (this.property_size_values.lower > this.property_size_values.upper) {
-      this.property_size_values.lower = 0;
+      this.property_size_values.lower = '0';
     }  
   } else if(lower == true){
     if (this.property_size_values.lower > this.property_size_values.upper) {
-      this.property_size_values.upper = 999999999;
+      this.property_size_values.upper = '999999999';
     }  
   }
 
@@ -818,9 +837,9 @@ checkErfRange(lower:boolean){
   changeTab(): void {
     // Reset the selected filters and search query when changing tabs
     this.prop_type = '';
-    this.property_price_values.lower = 0;
-    this.property_price_values.upper = 99999999;
-    this.bed = null;
+    // this.property_price_values.lower = '0';
+    // this.property_price_values.upper = '99999999';
+    this.bed = '0';
     this.features = [];
     this.filterProperties();
   }
@@ -907,13 +926,13 @@ dropDown(){
     this.setCentre(listing.geometry);
   }
 
-  onPriceKnobMoveStart(){
-    const priceSlider = document.getElementById("priceSlider") as any;
-    if(priceSlider){
-      this.price_min = parseInt(priceSlider.value.lower);
-      this.price_max = parseInt(priceSlider.value.upper);
-    }
-  }
+  // onPriceKnobMoveStart(){
+  //   const priceSlider = document.getElementById("priceSlider") as any;
+  //   if(priceSlider){
+  //     this.price_min = parseInt(priceSlider.value.lower);
+  //     this.price_max = parseInt(priceSlider.value.upper);
+  //   }
+  // }
 
   onPropSizeKnobMoveStart(){
     const propSizeSlider = document.getElementById("propSizeSlider") as any;
