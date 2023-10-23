@@ -249,7 +249,8 @@ export class ListingsRepository {
       let loopLimit = 0;
       // let lastListing: Listing | undefined = undefined;
       // let lastQualityRating = 0;
-      let lastSnapshot: DocumentSnapshot | undefined = undefined 
+      let lastSnapshot: DocumentSnapshot | undefined = undefined
+      // console.log(req);
       while (response.listings.length < 10 && loopLimit < 25) {
         const queryData = await query.get();
         ++loopLimit;
@@ -264,40 +265,40 @@ export class ListingsRepository {
           || data.geometry.lng > req.addressViewport.ne.lng || data.geometry.lng < req.addressViewport.sw.lng) {
             continue;
           }
-          if (req.bath && data.bath < req.bath) {
+          if (req.bath && parseInt("" + data.bath) < parseInt("" + req.bath)) {
             continue;
           }
-          if (req.bed && data.bed < req.bed) {
+          if (req.bed && parseInt("" + data.bed) < parseInt("" + req.bed)) {
             continue;
           }
-          if (req.parking && data.parking < req.parking) {
+          if (req.parking && parseInt("" + data.parking) < parseInt("" + req.parking)) {
             continue;
           }
-          if ((req.price_min && data.price < req.price_min) ) {
+          if ((req.price_min && parseInt("" + data.price) < parseInt("" + req.price_min)) ) {
             continue;
           }
-          if ((req.price_max && data.price > req.price_max)) {
+          if ((req.price_max && parseInt("" + data.price) > parseInt("" + req.price_max))) {
             continue;
           }
-          if ((req.property_size_min && data.property_size < req.property_size_min ) ) {
+          if ((req.property_size_min && parseInt("" + data.property_size) < parseInt("" + req.property_size_min) ) ) {
             continue;
           }
-          if ((req.property_size_max && data.property_size > req.property_size_max )) {
+          if ((req.property_size_max && parseInt("" + data.property_size) > parseInt("" + req.property_size_max) )) {
             continue;
           }
-          if ((req.areaScore?.crimeScore && data.areaScore.crimeScore < req.areaScore.crimeScore)) {
+          if ((req.areaScore?.crimeScore && parseFloat("" + data.areaScore.crimeScore) < parseFloat("" + req.areaScore.crimeScore))) {
             continue;
           }
-          if ((req.areaScore?.waterScore && data.areaScore.waterScore < req.areaScore.waterScore)) {
+          if ((req.areaScore?.waterScore && parseFloat("" + data.areaScore.waterScore) < parseFloat("" + req.areaScore.waterScore))) {
             continue;
           }
-          if ((req.areaScore?.schoolScore && data.areaScore.schoolScore < req.areaScore.schoolScore)) {
+          if ((req.areaScore?.schoolScore && parseFloat("" + data.areaScore.schoolScore) < parseFloat("" + req.areaScore.schoolScore))) {
             continue;
           }
-          if ((req.areaScore?.sanitationScore && data.areaScore.sanitationScore < req.areaScore.sanitationScore)) {
+          if ((req.areaScore?.sanitationScore && parseFloat("" + data.areaScore.sanitationScore) < parseFloat("" + req.areaScore.sanitationScore))) {
             continue;
           }
-          if ((req.totalAreaScore && (data.areaScore.waterScore + data.areaScore.schoolScore + data.areaScore.crimeScore + data.areaScore.sanitationScore)/4 < req.totalAreaScore)) {
+          if ((req.totalAreaScore && (parseFloat("" + data.areaScore.waterScore) + parseFloat("" + data.areaScore.schoolScore) + parseFloat("" + data.areaScore.crimeScore) + parseFloat("" + data.areaScore.sanitationScore))/4 < parseFloat("" + req.totalAreaScore))) {
             continue;
           }
 

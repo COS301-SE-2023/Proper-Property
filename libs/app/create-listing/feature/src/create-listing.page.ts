@@ -612,17 +612,17 @@ export class CreateListingPage {
         user_id: this.currentUser.uid,
         address: this.address,
         district: this.district,
-        price: this.price,
+        price: parseInt("" + this.price),
         pos_type: this.pos_type,
         env_type: this.env_type,
         prop_type: this.prop_type,
         furnish_type: this.furnish_type,
         orientation: this.orientation,
-        floor_size: this.floor_size,
-        property_size: this.erf_size,
-        bath: this.bathrooms,
-        bed: this.bedrooms,
-        parking: this.parking,
+        floor_size: parseInt("" + this.floor_size),
+        property_size: parseInt("" + this.erf_size),
+        bath: parseInt("" + this.bathrooms),
+        bed: parseInt("" + this.bedrooms),
+        parking: parseInt("" + this.parking),
         features: this.features,
         photos: this.photos,
         desc: this.description,
@@ -661,8 +661,9 @@ export class CreateListingPage {
           sanitationScore: 0
         }
       }
-
+      // console.log(list);
       if (creationType == "create") {
+        // return;
         await this.listingService.createListing(list);
       }
       else if (creationType == "save") {
