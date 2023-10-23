@@ -477,7 +477,7 @@ async loadMap() {
   Templistings: Listing[] = [];
   pageSize = 10;
   async searchProperties(nextPage?: boolean, previousPage?: boolean) {
-    console.log(typeof this.property_size_values.lower);
+    // console.log(typeof this.property_size_values.lower);
     this.predictions = [];
     this.searched = false;
     if(!this.searchQuery){
@@ -534,7 +534,7 @@ async loadMap() {
     if(this.isMobile)this.searchQuery = (document.getElementById("address1") as HTMLInputElement).value;
 
     else this.searchQuery = (document.getElementById("address") as HTMLInputElement).value;
-    console.log(document.getElementById(""))
+    // console.log(document.getElementById(""))
     const request = {
       // gross
       bath : parseInt(this.bath),
@@ -808,8 +808,8 @@ sortListings() {
 }
 
 checkPriceRange(lower:boolean){
-  console.log(this.price_min)
-  console.log(this.price_max)
+  // console.log(this.price_min)
+  // console.log(this.price_max)
   if(lower == false){
     if (parseInt(this.price_min) > parseInt(this.price_max)) {
       this.price_min = '0';
