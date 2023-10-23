@@ -12,11 +12,11 @@
 ---
 <strong><h3 style="font-family: Jetbrains Mono">PROJECT BOARD:</h3></strong>
 
--[Project Board View 1](https://github.com/orgs/COS301-SE-2023/projects/21/views/1)
+- [Project Board View 1](https://github.com/orgs/COS301-SE-2023/projects/21/views/1)
 
 <strong><h3 style="font-family: Jetbrains Mono">Website:</h3></strong>
--[Proper Property Link](https://proper-property-51963.web.app)
--[Video Demo Link](https://youtu.be/pjMGChV_o7s)
+- [Proper Property Link](https://proper-property-51963.web.app)
+- [Video Demo Link](https://youtu.be/pjMGChV_o7s)
 
 <strong><h3 style="font-family: Jetbrains Mono">FINAL DEMO:</h3></strong>
 - [System Requirement Specifications V4](https://drive.google.com/file/d/1IgXEcNUFrKMk_Gz_LBBkaZpHyLjNvWP2/view?usp=drive_link)
