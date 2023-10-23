@@ -52,7 +52,7 @@
                 <ion-col size="4" *ngIf="activeTab === 'Sell'">
                   <ion-item lines="none" class="filter">
                     <ion-label class="filter-text">Minimum Price</ion-label>
-                    <select id="min-price" class="dropdown" style="width: 40%" [(ngModel)]="property_price_values.lower">
+                    <select id="min-price" class="dropdown" style="width: 40%" [(ngModel)]="price_min">
                       <option value="0" (click)="checkPriceRange(true)">Any</option>
                       <option value="100000" (click)="checkPriceRange(true)">R 100 000</option>
                       <option value="150000" (click)="checkPriceRange(true)">R 150 000</option>
@@ -74,7 +74,7 @@
                 <ion-col size="4" *ngIf="activeTab === 'Sell'">
                   <ion-item lines="none" class="filter">
                     <ion-label class="filter-text">Maximum Price</ion-label>
-                    <select class="dropdown" style="width: 40%" [(ngModel)]="property_price_values.upper">
+                    <select class="dropdown" style="width: 40%" [(ngModel)]="price_max">
                       <option value="99999999" (click)="checkPriceRange(false)">Any</option>
                       <option value="100000" (click)="checkPriceRange(false)">R 100 000</option>
                       <option value="150000" (click)="checkPriceRange(false)">R 150 000</option>
@@ -98,7 +98,7 @@
                 <ion-col size="4" *ngIf="activeTab === 'Rent'">
                   <ion-item lines="none" class="filter">
                     <ion-label class="filter-text">Minimum Price</ion-label>
-                    <select id="min-price" style="overflow-y: scroll" class="dropdown" style="width: 40%" [(ngModel)]="property_price_values.lower" change="checkPriceRange(true)">
+                    <select id="min-price" style="overflow-y: scroll" class="dropdown" style="width: 40%" [(ngModel)]="price_min" change="checkPriceRange(true)">
                       <option value="0" (click)="checkPriceRange(true)">Any</option>
                       <option value="2500" (click)="checkPriceRange(true)">R 2 500</option>
                       <option value="3000" (click)="checkPriceRange(true)">R 3 000</option>
@@ -120,7 +120,7 @@
                 <ion-col size="4" *ngIf="activeTab === 'Rent'">
                   <ion-item lines="none" class="filter">
                     <ion-label class="filter-text">Maximum Price</ion-label>
-                    <select class="dropdown" style="width: 40%" [(ngModel)]="property_price_values.upper" (ionChange)="checkPriceRange(false)">
+                    <select class="dropdown" style="width: 40%" [(ngModel)]="price_max" (ionChange)="checkPriceRange(false)">
                       <option value="99999999" (click)="checkPriceRange(false)">Any</option>
                       <option value="2500" (click)="checkPriceRange(false)">R 2 500</option>
                       <option value="3000" (click)="checkPriceRange(false)">R 3 000</option>
@@ -144,7 +144,7 @@
                 <ion-col size="4" *ngIf="activeTab === 'Any'">
                   <ion-item lines="none" class="filter">
                     <ion-label class="filter-text">Minimum Price</ion-label>
-                    <select id="min-price" class="dropdown" style="width: 40%" [(ngModel)]="property_price_values.lower">
+                    <select id="min-price" class="dropdown" style="width: 40%" [(ngModel)]="price_min">
                       <option value="0">Any</option>
                       <option value="2000"  (click)="checkPriceRange(true)">R 2 000</option>
                       <option value="3000" (click)="checkPriceRange(true)">R 3 000</option>
@@ -167,7 +167,7 @@
                 <ion-col size="4" *ngIf="activeTab === 'Any'">
                   <ion-item lines="none" class="filter">
                     <ion-label class="filter-text">Maximum Price</ion-label>
-                    <select class="dropdown" style="width: 40%" [(ngModel)]="property_price_values.upper">
+                    <select class="dropdown" style="width: 40%" [(ngModel)]="price_max">
                       <option value="99999999">Any</option>
                       
                       
@@ -193,7 +193,7 @@
 
       
               </ion-row>
-              <!-- <input type="number" [(ngModel)]="property_price_values.upper" style="width: 90%"> -->
+              <!-- <input type="number" [(ngModel)]="price_max" style="width: 90%"> -->
                 <!-- Additional Filters -->
                 <div [className]="!showAdditionalFilters? 'animation-div-closed' : 'animation-div-class'">
                   <ion-row>
@@ -201,7 +201,7 @@
                       <ion-item lines="none" class="filter">
                       <ion-label class="filter-text">Bathrooms</ion-label>
                       <select class="dropdown" style="width: 40%"  [(ngModel)]="bath" (ionChange)="filterProperties()">
-                        <option value="null">Any</option>
+                        <option value="0">Any</option>
                         <option value="1">1+</option>
                         <option value="2">2+</option>
                         <option value="3">3+</option>
@@ -215,7 +215,7 @@
                       <ion-item lines="none" class="filter">
                         <ion-label class="filter-text">Bedrooms</ion-label>
                         <select class="dropdown" style="width: 40%" [(ngModel)]="bed">
-                          <option value="null">Any</option>
+                          <option value="0">Any</option>
                           <option value="1">1+</option>
                           <option value="2">2+</option>
                           <option value="3">3+</option>
@@ -233,7 +233,7 @@
                       <ion-item lines="none" class="filter">
                         <ion-label class="filter-text">Parking</ion-label>
                         <select class="dropdown" style="width: 40%"  [(ngModel)]="parking" (ionChange)="filterProperties()">
-                          <option value="null">Any</option>
+                          <option value="0">Any</option>
                           <option value="1">1+</option>
                           <option value="2">2+</option>
                           <option value="3">3+</option>
@@ -273,7 +273,7 @@
                       <ion-item lines="none" class="filter">
                         <ion-label class="filter-text">Area Score</ion-label>
                         <select class="dropdown" style="width: 40%"  [(ngModel)]="totalAreaScore" (ionChange)="filterProperties()">
-                          <option value="null">Any</option>
+                          <option value="0">Any</option>
                           <option value="10">>10%</option>
                           <option value="20">>20%</option>
                           <option value="30">>30%</option>

@@ -203,7 +203,7 @@
                         </div>
                       </ng-container>
                       <ng-template #poiLoaded>
-                        <ng-container *ngIf="pointsOfInterest.length === 0 ; else POIs">
+                        <ng-container *ngIf="pointsOfInterest.length === 0 || list.status === 'PENDING APPROVAL' || list.status === 'DENIED'; else POIs">
                           <div style="display: flex; justify-content: center;">
                             <div style="font-size: 20px; font-weight: 500; color: black;">No Points of Interest Found</div>
                           </div>
@@ -325,7 +325,7 @@
                     </ion-col>
                     <ion-col>
                       <ion-button
-                        style="color-scheme: #0dae4f"
+                        class="button2"
                         (click)="setOpen(true)"
                         >Lister Contact Details</ion-button
                       >
@@ -344,7 +344,7 @@
                           <ion-content class="ion-padding">
                             <ion-grid>
                               <ion-row class="lister-row" style="margin-top: 1%">
-                                <ion-col style="border-right: 1px solid #0dae4f;">
+                                <ion-col style="border-right: 1px solid var(--ion-color-primary);">
                                   <ion-avatar>
                                     <div
                                       style="border-radius: 50%; border: 1px solid black; width: 100%; height: 100%; background-image: url({{profilePic}}); background-size: cover; background-position-x: center; background-position-y: center;"
@@ -354,12 +354,12 @@
                                   </div>
                                   </ion-avatar>
                                 </ion-col>
-                                <ion-col style="border-left: 1px solid #0dae4f;">
+                                <ion-col style="border-left: 1px solid var(--ion-color-primary);">
                                   <p>{{lister_name}}</p>
                                 </ion-col>
                               </ion-row>
                               <ion-row class="lister-row">
-                                <ion-col style="border-right: 1px solid #0dae4f">
+                                <ion-col style="border-right: 1px solid var(--ion-color-primary)">
                                   Email:
                                 </ion-col>
                                 <ion-col class="listerDetails">
@@ -367,7 +367,7 @@
                                 </ion-col>
                               </ion-row>
                               <ion-row class="lister-row">
-                                <ion-col style="border-right: 1px solid #0dae4f">
+                                <ion-col style="border-right: 1px solid var(--ion-color-primary)">
                                   Phone:
                                 </ion-col>
                                 <ion-col class="listerDetails">
@@ -444,6 +444,7 @@
 
               <ion-button
                 style="width: 100%; margin: 0 auto"
+                class="button2"
                 (click)="calculateMortgage()"
                 >Calculate</ion-button
               >
@@ -804,7 +805,7 @@
                     </ion-col>
                     <ion-col>
                       <ion-button
-                        style="color-scheme: #0dae4f"
+                        style="color-scheme: var(--ion-color-primary)"
                         (click)="setOpen(true)"
                         >Lister Contact Details</ion-button
                       >
@@ -894,43 +895,46 @@
           </ion-row>
           <ion-row id="calculator" style="margin-top: 1%">
             <ion-card class="full-container">
+              <ion-card-header>
+                <ion-card-title>Bond Calculator</ion-card-title>
+              </ion-card-header>
               <ion-item>
                 <ion-label position="floating" class="primary-color"
                   >Loan Amount (R)</ion-label
                 >
                 <ion-input type="number" [(ngModel)]="loanAmount"></ion-input>
               </ion-item>
-  
+
               <ion-item>
                 <ion-label position="floating" class="primary-color"
                   >Interest Rate (%)</ion-label
                 >
                 <ion-input type="number" [(ngModel)]="interestRate"></ion-input>
               </ion-item>
-  
+
               <ion-item>
                 <ion-label position="floating" class="primary-color"
                   >Loan Term (Years)</ion-label
                 >
                 <ion-input type="number" [(ngModel)]="loanTerm"></ion-input>
               </ion-item>
-  
+
               <ion-button
-                style=" width: 100%; margin: 0 auto"
+                style="width: 100%; margin: 0 auto"
                 (click)="calculateMortgage()"
                 >Calculate</ion-button
               >
-  
+
               <ion-item>
                 <ion-label>Monthly Payment:</ion-label>
                 <ion-text>{{ monthlyPayment | currency: 'R' }}</ion-text>
               </ion-item>
-  
+
               <ion-item>
                 <ion-label>Total Once-off Costs:</ion-label>
                 <ion-text>{{ totalOnceOffCosts | currency: 'R' }}</ion-text>
               </ion-item>
-  
+
               <ion-item>
                 <ion-label>Min Gross Monthly Income:</ion-label>
                 <ion-text>{{ minGrossMonthlyIncome | currency: 'R' }}</ion-text>

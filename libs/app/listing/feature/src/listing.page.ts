@@ -130,17 +130,32 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
 
       await this.listingServices.getListing(list_id).then((list) => {
         this.list = list;
-      }).then(() => {
+        this.gmapsService.getGeocoder().then((geocoder) => {
+          // console.log("hey");
+          geocoder.geocode({ address: this.list?.address }, (results: any, status: any) => {
+            // console.log("listen");
+            if (status === 'OK') {
+              // console.log({lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()});
+              // this.list?.geometry.lat = results[0].geometry.location.lat();
+              // this.list?.geometry.lng = results[0].geometry.location.lng();
+            }
+            else {
+              // console.log('Geocode was not successful for the following reason: ' + status);
+            }
+          });
+        }
+      ).then(() => {
         if (admin) {
           this.admin = true;
           this.adminId = admin;
         }
+      });
 
 
         // TODO
 
         if (!this.list?.price || !this.list?.property_size) {
-          console.error("Both Property Size and Price need to be specified");
+          // console.error("Both Property Size and Price need to be specified");
           return
         }
         this.price_per_sm = (this.list?.price / this.list?.property_size).toFixed(2);
@@ -224,7 +239,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
           }
         }
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       }
     }
 
@@ -586,12 +601,16 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
 
       // this.loading = false;
       if (result.success) {
-        this.router.navigateByUrl('/admin').then(() => {
+        // this.router.navigateByUrl('/admin').then(() => {
           // Add a small delay to allow the URL to change before reloading
           setTimeout(() => {
             window.location.reload();
+            //sleep for 1 sec
+            new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
+              this.router.navigate(['/admin']);
+            });
           }, 100);
-        });
+        // });
         this.successfulChange.message = (approved? "Approval" : "Rejection") + this.successfulChange.message;
         const toast = await this.toastController.create(this.successfulChange);
         toast.present();
@@ -625,7 +644,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
           this.poiLoading = false;
         })
       } catch (error) {
-        console.error('Error retrieving nearby places:', error);
+        // console.error('Error retrieving nearby places:', error);
         this.poiLoading = false;
       }
     }
@@ -648,7 +667,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
         }
       }
       catch (error) {
-        console.error('Error retrieving nearby places:', error);
+        // console.error('Error retrieving nearby places:', error);
       }
     }
 
@@ -738,7 +757,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
         return (response.percentage ? response.percentage : 0) * 100;
       }
       catch (error) {
-        console.error('Error retrieving nearby places:', error);
+        // console.error('Error retrieving nearby places:', error);
       }
     }
 
@@ -775,7 +794,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
   }
 
   swiperSlideChanged(e: Event) {
-    if (window.location.hostname.includes("localhost")) console.log(e);
+    // if (window.location.hostname.includes("localhost")) console.log(e);
   }
 
   loanAmount: number;
@@ -899,7 +918,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
             }
           }
         } catch (e) {
-          console.log(e);
+          // console.log(e);
         }
     }
   }
@@ -925,7 +944,7 @@ export class ListingPage implements OnDestroy, OnInit, AfterViewInit {
   generateQRCode() {
     const QRCode = require('qrcode')
     const qrCodeCanvas = document.getElementById("qrCanvas") as HTMLCanvasElement;
-    console.log("for example ", qrCodeCanvas);
+    // console.log("for example ", qrCodeCanvas);
     if (qrCodeCanvas) {
       QRCode.toCanvas(qrCodeCanvas, window.location.href + ";qr=true", function (error: any) {
         if (error) {

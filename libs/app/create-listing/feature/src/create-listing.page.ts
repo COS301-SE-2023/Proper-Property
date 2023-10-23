@@ -487,7 +487,7 @@ export class CreateListingPage {
   addFeature() {
     const feat_in = document.getElementById('feat-in') as HTMLInputElement;
 
-    if (feat_in) {
+    if (feat_in && !this.features.includes(feat_in.value)) {
       const feat = feat_in.value;
       if (feat != "") {
         this.features.push(feat);
@@ -498,7 +498,7 @@ export class CreateListingPage {
 
   addFeatureNow(amenity: string) {
 
-    if (amenity != "") {
+    if (amenity != "" && !this.features.includes(amenity)) {
       this.features.push(amenity);
     }
 

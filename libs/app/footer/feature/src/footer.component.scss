@@ -42,9 +42,9 @@
 * {
   box-sizing: border-box;
 }
-// .hover-text{
-//   color: white;
-// }
+.hover-text{
+  color: white;
+}
 .hover-text:hover {
   --background: white;
   color: var(--ion-color-primary);
