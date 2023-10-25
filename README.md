@@ -135,6 +135,9 @@ In summary, my strengths include rapid learning, efficient work, and timely deli
 <img src=https://img.shields.io/badge/linkedin-%231E77B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white alt=linkedin/>
 </a>
 
+## CV
+- [Online CV](https://1drv.ms/b/s!Av0Lt4pMFUOco7AfaPx8NiYF9v9WRQ?e=5oVlg2)
+
 </details>
 
 ## Robert Officer- Leader
@@ -160,6 +163,8 @@ I am a passionate 3rd year BSc Computer Science student currently studying at th
 <a href="https://www.linkedin.com/" target="_blank">
 <img src=https://img.shields.io/badge/linkedin-%231E77B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white alt=linkedin/>
 </a>
+
+## CV
 - [Online CV](https://drive.google.com/file/d/1LXdWgduM4CDPBYtPPMb0SZOjjxp3VhUF/view?usp=sharing)
 
 </details>
