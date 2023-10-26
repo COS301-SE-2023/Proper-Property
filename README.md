@@ -70,6 +70,9 @@ My current skills include proficient knowledge of C++ and Java having spent the 
 <img src=https://img.shields.io/badge/linkedin-%231E77B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white alt=linkedin/>
 </a>
 
+## CV
+- [Online CV](https://drive.google.com/file/d/17ZJR9ba02-kLw8yGweyjt41ttfMlNlCo/view?usp=sharing)
+
 </details>
 
 ## Wian Koekemoer
