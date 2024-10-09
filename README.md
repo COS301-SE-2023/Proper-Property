@@ -173,7 +173,7 @@ I am a passionate 3rd year BSc Computer Science student currently studying at th
 </details>
 
 ## Thapelo Thoka
-<img src="https://user-images.githubusercontent.com/98401898/234882981-8ba00dc3-a1c9-405e-8632-d45fa3254c07.png" width="200" height="200"> [![Thapelo's GitHub stats](https://github-readme-stats.vercel.app/api?username=Thapelo64)](https://github.com/anuraghazra/github-readme-stats)
+ [![Thapelo's GitHub stats](https://github-readme-stats.vercel.app/api?username=Thapelo64)](https://github.com/anuraghazra/github-readme-stats)
 <details>
 <summary>Personal Information</summary>
 <br>
